@@ -1,0 +1,39 @@
+name: flutter_soulmateelf
+description: soulmateelf
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.5 <3.0.0'
+
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  # CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  # rules and activating additional ones.
+  flutter_lints: ^2.0.0
+
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  assets:
+    - assets/images/backGround/
+    - assets/images/icons/
+
