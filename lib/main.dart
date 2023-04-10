@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 /// 设置默认ios风格主题
                 platform: TargetPlatform.iOS,
-                primarySwatch: Colors.blue,
+                primarySwatch: Colors.green,
               ),
               /// 跟随系统语言
               locale: Get.deviceLocale,

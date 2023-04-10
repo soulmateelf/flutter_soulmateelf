@@ -1,3 +1,9 @@
+/*
+ * @Date: 2023-04-10 09:35:33
+ * @LastEditors: Wws wuwensheng@donganyun.com
+ * @LastEditTime: 2023-04-10 11:44:42
+ * @FilePath: \soulmate\lib\views\base\splash\view.dart
+ */
 /// Author: kele
 /// Date: 2022-01-13 15:16:49
 /// LastEditors: kele
@@ -16,7 +22,7 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /// ScreenUtil初始化
-    ScreenUtil.init(Get.context!, designSize: const Size(390, 844));
+    ScreenUtil.init(Get.context!, designSize: const Size(750, 1624));
     return Scaffold(
       body: Container(
         color: Colors.white,

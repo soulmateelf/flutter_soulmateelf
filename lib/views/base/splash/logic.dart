@@ -57,7 +57,7 @@ class SplashLogic extends GetxController {
     String? userInfo = Application.pres?.getString("userInfo");
     if (headers == null || userInfo == null) {
       /// 未登录状态
-      Get.offNamed('/login');
+      Get.offNamed('/welcome');
     } else {
       Get.offNamed('/home');
     }
@@ -67,8 +67,10 @@ class SplashLogic extends GetxController {
   checkAppInfo() {
     /// 和判断入口
     whereToGo();
+
     ///等升级接口
     return;
+
     /// 升级之前先检查版本信息
     if (APPPlugin.appInfo != null) {
       getUpdate();

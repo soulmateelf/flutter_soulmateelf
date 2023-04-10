@@ -1,3 +1,9 @@
+/*
+ * @Date: 2023-04-10 09:35:33
+ * @LastEditors: Wws wuwensheng@donganyun.com
+ * @LastEditTime: 2023-04-10 18:25:38
+ * @FilePath: \soulmate\lib\views\base\login\view.dart
+ */
 /// Author: kele
 /// Date: 2022-01-13 15:18:59
 /// LastEditors: kele
@@ -6,9 +12,12 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soulmateelf/views/base/login/bloc.dart';
 import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'logic.dart';
 
@@ -17,200 +26,225 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: logic.dealBack,
-      child: Scaffold(
-        body: GetBuilder<LoginLogic>(builder: (logic) {
-          return Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('assets/images/backGround/loginbk.png'),
+    /// ScreenUtil初始化
+    ScreenUtil.init(Get.context!, designSize: const Size(750, 1624));
+    return BlocProvider(
+      create: (context) => LoginFormBloc(),
+      child: Builder(builder: (context) {
+        // 表单bloc
+        final loginFormBloc = context.read<LoginFormBloc>();
+        return Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            leading: Row(children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back_ios_new),
+                onPressed: () {
+                  Get.back();
+                },
+                color: Color.fromRGBO(153, 153, 153, 1),
               ),
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.fromLTRB(0, 136.w, 0, 0),
-                    padding: EdgeInsets.only(left: 50.w),
-                    alignment: Alignment.topLeft,
-                    child: Image.asset(
-                      'assets/images/backGround/welcome.png',
-                      width: 157.w,
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.fromLTRB(50.w, 150.w, 50.w, 0),
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(16, 86, 157, 0.45),
-                      borderRadius: BorderRadius.all(Radius.circular(28)),
-                    ),
-                    child: TextFormField(
-                      initialValue: logic.account,
-                      textAlign: TextAlign.center,
-                      focusNode: logic.accountFocusNode,
-                      textInputAction: TextInputAction.next,
-                      style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        fontSize: 16.sp,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: '请输入账号',
-                        hintStyle: TextStyle(
-                            color: Color.fromRGBO(255, 255, 255, 1),
-                            fontSize: 16.sp),
-                        border: InputBorder.none,
-                      ),
-                      onChanged: (value) {
-                        logic.account = value;
-                        logic.update();
-                      },
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.fromLTRB(50.w, 24.w, 50.w, 0),
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(16, 86, 157, 0.45),
-                      borderRadius: BorderRadius.all(Radius.circular(28)),
-                    ),
-                    child: TextFormField(
-                      obscureText: true,
-                      initialValue: logic.password,
-                      textAlign: TextAlign.center,
-                      focusNode: logic.pwdFocusNode,
-                      textInputAction: TextInputAction.done,
-                      style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        fontSize: 16.sp,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: '请输入密码',
-                        hintStyle: TextStyle(
-                            color: Color.fromRGBO(255, 255, 255, 1),
-                            fontSize: 16.sp),
-                        border: InputBorder.none,
-                      ),
-                      onChanged: (value) {
-                        logic.password = value;
-                        logic.update();
-                      },
-                    ),
-                  ),
-                  Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.fromLTRB(50.w, 24.w, 50.w, 0),
-                      decoration: BoxDecoration(
-                          color: const Color.fromRGBO(0, 123, 245, 1),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(28)),
-                          border: Border.all(
-                              color: const Color.fromRGBO(0, 123, 245, 1))),
-                      child: TextButton(
-                        child: const Text('登录',
-                            style: TextStyle(color: Colors.white)),
-                        onPressed: () {
-                          logic.login();
-                        },
-                      )),
-                  Container(
-                      margin: EdgeInsets.only(top: 30.w),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            GestureDetector(
-                                behavior: HitTestBehavior.opaque,
-                                onTap: () {
-                                  logic.checkProtocol = !logic.checkProtocol;
-                                  logic.update();
-                                },
-                                child: Row(children: <Widget>[
-                                  Container(
-                                    margin: EdgeInsets.only(right: 5.w),
-                                    padding: EdgeInsets.all(3.w),
-                                    child: logic.checkProtocol
-                                        ? const Icon(
-                                            Icons.check_circle,
-                                            size: 20.0,
-                                            color: Colors.lightBlue,
-                                          )
-                                        : const Icon(
-                                            Icons.radio_button_unchecked,
-                                            size: 20.0,
-                                            color: Colors.grey,
-                                          ),
+              Padding(
+                padding: EdgeInsets.only(left: 12.w),
+                child: const Text(
+                  "Back",
+                  style: TextStyle(color: Color.fromRGBO(153, 153, 153, 1)),
+                ),
+              )
+            ]),
+            backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
+            leadingWidth: 1.sw,
+          ),
+          body: GetBuilder<LoginLogic>(builder: (logic) {
+            return FormBlocListener<LoginFormBloc, String, String>(
+                child: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height -
+                        AppBar().preferredSize.height -
+                        MediaQuery.of(context).padding.top),
+                child: Container(
+                    padding: EdgeInsets.all(20.w),
+                    height: double.infinity,
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: double.infinity,
+                                child: Text(
+                                  "Enter your phone or email",
+                                  style: TextStyle(
+                                    fontSize: 48.sp,
                                   ),
-                                  Container(
-                                    padding:
-                                        EdgeInsets.only(top: 4.w, bottom: 4.w),
-                                    child: Text("我已阅读并接受",
-                                        style: TextStyle(
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 68.h),
+                                child: TextFieldBlocBuilder(
+                                  textFieldBloc: loginFormBloc.email,
+                                  keyboardType: TextInputType.emailAddress,
+                                  autofillHints: const [
+                                    AutofillHints.email,
+                                  ],
+                                  decoration: InputDecoration(
+                                      labelText: "Email",
+                                      helperText: " ",
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(4.w)),
+                                          borderSide: BorderSide(
+                                            width: 1.w,
                                             color: const Color.fromRGBO(
-                                                108, 108, 108, 1),
-                                            fontSize: 14.sp)),
-                                  )
-                                ])),
-                            Container(
-                              child: RichText(
-                                  strutStyle: const StrutStyle(
-                                      forceStrutHeight: true,
-                                      height: 1,
-                                      leading: 0.2),
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                      text: '《用户协议》',
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color:
-                                              Color.fromRGBO(0, 123, 245, 1)),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Get.toNamed('/webview',
-                                              arguments: 0);
-                                        },
-                                    ),
-                                    TextSpan(
-                                      text: '和',
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: const Color.fromRGBO(
-                                              108, 108, 108, 1)),
-                                    ),
-                                    TextSpan(
-                                      text: '《隐私政策》',
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: const Color.fromRGBO(
-                                              0, 123, 245, 1)),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Get.toNamed('/webview',
-                                              arguments: 1);
-                                        },
-                                    ),
-                                  ])),
-                            )
-                          ])),
-                  Container(
-                    padding: EdgeInsets.only(top: 15.w),
-                    child: Text(
-                      'V${APPPlugin.appInfo != null ? APPPlugin.appInfo!.version : ''}(${APPPlugin.appInfo != null ? APPPlugin.appInfo!.buildNumber : ''})',
-                      style: TextStyle(
-                          color: const Color.fromRGBO(108, 108, 108, 1),
-                          fontSize: 16.sp),
-                    ),
-                  ),
-                ],
+                                                230, 230, 230, 1),
+                                          ))),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 20.h),
+                                child: TextFieldBlocBuilder(
+                                  textFieldBloc: loginFormBloc.password,
+                                  suffixButton: SuffixButton.obscureText,
+                                  autofillHints: const [AutofillHints.password],
+                                  decoration: InputDecoration(
+                                      labelText: "Password",
+                                      helperText: " ",
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(4.w)),
+                                          borderSide: BorderSide(
+                                            width: 1.w,
+                                            color: const Color.fromRGBO(
+                                                230, 230, 230, 1),
+                                          ))),
+                                ),
+                              ),
+                              TextButton(
+                                  onPressed: () {},
+                                  child: const Text(
+                                    "Forgot password?",
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(78, 162, 79, 1)),
+                                  )),
+                              Container(
+                                margin: EdgeInsets.only(top: 54.h),
+                                width: double.infinity,
+                                height: 94.h,
+                                child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                const Color.fromRGBO(
+                                                    78, 162, 79, 1))),
+                                    onPressed: () {},
+                                    child: Text(
+                                      "Log in",
+                                      style: TextStyle(fontSize: 36.sp),
+                                    )),
+                              )
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                  width: double.infinity,
+                                  height: 94.h,
+                                  margin: EdgeInsets.only(top: 32.h),
+                                  child: ElevatedButton(
+                                      onPressed: () {},
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.white),
+                                          shape: MaterialStateProperty.all(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          94.h)))),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(
+                                            Icons.golf_course,
+                                            color: Colors.green,
+                                          ),
+                                          Text(
+                                            "Continue with Google",
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ],
+                                      ))),
+                              Container(
+                                  width: double.infinity,
+                                  height: 94.h,
+                                  margin: EdgeInsets.only(top: 32.h),
+                                  child: ElevatedButton(
+                                      onPressed: () {},
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.white),
+                                          shape: MaterialStateProperty.all(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          94.h)))),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(
+                                            Icons.golf_course,
+                                            color: Colors.green,
+                                          ),
+                                          Text(
+                                            "Continue with Facebook",
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ],
+                                      ))),
+                              Padding(
+                                padding: EdgeInsets.only(top: 40.h),
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text.rich(TextSpan(children: [
+                                      TextSpan(
+                                          text:
+                                              "By signing up, you agree to our "),
+                                      TextSpan(
+                                        text: "Terms, Privacy Policy.",
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(78, 162, 79, 1)),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            Get.toNamed('/webview');
+                                          },
+                                      )
+                                    ]))),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    )),
               ),
-            ),
-          );
-        }),
-      ),
+            ));
+          }),
+        );
+      }),
     );
   }
 }

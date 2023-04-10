@@ -75,6 +75,12 @@ dependencies:
   #系统分享
   #https://github.com/fluttercommunity/plus_plugins/tree/main/packages/share_plus/share_plus
   share_plus: ^6.3.1
+  #支持异步校验的表单
+  #https://github.com/GiancarloCode/form_bloc
+  flutter_form_bloc: ^0.30.1
+  #验证码输入
+  # https://github.com/adar2378/pin_code_fields
+  pin_code_fields: ^7.4.0
 
 dev_dependencies:
   flutter_test:
