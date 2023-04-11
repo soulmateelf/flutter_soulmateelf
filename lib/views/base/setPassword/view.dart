@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-10 19:59:30
+ * @LastEditTime: 2023-04-11 16:25:16
  * @FilePath: \soulmate\lib\views\base\setPassword\view.dart
  */
 /// Author: kele
@@ -10,15 +10,11 @@
 /// LastEditTime: 2022-03-08 15:39:16
 /// Description: 登录
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_soulmateelf/views/base/login/bloc.dart';
-import 'package:flutter_soulmateelf/views/base/signup/bloc.dart';
+import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc.dart';
 
@@ -32,28 +28,9 @@ class SetPasswordPage extends StatelessWidget {
       child: Builder(builder: (context) {
         // 表单bloc
         final setPasswordFormBloc = context.read<SetPasswordFormBloc>();
+        final title = Get.arguments?["setPasswordPageTitle"] ?? "Create your password.";
         return Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            leading: Row(children: [
-              IconButton(
-                icon: Icon(Icons.arrow_back_ios_new),
-                onPressed: () {
-                  Get.back();
-                },
-                color: Color.fromRGBO(153, 153, 153, 1),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 12.w),
-                child: const Text(
-                  "Back",
-                  style: TextStyle(color: Color.fromRGBO(153, 153, 153, 1)),
-                ),
-              )
-            ]),
-            backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
-            leadingWidth: 1.sw,
-          ),
+          appBar:backBar(),
           body: FormBlocListener<SetPasswordFormBloc, String, String>(
               child: SingleChildScrollView(
             child: ConstrainedBox(
@@ -66,83 +43,75 @@ class SetPasswordPage extends StatelessWidget {
                   height: double.infinity,
                   child: Container(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                "Create your account",
-                                style: TextStyle(
-                                  fontSize: 48.sp,
-                                ),
-                              ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                              fontSize: 48.sp,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 68.h),
-                              child: TextFieldBlocBuilder(
-                                textFieldBloc: setPasswordFormBloc.email,
-                                keyboardType: TextInputType.emailAddress,
-                                autofillHints: const [
-                                  AutofillHints.email,
-                                ],
-                                suffixButton: SuffixButton.asyncValidating,
-                                decoration: InputDecoration(
-                                    labelText: "Password",
-                                    helperText: " ",
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(4.w)),
-                                        borderSide: BorderSide(
-                                          width: 1.w,
-                                          color: const Color.fromRGBO(
-                                              230, 230, 230, 1),
-                                        ))),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 20.h),
-                              child: TextFieldBlocBuilder(
-                                textFieldBloc: setPasswordFormBloc.password,
-                                suffixButton: SuffixButton.obscureText,
-                                autofillHints: const [AutofillHints.password],
-                                decoration: InputDecoration(
-                                    labelText: "Confirm password",
-                                    helperText: " ",
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(4.w)),
-                                        borderSide: BorderSide(
-                                          width: 1.w,
-                                          color: const Color.fromRGBO(
-                                              230, 230, 230, 1),
-                                        ))),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 20.h),
-                              width: double.infinity,
-                              height: 94.h,
-                              child: ElevatedButton(
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              const Color.fromRGBO(
-                                                  78, 162, 79, 1))),
-                                  onPressed: () {
-                                    Get.toNamed('/verification');
-                                  },
-                                  child: Text(
-                                    "Next",
-                                    style: TextStyle(fontSize: 36.sp),
-                                  )),
-                            ),
-
-                          ],
+                          ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 68.w),
+                          child: TextFieldBlocBuilder(
+                            autofocus: true,
+                            textFieldBloc: setPasswordFormBloc.password,
+                            autofillHints: const [
+                              AutofillHints.password,
+                            ],
+                            suffixButton: SuffixButton.obscureText,
+                            decoration: InputDecoration(
+                                labelText: "Password",
+                                helperText: " ",
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4.w)),
+                                    borderSide: BorderSide(
+                                      width: 1.w,
+                                      color: const Color.fromRGBO(
+                                          230, 230, 230, 1),
+                                    ))),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 20.w),
+                          child: TextFieldBlocBuilder(
+                            textFieldBloc: setPasswordFormBloc.confirmPassword,
+                            suffixButton: SuffixButton.obscureText,
+                            autofillHints: const [AutofillHints.password],
+                            decoration: InputDecoration(
+                                labelText: "Confirm password",
+                                helperText: " ",
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4.w)),
+                                    borderSide: BorderSide(
+                                      width: 1.w,
+                                      color: const Color.fromRGBO(
+                                          230, 230, 230, 1),
+                                    ))),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 20.w),
+                          width: double.infinity,
+                          height: 94.w,
+                          child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color.fromRGBO(78, 162, 79, 1))),
+                              onPressed: () {
+                                setPasswordFormBloc.submit();
+                              },
+                              child: Text(
+                                "Next",
+                                style: TextStyle(fontSize: 36.sp),
+                              )),
+                        )
                       ],
                     ),
                   )),

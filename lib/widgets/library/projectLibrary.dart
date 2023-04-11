@@ -1,3 +1,9 @@
+/*
+ * @Date: 2023-04-10 09:35:33
+ * @LastEditors: Wws wuwensheng@donganyun.com
+ * @LastEditTime: 2023-04-11 14:19:36
+ * @FilePath: \soulmate\lib\widgets\library\projectLibrary.dart
+ */
 /// Author: kele
 /// Date: 2022-03-21 14:28:00
 /// LastEditors: kele
@@ -27,3 +33,4 @@ part 'picker/singleColumnPicker.dart';
 part 'inputSearch/customSearchInput.dart';
 part 'inputSearch/customCommonTextField.dart';
 part 'listViewState/listViewNoData.dart';
+part 'backBar/backBar.dart';

@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-10 14:22:45
+ * @LastEditTime: 2023-04-11 15:41:20
  * @FilePath: \soulmate\lib\views\base\welcome\view.dart
  */
 /// Author: kele
@@ -52,10 +52,10 @@ class WelcomePage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 32.h),
+                  margin: EdgeInsets.symmetric(vertical: 32.w),
                   padding: EdgeInsets.symmetric(horizontal: 32.w),
                   width: double.infinity,
-                  height: 94.h,
+                  height: 94.w,
                   child: ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
@@ -70,7 +70,7 @@ class WelcomePage extends StatelessWidget {
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 32.w),
-                  height: 94.h,
+                  height: 94.w,
                   width: double.infinity,
                   child: ElevatedButton(
                       onPressed: () {

@@ -31,7 +31,7 @@ class LoginLogic extends GetxController {
     // TODO: implement onReady
     super.onInit();
 
-    account = '';
+    account = '111';
     password = '';
   }
 

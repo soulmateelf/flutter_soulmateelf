@@ -1,12 +1,13 @@
 /*
  * @Date: 2023-04-10 18:59:42
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-10 19:46:42
+ * @LastEditTime: 2023-04-11 16:23:01
  * @FilePath: \soulmate\lib\views\base\verification\view.dart
  */
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -16,27 +17,7 @@ class VerificationPage extends StatelessWidget {
     /// ScreenUtil初始化
     ScreenUtil.init(Get.context!, designSize: const Size(750, 1624));
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leading: Row(children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back_ios_new),
-            onPressed: () {
-              Get.back();
-            },
-            color: Color.fromRGBO(153, 153, 153, 1),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 12.w),
-            child: const Text(
-              "Back",
-              style: TextStyle(color: Color.fromRGBO(153, 153, 153, 1)),
-            ),
-          )
-        ]),
-        backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
-        leadingWidth: 1.sw,
-      ),
+      appBar: backBar(),
       body: Container(
         padding: EdgeInsets.all(20.w),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -68,13 +49,9 @@ class VerificationPage extends StatelessWidget {
                   inactiveColor: Color.fromRGBO(230, 230, 230, 1),
                 ),
                 onCompleted: (value) {
-                  print(value);
-                  Get.toNamed('/setPassword');
+                  Get.toNamed('/setPassword', arguments: Get.arguments);
                 },
-               
-                onChanged: (value) {
-                  print(value);
-                }),
+                onChanged: (value) {}),
           ),
           Padding(
             padding: EdgeInsets.only(top: 60.w),

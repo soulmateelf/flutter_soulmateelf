@@ -43,5 +43,7 @@ class SignUpFormBloc extends FormBloc<String, String> {
   }
 
   @override
-  FutureOr<void> onSubmitting() {}
+  FutureOr<void> onSubmitting() {
+    
+  }
 }

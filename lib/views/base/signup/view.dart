@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-10 19:04:17
+ * @LastEditTime: 2023-04-11 16:35:47
  * @FilePath: \soulmate\lib\views\base\signup\view.dart
  */
 /// Author: kele
@@ -17,6 +17,7 @@ import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/views/base/login/bloc.dart';
 import 'package:flutter_soulmateelf/views/base/signup/bloc.dart';
+import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,27 +32,7 @@ class SignUpPage extends StatelessWidget {
         // 表单bloc
         final signupFormBloc = context.read<SignUpFormBloc>();
         return Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            leading: Row(children: [
-              IconButton(
-                icon: Icon(Icons.arrow_back_ios_new),
-                onPressed: () {
-                  Get.back();
-                },
-                color: Color.fromRGBO(153, 153, 153, 1),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 12.w),
-                child: const Text(
-                  "Back",
-                  style: TextStyle(color: Color.fromRGBO(153, 153, 153, 1)),
-                ),
-              )
-            ]),
-            backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
-            leadingWidth: 1.sw,
-          ),
+          appBar: backBar(),
           body: FormBlocListener<SignUpFormBloc, String, String>(
               child: SingleChildScrollView(
             child: ConstrainedBox(
@@ -80,7 +61,7 @@ class SignUpPage extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(top: 68.h),
+                              padding: EdgeInsets.only(top: 68.w),
                               child: TextFieldBlocBuilder(
                                 textFieldBloc: signupFormBloc.email,
                                 keyboardType: TextInputType.emailAddress,
@@ -102,7 +83,7 @@ class SignUpPage extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(top: 20.h),
+                              padding: EdgeInsets.only(top: 20.w),
                               child: TextFieldBlocBuilder(
                                 textFieldBloc: signupFormBloc.password,
                                 suffixButton: SuffixButton.obscureText,
@@ -121,9 +102,9 @@ class SignUpPage extends StatelessWidget {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(top: 20.h),
+                              margin: EdgeInsets.only(top: 20.w),
                               width: double.infinity,
-                              height: 94.h,
+                              height: 94.w,
                               child: ElevatedButton(
                                   style: ButtonStyle(
                                       backgroundColor:
@@ -131,14 +112,18 @@ class SignUpPage extends StatelessWidget {
                                               const Color.fromRGBO(
                                                   78, 162, 79, 1))),
                                   onPressed: () {
-                                    Get.toNamed('/verification');
+                                    Get.toNamed('/verification', arguments: {
+                                      "setPasswordPageTitle":
+                                          "Create your password",
+                                      "continuePageTitle":
+                                          "Your’ve successfully Created your password."
+                                    });
                                   },
                                   child: Text(
                                     "Next",
                                     style: TextStyle(fontSize: 36.sp),
                                   )),
                             ),
-
                           ],
                         ),
                       ],
