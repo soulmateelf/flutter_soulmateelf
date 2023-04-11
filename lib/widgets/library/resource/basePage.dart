@@ -11,6 +11,9 @@ Widget basePage(
   Widget? leading,
   double? leadingWidth,
 
+  // 是否显示appBar
+  bool showAppBar = true,
+
   /// 自定义左侧按钮
   List<Widget>? actions,
 
@@ -35,28 +38,30 @@ Widget basePage(
   return Scaffold(
       backgroundColor: bodyColor,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      appBar: appBar ??
-          AppBar(
-              leadingWidth: leadingWidth,
-              elevation: elevation,
-              shadowColor: const Color.fromRGBO(0, 0, 0, 0.12),
-              centerTitle: true,
-              title: Text(
-                title,
-                style: Get.theme.appBarTheme.titleTextStyle,
-              ),
-              leading: leading ??
-                  IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: Icon(
-                        Icons.arrow_back_ios_new,
-                        size: 24.w,
-                      )),
-              actions: actions ?? [],
-              bottom: bottom,
-              backgroundColor:
-                  backgroundColor ?? Get.theme.appBarTheme.backgroundColor),
+      appBar: !showAppBar
+          ? null
+          : appBar ??
+              AppBar(
+                  leadingWidth: leadingWidth,
+                  elevation: elevation,
+                  shadowColor: const Color.fromRGBO(0, 0, 0, 0.12),
+                  centerTitle: true,
+                  title: Text(
+                    title,
+                    style: Get.theme.appBarTheme.titleTextStyle,
+                  ),
+                  leading: leading ??
+                      IconButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios_new,
+                            size: 24.w,
+                          )),
+                  actions: actions ?? [],
+                  bottom: bottom,
+                  backgroundColor:
+                      backgroundColor ?? Get.theme.appBarTheme.backgroundColor),
       body: SafeArea(child: child));
 }

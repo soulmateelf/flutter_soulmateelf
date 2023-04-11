@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 14:49:30
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-11 15:58:34
+ * @LastEditTime: 2023-04-11 17:08:28
  * @FilePath: \soulmate\lib\views\base\login\bloc.dart
  */
 import "dart:async";
@@ -36,5 +36,6 @@ class LoginFormBloc extends FormBloc<String, String> {
 
   @override
   FutureOr<void> onSubmitting() {
+    Get.toNamed('/home');
   }
 }

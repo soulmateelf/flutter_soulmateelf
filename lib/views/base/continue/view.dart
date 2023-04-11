@@ -4,6 +4,8 @@ import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
 class ContinuePage extends StatelessWidget {
+  const ContinuePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -34,7 +36,9 @@ class ContinuePage extends StatelessWidget {
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
                           const Color.fromRGBO(78, 162, 79, 1))),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.toNamed('/home');
+                  },
                   child: Text(
                     "Continue to ELF",
                     style: TextStyle(fontSize: 36.sp),
