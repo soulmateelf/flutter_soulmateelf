@@ -48,7 +48,7 @@ Widget basePage(
                   centerTitle: true,
                   title: Text(
                     title,
-                    style: Get.theme.appBarTheme.titleTextStyle,
+                    style: const TextStyle(color: Colors.black),
                   ),
                   leading: leading ??
                       IconButton(
@@ -57,11 +57,12 @@ Widget basePage(
                           },
                           icon: Icon(
                             Icons.arrow_back_ios_new,
-                            size: 24.w,
+                            size: 44.w,
+                            color: const Color.fromRGBO(151, 151, 151, 1),
                           )),
                   actions: actions ?? [],
+                  actionsIconTheme: const IconThemeData(color: Colors.black),
                   bottom: bottom,
-                  backgroundColor:
-                      backgroundColor ?? Get.theme.appBarTheme.backgroundColor),
+                  backgroundColor: backgroundColor ?? Colors.white),
       body: SafeArea(child: child));
 }

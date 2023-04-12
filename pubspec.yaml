@@ -38,7 +38,7 @@ dependencies:
   photo_view: ^0.14.0
   # 获取app信息
   # https://github.com/flutter/plugins
-  package_info_plus: ^3.0.3
+  package_info_plus: ^3.1.0
   # 网络状态
   # https://github.com/flutter/plugins
   connectivity_plus: ^3.0.3
