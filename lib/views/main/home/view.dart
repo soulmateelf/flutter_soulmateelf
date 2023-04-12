@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-12 14:58:26
+ * @LastEditTime: 2023-04-12 15:55:34
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////

@@ -28,7 +28,7 @@ class ChatPage extends StatelessWidget {
               ),
           ),
           actions:[
-            IconButton(icon:const Icon(Icons.settings_outlined), onPressed: () {  },),
+            IconButton(icon:const Icon(Icons.settings_outlined), onPressed: () { Get.toNamed('/settings'); },),
           ],
           child:Container(
             width: double.infinity,
