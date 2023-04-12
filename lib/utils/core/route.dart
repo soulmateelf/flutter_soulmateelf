@@ -6,6 +6,7 @@ import 'package:flutter_soulmateelf/views/base/welcome/view.dart';
 import 'package:flutter_soulmateelf/views/base/signup/view.dart';
 import 'package:flutter_soulmateelf/views/main/account/view.dart';
 import 'package:flutter_soulmateelf/views/main/settings/view.dart';
+import 'package:flutter_soulmateelf/views/main/updatePassword/view.dart';
 import 'package:get/get.dart';
 /// base
 import 'package:flutter_soulmateelf/views/base/splash/view.dart';
@@ -34,6 +35,7 @@ class AppRoute {
     GetPage(name: '/chat', page: () => ChatPage()),/// 聊天
     GetPage(name: '/settings', page: ()=>SettingsPage()), /// 设置
     GetPage(name: '/account', page:()=>AccountPage()), /// 账户设置
+    GetPage(name: '/updatePassword', page:()=>UpdatePasswordPage()),/// 更新密码
     /// text
     GetPage(name: '/textToSpeech', page: () => TextToSpeechPage()),/// 聊天
   ];
