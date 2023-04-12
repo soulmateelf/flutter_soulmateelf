@@ -81,6 +81,9 @@ dependencies:
   #验证码输入
   # https://github.com/adar2378/pin_code_fields
   pin_code_fields: ^7.4.0
+  #文字转语音
+  # https://github.com/dlutton/flutter_tts
+  flutter_tts: ^3.6.3
 
 dev_dependencies:
   flutter_test:

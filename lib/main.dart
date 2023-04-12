@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
                 primarySwatch: Colors.green,
               ),
               /// 跟随系统语言
-              locale: Get.deviceLocale,
+              locale: const Locale("en", "US"),
               /// 配置错误的情况下使用的语言列表
               fallbackLocale: const Locale("en", "US"),
               initialRoute: '/splash',

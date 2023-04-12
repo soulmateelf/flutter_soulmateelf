@@ -12,7 +12,8 @@ import 'package:flutter_soulmateelf/views/base/webview/view.dart';
 /// main
 import 'package:flutter_soulmateelf/views/main/home/view.dart';
 import 'package:flutter_soulmateelf/views/main/chat/view.dart';
-
+/// text
+import 'package:flutter_soulmateelf/views/test/speech/view.dart';
 
 class AppRoute {
   static final List<GetPage> getPages = [
@@ -29,5 +30,7 @@ class AppRoute {
     /// main
     GetPage(name: '/home', page: () => HomePage()),/// 首页
     GetPage(name: '/chat', page: () => ChatPage()),/// 聊天
+    /// text
+    GetPage(name: '/textToSpeech', page: () => TextToSpeechPage()),/// 聊天
   ];
 }

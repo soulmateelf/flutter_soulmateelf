@@ -192,7 +192,9 @@ class HomePage extends StatelessWidget {
                               'Chat now',
                               style: TextStyle(fontSize: 36.sp),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.toNamed('/textToSpeech');
+                            },
                           ),
                         ),
                       )
