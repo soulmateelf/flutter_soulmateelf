@@ -93,8 +93,8 @@ class HomePage extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          const Icon(Icons.edit),
-                                          const Icon(CupertinoIcons.location)
+                                          const Icon(Icons.flash_on_outlined,),
+                                          const Icon(CupertinoIcons.location,color: Colors.yellow,)
                                         ],
                                       ),
                                     ),
@@ -266,6 +266,36 @@ class HomePage extends StatelessWidget {
                                 height: 220.w,
                                 color: Colors.black,
                               ),
+                              Container(
+                                width: 220.w,
+                                height: 220.w,
+                                color: Colors.red,
+                              ),
+                              Container(
+                                width: 220.w,
+                                height: 220.w,
+                                color: Colors.green,
+                              ),
+                              Container(
+                                width: 220.w,
+                                height: 220.w,
+                                color: Colors.black,
+                              ),
+                              Container(
+                                width: 220.w,
+                                height: 220.w,
+                                color: Colors.red,
+                              ),
+                              Container(
+                                width: 220.w,
+                                height: 220.w,
+                                color: Colors.green,
+                              ),
+                              Container(
+                                width: 220.w,
+                                height: 220.w,
+                                color: Colors.black,
+                              ),
                             ],
                           ),
                         )),
@@ -282,7 +312,7 @@ class HomePage extends StatelessWidget {
                               style: TextStyle(fontSize: 36.sp),
                             ),
                             onPressed: () {
-                              Get.toNamed('/textToSpeech');
+                              Get.toNamed('/chat');
                             },
                           ),
                         ),
