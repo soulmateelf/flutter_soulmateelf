@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-12 10:58:43
+ * @LastEditTime: 2023-04-12 14:58:26
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -11,6 +11,9 @@
 ///LastEditTime: 2022-02-09 15:40:33
 ///Description:
 ////////////////////////
+import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
@@ -74,22 +77,24 @@ class HomePage extends StatelessWidget {
                                           Icons.star,
                                           color: Colors.yellow,
                                         ),
-                                        Icon(Icons.star_border_outlined),
-                                        Icon(Icons.star_border_outlined)
                                       ],
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 24.w),
                                       child: Row(
                                         children: [
-                                          Text(
-                                            "Soulmate ELF",
-                                            style: TextStyle(
-                                              fontSize: 36.sp,
+                                          Expanded(
+                                            child: Text(
+                                              "SoulmateSoulmateSoulmateSoulmate ELF",
+                                              overflow: TextOverflow.ellipsis,
+                                              softWrap: false,
+                                              style: TextStyle(
+                                                fontSize: 36.sp,
+                                              ),
                                             ),
                                           ),
                                           const Icon(Icons.edit),
-                                          const Icon(Icons.share)
+                                          const Icon(CupertinoIcons.location)
                                         ],
                                       ),
                                     ),
@@ -101,11 +106,12 @@ class HomePage extends StatelessWidget {
                                       padding: EdgeInsets.only(top: 24.w),
                                       child: const Text("Gender：unknown"),
                                     ),
-                                    Padding(
+                                    Expanded(
+                                        child: Padding(
                                       padding: EdgeInsets.only(top: 24.w),
                                       child: const Text(
                                           "Basic communication skills, poor memory, good to use occasionally"),
-                                    ),
+                                    )),
                                   ],
                                 ),
                               ))
@@ -171,23 +177,106 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                      child: Stack(
-                    children: [
-                      Container(
-                        child: Text("123123"),
-                        width: double.infinity,
-                        color: Colors.black,
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
+                      child: Container(
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            child: SingleChildScrollView(
+                          padding: EdgeInsets.all(20.w),
+                          child: Wrap(
+                            runSpacing: 24.w,
+                            spacing: 24.w,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  print(logic.selectedRole);
+                                },
+                                child: Container(
+                                  width: 220.w,
+                                  height: 220.w,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                    color: Colors.green,
+                                    width: 8.w,
+                                  )),
+                                  child: Stack(children: [
+                                    Image.asset(
+                                        "assets/images/icons/avatar.png"),
+                                    Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.icecream),
+                                          Text(
+                                            "20",
+                                            style: TextStyle(
+                                                color: Colors.green,
+                                                fontSize: 22.sp),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Container(
+                                        color: Color.fromRGBO(0, 0, 0, 0.7),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            Icon(
+                                              Icons.star,
+                                              color: Colors.yellow,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ]),
+                                ),
+                              ),
+                              Container(
+                                width: 220.w,
+                                height: 220.w,
+                                color: Color.fromARGB(255, 111, 8, 207),
+                                child: InkWell(
+                                  onTap: () {
+                                    print("123");
+                                  },
+                                  child: Text("white"),
+                                ),
+                              ),
+                              Container(
+                                width: 220.w,
+                                height: 220.w,
+                                color: Colors.red,
+                              ),
+                              Container(
+                                width: 220.w,
+                                height: 220.w,
+                                color: Colors.green,
+                              ),
+                              Container(
+                                width: 220.w,
+                                height: 220.w,
+                                color: Colors.black,
+                              ),
+                            ],
+                          ),
+                        )),
+                        Container(
                           height: 84.w,
+                          width: double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                             
-                            ),
+                                shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.zero))),
                             child: Text(
                               'Chat now',
                               style: TextStyle(fontSize: 36.sp),
@@ -197,8 +286,8 @@ class HomePage extends StatelessWidget {
                             },
                           ),
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   ))
                 ],
               )));
