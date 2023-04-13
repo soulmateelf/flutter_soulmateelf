@@ -18,6 +18,7 @@ class UpdatePasswordPage extends StatelessWidget {
             borderSide: BorderSide(width: 1.w)),
         label: Text(label),
         helperText: "",
+        
       );
     }
 
@@ -37,6 +38,7 @@ class UpdatePasswordPage extends StatelessWidget {
                         textFieldBloc: bloc.currentPassword,
                         decoration:
                             getInputDecoration(label: "Current password"),
+                        
                       ),
                       TextFieldBlocBuilder(
                         textFieldBloc: bloc.newPassword,

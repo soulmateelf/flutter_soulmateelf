@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-12 15:55:34
+ * @LastEditTime: 2023-04-13 09:39:18
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -192,6 +192,7 @@ class HomePage extends StatelessWidget {
                               InkWell(
                                 onTap: () {
                                   print(logic.selectedRole);
+                                  Get.toNamed('/settings');
                                 },
                                 child: Container(
                                   width: 220.w,
