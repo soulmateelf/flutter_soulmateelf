@@ -313,7 +313,8 @@ class HomePage extends StatelessWidget {
                               style: TextStyle(fontSize: 36.sp),
                             ),
                             onPressed: () {
-                              Get.toNamed('/chat');
+                              // Get.toNamed('/chat');
+                              Get.toNamed('/textToSpeech');
                             },
                           ),
                         ),
