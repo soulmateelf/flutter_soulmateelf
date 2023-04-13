@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-12 15:49:59
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-13 10:50:28
+ * @LastEditTime: 2023-04-13 14:22:58
  * @FilePath: \soulmate\lib\views\main\settings\view.dart
  */
 
@@ -113,7 +113,9 @@ class SettingsPage extends StatelessWidget {
                 Get.toNamed("/discount");
               }),
           SettingsCard(
-              icon: Icon(Icons.money), text: "Purchase history", onTab: () {}),
+              icon: Icon(Icons.money), text: "Purchase history", onTab: () {
+                Get.toNamed('/purchaseHistory');
+              }),
           SettingsCard(
               icon: Icon(Icons.money), text: "Send feedback", onTab: () {}),
           SettingsCard(
