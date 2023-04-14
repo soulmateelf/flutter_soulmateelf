@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-13 14:22:35
+ * @LastEditTime: 2023-04-13 14:41:06
  * @FilePath: \soulmate\lib\utils\core\route.dart
  */
 import 'package:flutter_soulmateelf/views/base/continue/view.dart';
@@ -14,6 +14,7 @@ import 'package:flutter_soulmateelf/views/main/account/view.dart';
 import 'package:flutter_soulmateelf/views/main/deactivate/view.dart';
 import 'package:flutter_soulmateelf/views/main/discount/view.dart';
 import 'package:flutter_soulmateelf/views/main/purchaseHistory/view.dart';
+import 'package:flutter_soulmateelf/views/main/sendFeedback/view.dart';
 import 'package:flutter_soulmateelf/views/main/settings/view.dart';
 import 'package:flutter_soulmateelf/views/main/updatePassword/view.dart';
 import 'package:get/get.dart';
@@ -48,6 +49,7 @@ class AppRoute {
     GetPage(name: '/deactivate', page: ()=>DeactivatePage()), ///注销账户
     GetPage(name: '/discount', page: ()=>DiscountPage()),/// 优惠券
     GetPage(name: '/purchaseHistory', page:()=>PurchaseHistoryPage()), /// 购买历史
+    GetPage(name: '/sendFeedback', page:()=>SendFeedbackPage()), /// 发送反馈
     /// text
     GetPage(name: '/textToSpeech', page: () => TextToSpeechPage()),/// 聊天
   ];

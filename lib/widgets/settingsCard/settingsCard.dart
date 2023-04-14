@@ -1,3 +1,9 @@
+/*
+ * @Date: 2023-04-12 17:35:24
+ * @LastEditors: Wws wuwensheng@donganyun.com
+ * @LastEditTime: 2023-04-13 19:25:41
+ * @FilePath: \soulmate\lib\widgets\settingsCard\settingsCard.dart
+ */
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -37,7 +43,7 @@ class SettingsCard extends StatelessWidget {
                 ),
                 Icon(
                   Icons.arrow_forward_ios,
-                  size: 44.sp,
+                  size: 28.sp,
                 ),
               ],
             ),
