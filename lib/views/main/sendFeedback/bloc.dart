@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-13 14:42:11
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-13 14:50:48
+ * @LastEditTime: 2023-04-14 17:22:24
  * @FilePath: \soulmate\lib\views\main\sendFeedback\bloc.dart
  */
 import 'dart:async';
@@ -16,7 +16,8 @@ class SendFeedbackFormBloc extends FormBloc<String, String> {
   final files = MultiSelectFieldBloc();
 
   /// Email
-  final email = TextFieldBloc();
+  final email = TextFieldBloc(
+      validators: [FieldBlocValidators.required, FieldBlocValidators.email]);
 
   /// 允许电子邮件发送更多信息
   final allowConcact = BooleanFieldBloc();
@@ -25,9 +26,18 @@ class SendFeedbackFormBloc extends FormBloc<String, String> {
     addFieldBlocs(fieldBlocs: [
       feedback,
       files,
-      email,
       allowConcact,
     ]);
+
+    allowConcact.onValueChanges(
+      onData: (previous, current) async* {
+        if (current.value) {
+          addFieldBlocs(fieldBlocs: [email]);
+        } else {
+          removeFieldBlocs(fieldBlocs: [email]);
+        }
+      },
+    );
   }
 
   @override

@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-12 18:45:02
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-13 09:55:37
+ * @LastEditTime: 2023-04-14 17:54:49
  * @FilePath: \soulmate\lib\views\main\account\view.dart
  */
 import 'package:flutter/material.dart';
@@ -36,7 +36,9 @@ class AccountPage extends StatelessWidget {
                   child: Ink(
                     color: Colors.white,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Get.toNamed('/updateNickname');
+                      },
                       child: Container(
                         padding: EdgeInsets.all(20.w),
                         child: Row(

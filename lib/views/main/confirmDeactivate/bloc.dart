@@ -1,14 +1,14 @@
 /*
  * @Date: 2023-04-13 09:44:10
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-13 09:50:31
- * @FilePath: \soulmate\lib\views\main\deactivate\bloc.dart
+ * @LastEditTime: 2023-04-14 17:46:13
+ * @FilePath: \soulmate\lib\views\main\confirmDeactivate\bloc.dart
  */
 import 'dart:async';
 
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 
-class DeactivateFormBloc extends FormBloc<String, String> {
+class ConfirmDeactivateFormBloc extends FormBloc<String, String> {
   final password = TextFieldBloc(
     validators: [
       FieldBlocValidators.passwordMin6Chars,
