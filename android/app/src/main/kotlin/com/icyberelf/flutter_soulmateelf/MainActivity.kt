@@ -1,4 +1,4 @@
-package com.icyberelf.flutter_soulmateelf
+package com.donganyun.elf
 
 import io.flutter.embedding.android.FlutterActivity
 

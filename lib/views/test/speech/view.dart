@@ -25,18 +25,19 @@ class TextToSpeechPage extends StatelessWidget {
             child: const Text('speech'),
             onPressed: () async {
               print(Get.locale);
-              var aa = await flutterTts.getEngines;
-              print(aa);
+              // var aa = await flutterTts.getEngines;
+              // print(aa);
               // flutterTts.setVolume(1);
               // // tts.setRate(1),
               // flutterTts.setLanguage('en_US');
               // // tts.setPitch(1),
               // APPPlugin.logger.i('start1');
               //
-              // voices = await flutterTts.getVoices;
-              // var aa = await flutterTts.getLanguages;
-              // print(aa);
-              // // await flutterTts.speak("what's your name"),
+              voices = await flutterTts.getVoices;
+              var aa = await flutterTts.getLanguages;
+              print(voices);
+              flutterTts.setVoice({'name': 'Grandpa', 'locale': 'en-GB'});
+              await flutterTts.speak("hello baby");
               // var result = await flutterTts.speak("Hello World");
               // APPPlugin.logger.i(result);
             })

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.icyberelf.flutter_soulmateelf">
+    package="com.donganyun.elf">
    <application
         android:label="flutter_soulmateelf"
         android:name="${applicationName}"
