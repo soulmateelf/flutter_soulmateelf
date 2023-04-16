@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-12 15:49:59
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-13 15:05:23
+ * @LastEditTime: 2023-04-16 11:09:17
  * @FilePath: \soulmate\lib\views\main\settings\view.dart
  */
 
@@ -121,9 +121,13 @@ class SettingsPage extends StatelessWidget {
                 Get.toNamed('/sendFeedback');
               }),
           SettingsCard(
-              icon: Icon(Icons.money), text: "Privacy Policy", onTab: () {}),
+              icon: Icon(Icons.money), text: "Privacy Policy", onTab: () {
+                Get.toNamed("/privacyPolicy");
+              }),
           SettingsCard(
-              icon: Icon(Icons.money), text: "Terms of Service", onTab: () {}),
+              icon: Icon(Icons.money), text: "Terms of Service", onTab: () {
+                Get.toNamed('/termsOfService');
+              }),
         ],
       )),
     );

@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-14 17:53:00
+ * @LastEditTime: 2023-04-16 11:08:59
  * @FilePath: \soulmate\lib\utils\core\route.dart
  */
 import 'package:flutter_soulmateelf/views/base/continue/view.dart';
@@ -14,9 +14,11 @@ import 'package:flutter_soulmateelf/views/main/account/view.dart';
 import 'package:flutter_soulmateelf/views/main/confirmDeactivate/view.dart';
 import 'package:flutter_soulmateelf/views/main/deactivate/view.dart';
 import 'package:flutter_soulmateelf/views/main/discount/view.dart';
+import 'package:flutter_soulmateelf/views/main/privacyPolicy/view.dart';
 import 'package:flutter_soulmateelf/views/main/purchaseHistory/view.dart';
 import 'package:flutter_soulmateelf/views/main/sendFeedback/view.dart';
 import 'package:flutter_soulmateelf/views/main/settings/view.dart';
+import 'package:flutter_soulmateelf/views/main/termsOfService/view.dart';
 import 'package:flutter_soulmateelf/views/main/updateNickname/view.dart';
 import 'package:flutter_soulmateelf/views/main/updatePassword/view.dart';
 import 'package:get/get.dart';
@@ -54,6 +56,8 @@ class AppRoute {
     GetPage(name: '/purchaseHistory', page:()=>PurchaseHistoryPage()), /// 购买历史
     GetPage(name: '/sendFeedback', page:()=>SendFeedbackPage()), /// 发送反馈
     GetPage(name: '/updateNickname', page: ()=>UpdateNicknamePage()), /// 修改昵称
+    GetPage(name: '/privacyPolicy', page: ()=>PrivacyPolicyPage()), /// 隐私政策
+    GetPage(name: '/termsOfService', page: ()=>TermsOfServicePage()), /// 服务条款
     /// text
     GetPage(name: '/textToSpeech', page: () => TextToSpeechPage()),/// 聊天
   ];
