@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-13 09:39:18
+ * @LastEditTime: 2023-04-16 13:37:01
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -248,6 +248,7 @@ class HomePage extends StatelessWidget {
                                 child: InkWell(
                                   onTap: () {
                                     print("123");
+                                    Get.toNamed('/recharge');
                                   },
                                   child: Text("white"),
                                 ),
