@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-13 14:22:35
+ * @LastEditTime: 2023-04-16 13:36:28
  * @FilePath: \soulmate\lib\utils\core\route.dart
  */
 import 'package:flutter_soulmateelf/views/base/continue/view.dart';
@@ -11,10 +11,16 @@ import 'package:flutter_soulmateelf/views/base/verification/view.dart';
 import 'package:flutter_soulmateelf/views/base/welcome/view.dart';
 import 'package:flutter_soulmateelf/views/base/signup/view.dart';
 import 'package:flutter_soulmateelf/views/main/account/view.dart';
+import 'package:flutter_soulmateelf/views/main/confirmDeactivate/view.dart';
 import 'package:flutter_soulmateelf/views/main/deactivate/view.dart';
 import 'package:flutter_soulmateelf/views/main/discount/view.dart';
+import 'package:flutter_soulmateelf/views/main/privacyPolicy/view.dart';
 import 'package:flutter_soulmateelf/views/main/purchaseHistory/view.dart';
+import 'package:flutter_soulmateelf/views/main/recharge/view.dart';
+import 'package:flutter_soulmateelf/views/main/sendFeedback/view.dart';
 import 'package:flutter_soulmateelf/views/main/settings/view.dart';
+import 'package:flutter_soulmateelf/views/main/termsOfService/view.dart';
+import 'package:flutter_soulmateelf/views/main/updateNickname/view.dart';
 import 'package:flutter_soulmateelf/views/main/updatePassword/view.dart';
 import 'package:get/get.dart';
 /// base
@@ -45,9 +51,15 @@ class AppRoute {
     GetPage(name: '/settings', page: ()=>SettingsPage()), /// 设置
     GetPage(name: '/account', page:()=>AccountPage()), /// 账户设置
     GetPage(name: '/updatePassword', page:()=>UpdatePasswordPage()),/// 更新密码
-    GetPage(name: '/deactivate', page: ()=>DeactivatePage()), ///注销账户
+    GetPage(name: '/deactivate', page:()=>DeactivatePage()), /// 注销页面
+    GetPage(name: '/confirmDeactivate', page: ()=>ConfirmDeactivatePage()), ///确定注销账户
     GetPage(name: '/discount', page: ()=>DiscountPage()),/// 优惠券
     GetPage(name: '/purchaseHistory', page:()=>PurchaseHistoryPage()), /// 购买历史
+    GetPage(name: '/sendFeedback', page:()=>SendFeedbackPage()), /// 发送反馈
+    GetPage(name: '/updateNickname', page: ()=>UpdateNicknamePage()), /// 修改昵称
+    GetPage(name: '/privacyPolicy', page: ()=>PrivacyPolicyPage()), /// 隐私政策
+    GetPage(name: '/termsOfService', page: ()=>TermsOfServicePage()), /// 服务条款
+    GetPage(name: '/recharge', page:()=>RechargePage()), /// 充值
     /// text
     GetPage(name: '/textToSpeech', page: () => TextToSpeechPage()),/// 聊天
   ];

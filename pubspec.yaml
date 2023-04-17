@@ -1,13 +1,13 @@
 name: flutter_soulmateelf
 description: soulmateelf
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.19.5 <3.0.0'
+  sdk: ">=2.19.5 <3.0.0"
 
 # versions available, run `flutter pub outdated`.
 dependencies:
@@ -90,6 +90,9 @@ dependencies:
   #facebook登录
   #https://github.com/Innim/flutter_login_facebook
   flutter_login_facebook: ^1.8.0
+  # 图片上传
+  # https://pub.flutter-io.cn/packages/image_picker
+  image_picker: ^0.8.7
 
 dev_dependencies:
   flutter_test:
@@ -97,10 +100,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
-
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -109,4 +110,3 @@ flutter:
   assets:
     - assets/images/backGround/
     - assets/images/icons/
-
