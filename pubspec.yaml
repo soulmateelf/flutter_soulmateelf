@@ -84,6 +84,12 @@ dependencies:
   #文字转语音
   # https://github.com/dlutton/flutter_tts
   flutter_tts: ^3.6.3
+  #google登录
+  #https://github.com/flutter/packages/tree/main/packages/google_sign_in/google_sign_in
+  google_sign_in: ^6.1.0
+  #facebook登录
+  #https://github.com/Innim/flutter_login_facebook
+  flutter_login_facebook: ^1.8.0
 
 dev_dependencies:
   flutter_test:

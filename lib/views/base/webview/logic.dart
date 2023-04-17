@@ -26,19 +26,9 @@ class WebviewLogic extends GetxController {
     controller = WebViewController.fromPlatformCreationParams(
         const PlatformWebViewControllerCreationParams());
 
-    /// 判断参数
-    int type = Get.arguments;
-    if (type == 0) {
-      title = '用户协议';
-      url = ProjectConfig.getInstance()?.baseConfig['userAgreementUrl'] +
-          '?random=' +
-          DateTime.now().microsecond.toString();
-    } else {
-      title = '隐私条款';
-      url = ProjectConfig.getInstance()?.baseConfig['privacyClauseUrl'] +
-          '?random=' +
-          DateTime.now().microsecond.toString();
-    }
+    /// 处理参数
+    title = Get.arguments['title'];
+    url = Get.arguments['url'];
     controller
       ?..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(Uri.parse(url));

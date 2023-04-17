@@ -14,6 +14,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soulmateelf/config.dart';
 import 'package:flutter_soulmateelf/views/base/login/bloc.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
@@ -201,17 +202,26 @@ class LoginPage extends StatelessWidget {
                               child: Align(
                                   alignment: Alignment.center,
                                   child: Text.rich(TextSpan(children: [
+                                    const TextSpan(
+                                        text: "By signing up, you agree to our "),
                                     TextSpan(
-                                        text:
-                                            "By signing up, you agree to our "),
-                                    TextSpan(
-                                      text: "Terms, Privacy Policy.",
-                                      style: TextStyle(
+                                      text: "Terms, ",
+                                      style: const TextStyle(
                                           color:
                                               Color.fromRGBO(78, 162, 79, 1)),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          Get.toNamed('/webview');
+                                          Get.toNamed('/webview',arguments: {'title':'Terms of Service','url':ProjectConfig.getInstance()?.baseConfig['TermsofServiceUrl']});
+                                        },
+                                    ),
+                                    TextSpan(
+                                      text: "Privacy Policy.",
+                                      style: const TextStyle(
+                                          color:
+                                          Color.fromRGBO(78, 162, 79, 1)),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Get.toNamed('/webview',arguments: {'title':'Privacy Policy','url':ProjectConfig.getInstance()?.baseConfig['PrivacyPolicyUrl']});
                                         },
                                     )
                                   ]))),

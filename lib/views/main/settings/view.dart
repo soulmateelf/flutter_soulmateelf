@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soulmateelf/config.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:flutter_soulmateelf/widgets/settingsCard/settingsCard.dart';
 import 'package:get/get.dart';
@@ -119,9 +120,13 @@ class SettingsPage extends StatelessWidget {
           SettingsCard(
               icon: Icon(Icons.money), text: "Send feedback", onTab: () {}),
           SettingsCard(
-              icon: Icon(Icons.money), text: "Privacy Policy", onTab: () {}),
+              icon: Icon(Icons.money), text: "Privacy Policy", onTab: () {
+              Get.toNamed('/webview',arguments: {'title':'Privacy Policy','url':ProjectConfig.getInstance()?.baseConfig['PrivacyPolicyUrl']});
+          }),
           SettingsCard(
-              icon: Icon(Icons.money), text: "Terms of Service", onTab: () {}),
+              icon: Icon(Icons.money), text: "Terms of Service", onTab: () {
+              Get.toNamed('/webview',arguments: {'title':'Terms of Service','url':ProjectConfig.getInstance()?.baseConfig['TermsofServiceUrl']});
+          }),
         ],
       )),
     );

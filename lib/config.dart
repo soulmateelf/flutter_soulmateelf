@@ -11,11 +11,9 @@ class ProjectConfig {
   bool isDebug = false;
 
   Map baseConfig = {
-    'userAgreementUrl':
-        'http://pm.timcloud.club/html/userAgreement.html', //用户协议
-    'privacyClauseUrl':
-        'http://pm.timcloud.club/html/privacyClause.html', //隐私条款
-    'packageName': 'cn.rayeye.flucrpm', // 包名
+    'PrivacyPolicyUrl': 'https://icyberelf.com/PrivacyPolicy.html', //隐私协议
+    'TermsofServiceUrl': 'https://icyberelf.com/TermsofService.html', //服务条款
+    'packageName': 'com.donganyun.elf', // 包名
   };
 
   Map debugConfig = {
