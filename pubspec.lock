@@ -307,13 +307,12 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.8.0"
-=======
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
       name: flutter_plugin_android_lifecycle
       sha256: c224ac897bed083dabf11f238dd11a239809b446740be0c2044608c50029ffdf
-      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.9"
   flutter_screenutil:
@@ -434,24 +433,24 @@ packages:
     dependency: "direct main"
     description:
       name: image_picker
-      sha256: "8b0efbf350ba4f2be1531d629396a994983d0c02f4a82a128aed84d954b90cfa"
-      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+      sha256: f202f5d730eb8219e35e80c4461fb3a779940ad30ce8fde1586df756e3af25e6
+      url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.8.7+2"
+    version: "0.8.7+3"
   image_picker_android:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: dfb5b0f28b8786fcc662b7ed42bfb4b82a6cbbd74da1958384b10d40bdf212a7
-      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+      sha256: "1ea6870350f56af8dab716459bd9d5dc76947e29e07a2ba1d0c172eaaf4f269c"
+      url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.8.6+6"
+    version: "0.8.6+7"
   image_picker_for_web:
     dependency: transitive
     description:
       name: image_picker_for_web
       sha256: "98f50d6b9f294c8ba35e25cc0d13b04bfddd25dbc8d32fa9d566a6572f2c081c"
-      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.12"
   image_picker_ios:
@@ -459,7 +458,7 @@ packages:
     description:
       name: image_picker_ios
       sha256: a1546ff5861fc15812953d4733b520c3d371cec3d2859a001ff04c46c4d81883
-      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.8.7+3"
   image_picker_platform_interface:
@@ -467,7 +466,7 @@ packages:
     description:
       name: image_picker_platform_interface
       sha256: "1991219d9dbc42a99aff77e663af8ca51ced592cd6685c9485e3458302d3d4f8"
-      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.6.3"
   intersperse:
@@ -626,10 +625,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: "019f18c9c10ae370b08dce1f3e3b73bc9f58e7f087bb5e921f06529438ac0ae7"
+      sha256: da97262be945a72270513700a92b39dd2f4a54dad55d061687e2e37a6390366a
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.24"
+    version: "2.0.25"
   path_provider_foundation:
     dependency: transitive
     description:
@@ -826,10 +825,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_android
-      sha256: "8304d8a1f7d21a429f91dee552792249362b68a331ac5c3c1caf370f658873f6"
+      sha256: "7fa90471a6875d26ad78c7e4a675874b2043874586891128dc5899662c97db46"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.2"
   shared_preferences_foundation:
     dependency: transitive
     description:
@@ -1047,10 +1046,10 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter_android
-      sha256: "5906c9aa8c88ed372b2ad3c88c942790b4fb16f73fdd1c0647b4d747d9cf5b3f"
+      sha256: "489c4162cbddea9116a9622f0f881c3cc26317d119322150d7608f2223ffa72d"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.4.5"
+    version: "3.5.2"
   webview_flutter_platform_interface:
     dependency: transitive
     description:
@@ -1063,10 +1062,10 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter_wkwebview
-      sha256: "9a78d963cce191dd6a9df547301fc5c008bf3dae95a323ec281fff1284e0a037"
+      sha256: "2ef3f65fd49061c18e4d837a411308f2850417f2d0a7c11aad2c3857bee12c18"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.2.4"
+    version: "3.3.0"
   win32:
     dependency: transitive
     description:
