@@ -1,12 +1,15 @@
 /*
  * @Date: 2023-04-10 14:49:30
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-10 18:39:42
+ * @LastEditTime: 2023-04-17 20:00:27
  * @FilePath: \soulmate\lib\views\base\signup\bloc.dart
  */
 import "dart:async";
 
 import "package:flutter_form_bloc/flutter_form_bloc.dart";
+import "package:flutter_soulmateelf/utils/core/httputil.dart";
+import "package:flutter_soulmateelf/utils/plugin/plugin.dart";
+import "package:get/get.dart";
 
 class SignUpFormBloc extends FormBloc<String, String> {
   final email = TextFieldBloc(
@@ -17,18 +20,23 @@ class SignUpFormBloc extends FormBloc<String, String> {
     asyncValidatorDebounceTime: const Duration(milliseconds: 300),
   );
 
-  final password = TextFieldBloc(
+  final nickname = TextFieldBloc(
     validators: [
       FieldBlocValidators.required,
-      FieldBlocValidators.passwordMin6Chars
     ],
   );
 
   Future<String?> _checkEmail(String? email) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    if (email!.toLowerCase() != "123@qq.com") {
+    if (email == null) {
+      return null;
+    }
+    final result = await NetUtils.diorequst("/base/emailExists", 'post',
+        params: {"email": email});
+
+    if (result?.data?["code"] == 500) {
       return "Email has already been taken.";
     }
+
     return null;
   }
 
@@ -36,7 +44,7 @@ class SignUpFormBloc extends FormBloc<String, String> {
     addFieldBlocs(
       fieldBlocs: [
         email,
-        password,
+        nickname,
       ],
     );
     email.addAsyncValidators([_checkEmail]);
@@ -44,6 +52,12 @@ class SignUpFormBloc extends FormBloc<String, String> {
 
   @override
   FutureOr<void> onSubmitting() {
-    
+      Get.toNamed('/verification', arguments: {
+          "setPasswordPageTitle": "Create your password",
+          "continuePageTitle": "Your’ve successfully Created your password.",
+          "email": email.value,
+          "nickname": nickname.value,
+          "type": "register",
+        });
   }
 }

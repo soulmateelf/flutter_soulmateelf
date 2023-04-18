@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:flutter_soulmateelf/utils/core/application.dart';
 import 'package:flutter_soulmateelf/config.dart';
@@ -32,9 +33,11 @@ class NetUtils {
       Map<String, dynamic>? localHeaders;
 
       ///有传自定义head或者没传head参数取默认值
-      var head = Application.pres?.getString('headers');
+      var head = Application.pres?.getString('headers') ?? "{}";
       localHeaders = headers ?? jsonDecode(head!);
 
+      localHeaders?["Authorization"] = "Bearer ${Application.token}";
+      APPPlugin.logger.d(localHeaders);
       ///拦截器
       dio.interceptors.add(InterceptorsWrapper(
         onRequest: (RequestOptions options, handler) async {
@@ -78,6 +81,7 @@ class NetUtils {
       return _dealDioError(
           dioError, url, successCallBack, errorCallBack, params);
     } catch (exception) {
+      APPPlugin.logger.d(exception);
       Map errorResponseData = {"message": exception.toString()};
       _error(errorResponseData['message'], errorResponseData, errorCallBack);
     }
@@ -155,33 +159,36 @@ class NetUtils {
     ///--自定义code  200 操作成功！
     ///--自定义code  500 操作失败！系统繁忙！非法参数！
     ///--自定义code  400 未登录！权限不足！
+    ///
 
-    if (response.statusCode == 200) {
-      //http成功
-      var responsedata = response.data;
-      if (responsedata == null || responsedata == "") {
-        successCallBack(responsedata);
-      }
-
-      //服务端返回码
-      if (responsedata['code'] == 200) {
-        // try捕获successCallBack异常，导致response无法返回给futureBuilderContainer来判断页面显示问题
-        try {
+    return Future(() {
+      if (response.statusCode == 200) {
+        //http成功
+        var responsedata = response.data;
+        if (responsedata == null || responsedata == "") {
           successCallBack(responsedata);
-        } catch (e) {
-          return response;
+        }
+
+        //服务端返回码
+        if (responsedata['code'] == 200) {
+          // try捕获successCallBack异常，导致response无法返回给futureBuilderContainer来判断页面显示问题
+          try {
+            successCallBack(responsedata);
+          } catch (e) {
+            return response;
+          }
+        } else {
+          // kele
+          // 2020-09-10
+          // 这里是后段自定义的错误码，此时http的状态码是200，app只需要弹出message即可
+          // _error(responsedata['message'], responsedata, errorCallBack);
         }
       } else {
-        // kele
-        // 2020-09-10
-        // 这里是后段自定义的错误码，此时http的状态码是200，app只需要弹出message即可
-        _error(responsedata['message'], responsedata, errorCallBack);
+        //http失败
+        _error('', null, errorCallBack);
       }
-    } else {
-      //http失败
-      _error('', null, errorCallBack);
-    }
-    return response;
+      return response;
+    });
   }
 
   static _error(
