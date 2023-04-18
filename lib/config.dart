@@ -1,3 +1,9 @@
+/*
+ * @Date: 2023-04-10 09:35:33
+ * @LastEditors: Wws wuwensheng@donganyun.com
+ * @LastEditTime: 2023-04-18 13:57:04
+ * @FilePath: \soulmate\lib\config.dart
+ */
 /// Author: kele
 /// Date: 2022-03-07 13:31:49
 /// LastEditors: kele
@@ -8,7 +14,7 @@
 ///所以正式打包的时候还是需要手动修改android/app/build.gradle   中的    JPUSH_APPKEY
 class ProjectConfig {
   /// debug or not
-  bool isDebug = false;
+  bool isDebug = true;
 
   Map baseConfig = {
     'PrivacyPolicyUrl': 'https://icyberelf.com/PrivacyPolicy.html', //隐私协议
@@ -17,7 +23,8 @@ class ProjectConfig {
   };
 
   Map debugConfig = {
-    'BaseUrl': 'http://42.192.68.186:9001/api/', //测试环境,
+    // 'BaseUrl': 'http://192.168.156.111:8787', //测试环境,
+     'BaseUrl': 'http://192.168.26.200:8787', //测试环境,
   };
   Map releaseConfig = {
     'BaseUrl': 'http://api.timcloud.club/api', //生产环境

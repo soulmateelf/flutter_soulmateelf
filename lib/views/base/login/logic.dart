@@ -125,7 +125,8 @@ class LoginLogic extends GetxController {
     void successFn(res) {
       EasyLoading.dismiss();
       Application.userInfo = res["data"];
-      Application.pres?.setString('userInfo', jsonEncode(res['data']));
+      /// 重写 getter setter 方法后 就不需要手动往储存里放置数据了
+      // Application.pres?.setString('userInfo', jsonEncode(res['data']));
       Get.offNamed('/home');
     }
 

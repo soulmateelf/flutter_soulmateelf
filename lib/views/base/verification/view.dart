@@ -1,17 +1,69 @@
 /*
  * @Date: 2023-04-10 18:59:42
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-11 16:23:01
+ * @LastEditTime: 2023-04-18 09:58:20
  * @FilePath: \soulmate\lib\views\base\verification\view.dart
  */
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-class VerificationPage extends StatelessWidget {
+import '../../../utils/plugin/plugin.dart';
+
+class VerificationPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _VerificationPage();
+  }
+}
+
+class _VerificationPage extends State<VerificationPage> {
+  bool _error = false;
+
+  _sendCode() {
+    final type = Get.arguments["type"];
+    final email = Get.arguments["email"];
+
+    NetUtils.diorequst("/base/email", 'post', params: {
+      "email": email,
+      "type": type,
+    }).then((value) {
+      exSnackBar("发送验证码成功,请查看邮箱");
+    }, onError: (err) {
+      exSnackBar("发送验证码失败");
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _sendCode();
+    super.initState();
+  }
+
+  void _validate(String value) async {
+    final type = Get.arguments["type"];
+    final email = Get.arguments["email"];
+    if (type == null || email == null) {
+      return;
+    }
+    final result = await NetUtils.diorequst("/base/verify", 'post', params: {
+      "code": value,
+      "email": "${type}_${email}",
+    });
+    if (result?.data?["code"] == 200) {
+      Get.toNamed('/setPassword', arguments: Get.arguments);
+    } else {
+      setState(() {
+        _error = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     /// ScreenUtil初始化
@@ -44,20 +96,34 @@ class VerificationPage extends StatelessWidget {
             padding: EdgeInsets.only(top: 60.w),
             child: PinCodeTextField(
                 appContext: context,
+                autoFocus: true,
+                keyboardType: TextInputType.number,
                 length: 6,
                 pinTheme: PinTheme(
                   inactiveColor: Color.fromRGBO(230, 230, 230, 1),
                 ),
                 onCompleted: (value) {
-                  Get.toNamed('/setPassword', arguments: Get.arguments);
+                  _validate(value);
                 },
-                onChanged: (value) {}),
+                onChanged: (value) {
+                  setState(() {
+                    _error = false;
+                  });
+                }),
           ),
+          if (_error)
+            Text(
+              "The code you entered is incorrect.Please try again.",
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 22.sp,
+              ),
+            ),
           Padding(
-            padding: EdgeInsets.only(top: 60.w),
+            padding: EdgeInsets.only(top: 40.w),
             child: TextButton(
               onPressed: () {
-                print('resend code');
+               _sendCode();
               },
               child: Text(
                 'Resend code.',

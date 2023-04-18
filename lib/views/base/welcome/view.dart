@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-12 16:27:13
+ * @LastEditTime: 2023-04-18 11:40:45
  * @FilePath: \soulmate\lib\views\base\welcome\view.dart
  */
 /// Author: kele
@@ -61,7 +61,7 @@ class WelcomePage extends StatelessWidget {
                           backgroundColor: MaterialStateProperty.all(
                               const Color.fromRGBO(78, 162, 79, 1))),
                       onPressed: () {
-                        Get.toNamed('/home');
+                        Get.toNamed('/login');
                       },
                       child: Text(
                         "Log in",
@@ -74,7 +74,7 @@ class WelcomePage extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                       onPressed: () {
-                        Get.toNamed('signup');
+                        Get.toNamed('/signup');
                       },
                       style: ButtonStyle(
                           backgroundColor:

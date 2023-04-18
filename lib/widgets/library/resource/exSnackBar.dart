@@ -1,3 +1,9 @@
+/*
+ * @Date: 2023-04-10 09:35:33
+ * @LastEditors: Wws wuwensheng@donganyun.com
+ * @LastEditTime: 2023-04-17 17:17:50
+ * @FilePath: \soulmate\lib\widgets\library\resource\exSnackBar.dart
+ */
 part of projectLibrary;
 
 SnackbarController exSnackBar(
@@ -30,7 +36,7 @@ SnackbarController exSnackBar(
       titleText: Container(
         constraints: const BoxConstraints.expand(height: 0),
       ),
-      duration: const Duration(milliseconds: 900),
+      duration: const Duration(milliseconds: 2000),
       messageText: Row(children: [
         Padding(
           padding: EdgeInsets.only(right: 10.w),

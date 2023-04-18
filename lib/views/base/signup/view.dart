@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-11 16:35:47
+ * @LastEditTime: 2023-04-17 18:38:50
  * @FilePath: \soulmate\lib\views\base\signup\view.dart
  */
 /// Author: kele
@@ -85,11 +85,10 @@ class SignUpPage extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.only(top: 20.w),
                               child: TextFieldBlocBuilder(
-                                textFieldBloc: signupFormBloc.password,
-                                suffixButton: SuffixButton.obscureText,
-                                autofillHints: const [AutofillHints.password],
+                                textFieldBloc: signupFormBloc.nickname,
+                                autofillHints: const [AutofillHints.nickname],
                                 decoration: InputDecoration(
-                                    labelText: "Password",
+                                    labelText: "Nickname",
                                     helperText: " ",
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
@@ -112,12 +111,7 @@ class SignUpPage extends StatelessWidget {
                                               const Color.fromRGBO(
                                                   78, 162, 79, 1))),
                                   onPressed: () {
-                                    Get.toNamed('/verification', arguments: {
-                                      "setPasswordPageTitle":
-                                          "Create your password",
-                                      "continuePageTitle":
-                                          "Your’ve successfully Created your password."
-                                    });
+                                    signupFormBloc.submit();
                                   },
                                   child: Text(
                                     "Next",
