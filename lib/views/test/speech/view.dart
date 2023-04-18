@@ -37,6 +37,16 @@ class TextToSpeechPage extends StatelessWidget {
                   onPressed: () {
                     logic.faceBookLogin();
                   }),
+              Builder(
+                builder: (BuildContext context) {
+                  return ElevatedButton(
+                      child: const Text('systemShare'),
+                      onPressed: () {
+                        logic.systemShare(context);
+                      });
+                },
+              ),
+
             ],
           )
       );
