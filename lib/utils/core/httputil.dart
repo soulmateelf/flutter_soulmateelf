@@ -37,7 +37,6 @@ class NetUtils {
       localHeaders = headers ?? jsonDecode(head!);
 
       localHeaders?["Authorization"] = "Bearer ${Application.token}";
-      APPPlugin.logger.d(localHeaders);
       ///拦截器
       dio.interceptors.add(InterceptorsWrapper(
         onRequest: (RequestOptions options, handler) async {

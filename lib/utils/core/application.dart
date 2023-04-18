@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 11:18:00
+ * @LastEditTime: 2023-04-18 14:03:49
  * @FilePath: \soulmate\lib\utils\core\application.dart
  */
 /// Author: kele
@@ -11,6 +11,7 @@
 /// Description:
 
 import 'dart:convert';
+import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Application {
@@ -30,11 +31,7 @@ class Application {
 
     ///初始化个人信息
     String? userInfo = Application.pres?.getString("userInfo");
-    if (userInfo != null) {
-      _userInfo = jsonDecode(userInfo);
-    } else {
-      _userInfo = null;
-    }
+    _userInfo = userInfo;
   }
 
   static Map? get userInfo {

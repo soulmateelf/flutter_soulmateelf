@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-17 19:13:33
+ * @LastEditTime: 2023-04-18 13:57:04
  * @FilePath: \soulmate\lib\config.dart
  */
 /// Author: kele
@@ -23,7 +23,8 @@ class ProjectConfig {
   };
 
   Map debugConfig = {
-    'BaseUrl': 'http://192.168.26.200:8787', //测试环境,
+    // 'BaseUrl': 'http://192.168.156.111:8787', //测试环境,
+     'BaseUrl': 'http://192.168.26.200:8787', //测试环境,
   };
   Map releaseConfig = {
     'BaseUrl': 'http://api.timcloud.club/api', //生产环境
