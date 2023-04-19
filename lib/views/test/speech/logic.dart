@@ -1,8 +1,13 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
+import 'package:share_plus/share_plus.dart';
 
 class TextToSpeechLogic extends GetxController {
   FlutterTts flutterTts = FlutterTts();
@@ -55,7 +60,7 @@ class TextToSpeechLogic extends GetxController {
   faceBookLogin() async {
     // Log in
     final res = await fb.logIn(permissions: [
-      FacebookPermission.publicProfile,
+      // FacebookPermission.publicProfile,
       FacebookPermission.email,
     ]);
 
@@ -91,5 +96,31 @@ class TextToSpeechLogic extends GetxController {
         print('Error while log in: ${res.error}');
         break;
     }
+  }
+  systemShare(BuildContext context) async {
+    // var shareResult = await Share.shareWithResult(
+    //     'code:#123456;downLoadUrl:https://whatsapp.com/dl/',
+    //     subject: 'Look what I made!',
+    // );
+    var shareResult = await Share.shareWithResult(
+      'downLoadUrl:https://youtu.be/lJDnnowkS4A\ncode:https://icyberelf.com/PrivacyPolicy.html',
+      // '环境的角度看建档立卡打开了贷款了:\ndownLoadUrl:\nhttps://youtu.be/lJDnnowkS4A',
+      subject: 'Look what I made!',
+    );
+    // final data = await rootBundle.load('assets/images/icons/avatar.png');
+    // final buffer = data.buffer;
+    // final shareResult = await Share.shareXFiles(
+    //   [
+    //     XFile.fromData(
+    //       buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
+    //       name: 'flutter_logo.png',
+    //       mimeType: 'image/png',
+    //     ),
+    //   ],
+    //   subject: 'I am subject!',
+    //   text: 'code:123456;downLoadUrl:https://icyberelf.com/PrivacyPolicy.html;',
+    // );
+
+    APPPlugin.logger.i(shareResult.status);
   }
 }
