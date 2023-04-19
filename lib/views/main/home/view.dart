@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-19 15:29:20
+ * @LastEditTime: 2023-04-19 18:20:58
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -32,12 +32,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  
+  final logic = Get.put(HomeLogic());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    print(logic);
+    super.initState();
+  }
+
+  update() {
+    logic.update();
+  }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(Get.context!, designSize: const Size(750, 1624));
-    final logic = Get.put(HomeLogic());
+
     return GetBuilder<HomeLogic>(builder: (logic) {
       return basePage("homer",
           backgroundColor: Colors.transparent,
@@ -62,7 +73,13 @@ class _HomePage extends State<HomePage> {
                                 child: Container(
                                   height: 448.w,
                                   width: 280.w,
-                                  color: Colors.blue,
+                                  child: Image.network(
+                                    logic.checkedRole?["images"] ?? "",
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Text("");
+                                    },
+                                  ),
                                 ),
                               ),
                               Expanded(
@@ -74,20 +91,8 @@ class _HomePage extends State<HomePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      children: const [
-                                        Icon(
-                                          Icons.star,
-                                          color: Colors.yellow,
-                                        ),
-                                        Icon(
-                                          Icons.star,
-                                          color: Colors.yellow,
-                                        ),
-                                        Icon(
-                                          Icons.star,
-                                          color: Colors.yellow,
-                                        ),
-                                      ],
+                                      children:
+                                          renderStars(role: logic.checkedRole),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 24.w),
@@ -95,7 +100,8 @@ class _HomePage extends State<HomePage> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              "SoulmateSoulmateSoulmateSoulmate ELF",
+                                              logic.checkedRole?["roleName"] ??
+                                                  "Soulmate ELF",
                                               overflow: TextOverflow.ellipsis,
                                               softWrap: false,
                                               style: TextStyle(
@@ -103,29 +109,40 @@ class _HomePage extends State<HomePage> {
                                               ),
                                             ),
                                           ),
-                                          const Icon(
-                                            Icons.flash_on_outlined,
+                                          SizedBox(
+                                            width: 36.w,
+                                            height: 36.w,
+                                            child: Image.asset(
+                                                "assets/images/icons/edit2.png"),
                                           ),
-                                          const Icon(
-                                            CupertinoIcons.location,
-                                            color: Colors.yellow,
-                                          )
+                                          Container(
+                                            margin: EdgeInsets.only(left: 8.w),
+                                            width: 36.w,
+                                            height: 36.w,
+                                            child: Image.asset(
+                                                "assets/images/icons/share2.png"),
+                                          ),
                                         ],
                                       ),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 24.w),
-                                      child: Text("Age：unknown"),
+                                      child: Text(
+                                          "Age：${logic.checkedRole?["age"].toString() ?? "unknown"}"),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 24.w),
-                                      child: const Text("Gender：unknown"),
+                                      // ignore: prefer_interpolation_to_compose_strings
+                                      child: Text("Gender：" +
+                                          (logic.checkedRole?["gender"] ??
+                                              "unknown")),
                                     ),
                                     Expanded(
                                         child: Padding(
                                       padding: EdgeInsets.only(top: 24.w),
-                                      child: const Text(
-                                          "Basic communication skills, poor memory, good to use occasionally"),
+                                      child: Text(logic.checkedRole?[
+                                              "roleIntroduction"] ??
+                                          ""),
                                     )),
                                   ],
                                 ),
@@ -141,9 +158,15 @@ class _HomePage extends State<HomePage> {
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Icon(Icons.thunderstorm),
+                                  SizedBox(
+                                    width: 40.w,
+                                    height: 40.w,
+                                    child: Image.asset(
+                                        "assets/images/icons/flash.png"),
+                                  ),
                                   Text(
-                                    "22",
+                                    logic.checkedRole?["amout"].toString() ??
+                                        "",
                                     style: TextStyle(
                                         fontSize: 36.sp,
                                         color: Color.fromRGBO(78, 162, 79, 1)),
@@ -157,10 +180,12 @@ class _HomePage extends State<HomePage> {
                                   ),
                                 ],
                               ),
-                              const Icon(
-                                Icons.add,
-                                color: Color.fromRGBO(78, 162, 79, 1),
-                              )
+                              SizedBox(
+                                width: 40.w,
+                                height: 40.w,
+                                child:
+                                    Image.asset("assets/images/icons/add.png"),
+                              ),
                             ],
                           ),
                         ),
@@ -171,7 +196,7 @@ class _HomePage extends State<HomePage> {
                               borderRadius: BorderRadius.circular(16.w),
                               color: const Color.fromRGBO(78, 162, 79, 1)),
                           child: LinearPercentIndicator(
-                            percent: 0.5,
+                            percent: (logic.checkedRole?['amout'] ?? 0) / 100,
                             padding: EdgeInsets.zero,
                             progressColor: const Color.fromRGBO(78, 162, 79, 1),
                             lineHeight: 16.w,
@@ -184,9 +209,10 @@ class _HomePage extends State<HomePage> {
                             margin: EdgeInsets.only(top: 34.w),
                             padding: EdgeInsets.only(bottom: 20.w),
                             height: 185.w,
-                            child: const SingleChildScrollView(
+                            child: SingleChildScrollView(
                               child: Text(
-                                  "Basic communication skills, poor memory, gBasic communication skills, poor memory, good to use occasionallyBasic communication skills, poor memory, good to uBasic communication skills, poor memory, good to use occasionallyBasic communication skills, poor memory, good to uBasic communication skills, poor memory, good to use occasionallyBasic communication skills, poor memory, good to uood to use occasionallyBasic communication skills, poor memory, good to use occasionallyBasic communication skills, poor memory, good to use occasionally"),
+                                  logic.checkedRole?["characterBackGround"] ??
+                                      ""),
                             ))
                       ],
                     ),
@@ -201,138 +227,15 @@ class _HomePage extends State<HomePage> {
                             child: SingleChildScrollView(
                           padding: EdgeInsets.all(20.w),
                           child: Wrap(
-                            runSpacing: 24.w,
-                            spacing: 24.w,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  print(logic.selectedRole);
-                                  Get.toNamed('/settings');
-                                },
-                                child: Container(
-                                  width: 220.w,
-                                  height: 220.w,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                    color: Colors.green,
-                                    width: 8.w,
-                                  )),
-                                  child: Stack(children: [
-                                    Image.asset(
-                                        "assets/images/icons/avatar.png"),
-                                    Positioned(
-                                      top: 0,
-                                      right: 0,
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.icecream),
-                                          Text(
-                                            "20",
-                                            style: TextStyle(
-                                                color: Colors.green,
-                                                fontSize: 22.sp),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 0,
-                                      left: 0,
-                                      right: 0,
-                                      child: Container(
-                                        color: Color.fromRGBO(0, 0, 0, 0.7),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: const [
-                                            Icon(
-                                              Icons.star,
-                                              color: Colors.yellow,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  ]),
-                                ),
-                              ),
-                              Container(
-                                width: 220.w,
-                                height: 220.w,
-                                color: Color.fromARGB(255, 111, 8, 207),
-                                child: InkWell(
-                                  onTap: () {
-                                    print("123");
-                                    Get.toNamed('/recharge');
-                                  },
-                                  child: Text("white"),
-                                ),
-                              ),
-                              Container(
-                                width: 220.w,
-                                height: 220.w,
-                                color: Colors.red,
-                              ),
-                              Container(
-                                width: 220.w,
-                                height: 220.w,
-                                color: Colors.green,
-                              ),
-                              Container(
-                                width: 220.w,
-                                height: 220.w,
-                                color: Colors.black,
-                              ),
-                              Container(
-                                width: 220.w,
-                                height: 220.w,
-                                color: Colors.red,
-                              ),
-                              Container(
-                                width: 220.w,
-                                height: 220.w,
-                                color: Colors.green,
-                              ),
-                              Container(
-                                width: 220.w,
-                                height: 220.w,
-                                color: Colors.black,
-                              ),
-                              Container(
-                                width: 220.w,
-                                height: 220.w,
-                                color: Colors.red,
-                              ),
-                              Container(
-                                width: 220.w,
-                                height: 220.w,
-                                color: Colors.green,
-                              ),
-                              Container(
-                                width: 220.w,
-                                height: 220.w,
-                                color: Colors.black,
-                              ),
-                            ],
+                            runSpacing: 16.w,
+                            spacing: 16.w,
+                            children: renderRoleList(),
                           ),
                         )),
                         Container(
                           height: 84.w,
                           width: double.infinity,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.zero))),
-                            child: Text(
-                              'Chat now',
-                              style: TextStyle(fontSize: 36.sp),
-                            ),
-                            onPressed: () {
-                              // Get.toNamed('/chat');
-                              Get.toNamed('/textToSpeech');
-                            },
-                          ),
+                          child: renderFloatButton(),
                         ),
                       ],
                     ),
@@ -340,5 +243,117 @@ class _HomePage extends State<HomePage> {
                 ],
               )));
     });
+  }
+
+  List<Widget> renderStars({required role, double? size}) {
+    List<Widget> widgets = [];
+    final startCount = role?["roleStar"] ?? 0;
+    for (int i = 0; i < startCount; i++) {
+      widgets.add(Icon(
+        Icons.star,
+        color: Colors.yellow,
+        size: size != null ? size.sp : null,
+      ));
+    }
+    return widgets;
+  }
+
+  List<Widget> renderRoleList() {
+    List<Widget> widgets = [];
+    logic.roleList.forEach((role) {
+      var amout = role["amout"] ?? 0;
+      var images = role["images"] ?? "";
+      widgets.add(InkWell(
+        onTap: () {
+          // Get.toNamed('/settings');
+          logic.checkedRoleId = role["id"];
+        },
+        child: Container(
+          width: 220.w,
+          height: 220.w,
+          decoration: BoxDecoration(
+              border: Border.all(
+            color: logic.checkedRoleId == role["id"]
+                ? Colors.green
+                : Colors.transparent,
+            width: 8.w,
+          )),
+          child: Stack(children: [
+            images != null
+                ? Image.network(
+                    images,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Text("error");
+                    },
+                  )
+                : Image.asset("assets/images/icons/avatar.png"),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 18.w,
+                    height: 18.w,
+                    child: Image.asset("assets/images/icons/flash.png"),
+                  ),
+                  Text(
+                    "${amout}",
+                    style: TextStyle(
+                        color: amout <= 0 ? Colors.red : Colors.green,
+                        fontSize: 22.sp),
+                  )
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                color: Color.fromRGBO(0, 0, 0, 0.7),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: renderStars(role: role, size: 38),
+                ),
+              ),
+            )
+          ]),
+        ),
+      ));
+    });
+    return widgets;
+  }
+
+  Widget? renderFloatButton() {
+    if (logic.checkedRole == null) {
+      return null;
+    }
+    var text = "";
+    var onPressed = () {};
+    if (logic.checkedRole["roleType"] == 3) {
+      text = "Character customization";
+    } else {
+      if ((logic.checkedRole["amout"] ?? 0) <= 0) {
+        text = "Pay for me";
+      } else {
+        text = "Chat now";
+      }
+    }
+
+    return ElevatedButton(
+      style: ButtonStyle(
+          shape: MaterialStateProperty.all(
+              const RoundedRectangleBorder(borderRadius: BorderRadius.zero))),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 36.sp),
+      ),
+      onPressed: () {
+        // Get.toNamed('/chat');
+        onPressed();
+        // Get.toNamed('/textToSpeech');
+      },
+    );
   }
 }
