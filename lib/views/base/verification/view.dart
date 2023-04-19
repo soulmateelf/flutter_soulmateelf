@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 18:59:42
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 09:58:20
+ * @LastEditTime: 2023-04-18 17:33:41
  * @FilePath: \soulmate\lib\views\base\verification\view.dart
  */
 import 'package:flutter/material.dart';
@@ -27,6 +27,10 @@ class _VerificationPage extends State<VerificationPage> {
   _sendCode() {
     final type = Get.arguments["type"];
     final email = Get.arguments["email"];
+    APPPlugin.logger.d(Get.arguments);
+    if (type == null || email == null) {
+      return;
+    }
 
     NetUtils.diorequst("/base/email", 'post', params: {
       "email": email,
@@ -55,8 +59,11 @@ class _VerificationPage extends State<VerificationPage> {
       "code": value,
       "email": "${type}_${email}",
     });
+    print(result);
     if (result?.data?["code"] == 200) {
-      Get.toNamed('/setPassword', arguments: Get.arguments);
+      final arguments = Get.arguments;
+      arguments["code"] = value;
+      Get.toNamed('/setPassword', arguments: arguments);
     } else {
       setState(() {
         _error = true;
@@ -123,7 +130,7 @@ class _VerificationPage extends State<VerificationPage> {
             padding: EdgeInsets.only(top: 40.w),
             child: TextButton(
               onPressed: () {
-               _sendCode();
+                _sendCode();
               },
               child: Text(
                 'Resend code.',

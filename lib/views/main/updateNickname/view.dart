@@ -1,18 +1,49 @@
 /*
  * @Date: 2023-04-14 17:35:00
  * @LastEditors: Wws wuwensheng@donganyun.com
+ * @LastEditTime: 2023-04-19 14:44:39
+ * @FilePath: \soulmate\lib\views\main\updateNickname\view.dart
+ */
+/*
+ * @Date: 2023-04-14 17:35:00
+ * @LastEditors: Wws wuwensheng@donganyun.com
  * @LastEditTime: 2023-04-14 17:43:25
  * @FilePath: \soulmate\lib\views\main\updateNickname\view.dart
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soulmateelf/utils/core/application.dart';
+import 'package:flutter_soulmateelf/utils/core/httputil.dart';
+import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/views/main/updatePassword/bloc.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
+import 'package:get/get.dart';
 
 import 'bloc.dart';
 
 class UpdateNicknamePage extends StatelessWidget {
+  _submit(UpdateNicknameFormBloc bloc) async {
+    final nicknameValidate = await bloc.nickname.validate();
+    if (!nicknameValidate) return;
+    final userInfo = Application.userInfo;
+    if (userInfo != null) {
+      final result = await NetUtils.diorequst("/base/update", 'post', params: {
+        "userId": userInfo["userId"],
+        "nickName": bloc.nickname.value
+      });
+      APPPlugin.logger.d(result.data);
+
+      /// 这里应该返回用户信息
+      if (result?.data?["code"] == 200) {
+        if (result?.data?["data"] != null) {
+          Application.userInfo = result?.data?["data"];
+        }
+        Get.back();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -29,7 +60,7 @@ class UpdateNicknamePage extends StatelessWidget {
       );
     }
 
-    return basePage("Update password",
+    return basePage("Update Nickname",
         child: BlocProvider(
           create: (context) => UpdateNicknameFormBloc(),
           child: Builder(
@@ -52,7 +83,7 @@ class UpdateNicknamePage extends StatelessWidget {
                         margin: EdgeInsets.only(top: 20.w),
                         child: ElevatedButton(
                             onPressed: () {
-                              bloc.submit();
+                              _submit(bloc);
                             },
                             child: Text(
                               "Done",

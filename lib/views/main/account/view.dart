@@ -1,11 +1,13 @@
 /*
  * @Date: 2023-04-12 18:45:02
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-14 17:54:49
+ * @LastEditTime: 2023-04-18 18:41:01
  * @FilePath: \soulmate\lib\views\main\account\view.dart
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soulmateelf/utils/core/application.dart';
+import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +15,9 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    final userInfo = Application.userInfo;
+    APPPlugin.logger.d(userInfo);
+
     return basePage("Your account",
         child: SingleChildScrollView(
           child: Padding(
@@ -27,7 +32,7 @@ class AccountPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(child: Text("Email")),
-                      Text("Lee023@gmail.com")
+                      Text(userInfo?["email"])
                     ],
                   ),
                 ),
@@ -45,7 +50,7 @@ class AccountPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(child: Text("Nickname")),
-                            Text("lee012356485"),
+                            Text(userInfo?["nickName"]),
                             Padding(
                               padding: EdgeInsets.only(left: 16.w),
                               child: Icon(Icons.arrow_forward_ios),

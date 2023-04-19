@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-11 18:32:30
+ * @LastEditTime: 2023-04-18 18:05:44
  * @FilePath: \soulmate\lib\views\base\setPassword\view.dart
  */
 /// Author: kele
@@ -16,9 +16,50 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/core/httputil.dart';
+import '../../../utils/plugin/plugin.dart';
 import 'bloc.dart';
 
 class SetPasswordPage extends StatelessWidget {
+  _submit(SetPasswordFormBloc bloc) async {
+    final email = Get.arguments["email"];
+    final nickname = Get.arguments["nickname"];
+    final type = Get.arguments["type"];
+    final code = Get.arguments["code"];
+    final pwd = bloc.password.value;
+    APPPlugin.logger.d(Get.arguments);
+
+    if (type == "forget") {
+      if (email != null && pwd != null) {
+        final result = await NetUtils.diorequst("/base/forget", 'post',
+            params: {
+              "email": email,
+              "code": code,
+              "password": pwd,
+            });
+        if (result?.data?["code"] == 200) {
+          dynamic arguments = Get.arguments;
+          arguments["password"] = pwd;
+          Get.toNamed('/continue', arguments: arguments);
+        }
+      }
+    } else if (type == "register") {
+      if (email != null && nickname != null && pwd != null) {
+        final result =
+            await NetUtils.diorequst("/base/register", 'post', params: {
+          "email": email,
+          "nickName": nickname,
+          "password": pwd,
+        });
+        if (result?.data?["code"] == 200) {
+          dynamic arguments = Get.arguments;
+          arguments["password"] = pwd;
+          Get.toNamed('/continue', arguments: arguments);
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     /// ScreenUtil初始化
@@ -28,9 +69,10 @@ class SetPasswordPage extends StatelessWidget {
       child: Builder(builder: (context) {
         // 表单bloc
         final setPasswordFormBloc = context.read<SetPasswordFormBloc>();
-        final title = Get.arguments?["setPasswordPageTitle"] ?? "Create your password.";
+        final title =
+            Get.arguments?["setPasswordPageTitle"] ?? "Create your password.";
         return Scaffold(
-          appBar:backBar(),
+          appBar: backBar(),
           body: FormBlocListener<SetPasswordFormBloc, String, String>(
               child: SingleChildScrollView(
             child: ConstrainedBox(
@@ -105,7 +147,7 @@ class SetPasswordPage extends StatelessWidget {
                                   backgroundColor: MaterialStateProperty.all(
                                       const Color.fromRGBO(78, 162, 79, 1))),
                               onPressed: () {
-                                setPasswordFormBloc.submit();
+                                _submit(setPasswordFormBloc);
                               },
                               child: Text(
                                 "Next",

@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-17 18:38:50
+ * @LastEditTime: 2023-04-18 16:30:47
  * @FilePath: \soulmate\lib\views\base\signup\view.dart
  */
 /// Author: kele

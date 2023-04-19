@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 14:49:30
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 10:25:44
+ * @LastEditTime: 2023-04-18 17:54:02
  * @FilePath: \soulmate\lib\views\base\setPassword\bloc.dart
  */
 import "dart:async";
@@ -54,21 +54,6 @@ class SetPasswordFormBloc extends FormBloc<String, String> {
 
   @override
   FutureOr<void> onSubmitting() async {
-    final email = Get.arguments["email"];
-    final nickname = Get.arguments["nickname"];
-    final pwd = password.value;
-
-    if (email != null && nickname != null && pwd != null) {
-      final result =
-          await NetUtils.diorequst("/base/register", 'post', params: {
-        "email": email,
-        "nickName": nickname,
-        "password": pwd,
-      });
-      APPPlugin.logger.d(result);
-      dynamic arguments = Get.arguments;
-      arguments["password"] = password.value;
-      Get.toNamed('/continue', arguments: arguments);
-    }
+    
   }
 }
