@@ -6,13 +6,13 @@
 
 part of projectLibrary;
 
-Future<void> showLoadingMask({String message = '加载中……'}) {
+Future<void> showLoadingMask({String message = 'Loading……'}) {
   return EasyLoading.show(
       maskType: EasyLoadingMaskType.black,
       indicator: Container(
         margin: const EdgeInsets.all(0),
 //        color:Colors.red,
-        width: 110.w,
+        width: 180.w,
         child: Row(children: [
           Padding(
             padding: EdgeInsets.only(right: 10.w),

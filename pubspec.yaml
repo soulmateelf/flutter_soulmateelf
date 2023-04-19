@@ -79,11 +79,17 @@ dependencies:
   #https://github.com/GiancarloCode/form_bloc
   flutter_form_bloc: ^0.30.1
   #验证码输入
-  # https://github.com/adar2378/pin_code_fields
+  #https://github.com/adar2378/pin_code_fields
   pin_code_fields: ^7.4.0
   #文字转语音
-  # https://github.com/dlutton/flutter_tts
+  #https://github.com/dlutton/flutter_tts
   flutter_tts: ^3.6.3
+  #语音转文字
+  #https://github.com/csdcorp/speech_to_text
+  speech_to_text: ^6.1.1
+  #录音插件，flutter_plugin_record_plus是基于flutter_plugin_record的封装，flutter_plugin_record不更新了，下面的仓库地址是flutter_plugin_record的
+  #https://github.com/yxwandroid/flutter_plugin_record
+  flutter_plugin_record_plus: ^0.0.15
   #google登录
   #https://github.com/flutter/packages/tree/main/packages/google_sign_in/google_sign_in
   google_sign_in: ^6.1.0
