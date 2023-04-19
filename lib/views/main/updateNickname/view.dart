@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-14 17:35:00
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 19:00:20
+ * @LastEditTime: 2023-04-19 14:44:39
  * @FilePath: \soulmate\lib\views\main\updateNickname\view.dart
  */
 /*
@@ -18,6 +18,7 @@ import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/views/main/updatePassword/bloc.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
+import 'package:get/get.dart';
 
 import 'bloc.dart';
 
@@ -31,9 +32,15 @@ class UpdateNicknamePage extends StatelessWidget {
         "userId": userInfo["userId"],
         "nickName": bloc.nickname.value
       });
-      APPPlugin.logger.d(result);
+      APPPlugin.logger.d(result.data);
+
       /// 这里应该返回用户信息
-      if (result?.data?["code"] == 200) {}
+      if (result?.data?["code"] == 200) {
+        if (result?.data?["data"] != null) {
+          Application.userInfo = result?.data?["data"];
+        }
+        Get.back();
+      }
     }
   }
 

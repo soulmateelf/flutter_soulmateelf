@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 14:49:30
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 16:53:48
+ * @LastEditTime: 2023-04-19 14:41:18
  * @FilePath: \soulmate\lib\views\base\login\bloc.dart
  */
 import "dart:async";
@@ -17,6 +17,7 @@ import "logic.dart";
 class LoginFormBloc extends FormBloc<String, String> {
   final logic = Get.find<LoginLogic>();
   final email = TextFieldBloc(
+    initialValue: "1404388651@qq.com",
     validators: [
       FieldBlocValidators.required,
       FieldBlocValidators.email,
@@ -31,6 +32,7 @@ class LoginFormBloc extends FormBloc<String, String> {
   }
 
   final password = TextFieldBloc(
+    initialValue: "11111111",
     validators: [FieldBlocValidators.required, _min8Chars],
   );
 

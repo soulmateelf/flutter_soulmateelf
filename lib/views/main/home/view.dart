@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-16 13:37:01
+ * @LastEditTime: 2023-04-19 15:29:20
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -23,7 +23,17 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import 'logic.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _HomePage();
+  }
+}
+
+class _HomePage extends State<HomePage> {
+  
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(Get.context!, designSize: const Size(750, 1624));
@@ -93,8 +103,13 @@ class HomePage extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          const Icon(Icons.flash_on_outlined,),
-                                          const Icon(CupertinoIcons.location,color: Colors.yellow,)
+                                          const Icon(
+                                            Icons.flash_on_outlined,
+                                          ),
+                                          const Icon(
+                                            CupertinoIcons.location,
+                                            color: Colors.yellow,
+                                          )
                                         ],
                                       ),
                                     ),

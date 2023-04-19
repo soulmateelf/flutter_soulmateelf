@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-12 14:56:57
+ * @LastEditTime: 2023-04-19 15:29:14
  * @FilePath: \soulmate\lib\views\main\home\logic.dart
  */
 import 'package:get/get.dart';
@@ -23,6 +23,7 @@ class HomeLogic extends GetxController {
 
   @override
   void onReady() {
+    print("ready");
     super.onReady();
     return;
   }

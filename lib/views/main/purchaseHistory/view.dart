@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-13 14:21:37
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-19 10:21:46
+ * @LastEditTime: 2023-04-19 15:21:36
  * @FilePath: \soulmate\lib\views\main\purchaseHistory\view.dart
  */
 import 'package:flutter/material.dart';
@@ -21,17 +21,26 @@ class PurchaseHistoryPage extends StatefulWidget {
 }
 
 class _PurchaseHistoryPage extends State<PurchaseHistoryPage> {
+  var _historyList = [];
+
   getData() async {
     final userInfo = Application.userInfo;
     if (userInfo == null) return;
     final result =
-        await NetUtils.diorequst("/base/orderHistory", 'get', params: {
+        await NetUtils.diorequst("/base/orderHistory", 'post', params: {
       "userId": userInfo["userId"],
       "pageNum": 1,
       "pageSize": 10,
     });
-
-    APPPlugin.logger.d(result);
+    if (result.data?['code'] == 200) {
+      final data = result.data['data']?['data'];
+      if (data != null) {
+        setState(() {
+          _historyList = data;
+        });
+      }
+    }
+    APPPlugin.logger.d(result.data);
   }
 
   @override
@@ -41,18 +50,21 @@ class _PurchaseHistoryPage extends State<PurchaseHistoryPage> {
     super.initState();
   }
 
+  List<Widget> renderHistoryList() {
+    List<Widget> widgets = [];
+    _historyList.forEach((history) {
+      widgets.add(PurchaseHistoryCard());
+    });
+    return widgets;
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return basePage("Purchase history",
         child: SingleChildScrollView(
           child: Column(
-            children: [
-              PurchaseHistoryCard(),
-              PurchaseHistoryCard(),
-              PurchaseHistoryCard(),
-              PurchaseHistoryCard(),
-            ],
+            children: renderHistoryList(),
           ),
         ));
   }

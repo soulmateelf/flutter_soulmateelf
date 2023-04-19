@@ -1,9 +1,11 @@
 /*
  * @Date: 2023-04-13 10:43:55
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 19:33:44
+ * @LastEditTime: 2023-04-19 15:18:39
  * @FilePath: \soulmate\lib\views\main\discount\view.dart
  */
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/utils/core/application.dart';
@@ -21,6 +23,8 @@ class DiscountPage extends StatefulWidget {
 }
 
 class _DiscountPage extends State<DiscountPage> {
+  var _cardList = [];
+
   getData() async {
     final userInfo = Application.userInfo;
     if (userInfo == null) return;
@@ -28,7 +32,16 @@ class _DiscountPage extends State<DiscountPage> {
       "userId": userInfo["userId"],
     });
 
-    APPPlugin.logger.d(result);
+    if (result.data?["code"] == 200) {
+      final data = result.data["data"]["data"];
+      if (data != null) {
+        setState(() {
+          _cardList = data;
+        });
+
+        APPPlugin.logger.d(data);
+      }
+    }
   }
 
   @override
@@ -36,6 +49,23 @@ class _DiscountPage extends State<DiscountPage> {
     // TODO: implement initState
     getData();
     super.initState();
+  }
+
+  List<Widget> renderCardList() {
+    final List<Widget> widgets = [];
+    _cardList.forEach((card) {
+      final text = card["discount"];
+      final money = int.parse(text).toStringAsFixed(2);
+      widgets.add(DiscountCard(
+        used: card['state'] == 1,
+        child: Text(
+          "\$ ${money}",
+          style: TextStyle(fontSize: 36.sp, color: Colors.white),
+        ),
+        
+      ));
+    });
+    return widgets;
   }
 
   @override
@@ -46,29 +76,7 @@ class _DiscountPage extends State<DiscountPage> {
           padding: EdgeInsets.all(24.w),
           child: SingleChildScrollView(
               child: Column(
-            children: [
-              DiscountCard(
-                used: false,
-                child: Text(
-                  "\$ 2.00",
-                  style: TextStyle(fontSize: 36.sp, color: Colors.white),
-                ),
-              ),
-              DiscountCard(
-                used: false,
-                child: Text(
-                  "\$ 2.00",
-                  style: TextStyle(fontSize: 36.sp, color: Colors.white),
-                ),
-              ),
-              DiscountCard(
-                used: true,
-                child: Text(
-                  "\$ 2.00",
-                  style: TextStyle(fontSize: 36.sp, color: Colors.white),
-                ),
-              )
-            ],
+            children: renderCardList(),
           )),
         ));
   }

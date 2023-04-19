@@ -37,6 +37,7 @@ class NetUtils {
       localHeaders = headers ?? jsonDecode(head!);
 
       localHeaders?["Authorization"] = "Bearer ${Application.token}";
+      localHeaders?["userId"] = Application.userInfo?["userId"];
       ///拦截器
       dio.interceptors.add(InterceptorsWrapper(
         onRequest: (RequestOptions options, handler) async {
@@ -133,7 +134,7 @@ class NetUtils {
         } else {
           Map errorResponseData;
           if (ProjectConfig.getInstance()?.isDebug == true) {
-            errorResponseData = {"message": "请求失败！${responsedata['message']}"};
+            errorResponseData = {"message": "请求失败！${responsedata?['message']}"};
           } else {
             errorResponseData = {"message": "请求失败！"};
           }
