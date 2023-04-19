@@ -42,8 +42,7 @@ class MyApp extends StatelessWidget {
                       color: Color.fromRGBO(151, 151, 151, 1))),
 
               /// 跟随系统语言
-              locale: Get.locale,
-
+              locale: const Locale("en", "US"),
               /// 配置错误的情况下使用的语言列表
               fallbackLocale: const Locale("en", "US"),
               initialRoute: '/splash',
