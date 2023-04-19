@@ -19,8 +19,23 @@ class DeactivatePage extends StatelessWidget {
             padding: EdgeInsets.all(24.w),
             child: Column(
               children: [
-                Text(
-                    '''Are you sure you want to deactivate your account? Deactivating your account will result in you losing access to this application and all of its features.
+                Text(text),
+                TextButton(
+                    onPressed: () {
+                      Get.toNamed('/confirmDeactivate');
+                    },
+                    child: Text(
+                      "Deactivate",
+                      style: TextStyle(color: Colors.red),
+                    ))
+              ],
+            ),
+          ),
+        ));
+  }
+
+  final text =
+      '''Are you sure you want to deactivate your account? Deactivating your account will result in you losing access to this application and all of its features.
 
 Reason for deactivating your account: Please note that deactivating your account is an irreversible action, which means that you will permanently lose access to this application and all of its features. If you deactivate your account, you will no longer be able to log in or use any of the features of this application.
 
@@ -35,18 +50,5 @@ Finally, please note that deactivating your account is an irreversible action. I
 Back up your account data if necessary.
 Withdraw any outstanding orders or unused services if necessary.
 Cancel your subscriptions if necessary.
-If you have completed these steps and are sure you want to deactivate your account, please enter your password below to confirm this action.'''),
-                TextButton(
-                    onPressed: () {
-                      Get.toNamed('/confirmDeactivate');
-                    },
-                    child: Text(
-                      "Deactivate",
-                      style: TextStyle(color: Colors.red),
-                    ))
-              ],
-            ),
-          ),
-        ));
-  }
+If you have completed these steps and are sure you want to deactivate your account, please enter your password below to confirm this action.''';
 }

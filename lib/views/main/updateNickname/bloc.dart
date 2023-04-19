@@ -14,7 +14,5 @@ class UpdateNicknameFormBloc extends FormBloc<String, String> {
 
   @override
   FutureOr<void> onSubmitting() {
-    // TODO: implement onSubmitting
-    Get.back();
   }
 }

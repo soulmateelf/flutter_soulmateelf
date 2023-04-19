@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 14:15:24
+ * @LastEditTime: 2023-04-18 16:52:56
  * @FilePath: \soulmate\lib\views\base\login\view.dart
  */
 /// Author: kele
@@ -19,11 +19,30 @@ import 'package:flutter_soulmateelf/views/base/login/bloc.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/core/httputil.dart';
+import '../../../utils/plugin/plugin.dart';
 import 'logic.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
   final logic = Get.put(LoginLogic());
+
+  _submit(LoginFormBloc bloc) async{
+    final passwordValidate = await bloc.password.validate();
+    final emailValidate = await bloc.email.validate();
+    if (passwordValidate && emailValidate) {
+      final result = await NetUtils.diorequst("/base/login", 'post', params: {
+        "email": bloc.email.value,
+        "password": bloc.password.value,
+      });
+      APPPlugin.logger.d(result?.data);
+      if (result?.data?["code"] == 200) {
+        Get.toNamed('/home');
+      } else {
+        exSnackBar("password error", type: "error");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +56,7 @@ class LoginPage extends StatelessWidget {
         return Scaffold(
           appBar: backBar(),
           body: GetBuilder<LoginLogic>(builder: (logic) {
-            return FormBlocListener<LoginFormBloc, String, String>(
-                child: SingleChildScrollView(
+            return SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(context).size.height -
@@ -90,6 +108,7 @@ class LoginPage extends StatelessWidget {
                                 textFieldBloc: loginFormBloc.password,
                                 suffixButton: SuffixButton.obscureText,
                                 autofillHints: const [AutofillHints.password],
+                                readOnly: false,
                                 decoration: InputDecoration(
                                     labelText: "Password",
                                     helperText: " ",
@@ -123,7 +142,7 @@ class LoginPage extends StatelessWidget {
                                               const Color.fromRGBO(
                                                   78, 162, 79, 1))),
                                   onPressed: () {
-                                    loginFormBloc.submit();
+                                    _submit(loginFormBloc);
                                   },
                                   child: Text(
                                     "Log in",
@@ -203,7 +222,8 @@ class LoginPage extends StatelessWidget {
                                   alignment: Alignment.center,
                                   child: Text.rich(TextSpan(children: [
                                     const TextSpan(
-                                        text: "By signing up, you agree to our "),
+                                        text:
+                                            "By signing up, you agree to our "),
                                     TextSpan(
                                       text: "Terms, ",
                                       style: const TextStyle(
@@ -211,17 +231,26 @@ class LoginPage extends StatelessWidget {
                                               Color.fromRGBO(78, 162, 79, 1)),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          Get.toNamed('/webview',arguments: {'title':'Terms of Service','url':ProjectConfig.getInstance()?.baseConfig['TermsofServiceUrl']});
+                                          Get.toNamed('/webview', arguments: {
+                                            'title': 'Terms of Service',
+                                            'url': ProjectConfig.getInstance()
+                                                    ?.baseConfig[
+                                                'TermsofServiceUrl']
+                                          });
                                         },
                                     ),
                                     TextSpan(
                                       text: "Privacy Policy.",
                                       style: const TextStyle(
                                           color:
-                                          Color.fromRGBO(78, 162, 79, 1)),
+                                              Color.fromRGBO(78, 162, 79, 1)),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          Get.toNamed('/webview',arguments: {'title':'Privacy Policy','url':ProjectConfig.getInstance()?.baseConfig['PrivacyPolicyUrl']});
+                                          Get.toNamed('/webview', arguments: {
+                                            'title': 'Privacy Policy',
+                                            'url': ProjectConfig.getInstance()
+                                                ?.baseConfig['PrivacyPolicyUrl']
+                                          });
                                         },
                                     )
                                   ]))),
@@ -231,7 +260,7 @@ class LoginPage extends StatelessWidget {
                       ],
                     )),
               ),
-            ));
+            );
           }),
         );
       }),

@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-11 15:10:40
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 11:22:25
+ * @LastEditTime: 2023-04-18 18:10:36
  * @FilePath: \soulmate\lib\views\base\continue\view.dart
  */
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class ContinuePage extends StatelessWidget {
     final type = Get.arguments["type"];
     final email = Get.arguments["email"];
     final password = Get.arguments["password"];
-    if (type == "register") {
+    if (type == "register" || type == "forget") {
       final result = await NetUtils.diorequst("/base/login", 'post', params: {
         "email": email,
         "password": password,

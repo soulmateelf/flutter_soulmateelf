@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 14:49:30
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 14:08:03
+ * @LastEditTime: 2023-04-18 16:53:48
  * @FilePath: \soulmate\lib\views\base\login\bloc.dart
  */
 import "dart:async";
@@ -9,6 +9,7 @@ import "dart:async";
 import "package:flutter_form_bloc/flutter_form_bloc.dart";
 import "package:flutter_soulmateelf/utils/core/httputil.dart";
 import "package:flutter_soulmateelf/utils/plugin/plugin.dart";
+import "package:flutter_soulmateelf/widgets/library/projectLibrary.dart";
 import "package:get/get.dart";
 
 import "logic.dart";
@@ -22,11 +23,15 @@ class LoginFormBloc extends FormBloc<String, String> {
     ],
   );
 
+  static String? _min8Chars(String value) {
+    if (value.length < 8) {
+      return "Password must be at least 8 characters";
+    }
+    return null;
+  }
+
   final password = TextFieldBloc(
-    validators: [
-      FieldBlocValidators.required,
-      FieldBlocValidators.passwordMin6Chars
-    ],
+    validators: [FieldBlocValidators.required, _min8Chars],
   );
 
   LoginFormBloc() {
@@ -37,23 +42,5 @@ class LoginFormBloc extends FormBloc<String, String> {
   }
 
   @override
-  FutureOr<void> onSubmitting() async {
-   try{
-     final result = await NetUtils.diorequst("/base/login", 'post', params: {
-      "email": email.value,
-      "password": password.value,
-    });
-    print(result);
-    APPPlugin.logger.d(result?.data);
-    if (result?.data?["code"] == 200) {
-    } else {
-      
-    }
-   }catch(e){
-    APPPlugin.logger.e('error');
-   }
-
-    // Get.toNamed('/home');
-    return Future(() => false);
-  }
+  FutureOr<void> onSubmitting() async {}
 }
