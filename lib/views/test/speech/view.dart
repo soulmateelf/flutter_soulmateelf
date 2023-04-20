@@ -5,6 +5,7 @@
 ///LastEditTime: 2022-02-09 15:40:33
 ///Description:
 ////////////////////////
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

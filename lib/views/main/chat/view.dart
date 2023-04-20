@@ -86,7 +86,7 @@ class ChatPage extends StatelessWidget {
               )
           ),
         ),
-        GestureDetector(onLongPress: (){print('long press');}, child: Icon(Icons.keyboard_voice_outlined,size: 60.w,))
+        GestureDetector(onTap: (){Get.toNamed('/textToSpeech');}, child: Icon(Icons.keyboard_voice_outlined,size: 60.w,))
       ],
     );
   }
