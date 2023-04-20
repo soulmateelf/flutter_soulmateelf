@@ -61,8 +61,8 @@ class WelcomePage extends StatelessWidget {
                           backgroundColor: MaterialStateProperty.all(
                               const Color.fromRGBO(78, 162, 79, 1))),
                       onPressed: () {
-                        // Get.toNamed('/login');
-                        Get.toNamed('/home');
+                        Get.toNamed('/login');
+                        // Get.toNamed('/home');
                       },
                       child: Text(
                         "Log in",

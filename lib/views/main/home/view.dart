@@ -336,8 +336,14 @@ class _HomePage extends State<HomePage> {
     } else {
       if ((logic.checkedRole["amout"] ?? 0) <= 0) {
         text = "Pay for me";
+        onPressed = () {
+          Get.toNamed('/pay');
+        };
       } else {
         text = "Chat now";
+        onPressed = () {
+          Get.toNamed('/chat');
+        };
       }
     }
 
