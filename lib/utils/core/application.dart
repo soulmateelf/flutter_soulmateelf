@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 14:03:49
+ * @LastEditTime: 2023-04-20 17:48:07
  * @FilePath: \soulmate\lib\utils\core\application.dart
  */
 /// Author: kele
@@ -65,6 +65,8 @@ class Application {
   static Future clearStorage() async {
     /// 由于全局主题色的原因，不能直接全部清空存储，需要保留当前主题
     Application.pres?.clear();
+    Application.token = null;
+    Application.userInfo = null;
 
     /// 保留：主题
     // Application.pres?.setInt('themeIndex', Application.themeIndex);

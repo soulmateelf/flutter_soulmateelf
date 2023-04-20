@@ -97,7 +97,7 @@ class Utils {
     successFn(res) {
       EasyLoading.dismiss();
       Application.clearStorage().then((type) {
-        Get.offAllNamed('/login');
+        Get.offAllNamed('/welcome');
       });
     }
 
@@ -106,7 +106,7 @@ class Utils {
       exSnackBar(error['message'], type: 'error');
     }
 
-    NetUtils.diorequst('/iot4-crpm-api/user/loginOut', 'post',
+    NetUtils.diorequst('/base/logout', 'post',
         successCallBack: successFn,
         errorCallBack: errorFn,
         extra: {"isUrlencoded": true});

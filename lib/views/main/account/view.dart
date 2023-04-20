@@ -1,17 +1,22 @@
 /*
  * @Date: 2023-04-12 18:45:02
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 18:41:01
+ * @LastEditTime: 2023-04-20 17:47:10
  * @FilePath: \soulmate\lib\views\main\account\view.dart
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/utils/core/application.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
+import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
 class AccountPage extends StatelessWidget {
+
+
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -137,7 +142,9 @@ class AccountPage extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(top: 144.w),
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Utils.logout();
+                      },
                       child: Text(
                         "Log out",
                         style: TextStyle(color: Colors.red, fontSize: 28.sp),

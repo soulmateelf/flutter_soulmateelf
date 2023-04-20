@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 13:55:01
+ * @LastEditTime: 2023-04-20 17:25:21
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -16,6 +16,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -67,36 +68,38 @@ class _HomePage extends State<HomePage> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.w),
-                          color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.w),
+                            color: Colors.white,
                           ),
                           child: Row(
                             children: [
                               Expanded(
-                                child: Container(
-                                  height: 448.w,
-                                  width: 280.w,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.w),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.horizontal(
+                                      left: Radius.circular(10.w)),
+                                  child: Container(
+                                    height: 448.w,
+                                    width: 280.w,
+                                    child: logic.checkedRole?["images"] != null
+                                        ? Image.network(
+                                            logic.checkedRole["images"],
+                                            fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              APPPlugin.logger.e('error');
+                                              return Text(" ");
+                                            },
+                                          )
+                                        : null,
                                   ),
-                                  child: logic.checkedRole?["images"] != null
-                                      ? Image.network(
-                                          logic.checkedRole["images"],
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return Text(" ");
-                                          },
-                                        )
-                                      : null,
                                 ),
                               ),
                               Expanded(
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.w),
-                                      color: Colors.white,
-                                    ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.w),
+                                  color: Colors.white,
+                                ),
                                 padding: EdgeInsets.all(20.w),
                                 height: 448.w,
                                 child: Column(
@@ -296,18 +299,19 @@ class _HomePage extends State<HomePage> {
             width: 8.w,
           )),
           child: Stack(children: [
-            Center(child: images != null
-                ? Image.network(
-
-              images,
-              width: 220.w,
-              height: 220.w,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Text("error");
-              },
-            )
-                : Image.asset("assets/images/icons/avatar.png"),),
+            Center(
+              child: images != null
+                  ? Image.network(
+                      images,
+                      width: 220.w,
+                      height: 220.w,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Text("error");
+                      },
+                    )
+                  : Image.asset("assets/images/icons/avatar.png"),
+            ),
             Positioned(
               top: 0,
               right: 0,
