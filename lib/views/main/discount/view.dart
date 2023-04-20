@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-13 10:43:55
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-19 15:18:39
+ * @LastEditTime: 2023-04-20 11:29:29
  * @FilePath: \soulmate\lib\views\main\discount\view.dart
  */
 import 'dart:ffi';
@@ -28,9 +28,7 @@ class _DiscountPage extends State<DiscountPage> {
   getData() async {
     final userInfo = Application.userInfo;
     if (userInfo == null) return;
-    final result = await NetUtils.diorequst("/base/getCoupon", 'get', params: {
-      "userId": userInfo["userId"],
-    });
+    final result = await NetUtils.diorequst("/base/getCoupon", 'get');
 
     if (result.data?["code"] == 200) {
       final data = result.data["data"]["data"];

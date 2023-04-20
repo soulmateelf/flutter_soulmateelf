@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-19 17:07:19
+ * @LastEditTime: 2023-04-20 10:56:31
  * @FilePath: \soulmate\lib\views\main\home\logic.dart
  */
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
@@ -9,6 +9,7 @@ import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:get/get.dart';
 
 class HomeLogic extends GetxController {
+  /// 角色列表
   var _roleList = [];
 
   get roleList {
@@ -20,6 +21,7 @@ class HomeLogic extends GetxController {
     update();
   }
 
+  /// 选中的角色id
   var _checkedRoleId = 1;
 
   get checkedRoleId {
@@ -38,6 +40,7 @@ class HomeLogic extends GetxController {
     return _roleList?.firstWhere((role) => role["id"] == _checkedRoleId);
   }
 
+  /// 获取角色列表
   getRoleList() async {
     final result = await NetUtils.diorequst("/role/getRoleList", 'get');
 
@@ -45,6 +48,10 @@ class HomeLogic extends GetxController {
       APPPlugin.logger.d(result.data["data"]["data"]);
       roleList = result.data["data"]["data"];
     }
+  }
+
+  void toRecharge() {
+    Get.toNamed('/recharge', arguments: {"checkedRoleId": checkedRoleId});
   }
 
   @override

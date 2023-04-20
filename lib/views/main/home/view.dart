@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-19 18:20:58
+ * @LastEditTime: 2023-04-20 13:55:01
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -66,27 +66,39 @@ class _HomePage extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.w),
                           color: Colors.white,
+                          ),
                           child: Row(
                             children: [
                               Expanded(
                                 child: Container(
                                   height: 448.w,
                                   width: 280.w,
-                                  child: Image.network(
-                                    logic.checkedRole?["images"] ?? "",
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Text("");
-                                    },
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.w),
                                   ),
+                                  child: logic.checkedRole?["images"] != null
+                                      ? Image.network(
+                                          logic.checkedRole["images"],
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Text(" ");
+                                          },
+                                        )
+                                      : null,
                                 ),
                               ),
                               Expanded(
                                   child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.w),
+                                      color: Colors.white,
+                                    ),
                                 padding: EdgeInsets.all(20.w),
                                 height: 448.w,
-                                color: Colors.white60,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -165,14 +177,14 @@ class _HomePage extends State<HomePage> {
                                         "assets/images/icons/flash.png"),
                                   ),
                                   Text(
-                                    logic.checkedRole?["amout"].toString() ??
-                                        "",
+                                    (logic.checkedRole?["amout"] ?? 0)
+                                        .toString(),
                                     style: TextStyle(
                                         fontSize: 36.sp,
                                         color: Color.fromRGBO(78, 162, 79, 1)),
                                   ),
                                   Text(
-                                    '/100',
+                                    "/${logic.checkedRole?["baseAmout"] ?? 100}",
                                     style: TextStyle(
                                         fontSize: 26.sp,
                                         color:
@@ -183,8 +195,13 @@ class _HomePage extends State<HomePage> {
                               SizedBox(
                                 width: 40.w,
                                 height: 40.w,
-                                child:
-                                    Image.asset("assets/images/icons/add.png"),
+                                child: InkWell(
+                                  onTap: () {
+                                    logic.toRecharge();
+                                  },
+                                  child: Image.asset(
+                                      "assets/images/icons/add.png"),
+                                ),
                               ),
                             ],
                           ),
@@ -262,7 +279,7 @@ class _HomePage extends State<HomePage> {
     List<Widget> widgets = [];
     logic.roleList.forEach((role) {
       var amout = role["amout"] ?? 0;
-      var images = role["images"] ?? "";
+      var images = role["images"];
       widgets.add(InkWell(
         onTap: () {
           // Get.toNamed('/settings');
@@ -279,14 +296,18 @@ class _HomePage extends State<HomePage> {
             width: 8.w,
           )),
           child: Stack(children: [
-            images != null
+            Center(child: images != null
                 ? Image.network(
-                    images,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Text("error");
-                    },
-                  )
-                : Image.asset("assets/images/icons/avatar.png"),
+
+              images,
+              width: 220.w,
+              height: 220.w,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Text("error");
+              },
+            )
+                : Image.asset("assets/images/icons/avatar.png"),),
             Positioned(
               top: 0,
               right: 0,
@@ -337,7 +358,7 @@ class _HomePage extends State<HomePage> {
       if ((logic.checkedRole["amout"] ?? 0) <= 0) {
         text = "Pay for me";
         onPressed = () {
-          Get.toNamed('/pay');
+          logic.toRecharge();
         };
       } else {
         text = "Chat now";
