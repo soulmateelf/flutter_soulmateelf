@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-16 13:25:21
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 17:38:58
+ * @LastEditTime: 2023-04-20 19:04:20
  * @FilePath: \soulmate\lib\views\main\recharge\view.dart
  */
 import 'package:flutter/cupertino.dart';
@@ -147,7 +147,7 @@ class RechargePage extends StatelessWidget {
                     height: 26.w,
                   ),
                   Text(
-                    product?["amount"]?.toString() ?? " ",
+                    product?["amout"]?.toString() ?? " ",
                     style: TextStyle(fontSize: 26.sp),
                   ),
                 ],
@@ -160,7 +160,7 @@ class RechargePage extends StatelessWidget {
                       width: 160.w,
                       height: 160.w,
                       errorBuilder: (context, error, stackTrace) {
-                        return Text(" 111");
+                        return Text(" ");
                       },
                     )
                   : null,

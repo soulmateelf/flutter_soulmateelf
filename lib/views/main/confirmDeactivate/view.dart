@@ -5,27 +5,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/utils/core/application.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
+import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:flutter_soulmateelf/views/main/confirmDeactivate/bloc.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
 class ConfirmDeactivatePage extends StatelessWidget {
-
-
-  _submit(ConfirmDeactivateFormBloc bloc) async{
-    final passwordValidate =  await bloc.password.validate();
-    if(!passwordValidate) return;
+  _submit(ConfirmDeactivateFormBloc bloc) async {
+    final passwordValidate = await bloc.password.validate();
+    if (!passwordValidate) return;
     final userInfo = Application.userInfo;
-    if(userInfo == null) return ;
-    final result =  await NetUtils.diorequst("/base/blockUp", 'post',params: {
-      "userId":userInfo["userId"],
-      "password":bloc.password.value,
+    if (userInfo == null) return;
+    final result = await NetUtils.diorequst("/base/blockUp", 'post', params: {
+      "userId": userInfo["userId"],
+      "password": bloc.password.value,
     });
     APPPlugin.logger.d(result);
-    if(result?.data["code"] == 200){
-      Get.offAllNamed("/welcome");
+    if (result?.data["code"] == 200) {
+      Utils.logout();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 17:25:21
+ * @LastEditTime: 2023-04-20 19:02:53
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -42,8 +42,14 @@ class _HomePage extends State<HomePage> {
     super.initState();
   }
 
+  void toRecharge() async {
+    await Get.toNamed('/recharge',
+        arguments: {"checkedRoleId": logic.checkedRoleId});
+    update();
+  }
+
   update() {
-    logic.update();
+    setState(() {});
   }
 
   @override
@@ -105,9 +111,12 @@ class _HomePage extends State<HomePage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      children:
-                                          renderStars(role: logic.checkedRole),
+                                    SizedBox(
+                                      height: 42.w,
+                                      child: Row(
+                                        children: renderStars(
+                                            role: logic.checkedRole),
+                                      ),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 24.w),
@@ -200,7 +209,7 @@ class _HomePage extends State<HomePage> {
                                 height: 40.w,
                                 child: InkWell(
                                   onTap: () {
-                                    logic.toRecharge();
+                                    toRecharge();
                                   },
                                   child: Image.asset(
                                       "assets/images/icons/add.png"),
@@ -355,19 +364,20 @@ class _HomePage extends State<HomePage> {
       return null;
     }
     var text = "";
-    var onPressed = () {};
+    var onPressed = () async {};
     if (logic.checkedRole["roleType"] == 3) {
       text = "Character customization";
     } else {
       if ((logic.checkedRole["amout"] ?? 0) <= 0) {
         text = "Pay for me";
-        onPressed = () {
-          logic.toRecharge();
+        onPressed = () async {
+          toRecharge();
         };
       } else {
         text = "Chat now";
-        onPressed = () {
-          Get.toNamed('/chat');
+        onPressed = () async {
+          await Get.toNamed('/chat');
+          logic.getRoleList();
         };
       }
     }

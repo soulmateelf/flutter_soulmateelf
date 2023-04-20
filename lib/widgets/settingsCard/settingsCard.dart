@@ -1,14 +1,14 @@
 /*
  * @Date: 2023-04-12 17:35:24
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-13 19:25:41
+ * @LastEditTime: 2023-04-20 18:05:04
  * @FilePath: \soulmate\lib\widgets\settingsCard\settingsCard.dart
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SettingsCard extends StatelessWidget {
-  Icon icon = const Icon(Icons.arrow_back_ios_new);
+  Widget icon = const Icon(Icons.arrow_back_ios_new);
   String text = "";
   Function onTab = () {};
   SettingsCard(

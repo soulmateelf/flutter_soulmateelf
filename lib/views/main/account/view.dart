@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-12 18:45:02
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 17:47:10
+ * @LastEditTime: 2023-04-20 18:40:08
  * @FilePath: \soulmate\lib\views\main\account\view.dart
  */
 import 'package:flutter/material.dart';
@@ -12,10 +12,18 @@ import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _AccountPage();
+  }
+}
 
-
-
+class _AccountPage extends State<AccountPage> {
+  update() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +54,9 @@ class AccountPage extends StatelessWidget {
                   child: Ink(
                     color: Colors.white,
                     child: InkWell(
-                      onTap: () {
-                        Get.toNamed('/updateNickname');
+                      onTap: () async {
+                        await Get.toNamed('/updateNickname');
+                        update();
                       },
                       child: Container(
                         padding: EdgeInsets.all(20.w),
@@ -71,9 +80,10 @@ class AccountPage extends StatelessWidget {
                   child: Ink(
                     color: Colors.white,
                     child: InkWell(
-                      onTap: () {
-                        Get.toNamed('/updatePassword');
-                      },
+                      onTap: () async{
+                        await Get.toNamed('/updatePassword');
+                        update();
+                      }, 
                       child: Container(
                         padding: EdgeInsets.all(20.w),
                         child: Row(
@@ -120,8 +130,9 @@ class AccountPage extends StatelessWidget {
                   child: Ink(
                     color: Colors.white,
                     child: InkWell(
-                      onTap: () {
-                        Get.toNamed('/deactivate');
+                      onTap: () async {
+                        await Get.toNamed('/deactivate');
+                        update();
                       },
                       child: Container(
                         padding: EdgeInsets.all(20.w),
