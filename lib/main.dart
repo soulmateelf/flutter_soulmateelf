@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
 
               /// 跟随系统语言
               locale: const Locale("en", "US"),
+
               /// 配置错误的情况下使用的语言列表
               fallbackLocale: const Locale("en", "US"),
               initialRoute: '/splash',

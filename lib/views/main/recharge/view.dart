@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-16 13:25:21
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 14:21:22
+ * @LastEditTime: 2023-04-20 19:04:20
  * @FilePath: \soulmate\lib\views\main\recharge\view.dart
  */
 import 'package:flutter/cupertino.dart';
@@ -49,209 +49,7 @@ class RechargePage extends StatelessWidget {
                 child: Wrap(
                   spacing: 20.w,
                   runSpacing: 10.w,
-                  children: [
-                    Container(
-                      width: 346.w,
-                      height: 346.w,
-                      decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                            Color.fromRGBO(235, 248, 242, 1),
-                            Color.fromRGBO(195, 236, 218, 1)
-                          ])),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 121.w,
-                            padding: EdgeInsets.symmetric(vertical: 8.w),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.vertical(
-                                    bottom: Radius.circular(21.w))),
-                            child: Text(
-                              "能量",
-                              style: TextStyle(fontSize: 26.sp),
-                            ),
-                          ),
-                          Image.asset(
-                            "assets/images/icons/cookie.png",
-                            width: 160.w,
-                            height: 160.w,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Text(" ");
-                            },
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(bottom: 18.w),
-                            width: 290.w,
-                            child: ElevatedButton(
-                                onPressed: () {},
-                                style: ButtonStyle(
-                                    padding: MaterialStateProperty.all(
-                                        EdgeInsets.symmetric(vertical: 8.w)),
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.white),
-                                    shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(51.w)))),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "123",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 36.sp),
-                                    ),
-                                    Text(
-                                      "432",
-                                      style: TextStyle(
-                                          color: Colors.red, fontSize: 22.sp),
-                                    ),
-                                  ],
-                                )),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 346.w,
-                      height: 346.w,
-                      decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                            Color.fromRGBO(235, 248, 242, 1),
-                            Color.fromRGBO(195, 236, 218, 1)
-                          ])),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 121.w,
-                            padding: EdgeInsets.symmetric(vertical: 8.w),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.vertical(
-                                    bottom: Radius.circular(21.w))),
-                            child: Text(
-                              "能量",
-                              style: TextStyle(fontSize: 26.sp),
-                            ),
-                          ),
-                          Image.asset(
-                            "assets/images/icons/cake.png",
-                            width: 160.w,
-                            height: 160.w,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Text(" ");
-                            },
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(bottom: 18.w),
-                            width: 290.w,
-                            child: ElevatedButton(
-                                onPressed: () {},
-                                style: ButtonStyle(
-                                    padding: MaterialStateProperty.all(
-                                        EdgeInsets.symmetric(vertical: 8.w)),
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.white),
-                                    shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(51.w)))),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "123",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 36.sp),
-                                    ),
-                                    Text(
-                                      "432",
-                                      style: TextStyle(
-                                          color: Colors.red, fontSize: 22.sp),
-                                    ),
-                                  ],
-                                )),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 346.w,
-                      height: 346.w,
-                      decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                            Color.fromRGBO(235, 248, 242, 1),
-                            Color.fromRGBO(195, 236, 218, 1)
-                          ])),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 121.w,
-                            padding: EdgeInsets.symmetric(vertical: 8.w),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.vertical(
-                                    bottom: Radius.circular(21.w))),
-                            child: Text(
-                              "能量",
-                              style: TextStyle(fontSize: 26.sp),
-                            ),
-                          ),
-                          Image.asset(
-                            "assets/images/icons/cake2.png",
-                            width: 160.w,
-                            height: 160.w,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Text(" ");
-                            },
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(bottom: 18.w),
-                            width: 290.w,
-                            child: ElevatedButton(
-                                onPressed: () {},
-                                style: ButtonStyle(
-                                    padding: MaterialStateProperty.all(
-                                        EdgeInsets.symmetric(vertical: 8.w)),
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.white),
-                                    shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(51.w)))),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "123",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 36.sp),
-                                    ),
-                                    Text(
-                                      "432",
-                                      style: TextStyle(
-                                          color: Colors.red, fontSize: 22.sp),
-                                    ),
-                                  ],
-                                )),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
+                  children: renderProducList(),
                 ),
               ),
 
@@ -310,6 +108,86 @@ class RechargePage extends StatelessWidget {
           ),
         );
       }
+    });
+    return widgets;
+  }
+
+  List<Widget> renderProducList() {
+    List<Widget> widgets = [];
+    logic.productList.forEach((product) {
+      widgets.add(Container(
+        width: 346.w,
+        height: 346.w,
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+              Color.fromRGBO(235, 248, 242, 1),
+              Color.fromRGBO(195, 236, 218, 1)
+            ])),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // card(),
+            Container(
+              width: 121.w,
+              padding: EdgeInsets.symmetric(vertical: 8.w),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius:
+                      BorderRadius.vertical(bottom: Radius.circular(21.w))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/icons/flash.png',
+                    width: 26.w,
+                    height: 26.w,
+                  ),
+                  Text(
+                    product?["amout"]?.toString() ?? " ",
+                    style: TextStyle(fontSize: 26.sp),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              child: product?["productImage"] != null
+                  ? Image.network(
+                      product?["productImage"],
+                      width: 160.w,
+                      height: 160.w,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Text(" ");
+                      },
+                    )
+                  : null,
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 18.w),
+              width: 290.w,
+              child: ElevatedButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                      padding: MaterialStateProperty.all(
+                          EdgeInsets.symmetric(vertical: 8.w)),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(51.w)))),
+                  child: Column(
+                    children: [
+                      Text(
+                        "\$ ${product?["price"]}",
+                        style: TextStyle(color: Colors.black, fontSize: 36.sp),
+                      ),
+                    ],
+                  )),
+            )
+          ],
+        ),
+      ));
     });
     return widgets;
   }

@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-13 14:39:24
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-14 17:29:40
+ * @LastEditTime: 2023-04-20 19:07:25
  * @FilePath: \soulmate\lib\views\main\sendFeedback\view.dart
  */
 import 'dart:ffi';
@@ -183,7 +183,8 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
       widgets.add(
         InkWell(
             onTap: () {
-              removeImages(i);
+              // removeImages(i);
+              
             },
             child: Container(
               child: Image.memory(

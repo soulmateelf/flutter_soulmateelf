@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-10 11:44:42
+ * @LastEditTime: 2023-04-20 18:50:59
  * @FilePath: \soulmate\lib\views\base\splash\view.dart
  */
 /// Author: kele
@@ -31,8 +31,9 @@ class SplashPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/backGround/splash.png',
-              width: 250.w,
+              'assets/images/icons/elfLogo.png',
+              width: 110.w,
+              height: 160.w,
             )
           ],
         ),

@@ -1,16 +1,22 @@
 /*
  * @Date: 2023-04-13 14:25:53
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-13 14:34:31
+ * @LastEditTime: 2023-04-20 19:05:09
  * @FilePath: \soulmate\lib\widgets\purchaseHistoryCard\view.dart
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 
 class PurchaseHistoryCard extends StatelessWidget {
+  var history = null;
+
+  PurchaseHistoryCard({required this.history});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
     return Container(
       margin: EdgeInsets.only(top: 10.w),
       padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -23,13 +29,13 @@ class PurchaseHistoryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "49684684645641654",
+                "${history?["id"]}",
                 style: TextStyle(
                   fontSize: 28.sp,
                 ),
               ),
               Text(
-                "\$ 4.99",
+                "\$ ${history?["orderPrice"]}",
                 style: TextStyle(
                   fontSize: 28.sp,
                 ),
@@ -41,12 +47,13 @@ class PurchaseHistoryCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Icon(
-                    Icons.flash_on,
-                    color: Colors.orange,
+                  Image.asset(
+                    "assets/images/icons/flash.png",
+                    width: 22.w,
+                    height: 22.w,
                   ),
                   Text(
-                    "50",
+                    "${history?["amout"] ?? "0"}",
                     style: TextStyle(
                         fontSize: 22.sp,
                         color: const Color.fromRGBO(102, 102, 102, 1)),
@@ -54,7 +61,7 @@ class PurchaseHistoryCard extends StatelessWidget {
                 ],
               ),
               Text(
-                "March 22, 2023 at 12:23",
+                "${history?["createTime"]}",
                 style: TextStyle(
                     fontSize: 22.sp,
                     color: const Color.fromRGBO(102, 102, 102, 1)),

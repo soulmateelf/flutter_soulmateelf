@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-19 18:51:13
+ * @LastEditTime: 2023-04-20 17:53:46
  * @FilePath: \soulmate\lib\views\base\welcome\view.dart
  */
 /// Author: kele
@@ -40,7 +40,11 @@ class WelcomePage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            child: Text("图片"),
+                            child: Image.asset(
+                              "assets/images/icons/elfLogo.png",
+                              height: 160.w,
+                              width: 110.w,
+                            ),
                           ),
                           Text(
                             "Soulmate ELF",

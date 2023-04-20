@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 13:55:01
+ * @LastEditTime: 2023-04-20 19:02:53
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -16,6 +16,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -41,8 +42,14 @@ class _HomePage extends State<HomePage> {
     super.initState();
   }
 
+  void toRecharge() async {
+    await Get.toNamed('/recharge',
+        arguments: {"checkedRoleId": logic.checkedRoleId});
+    update();
+  }
+
   update() {
-    logic.update();
+    setState(() {});
   }
 
   @override
@@ -67,44 +74,49 @@ class _HomePage extends State<HomePage> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.w),
-                          color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.w),
+                            color: Colors.white,
                           ),
                           child: Row(
                             children: [
                               Expanded(
-                                child: Container(
-                                  height: 448.w,
-                                  width: 280.w,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.w),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.horizontal(
+                                      left: Radius.circular(10.w)),
+                                  child: Container(
+                                    height: 448.w,
+                                    width: 280.w,
+                                    child: logic.checkedRole?["images"] != null
+                                        ? Image.network(
+                                            logic.checkedRole["images"],
+                                            fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              APPPlugin.logger.e('error');
+                                              return Text(" ");
+                                            },
+                                          )
+                                        : null,
                                   ),
-                                  child: logic.checkedRole?["images"] != null
-                                      ? Image.network(
-                                          logic.checkedRole["images"],
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return Text(" ");
-                                          },
-                                        )
-                                      : null,
                                 ),
                               ),
                               Expanded(
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.w),
-                                      color: Colors.white,
-                                    ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.w),
+                                  color: Colors.white,
+                                ),
                                 padding: EdgeInsets.all(20.w),
                                 height: 448.w,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      children:
-                                          renderStars(role: logic.checkedRole),
+                                    SizedBox(
+                                      height: 42.w,
+                                      child: Row(
+                                        children: renderStars(
+                                            role: logic.checkedRole),
+                                      ),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 24.w),
@@ -197,7 +209,7 @@ class _HomePage extends State<HomePage> {
                                 height: 40.w,
                                 child: InkWell(
                                   onTap: () {
-                                    logic.toRecharge();
+                                    toRecharge();
                                   },
                                   child: Image.asset(
                                       "assets/images/icons/add.png"),
@@ -296,18 +308,19 @@ class _HomePage extends State<HomePage> {
             width: 8.w,
           )),
           child: Stack(children: [
-            Center(child: images != null
-                ? Image.network(
-
-              images,
-              width: 220.w,
-              height: 220.w,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Text("error");
-              },
-            )
-                : Image.asset("assets/images/icons/avatar.png"),),
+            Center(
+              child: images != null
+                  ? Image.network(
+                      images,
+                      width: 220.w,
+                      height: 220.w,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Text("error");
+                      },
+                    )
+                  : Image.asset("assets/images/icons/avatar.png"),
+            ),
             Positioned(
               top: 0,
               right: 0,
@@ -351,19 +364,20 @@ class _HomePage extends State<HomePage> {
       return null;
     }
     var text = "";
-    var onPressed = () {};
+    var onPressed = () async {};
     if (logic.checkedRole["roleType"] == 3) {
       text = "Character customization";
     } else {
       if ((logic.checkedRole["amout"] ?? 0) <= 0) {
         text = "Pay for me";
-        onPressed = () {
-          logic.toRecharge();
+        onPressed = () async {
+          toRecharge();
         };
       } else {
         text = "Chat now";
-        onPressed = () {
-          Get.toNamed('/chat');
+        onPressed = () async {
+          await Get.toNamed('/chat');
+          logic.getRoleList();
         };
       }
     }

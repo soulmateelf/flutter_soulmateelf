@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-12 15:49:59
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 13:45:04
+ * @LastEditTime: 2023-04-20 18:26:04
  * @FilePath: \soulmate\lib\views\main\settings\view.dart
  */
 
@@ -14,7 +14,19 @@ import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:flutter_soulmateelf/widgets/settingsCard/settingsCard.dart';
 import 'package:get/get.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _SettingsPage();
+  }
+}
+
+class _SettingsPage extends State<SettingsPage> {
+  update() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -98,8 +110,9 @@ class SettingsPage extends StatelessWidget {
                 )),
                 IconButton(
                   icon: Icon(Icons.arrow_forward_ios),
-                  onPressed: () {
-                    Get.toNamed('/account');
+                  onPressed: () async {
+                    final result = await Get.toNamed('/account');
+                    update();
                   },
                 )
               ],
@@ -110,7 +123,7 @@ class SettingsPage extends StatelessWidget {
             height: 120.w,
             margin: EdgeInsets.only(top: 10.w),
             color: Colors.green,
-            child: Text('advance'),
+            child: Image.asset("assets/images/backGround/advertisement.png"),
           ),
           // SettingsCard(
           //     icon: Icon(Icons.money),
@@ -119,19 +132,31 @@ class SettingsPage extends StatelessWidget {
           //       Get.toNamed("/discount");
           //     }),
           SettingsCard(
-              icon: Icon(Icons.money),
+              icon: Image.asset(
+                "assets/images/icons/purchaseHistory.png",
+                width: 56.w,
+                height: 56.w,
+              ),
               text: "Purchase history",
               onTab: () {
                 Get.toNamed('/purchaseHistory');
               }),
           SettingsCard(
-              icon: Icon(Icons.money),
+              icon: Image.asset(
+                "assets/images/icons/sendFeedback.png",
+                width: 56.w,
+                height: 56.w,
+              ),
               text: "Send feedback",
               onTab: () {
                 Get.toNamed('/sendFeedback');
               }),
           SettingsCard(
-              icon: Icon(Icons.money),
+              icon: Image.asset(
+                "assets/images/icons/privacyPolicy.png",
+                width: 56.w,
+                height: 56.w,
+              ),
               text: "Privacy Policy",
               onTab: () {
                 Get.toNamed('/webview', arguments: {
@@ -141,7 +166,11 @@ class SettingsPage extends StatelessWidget {
                 });
               }),
           SettingsCard(
-              icon: Icon(Icons.money),
+              icon: Image.asset(
+                "assets/images/icons/termsOfService.png",
+                width: 56.w,
+                height: 56.w,
+              ),
               text: "Terms of Service",
               onTab: () {
                 Get.toNamed('/webview', arguments: {

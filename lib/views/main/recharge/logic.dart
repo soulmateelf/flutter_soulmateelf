@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-20 10:33:15
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 14:22:30
+ * @LastEditTime: 2023-04-20 17:36:31
  * @FilePath: \soulmate\lib\views\main\recharge\logic.dart
  */
 
@@ -45,7 +45,6 @@ class RechargetLogic extends GetxController {
   getRoleList() {
     NetUtils.diorequst("/role/getRoleList", 'get').then((result) {
       if (result.data?["code"] == 200) {
-        APPPlugin.logger.d(result.data["data"]["data"]);
         final data = result.data["data"]["data"];
         roleList = data;
 
@@ -55,11 +54,24 @@ class RechargetLogic extends GetxController {
     });
   }
 
+  var _productList = [];
+
+  List<dynamic> get productList {
+    return _productList;
+  }
+
+  set productList(List<dynamic> value) {
+    _productList = value;
+    update();
+  }
+
   // 获取商品列表
   getProductList() {
     NetUtils.diorequst("/product/list", 'get').then((result) {
       if (result.data?["code"] == 200) {
-        APPPlugin.logger.d(result.data);
+        final data = result.data?["data"]?["data"] ?? [];
+        productList = data;
+        APPPlugin.logger.d(data);
       }
     });
   }
@@ -73,6 +85,7 @@ class RechargetLogic extends GetxController {
 
   set couponList(List<dynamic> value) {
     _couponList = value;
+    update();
   }
 
   @override

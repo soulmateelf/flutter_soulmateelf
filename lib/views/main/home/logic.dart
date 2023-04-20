@@ -50,9 +50,7 @@ class HomeLogic extends GetxController {
     }
   }
 
-  void toRecharge() {
-    Get.toNamed('/recharge', arguments: {"checkedRoleId": checkedRoleId});
-  }
+  
 
   @override
   void onInit() {

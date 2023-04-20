@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-13 14:21:37
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-19 15:21:36
+ * @LastEditTime: 2023-04-20 18:15:29
  * @FilePath: \soulmate\lib\views\main\purchaseHistory\view.dart
  */
 import 'package:flutter/material.dart';
@@ -53,7 +53,9 @@ class _PurchaseHistoryPage extends State<PurchaseHistoryPage> {
   List<Widget> renderHistoryList() {
     List<Widget> widgets = [];
     _historyList.forEach((history) {
-      widgets.add(PurchaseHistoryCard());
+      widgets.add(PurchaseHistoryCard(
+        history: history,
+      ));
     });
     return widgets;
   }
