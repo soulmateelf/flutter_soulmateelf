@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-13 14:39:24
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-21 16:44:16
+ * @LastEditTime: 2023-04-21 17:06:52
  * @FilePath: \soulmate\lib\views\main\sendFeedback\view.dart
  */
 import 'dart:ffi';
@@ -9,9 +9,11 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/views/main/sendFeedback/bloc.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
@@ -36,7 +38,6 @@ enum GetImageActionType {
 }
 
 class _SendFeedbackPage extends State<SendFeedbackPage> {
-  var _fileDataList = [];
   List<dynamic> _images = [];
 
   Future<void> getImage(GetImageActionType actionType) async {
@@ -90,55 +91,62 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Upload relevant pictures or information"),
-                              InkWell(
-                                onTap: () async {
-                                  final result = await showConfirmationDialog(
-                                      context: context,
-                                      title: "select",
-                                      actions: [
-                                        const AlertDialogAction(
-                                          key: GetImageActionType.shoot,
-                                          label: 'shoot',
-                                        ),
-                                        const AlertDialogAction(
-                                          key: GetImageActionType.photo,
-                                          label: 'photo',
-                                        ),
-                                      ]);
-                                  if (result != null) {
-                                    getImage(result);
-                                  }
-                                },
-                                child: Container(
-                                  width: 156.w,
-                                  height: 156.w,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 1.w,
-                                          color:
-                                              Color.fromRGBO(153, 153, 153, 1)),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(4.w))),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.add,
-                                          size: 50.sp,
-                                        ),
-                                        Text(
-                                          "upload",
-                                          style: TextStyle(fontSize: 26.sp),
-                                        ),
-                                      ]),
-                                ),
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 8.w),
+                                child: Text(
+                                    "Upload relevant pictures or information"),
                               ),
                               Row(
-                                children: renderImages(),
+                                children: [
+                                  InkWell(
+                                    onTap: () async {
+                                      final result =
+                                          await showConfirmationDialog(
+                                              context: context,
+                                              title: "select",
+                                              actions: [
+                                            const AlertDialogAction(
+                                              key: GetImageActionType.shoot,
+                                              label: 'shoot',
+                                            ),
+                                            const AlertDialogAction(
+                                              key: GetImageActionType.photo,
+                                              label: 'photo',
+                                            ),
+                                          ]);
+                                      if (result != null) {
+                                        getImage(result);
+                                      }
+                                    },
+                                    child: Container(
+                                      width: 156.w,
+                                      height: 156.w,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              width: 1.w,
+                                              color: Color.fromRGBO(
+                                                  153, 153, 153, 1)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(4.w))),
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.add,
+                                              size: 50.sp,
+                                            ),
+                                            Text(
+                                              "upload",
+                                              style: TextStyle(fontSize: 26.sp),
+                                            ),
+                                          ]),
+                                    ),
+                                  ),
+                                  ...renderImages()
+                                ],
                               ),
                             ],
                           ),
@@ -171,7 +179,7 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
 
   void removeImages(int index) {
     setState(() {
-      _fileDataList.removeAt(index);
+      _images.removeAt(index);
     });
   }
 
@@ -186,14 +194,30 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
                   arguments: {"images": _images, "index": i, "type": "file"});
             },
             child: Container(
-              child: Image.file(
-                File(_images[i as dynamic]?["path"]),
-                width: 156.w,
-                height: 156.w,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Text("error");
-                },
+              width: 156.w,
+              height: 156.w,
+              margin: EdgeInsets.only(left: 8.w),
+              child: Stack(
+                children: [
+                  Image.file(
+                    File(_images[i as dynamic]?["path"]),
+                    width: 156.w,
+                    height: 156.w,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Text("error");
+                    },
+                  ),
+                  Positioned(
+                      top: 0,
+                      right: 0,
+                      child: InkWell(
+                        onTap: () {
+                          removeImages(i);
+                        },
+                        child: Icon(Icons.close),
+                      ))
+                ],
               ),
             )),
       );
