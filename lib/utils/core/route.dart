@@ -1,11 +1,12 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-16 13:36:28
+ * @LastEditTime: 2023-04-21 15:41:34
  * @FilePath: \soulmate\lib\utils\core\route.dart
  */
 import 'package:flutter_soulmateelf/views/base/continue/view.dart';
 import 'package:flutter_soulmateelf/views/base/forgetPassword/view.dart';
+import 'package:flutter_soulmateelf/views/base/photoView/view.dart';
 import 'package:flutter_soulmateelf/views/base/setPassword/view.dart';
 import 'package:flutter_soulmateelf/views/base/verification/view.dart';
 import 'package:flutter_soulmateelf/views/base/welcome/view.dart';
@@ -61,6 +62,7 @@ class AppRoute {
     GetPage(name: '/privacyPolicy', page: ()=>PrivacyPolicyPage()), /// 隐私政策
     GetPage(name: '/termsOfService', page: ()=>TermsOfServicePage()), /// 服务条款
     GetPage(name: '/recharge', page:()=>RechargePage()), /// 充值
+    GetPage(name: '/previewPhoto', page:()=>PreviewPhotoPage()), /// 预览图片
     /// text
     GetPage(name: '/textToSpeech', page: () => TextToSpeechPage()),/// 语言测试
     GetPage(name: '/testPay', page: () => TestPayPage()),/// 支付测试

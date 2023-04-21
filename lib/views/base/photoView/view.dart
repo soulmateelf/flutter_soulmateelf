@@ -1,3 +1,11 @@
+/*
+ * @Date: 2023-04-21 15:39:31
+ * @LastEditors: Wws wuwensheng@donganyun.com
+ * @LastEditTime: 2023-04-21 16:13:08
+ * @FilePath: \soulmate\lib\views\base\photoView\view.dart
+ */
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
@@ -42,13 +50,27 @@ class PreviewPhotoPage extends StatelessWidget {
   /// UpdateRemark
   Widget _buildPageItem(item) {
     return PhotoView(
-        backgroundDecoration: const BoxDecoration(color: Colors.white),
-        errorBuilder: (context, object, stackTrace) => Center(
-                child: Text(
-              '加载失败',
-              style: TextStyle(fontSize: 14.sp, color: Colors.black),
-            )),
-        maxScale: PhotoViewComputedScale.covered * 1.4,
-        imageProvider: NetworkImage(item['path']));
+      backgroundDecoration: const BoxDecoration(color: Colors.white),
+      errorBuilder: (context, object, stackTrace) => Center(
+          child: Text(
+        'error',
+        style: TextStyle(fontSize: 14.sp, color: Colors.black),
+      )),
+      maxScale: PhotoViewComputedScale.covered * 1.4,
+      // imageProvider: NetworkImage(item['path']));
+      imageProvider: renderImageProvider(item),
+    );
+  }
+
+  ImageProvider<Object>? renderImageProvider(dynamic item) {
+    if (logic.type == "network") {
+      return NetworkImage(item["path"]);
+    } else if (logic.type == "file") {
+      return FileImage(File(item['path']));
+    } else if (logic.type == "memory") {
+      return MemoryImage(item?["data"]);
+    } else {
+      return null;
+    }
   }
 }
