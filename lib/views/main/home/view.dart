@@ -143,8 +143,13 @@ class _HomePage extends State<HomePage> {
                                             margin: EdgeInsets.only(left: 8.w),
                                             width: 36.w,
                                             height: 36.w,
-                                            child: Image.asset(
-                                                "assets/images/icons/share2.png"),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Get.toNamed('/testPay');
+                                              },
+                                              child: Image.asset(
+                                                  "assets/images/icons/share2.png"),
+                                            ),
                                           ),
                                         ],
                                       ),
