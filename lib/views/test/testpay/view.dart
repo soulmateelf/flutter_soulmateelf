@@ -30,6 +30,11 @@ class TestPayPage extends StatelessWidget {
                   onPressed: () {
                     logic.showProducts();
                   }),
+              ElevatedButton(
+                  child: const Text('pay'),
+                  onPressed: () {
+                    logic.payNow();
+                  }),
             ],
           )
       );
