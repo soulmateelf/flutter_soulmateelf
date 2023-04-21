@@ -34,7 +34,7 @@ class NetUtils {
 
       ///有传自定义head或者没传head参数取默认值
       var head = Application.pres?.getString('headers') ?? "{}";
-      localHeaders = headers ?? jsonDecode(head!);
+      localHeaders = headers ?? jsonDecode(head);
 
       localHeaders?["Authorization"] = "Bearer ${Application.token}";
       localHeaders?["userId"] = Application.userInfo?["userId"];

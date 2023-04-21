@@ -190,4 +190,5 @@ class TextToSpeechLogic extends GetxController {
     update();
     recordPlugin.playByPath(recordPath, 'file');
   }
+
 }

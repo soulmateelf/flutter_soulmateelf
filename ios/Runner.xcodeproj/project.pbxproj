@@ -15,6 +15,7 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		A48E0CBA29E9382800875A5D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A48E0CB929E9382800875A5D /* GoogleService-Info.plist */; };
+		A4F5897029F2228900D00510 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4F5896F29F2228900D00510 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,6 +49,7 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A48E0CB929E9382800875A5D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A4F5896F29F2228900D00510 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		A713516EB8077920AAA34042 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -57,6 +59,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73236176387B7A03941F142D /* Pods_Runner.framework in Frameworks */,
+				A4F5897029F2228900D00510 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +69,7 @@
 		7241E26098DC2174D20266F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A4F5896F29F2228900D00510 /* StoreKit.framework */,
 				4981B264C685D41D18576B31 /* Pods_Runner.framework */,
 			);
 			name = Frameworks;

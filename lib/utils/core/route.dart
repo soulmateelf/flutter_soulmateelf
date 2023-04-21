@@ -22,6 +22,7 @@ import 'package:flutter_soulmateelf/views/main/settings/view.dart';
 import 'package:flutter_soulmateelf/views/main/termsOfService/view.dart';
 import 'package:flutter_soulmateelf/views/main/updateNickname/view.dart';
 import 'package:flutter_soulmateelf/views/main/updatePassword/view.dart';
+import 'package:flutter_soulmateelf/views/test/testpay/view.dart';
 import 'package:get/get.dart';
 /// base
 import 'package:flutter_soulmateelf/views/base/splash/view.dart';
@@ -61,6 +62,7 @@ class AppRoute {
     GetPage(name: '/termsOfService', page: ()=>TermsOfServicePage()), /// 服务条款
     GetPage(name: '/recharge', page:()=>RechargePage()), /// 充值
     /// text
-    GetPage(name: '/textToSpeech', page: () => TextToSpeechPage()),/// 聊天
+    GetPage(name: '/textToSpeech', page: () => TextToSpeechPage()),/// 语言测试
+    GetPage(name: '/testPay', page: () => TestPayPage()),/// 支付测试
   ];
 }

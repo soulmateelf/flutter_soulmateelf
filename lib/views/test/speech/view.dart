@@ -98,6 +98,10 @@ class TextToSpeechPage extends StatelessWidget {
                   onPressed: (){logic.playAudio();},
                   child: const Icon(Icons.play_arrow)
               ),
+              ElevatedButton(
+                  onPressed: (){Get.toNamed('/testPay');},
+                  child: const Icon(Icons.shopping_cart)
+              ),
             ],
           )
       );
