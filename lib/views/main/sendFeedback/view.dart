@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-13 14:39:24
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 19:07:25
+ * @LastEditTime: 2023-04-21 16:44:16
  * @FilePath: \soulmate\lib\views\main\sendFeedback\view.dart
  */
 import 'dart:ffi';
@@ -37,25 +37,24 @@ enum GetImageActionType {
 
 class _SendFeedbackPage extends State<SendFeedbackPage> {
   var _fileDataList = [];
+  List<dynamic> _images = [];
 
   Future<void> getImage(GetImageActionType actionType) async {
     /// 如果选择的是相册
     if (actionType == GetImageActionType.photo) {
       final files = await ImagePicker().pickMultiImage();
-      final datas = await Future.wait<Uint8List>(files.map((e) {
-        return e.readAsBytes();
-      }));
-      setState(() {
-        _fileDataList = datas;
+      files.forEach((file) {
+        _images.add({"path": file.path});
       });
+      setState(() {});
     } else if (actionType == GetImageActionType.shoot) {
       // 如果选择的拍摄
       final XFile? image =
           await ImagePicker().pickImage(source: ImageSource.camera);
       if (image != null) {
-        final imageData = await image.readAsBytes();
+        final imagePath = image.path;
         setState(() {
-          _fileDataList = [imageData];
+          _images.add({"path": imagePath});
         });
       }
     }
@@ -110,7 +109,6 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
                                   if (result != null) {
                                     getImage(result);
                                   }
-                                  print(result);
                                 },
                                 child: Container(
                                   width: 156.w,
@@ -153,7 +151,7 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
                             )),
                         Container(
                           height: 120.w,
-                          padding: EdgeInsets.symmetric(horizontal: 24.w),
+                          margin: EdgeInsets.symmetric(horizontal: 24.w),
                           child: TextFieldBlocBuilder(
                             textFieldBloc: bloc.email,
                             decoration: InputDecoration(
@@ -179,19 +177,23 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
 
   List<Widget> renderImages() {
     List<Widget> widgets = [];
-    for (int i = 0; i < _fileDataList.length; i++) {
+    for (int i = 0; i < _images.length; i++) {
       widgets.add(
         InkWell(
             onTap: () {
               // removeImages(i);
-              
+              Get.toNamed('previewPhoto',
+                  arguments: {"images": _images, "index": i, "type": "file"});
             },
             child: Container(
-              child: Image.memory(
-                _fileDataList[i as dynamic],
+              child: Image.file(
+                File(_images[i as dynamic]?["path"]),
                 width: 156.w,
                 height: 156.w,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Text("error");
+                },
               ),
             )),
       );

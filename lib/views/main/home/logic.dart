@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 10:56:31
+ * @LastEditTime: 2023-04-21 16:31:55
  * @FilePath: \soulmate\lib\views\main\home\logic.dart
  */
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
@@ -37,20 +37,24 @@ class HomeLogic extends GetxController {
     if (_roleList.length == 0) {
       return null;
     }
-    return _roleList?.firstWhere((role) => role["id"] == _checkedRoleId);
+    return (_roleList ?? []).firstWhere(
+      (role) => role["id"] == _checkedRoleId,
+      orElse: () => null,
+    );
   }
 
   /// 获取角色列表
   getRoleList() async {
     final result = await NetUtils.diorequst("/role/getRoleList", 'get');
 
-    if (result.data?["code"] == 200) {
+    if (result?.data?["code"] == 200) {
       APPPlugin.logger.d(result.data["data"]["data"]);
       roleList = result.data["data"]["data"];
+      if (roleList.length > 0) {
+        checkedRoleId = roleList[0]?["id"];
+      }
     }
   }
-
-  
 
   @override
   void onInit() {
