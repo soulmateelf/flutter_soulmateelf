@@ -150,17 +150,14 @@ class _HomePage extends State<HomePage> {
                                             SizedBox(
                                               width: 36.w,
                                               height: 36.w,
-                                              child: logic.checkedRole?[
-                                                          "share"] ==
-                                                      1
-                                                  ? Image.asset(
+                                              child: logic.checkedRole?["share"] == 1?
+                                                  Image.asset(
                                                       "assets/images/icons/edit2.png")
                                                   : Image.asset(
                                                       "assets/images/icons/edit.png"),
                                             ),
                                             Container(
-                                                margin:
-                                                    EdgeInsets.only(left: 8.w),
+                                                margin:EdgeInsets.only(left: 8.w),
                                                 width: 36.w,
                                                 height: 36.w,
                                                 child: GestureDetector(
@@ -172,6 +169,8 @@ class _HomePage extends State<HomePage> {
                                                           logic.shareCallBack,
                                                     );
                                                   },
+                                                  child: Image.asset(
+                                                      "assets/images/icons/share2.png"),
                                                 ))
                                           ],
                                         ),
