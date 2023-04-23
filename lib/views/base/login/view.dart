@@ -41,7 +41,7 @@ class LoginPage extends StatelessWidget {
         
         Application.userInfo =  result?.data?["data"];
         Application.token = result?.data?["token"];
-        Get.toNamed('/home');
+        Get.offAllNamed('/home');
       } else {
         exSnackBar("password error", type: "error");
       }

@@ -59,7 +59,7 @@ class SplashLogic extends GetxController {
       /// 未登录状态
       Get.offNamed('/welcome');
     } else {
-      Get.offNamed('/home');
+      Get.offAllNamed('/home');
     }
   }
 

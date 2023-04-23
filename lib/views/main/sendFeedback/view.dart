@@ -1,24 +1,23 @@
 /*
  * @Date: 2023-04-13 14:39:24
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-21 17:06:52
+ * @LastEditTime: 2023-04-23 15:30:55
  * @FilePath: \soulmate\lib\views\main\sendFeedback\view.dart
  */
-import 'dart:ffi';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soulmateelf/utils/core/application.dart';
+import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/views/main/sendFeedback/bloc.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:image_picker/image_picker.dart';
-import 'package:logger/logger.dart';
 
 class SendFeedbackPage extends StatefulWidget {
   @override
@@ -39,6 +38,33 @@ enum GetImageActionType {
 
 class _SendFeedbackPage extends State<SendFeedbackPage> {
   List<dynamic> _images = [];
+
+  _submit(SendFeedbackFormBloc bloc) async {
+    final blocs = bloc.state.fieldBlocs()?.values ?? [];
+    final validates =
+        await Future.wait(blocs.map((element) => element.validate()));
+    final validated = validates.every((element) => element);
+
+    if (!validated) return;
+    APPPlugin.logger.d(_images);
+    final files = await Future.wait(
+        _images.map((e) => MultipartFile.fromFile(e["path"])));
+
+    final formData = FormData.fromMap({
+      "email": bloc.email.value,
+      "content": bloc.feedback.value,
+      "file": files
+    });
+
+    final result = await NetUtils.diorequst("/base/feedback", 'post',
+        params: formData, extra: {'isUrlencoded': true});
+    if (result.data?["code"] == 200) {
+      exSnackBar(result.data?["message"], onClose: () {
+        print("back");
+        Get.back();
+      });
+    }
+  }
 
   Future<void> getImage(GetImageActionType actionType) async {
     /// 如果选择的是相册
@@ -96,57 +122,61 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
                                 child: Text(
                                     "Upload relevant pictures or information"),
                               ),
-                              Row(
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      final result =
-                                          await showConfirmationDialog(
-                                              context: context,
-                                              title: "select",
-                                              actions: [
-                                            const AlertDialogAction(
-                                              key: GetImageActionType.shoot,
-                                              label: 'shoot',
-                                            ),
-                                            const AlertDialogAction(
-                                              key: GetImageActionType.photo,
-                                              label: 'photo',
-                                            ),
-                                          ]);
-                                      if (result != null) {
-                                        getImage(result);
-                                      }
-                                    },
-                                    child: Container(
-                                      width: 156.w,
-                                      height: 156.w,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 1.w,
-                                              color: Color.fromRGBO(
-                                                  153, 153, 153, 1)),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(4.w))),
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.add,
-                                              size: 50.sp,
-                                            ),
-                                            Text(
-                                              "upload",
-                                              style: TextStyle(fontSize: 26.sp),
-                                            ),
-                                          ]),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () async {
+                                        final result =
+                                            await showConfirmationDialog(
+                                                context: context,
+                                                title: "select",
+                                                actions: [
+                                              const AlertDialogAction(
+                                                key: GetImageActionType.shoot,
+                                                label: 'shoot',
+                                              ),
+                                              const AlertDialogAction(
+                                                key: GetImageActionType.photo,
+                                                label: 'photo',
+                                              ),
+                                            ]);
+                                        if (result != null) {
+                                          getImage(result);
+                                        }
+                                      },
+                                      child: Container(
+                                        width: 156.w,
+                                        height: 156.w,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                width: 1.w,
+                                                color: Color.fromRGBO(
+                                                    153, 153, 153, 1)),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(4.w))),
+                                        child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.add,
+                                                size: 50.sp,
+                                              ),
+                                              Text(
+                                                "upload",
+                                                style:
+                                                    TextStyle(fontSize: 26.sp),
+                                              ),
+                                            ]),
+                                      ),
                                     ),
-                                  ),
-                                  ...renderImages()
-                                ],
+                                    ...renderImages()
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -158,7 +188,6 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
                               style: TextStyle(fontSize: 22.sp),
                             )),
                         Container(
-                          height: 120.w,
                           margin: EdgeInsets.symmetric(horizontal: 24.w),
                           child: TextFieldBlocBuilder(
                             textFieldBloc: bloc.email,
@@ -169,6 +198,17 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
                                         width: 2.w, color: Colors.black))),
                           ),
                         ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(24.w, 24.w, 24.w, 0),
+                          width: double.infinity,
+                          height: 94.w,
+                          child: ElevatedButton(
+                            child: Text("Send"),
+                            onPressed: () {
+                              _submit(bloc);
+                            },
+                          ),
+                        )
                       ]),
                 ),
               );

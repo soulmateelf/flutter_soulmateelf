@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 17:48:07
+ * @LastEditTime: 2023-04-23 15:00:54
  * @FilePath: \soulmate\lib\utils\core\application.dart
  */
 /// Author: kele
@@ -50,6 +50,7 @@ class Application {
   }
 
   static String? get token {
+    print(_token);
     return _token;
   }
 

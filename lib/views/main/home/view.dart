@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 19:02:53
+ * @LastEditTime: 2023-04-21 17:37:56
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -53,229 +53,246 @@ class _HomePage extends State<HomePage> {
   }
 
   @override
+  void reassemble() {
+    // TODO: implement reassemble
+    super.reassemble();
+  }
+
+  @override
   Widget build(BuildContext context) {
     ScreenUtil.init(Get.context!, designSize: const Size(750, 1624));
 
     return GetBuilder<HomeLogic>(builder: (logic) {
-      return basePage("homer",
-          backgroundColor: Colors.transparent,
-          showAppBar: false,
-          child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(20.w, 20.w, 20.w, 0),
-                    color: Color.fromRGBO(232, 232, 223, 1),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.w),
-                            color: Colors.white,
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.horizontal(
-                                      left: Radius.circular(10.w)),
-                                  child: Container(
-                                    height: 448.w,
-                                    width: 280.w,
-                                    child: logic.checkedRole?["images"] != null
-                                        ? Image.network(
-                                            logic.checkedRole["images"],
-                                            fit: BoxFit.cover,
-                                            errorBuilder:
-                                                (context, error, stackTrace) {
-                                              APPPlugin.logger.e('error');
-                                              return Text(" ");
-                                            },
-                                          )
-                                        : null,
+      return WillPopScope(
+        child: basePage("homer",
+            backgroundColor: Colors.transparent,
+            showAppBar: false,
+            child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20.w, 20.w, 20.w, 0),
+                      color: Color.fromRGBO(232, 232, 223, 1),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.w),
+                              color: Colors.white,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.horizontal(
+                                        left: Radius.circular(10.w)),
+                                    child: Container(
+                                      height: 448.w,
+                                      width: 280.w,
+                                      child: logic.checkedRole?["images"] !=
+                                              null
+                                          ? Image.network(
+                                              logic.checkedRole["images"],
+                                              fit: BoxFit.cover,
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                APPPlugin.logger.e('error');
+                                                return Text(" ");
+                                              },
+                                            )
+                                          : null,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.w),
-                                  color: Colors.white,
-                                ),
-                                padding: EdgeInsets.all(20.w),
-                                height: 448.w,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 42.w,
-                                      child: Row(
-                                        children: renderStars(
-                                            role: logic.checkedRole),
+                                Expanded(
+                                    child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.w),
+                                    color: Colors.white,
+                                  ),
+                                  padding: EdgeInsets.all(20.w),
+                                  height: 448.w,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 42.w,
+                                        child: Row(
+                                          children: renderStars(
+                                              role: logic.checkedRole),
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 24.w),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              logic.checkedRole?["roleName"] ??
-                                                  "Soulmate ELF",
-                                              overflow: TextOverflow.ellipsis,
-                                              softWrap: false,
-                                              style: TextStyle(
-                                                fontSize: 36.sp,
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 24.w),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                logic.checkedRole?[
+                                                        "roleName"] ??
+                                                    "Soulmate ELF",
+                                                overflow: TextOverflow.ellipsis,
+                                                softWrap: false,
+                                                style: TextStyle(
+                                                  fontSize: 36.sp,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: 36.w,
-                                            height: 36.w,
-                                            child: Image.asset(
-                                                "assets/images/icons/edit2.png"),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsets.only(left: 8.w),
-                                            width: 36.w,
-                                            height: 36.w,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                Get.toNamed('/testPay');
-                                              },
+                                            SizedBox(
+                                              width: 36.w,
+                                              height: 36.w,
                                               child: Image.asset(
-                                                  "assets/images/icons/share2.png"),
+                                                  "assets/images/icons/edit2.png"),
                                             ),
-                                          ),
-                                        ],
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(left: 8.w),
+                                              width: 36.w,
+                                              height: 36.w,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Get.toNamed('/testPay');
+                                                },
+                                                child: Image.asset(
+                                                    "assets/images/icons/share2.png"),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 24.w),
+                                        child: Text(
+                                            "Age：${logic.checkedRole?["age"].toString() ?? "unknown"}"),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 24.w),
+                                        // ignore: prefer_interpolation_to_compose_strings
+                                        child: Text("Gender：" +
+                                            (logic.checkedRole?["gender"] ??
+                                                "unknown")),
+                                      ),
+                                      Expanded(
+                                          child: Padding(
+                                        padding: EdgeInsets.only(top: 24.w),
+                                        child: Text(logic.checkedRole?[
+                                                "roleIntroduction"] ??
+                                            ""),
+                                      )),
+                                    ],
+                                  ),
+                                ))
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 15.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    SizedBox(
+                                      width: 40.w,
+                                      height: 40.w,
+                                      child: Image.asset(
+                                          "assets/images/icons/flash.png"),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 24.w),
-                                      child: Text(
-                                          "Age：${logic.checkedRole?["age"].toString() ?? "unknown"}"),
+                                    Text(
+                                      (logic.checkedRole?["amout"] ?? 0)
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: 36.sp,
+                                          color:
+                                              Color.fromRGBO(78, 162, 79, 1)),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 24.w),
-                                      // ignore: prefer_interpolation_to_compose_strings
-                                      child: Text("Gender：" +
-                                          (logic.checkedRole?["gender"] ??
-                                              "unknown")),
+                                    Text(
+                                      "/${logic.checkedRole?["baseAmout"] ?? 100}",
+                                      style: TextStyle(
+                                          fontSize: 26.sp,
+                                          color: Color.fromRGBO(
+                                              102, 102, 102, 100)),
                                     ),
-                                    Expanded(
-                                        child: Padding(
-                                      padding: EdgeInsets.only(top: 24.w),
-                                      child: Text(logic.checkedRole?[
-                                              "roleIntroduction"] ??
-                                          ""),
-                                    )),
                                   ],
                                 ),
-                              ))
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 15.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  SizedBox(
-                                    width: 40.w,
-                                    height: 40.w,
+                                SizedBox(
+                                  width: 40.w,
+                                  height: 40.w,
+                                  child: InkWell(
+                                    onTap: () {
+                                      toRecharge();
+                                    },
                                     child: Image.asset(
-                                        "assets/images/icons/flash.png"),
+                                        "assets/images/icons/add.png"),
                                   ),
-                                  Text(
-                                    (logic.checkedRole?["amout"] ?? 0)
-                                        .toString(),
-                                    style: TextStyle(
-                                        fontSize: 36.sp,
-                                        color: Color.fromRGBO(78, 162, 79, 1)),
-                                  ),
-                                  Text(
-                                    "/${logic.checkedRole?["baseAmout"] ?? 100}",
-                                    style: TextStyle(
-                                        fontSize: 26.sp,
-                                        color:
-                                            Color.fromRGBO(102, 102, 102, 100)),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 40.w,
-                                height: 40.w,
-                                child: InkWell(
-                                  onTap: () {
-                                    toRecharge();
-                                  },
-                                  child: Image.asset(
-                                      "assets/images/icons/add.png"),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 15.w),
-                          padding: const EdgeInsets.all(1),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16.w),
-                              color: const Color.fromRGBO(78, 162, 79, 1)),
-                          child: LinearPercentIndicator(
-                            percent: (logic.checkedRole?['amout'] ?? 0) / 100,
-                            padding: EdgeInsets.zero,
-                            progressColor: const Color.fromRGBO(78, 162, 79, 1),
-                            lineHeight: 16.w,
-                            barRadius: Radius.circular(15.w),
-                            backgroundColor:
-                                const Color.fromRGBO(230, 239, 226, 1),
+                          Container(
+                            margin: EdgeInsets.only(top: 15.w),
+                            padding: const EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.w),
+                                color: const Color.fromRGBO(78, 162, 79, 1)),
+                            child: LinearPercentIndicator(
+                              percent: (logic.checkedRole?['amout'] ?? 0) / 100,
+                              padding: EdgeInsets.zero,
+                              progressColor:
+                                  const Color.fromRGBO(78, 162, 79, 1),
+                              lineHeight: 16.w,
+                              barRadius: Radius.circular(15.w),
+                              backgroundColor:
+                                  const Color.fromRGBO(230, 239, 226, 1),
+                            ),
                           ),
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(top: 34.w),
-                            padding: EdgeInsets.only(bottom: 20.w),
-                            height: 185.w,
-                            child: SingleChildScrollView(
-                              child: Text(
-                                  logic.checkedRole?["characterBackGround"] ??
-                                      ""),
-                            ))
-                      ],
+                          Container(
+                              margin: EdgeInsets.only(top: 34.w),
+                              padding: EdgeInsets.only(bottom: 20.w),
+                              height: 185.w,
+                              child: SingleChildScrollView(
+                                child: Text(
+                                    logic.checkedRole?["characterBackGround"] ??
+                                        ""),
+                              ))
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                      child: Container(
-                    width: double.infinity,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                            child: SingleChildScrollView(
-                          padding: EdgeInsets.all(20.w),
-                          child: Wrap(
-                            runSpacing: 16.w,
-                            spacing: 16.w,
-                            children: renderRoleList(),
+                    Expanded(
+                        child: Container(
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                              child: SingleChildScrollView(
+                            padding: EdgeInsets.all(20.w),
+                            child: Wrap(
+                              runSpacing: 16.w,
+                              spacing: 16.w,
+                              children: renderRoleList(),
+                            ),
+                          )),
+                          Container(
+                            height: 84.w,
+                            width: double.infinity,
+                            child: renderFloatButton(),
                           ),
-                        )),
-                        Container(
-                          height: 84.w,
-                          width: double.infinity,
-                          child: renderFloatButton(),
-                        ),
-                      ],
-                    ),
-                  ))
-                ],
-              )));
+                        ],
+                      ),
+                    ))
+                  ],
+                ))),
+        onWillPop: () {
+          return logic.dealBack();
+        },
+      );
     });
   }
 

@@ -1,9 +1,10 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-21 16:31:55
+ * @LastEditTime: 2023-04-21 17:23:04
  * @FilePath: \soulmate\lib\views\main\home\logic.dart
  */
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:get/get.dart';
@@ -66,6 +67,7 @@ class HomeLogic extends GetxController {
   @override
   void onReady() {
     super.onReady();
+
     return;
   }
 
@@ -73,5 +75,18 @@ class HomeLogic extends GetxController {
   void onClose() {
     super.onClose();
     return;
+  }
+
+  // 上次点击返回键时间
+  int lastClickTime = 0;
+  Future<bool> dealBack() {
+    int now = DateTime.now().millisecondsSinceEpoch;
+    if (now - lastClickTime > 1000) {
+      lastClickTime = DateTime.now().millisecondsSinceEpoch;
+      EasyLoading.showToast('再按一次退出应用');
+      return Future.value(false);
+    } else {
+      return Future.value(true);
+    }
   }
 }

@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-17 17:17:50
+ * @LastEditTime: 2023-04-23 15:39:07
  * @FilePath: \soulmate\lib\widgets\library\resource\exSnackBar.dart
  */
 part of projectLibrary;
@@ -12,6 +12,7 @@ SnackbarController exSnackBar(
   /// 内容
   {
   String type = 'success',
+  Function? onClose,
 
   /// 类型
 }) {
@@ -30,13 +31,26 @@ SnackbarController exSnackBar(
       url = 'assets/images/icons/success.png';
       break;
   }
+
+  onStatusChange(SnackbarStatus? status) {
+    if (status == SnackbarStatus.CLOSED) {
+      if (onClose is Function) {
+        Future.delayed(Duration.zero).then((value) {
+          onClose();
+        });
+      }
+    }
+  }
+
   return Get.snackbar("", "",
       padding: EdgeInsets.only(left: 12.w, top: 8.w, bottom: 12.w),
       maxWidth: 280.w,
       titleText: Container(
         constraints: const BoxConstraints.expand(height: 0),
       ),
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 2000), snackbarStatus: (status) {
+    onStatusChange(status);
+  },
       messageText: Row(children: [
         Padding(
           padding: EdgeInsets.only(right: 10.w),
