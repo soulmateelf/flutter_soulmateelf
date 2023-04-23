@@ -12,6 +12,7 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/config.dart';
@@ -163,7 +164,9 @@ class LoginPage extends StatelessWidget {
                                 height: 94.w,
                                 margin: EdgeInsets.only(top: 32.w),
                                 child: ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      logic.googleLogin();
+                                    },
                                     style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all(
@@ -194,7 +197,9 @@ class LoginPage extends StatelessWidget {
                                 height: 94.w,
                                 margin: EdgeInsets.only(top: 32.w),
                                 child: ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      logic.facebookLogin();
+                                    },
                                     style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all(

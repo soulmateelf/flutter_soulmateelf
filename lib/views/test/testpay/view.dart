@@ -35,6 +35,11 @@ class TestPayPage extends StatelessWidget {
                   onPressed: () {
                     logic.payNow();
                   }),
+              ElevatedButton(
+                  child: const Text('restorePurchases'),
+                  onPressed: () {
+                    logic.restorePurchases();
+                  }),
             ],
           )
       );

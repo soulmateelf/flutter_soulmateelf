@@ -1,132 +1,74 @@
-import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:flutter_soulmateelf/utils/core/application.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
-import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
-import 'package:get/get.dart';
+
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginLogic extends GetxController {
-  // 上次点击返回键时间
-  int lastClickTime = 0;
+  //google登录
+  final GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
+  //facebook登录
+  final facebookSignIn = FacebookLogin();
 
-  // 账号
-  String account = '';
-  // 账号焦点
-  FocusNode accountFocusNode = FocusNode();
-
-  // 密码
-  String password = '';
-  // 密码焦点
-  FocusNode pwdFocusNode = FocusNode();
-
-  // 已读隐私条款
-  bool checkProtocol = false;
-
-  @override
-  void onInit() {
-    // TODO: implement onReady
-    super.onInit();
-
-    account = '111';
-    password = '';
+  //google登录
+  void googleLogin() async{
+    GoogleSignInAccount? googleResult = await googleSignIn.signIn();
+    ///{displayName: kele zxw, email: kelezxw@gmail.com, id: 1069*******, photoUrl: https://lh3.googleusercontent.com/a/AGNmyxbsax2bXt55bBGEUSHb7Ghsaxjsm14OmqvIVuf2=s1337,}
+    thirdLogin({
+      'type': 1,//1:google 2:facebook
+      'loginId': googleResult!.id?.toString(),
+      'nickName': googleResult?.displayName,
+      'image': googleResult?.photoUrl,
+      'email': googleResult?.email,
+    });
   }
-
-  /// Author: kele
-  /// Date: 2022-03-08 15:12:36
-  /// Params:
-  /// Return:
-  /// Description: 处理安卓返回键
-  /// UpdateUser: kele
-  /// UpdateDate:
-  /// UpdateRemark:
-  Future<bool> dealBack() {
-    int now = DateTime.now().millisecondsSinceEpoch;
-    if (now - lastClickTime > 1000) {
-      lastClickTime = DateTime.now().millisecondsSinceEpoch;
-      EasyLoading.showToast('再按一次退出应用');
-      return Future.value(false);
-    } else {
-      return Future.value(true);
+  //facebook登录
+  void facebookLogin() async{
+    Map<String,dynamic> params = {
+      'type': 1,//1:google 2:facebook
+    };
+    final fbResult = await facebookSignIn.logIn(permissions: [FacebookPermission.email]);
+    // Check result status
+    switch (fbResult.status) {
+      case FacebookLoginStatus.success:
+        // Get profile data
+        final profile = await facebookSignIn.getUserProfile();
+        params['loginId'] = profile?.userId;
+        params['nickName'] = profile?.name;
+        // Get user profile image url
+        final imageUrl = await facebookSignIn.getProfileImageUrl(width: 100);
+        params['image'] = imageUrl;
+        // Get email (since we request email permission)
+        final email = await facebookSignIn.getUserEmail();
+        params['email'] = email;
+        //登录
+        thirdLogin(params);
+        return;
+      case FacebookLoginStatus.cancel:
+        // User cancel log in
+        return;
+      case FacebookLoginStatus.error:
+        // Log in failed
+        EasyLoading.showToast('something wrong');
+        return;
     }
   }
-
-  /// Author: kele
-  /// Date: 2022-03-08 15:12:50
-  /// Params:
-  /// Return:
-  /// Description: 登录
-  /// UpdateUser: kele
-  /// UpdateDate:
-  /// UpdateRemark:
-  void login() {
-    if (Utils.isEmpty(account)) {
-      exSnackBar('请输入账号', type: 'warning');
-      return;
-    }
-    if (Utils.isEmpty(password)) {
-      exSnackBar('请输入密码', type: 'warning');
-      return;
-    }
-    if (!checkProtocol) {
-      exSnackBar('请阅读并接受用户协议和隐私条款', type: 'warning');
+  //第三方登录
+  void thirdLogin(params) {
+    if(Utils.isEmpty(params['loginId']) || Utils.isEmpty(params['nickName']) || Utils.isEmpty(params['email'])){
+      EasyLoading.showToast('something wrong');
       return;
     }
     showLoadingMask();
-    Map<String, dynamic> headers = {
-      "dev": "pm",
-    };
-    Application.pres?.setString('headers', jsonEncode(headers));
-
-    Map<String, dynamic> params = {
-      'account': account,
-      'password': password,
-    };
-
-    void successFn(data) {
-      Map<String, dynamic> headers = {
-        "dev": "pm",
-        "x-auth-token": data['data']['x-auth-token'],
-      };
-      Application.pres?.setString('headers', jsonEncode(headers));
-      getUserInfo();
-    }
-
-    void errorFn(error) {
-      EasyLoading.dismiss();
-      exSnackBar(error['message'], type: 'error');
-    }
-    //测试
-    EasyLoading.dismiss();
-    Application.pres?.setString('headers', jsonEncode({}));
-    Application.pres?.setString('userInfo', jsonEncode({}));
-    Get.offNamed('/home');
-    return;
-    NetUtils.diorequst('/iot4-ucenter-api/pm/user/login', 'post',
-        params: params,
-        successCallBack: successFn,
-        errorCallBack: errorFn,
-        extra: {'isUrlencoded': true});
-  }
-
-  /// Author: kele
-  /// Date: 2022-03-08 15:13:07
-  /// Params:
-  /// Return:
-  /// Description: 获取个人信息
-  /// UpdateUser: kele
-  /// UpdateDate:
-  /// UpdateRemark:
-
-  void getUserInfo() {
     void successFn(res) {
       EasyLoading.dismiss();
-      Application.userInfo = res["data"];
-      /// 重写 getter setter 方法后 就不需要手动往储存里放置数据了
-      // Application.pres?.setString('userInfo', jsonEncode(res['data']));
+      Application.userInfo =  res?["data"];
+      Application.token = res?["token"];
       Get.offNamed('/home');
     }
 
@@ -136,10 +78,12 @@ class LoginLogic extends GetxController {
     }
 
     NetUtils.diorequst(
-      '/iot4-crpm-api/user/info',
-      'get',
+      '/base/loginType',
+      'post',
+      params: params,
       successCallBack: successFn,
       errorCallBack: errorFn,
     );
   }
+
 }

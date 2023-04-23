@@ -56,6 +56,18 @@ class HomeLogic extends GetxController {
     }
   }
 
+  // 分享成功，修改角色名称状态
+  shareCallBack() async {
+    final result = await NetUtils.diorequst("/role/updateShare", 'post',
+        params: {
+          "roleId": checkedRoleId,
+        }
+    );
+    if (result?.data?["code"] == 200) {
+      getRoleList();
+    }
+  }
+
   @override
   void onInit() {
     getRoleList();

@@ -33,7 +33,9 @@ class TestPay extends GetxController {
     });
   }
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+    print('purchaseDetailsList:${purchaseDetailsList.length}}');
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      print(purchaseDetails.status);
       if (purchaseDetails.status == PurchaseStatus.pending) {
         //购买进行中，展示加载框
         showLoadingMask();
@@ -47,6 +49,8 @@ class TestPay extends GetxController {
           //购买成功，展示成功信息
           print('购买成功或者restored是什么？？');
           print(purchaseDetails.status );
+          print('purchaseID：${purchaseDetails.purchaseID}');
+          print('purchaseID：${purchaseDetails.productID}');
           // bool valid = await _verifyPurchase(purchaseDetails);
           // if (valid) {
           //   _deliverProduct(purchaseDetails);
@@ -57,8 +61,8 @@ class TestPay extends GetxController {
         }
         if (purchaseDetails.pendingCompletePurchase) {
           //通知IAP平台，已经完成了购买，不管成功还是失败都是结束
-          print('done');
           await InAppPurchase.instance.completePurchase(purchaseDetails);
+          print('pendingCompletePurchase');
         }
       }
     });
@@ -83,4 +87,9 @@ class TestPay extends GetxController {
     InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
 
   }
+  restorePurchases() async{
+    print('恢复购买记录');
+    await InAppPurchase.instance.restorePurchases();
+  }
+
 }

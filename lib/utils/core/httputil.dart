@@ -11,7 +11,8 @@ import 'package:get/get.dart' hide Response;
 class NetUtils {
   /// 可选参数 params headers successCallBack errorCallBack
   static Future diorequst(String url, String method,
-      {Map<String, dynamic>? params,
+      {
+        Map<String, dynamic>? params,
       Map<String, dynamic>? headers,
       Map<String, dynamic>? extra,
       Function? successCallBack,

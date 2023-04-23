@@ -17,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
+import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -136,8 +137,10 @@ class _HomePage extends State<HomePage> {
                                           SizedBox(
                                             width: 36.w,
                                             height: 36.w,
-                                            child: Image.asset(
-                                                "assets/images/icons/edit2.png"),
+                                            child: logic.checkedRole?["share"] == 1?Image.asset(
+                                                "assets/images/icons/edit2.png"):
+                                                Image.asset(
+                                                "assets/images/icons/edit.png"),
                                           ),
                                           Container(
                                             margin: EdgeInsets.only(left: 8.w),
@@ -145,7 +148,11 @@ class _HomePage extends State<HomePage> {
                                             height: 36.w,
                                             child: GestureDetector(
                                               onTap: () {
-                                                Get.toNamed('/testPay');
+                                                Utils.share(
+                                                    "https://icyberelf.com",
+                                                    "assets/images/icons/avatar.png",
+                                                    successCallBack: logic.shareCallBack,
+                                                );
                                               },
                                               child: Image.asset(
                                                   "assets/images/icons/share2.png"),

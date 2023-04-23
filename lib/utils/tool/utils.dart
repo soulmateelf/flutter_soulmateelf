@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_soulmateelf/utils/core/application.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'dart:math';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -111,4 +113,29 @@ class Utils {
         errorCallBack: errorFn,
         extra: {"isUrlencoded": true});
   }
+
+  /// 分享
+  static void share(String path,String imagePath,{Function? successCallBack}) async {
+    if(isEmpty(path) || isEmpty(imagePath)) {
+      EasyLoading.showToast('no path or imagePath');
+      return;
+    }
+    final data = await rootBundle.load(imagePath);
+    final buffer = data.buffer;
+    final shareResult = await Share.shareXFiles(
+      [
+        XFile.fromData(
+          buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
+          name: 'icyberelf.png',
+          mimeType: 'image/png',
+        ),
+      ],
+      text: path,
+    );
+    if(shareResult.status == ShareResultStatus.success) {
+      successCallBack?.call();
+    }
+  }
 }
+
+
