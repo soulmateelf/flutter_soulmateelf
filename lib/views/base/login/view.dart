@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-19 13:54:11
+ * @LastEditTime: 2023-04-23 16:30:58
  * @FilePath: \soulmate\lib\views\base\login\view.dart
  */
 /// Author: kele
@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
   LoginPage({super.key});
   final logic = Get.put(LoginLogic());
 
-  _submit(LoginFormBloc bloc) async{
+  _submit(LoginFormBloc bloc) async {
     final passwordValidate = await bloc.password.validate();
     final emailValidate = await bloc.email.validate();
     if (passwordValidate && emailValidate) {
@@ -39,8 +39,7 @@ class LoginPage extends StatelessWidget {
       });
       APPPlugin.logger.d(result?.data);
       if (result?.data?["code"] == 200) {
-        
-        Application.userInfo =  result?.data?["data"];
+        Application.userInfo = result?.data?["data"];
         Application.token = result?.data?["token"];
         Get.offAllNamed('/home');
       } else {
@@ -95,6 +94,8 @@ class LoginPage extends StatelessWidget {
                                   AutofillHints.email,
                                 ],
                                 decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
                                     labelText: "Email",
                                     helperText: " ",
                                     border: OutlineInputBorder(
@@ -115,6 +116,8 @@ class LoginPage extends StatelessWidget {
                                 autofillHints: const [AutofillHints.password],
                                 readOnly: false,
                                 decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
                                     labelText: "Password",
                                     helperText: " ",
                                     border: OutlineInputBorder(
@@ -181,10 +184,14 @@ class LoginPage extends StatelessWidget {
                                           CrossAxisAlignment.center,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: const [
-                                        Icon(
-                                          Icons.golf_course,
-                                          color: Colors.green,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(right: 18.w),
+                                          child: Image.asset(
+                                            "assets/images/icons/google.png",
+                                            width: 36.w,
+                                            height: 36.w,
+                                          ),
                                         ),
                                         Text(
                                           "Continue with Google",
@@ -214,10 +221,14 @@ class LoginPage extends StatelessWidget {
                                           CrossAxisAlignment.center,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: const [
-                                        Icon(
-                                          Icons.golf_course,
-                                          color: Colors.green,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(right: 18.w),
+                                          child: Image.asset(
+                                            "assets/images/icons/facebook.png",
+                                            width: 36.w,
+                                            height: 36.w,
+                                          ),
                                         ),
                                         Text(
                                           "Continue with Facebook",
@@ -226,7 +237,7 @@ class LoginPage extends StatelessWidget {
                                       ],
                                     ))),
                             Padding(
-                              padding: EdgeInsets.only(top: 40.w),
+                              padding: EdgeInsets.symmetric(vertical: 40.w),
                               child: Align(
                                   alignment: Alignment.center,
                                   child: Text.rich(TextSpan(children: [

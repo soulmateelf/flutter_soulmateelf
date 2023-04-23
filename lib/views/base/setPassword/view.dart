@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 18:05:44
+ * @LastEditTime: 2023-04-23 16:31:03
  * @FilePath: \soulmate\lib\views\base\setPassword\view.dart
  */
 /// Author: kele
@@ -106,7 +106,8 @@ class SetPasswordPage extends StatelessWidget {
                               AutofillHints.password,
                             ],
                             suffixButton: SuffixButton.obscureText,
-                            decoration: InputDecoration(
+                            decoration: InputDecoration(filled: true,
+                                fillColor: Colors.white,
                                 labelText: "Password",
                                 helperText: " ",
                                 border: OutlineInputBorder(
@@ -125,7 +126,8 @@ class SetPasswordPage extends StatelessWidget {
                             textFieldBloc: setPasswordFormBloc.confirmPassword,
                             suffixButton: SuffixButton.obscureText,
                             autofillHints: const [AutofillHints.password],
-                            decoration: InputDecoration(
+                            decoration: InputDecoration(filled: true,
+                                fillColor: Colors.white,
                                 labelText: "Confirm password",
                                 helperText: " ",
                                 border: OutlineInputBorder(
