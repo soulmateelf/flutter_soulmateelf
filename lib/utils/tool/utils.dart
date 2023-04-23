@@ -115,8 +115,9 @@ class Utils {
   }
 
   /// 分享
-  static void share(String path,String imagePath,{Function? successCallBack}) async {
-    if(isEmpty(path) || isEmpty(imagePath)) {
+  static void share(String path, String imagePath,
+      {Function? successCallBack}) async {
+    if (isEmpty(path) || isEmpty(imagePath)) {
       EasyLoading.showToast('no path or imagePath');
       return;
     }
@@ -132,10 +133,8 @@ class Utils {
       ],
       text: path,
     );
-    if(shareResult.status == ShareResultStatus.success) {
+    if (shareResult.status == ShareResultStatus.success) {
       successCallBack?.call();
     }
   }
 }
-
-

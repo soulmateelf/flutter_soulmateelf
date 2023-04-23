@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-11 15:10:40
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 18:10:36
+ * @LastEditTime: 2023-04-21 17:15:09
  * @FilePath: \soulmate\lib\views\base\continue\view.dart
  */
 import 'package:flutter/material.dart';
@@ -31,7 +31,7 @@ class ContinuePage extends StatelessWidget {
         Application.userInfo = result?.data?["data"];
         Application.token = result?.data["token"];
         APPPlugin.logger.d(result);
-        Get.toNamed('/home');
+        Get.offAllNamed('/home');
       }else{
         exSnackBar("登录失败");
       }

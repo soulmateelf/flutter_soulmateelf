@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 17:53:46
+ * @LastEditTime: 2023-04-21 17:15:44
  * @FilePath: \soulmate\lib\views\base\welcome\view.dart
  */
 /// Author: kele
@@ -66,7 +66,6 @@ class WelcomePage extends StatelessWidget {
                               const Color.fromRGBO(78, 162, 79, 1))),
                       onPressed: () {
                         Get.toNamed('/login');
-                        // Get.toNamed('/home');
                       },
                       child: Text(
                         "Log in",

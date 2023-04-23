@@ -11,8 +11,7 @@ import 'package:get/get.dart' hide Response;
 class NetUtils {
   /// 可选参数 params headers successCallBack errorCallBack
   static Future diorequst(String url, String method,
-      {
-        Map<String, dynamic>? params,
+      {dynamic? params,
       Map<String, dynamic>? headers,
       Map<String, dynamic>? extra,
       Function? successCallBack,
@@ -39,6 +38,7 @@ class NetUtils {
 
       localHeaders?["Authorization"] = "Bearer ${Application.token}";
       localHeaders?["userId"] = Application.userInfo?["userId"];
+
       ///拦截器
       dio.interceptors.add(InterceptorsWrapper(
         onRequest: (RequestOptions options, handler) async {
@@ -46,8 +46,8 @@ class NetUtils {
           /// header在这里直接赋值会导致其他header属性的丢失
           /// 所以在request函数中处理比较好
           /// 图片类型，在这里特殊处理header
-          if (extra != null && extra["uploadImage"] == true) {
-            options.data = params!["formdata"];
+          if (extra != null && extra?["uploadImage"] == true) {
+            options.data = params?["formdata"];
           }
           return handler.next(options);
           //continue
@@ -68,7 +68,7 @@ class NetUtils {
             method: method,
             headers: localHeaders,
             contentType: extra != null && extra['isUrlencoded'] == true
-                ? Headers.formUrlEncodedContentType
+                ? Headers.multipartFormDataContentType
                 : "application/json; charset=utf-8"),
       );
 
