@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-11 16:39:03
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 18:30:17
+ * @LastEditTime: 2023-04-23 16:30:47
  * @FilePath: \soulmate\lib\views\base\forgetPassword\view.dart
  */
 import 'package:flutter/material.dart';
@@ -61,6 +61,8 @@ class ForgetPassword extends StatelessWidget {
                         decoration: InputDecoration(
                             labelText: "Email",
                             helperText: " ",
+                            filled: true,
+                            fillColor: Colors.white,
                             border: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(4.w)),

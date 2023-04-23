@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-21 17:37:56
+ * @LastEditTime: 2023-04-23 16:09:04
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -13,6 +13,7 @@
 ////////////////////////
 import 'dart:math';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -148,16 +149,42 @@ class _HomePage extends State<HomePage> {
                                               ),
                                             ),
                                             SizedBox(
-                                              width: 36.w,
-                                              height: 36.w,
-                                              child: logic.checkedRole?["share"] == 1?
-                                                  Image.asset(
-                                                      "assets/images/icons/edit2.png")
-                                                  : Image.asset(
-                                                      "assets/images/icons/edit.png"),
-                                            ),
+                                                width: 36.w,
+                                                height: 36.w,
+                                                child: GestureDetector(
+                                                  onTap: () async {
+                                                    final result =
+                                                        await showTextInputDialog(
+                                                            context: context,
+                                                            title: "name",
+                                                            message:
+                                                                "Changing role names",
+                                                            textFields: [
+                                                          DialogTextField(
+                                                            validator: (value) {
+                                                              if(value ==null ||  value.length <=0){
+                                                                  return "The name cannot be empty";
+                                                              }
+                                                            },
+                                                              initialText: logic
+                                                                          .checkedRole?[
+                                                                      "roleName"] ??
+                                                                  "Soulmate ELF")
+                                                        ]);
+                                                    if (result == null) return;
+                                                    APPPlugin.logger.d(result[0]);
+                                                  },
+                                                  child: logic.checkedRole?[
+                                                              "share"] ==
+                                                          1
+                                                      ? Image.asset(
+                                                          "assets/images/icons/edit2.png")
+                                                      : Image.asset(
+                                                          "assets/images/icons/edit.png"),
+                                                )),
                                             Container(
-                                                margin:EdgeInsets.only(left: 8.w),
+                                                margin:
+                                                    EdgeInsets.only(left: 8.w),
                                                 width: 36.w,
                                                 height: 36.w,
                                                 child: GestureDetector(
@@ -252,7 +279,7 @@ class _HomePage extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(16.w),
                                 color: const Color.fromRGBO(78, 162, 79, 1)),
                             child: LinearPercentIndicator(
-                              percent: (logic.checkedRole?['amout'] ?? 0) / 100,
+                              percent: (logic.checkedRole?['amout'] ?? 0) / 300,
                               padding: EdgeInsets.zero,
                               progressColor:
                                   const Color.fromRGBO(78, 162, 79, 1),

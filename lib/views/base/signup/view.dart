@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 16:30:47
+ * @LastEditTime: 2023-04-23 16:31:08
  * @FilePath: \soulmate\lib\views\base\signup\view.dart
  */
 /// Author: kele
@@ -69,7 +69,8 @@ class SignUpPage extends StatelessWidget {
                                   AutofillHints.email,
                                 ],
                                 suffixButton: SuffixButton.asyncValidating,
-                                decoration: InputDecoration(
+                                decoration: InputDecoration(filled: true,
+                                fillColor: Colors.white,
                                     labelText: "Email",
                                     helperText: " ",
                                     border: OutlineInputBorder(
@@ -87,7 +88,8 @@ class SignUpPage extends StatelessWidget {
                               child: TextFieldBlocBuilder(
                                 textFieldBloc: signupFormBloc.nickname,
                                 autofillHints: const [AutofillHints.nickname],
-                                decoration: InputDecoration(
+                                decoration: InputDecoration(filled: true,
+                                fillColor: Colors.white,
                                     labelText: "Nickname",
                                     helperText: " ",
                                     border: OutlineInputBorder(

@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-12 19:06:54
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-19 14:43:19
+ * @LastEditTime: 2023-04-23 16:31:30
  * @FilePath: \soulmate\lib\views\main\updatePassword\view.dart
  */
 import 'package:flutter/material.dart';
@@ -44,6 +44,8 @@ class UpdatePasswordPage extends StatelessWidget {
       required String label,
     }) {
       return InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
         border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(4.w)),
             borderSide: BorderSide(width: 1.w)),

@@ -25,7 +25,7 @@ Widget basePage(
 
   /// 自定义整个appBar
   double elevation = 1,
-  Color bodyColor = const Color.fromRGBO(242, 242, 242, 1),
+    Color bodyColor = const Color.fromRGBO(242, 242, 242, 1),
 
   ///是否开启避免底部被键盘遮挡
   bool? resizeToAvoidBottomInset,
@@ -63,6 +63,8 @@ Widget basePage(
                   actions: actions ?? [],
                   actionsIconTheme: const IconThemeData(color: Colors.black),
                   bottom: bottom,
-                  backgroundColor: backgroundColor ?? Colors.white),
-      body: SafeArea(child: child));
+                  backgroundColor: backgroundColor ?? Colors.white
+              ),
+      body: SafeArea(child: child),
+  );
 }

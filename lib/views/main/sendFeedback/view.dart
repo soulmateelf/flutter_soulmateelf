@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-13 14:39:24
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-23 15:30:55
+ * @LastEditTime: 2023-04-23 16:29:35
  * @FilePath: \soulmate\lib\views\main\sendFeedback\view.dart
  */
 import 'dart:io';
@@ -107,6 +107,8 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
                           textFieldBloc: bloc.feedback,
                           maxLines: 16,
                           decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
                               hintText: "Have feedback? We'd love to hear it.",
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -192,6 +194,8 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
                           child: TextFieldBlocBuilder(
                             textFieldBloc: bloc.email,
                             decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
                                 label: Text("Email for contact"),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -199,11 +203,15 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.fromLTRB(24.w, 24.w, 24.w, 0),
+                          padding: EdgeInsets.symmetric(horizontal: 24.w),
+                          margin: EdgeInsets.only(top: 24.w),
                           width: double.infinity,
                           height: 94.w,
                           child: ElevatedButton(
-                            child: Text("Send"),
+                            child: Text(
+                              "Send",
+                              style: TextStyle(fontSize: 36.sp),
+                            ),
                             onPressed: () {
                               _submit(bloc);
                             },

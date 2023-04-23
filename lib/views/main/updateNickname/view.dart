@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-14 17:35:00
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-19 14:44:39
+ * @LastEditTime: 2023-04-23 16:31:24
  * @FilePath: \soulmate\lib\views\main\updateNickname\view.dart
  */
 /*
@@ -39,7 +39,9 @@ class UpdateNicknamePage extends StatelessWidget {
         if (result?.data?["data"] != null) {
           Application.userInfo = result?.data?["data"];
         }
-        Get.back();
+        exSnackBar("sucess", onClose: () {
+          Get.back();
+        });
       }
     }
   }
@@ -52,6 +54,8 @@ class UpdateNicknamePage extends StatelessWidget {
       required String label,
     }) {
       return InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
         border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(4.w)),
             borderSide: BorderSide(width: 1.w)),

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/utils/tool/utils.dart';
@@ -6,9 +7,12 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class ChatLogic extends GetxController {
   RefreshController refreshController = RefreshController(initialRefresh: false);//刷新控制器
+  ScrollController scrollController = ScrollController();//滚动控制器
   FocusNode focusNode = FocusNode();//输入框焦点
   String iconType = 'normal';///右侧图标类型   normal 正常  input 文本输入状态
   int roleId = -1;///角色id
@@ -17,10 +21,42 @@ class ChatLogic extends GetxController {
   int page = 0; ///页码
   bool canRefresh = true;///可以下拉刷新
   String currentMessage = '';///当前消息
+
+  ///语音转文字
+  SpeechToText speechToText = SpeechToText();
+  ///语音转文字是否可用
+  bool speechEnabled = false;
+  ///语音转文字是否正在录音
+  bool isRecording = false;
+  ///语音转文字的结果
+  String speechResult = '';
   @override
   void onInit() {
     super.onInit();
     roleId = Get.arguments['roleId'];
+    ///初始化语音转文字
+    initSpeechToText();
+    ///初始化消息输入框监听
+    initMessageInputListener();
+    ///获取角色信息
+    getRoleInfo();
+    ///获取消息列表
+    getMessageList('init');
+  }
+  @override
+  void onDispose() {
+    super.dispose();
+    speechToText.stop();
+    refreshController.dispose();
+    scrollController.dispose();
+    focusNode.dispose();
+  }
+  ///初始化语音转文字
+  initSpeechToText() async{
+    speechEnabled = await speechToText.initialize();
+  }
+  ///初始化消息输入框监听
+  initMessageInputListener(){
     focusNode.addListener(() {
       if(focusNode.hasFocus){
         iconType = 'input';
@@ -29,8 +65,6 @@ class ChatLogic extends GetxController {
       }
       update();
     });
-    getRoleInfo();
-    getMessageList();
   }
   ///获取角色信息
   getRoleInfo(){
@@ -55,18 +89,16 @@ class ChatLogic extends GetxController {
     );
   }
   ///获取消息列表
-  void getMessageList({bool newMessage = false}) {
+  void getMessageList(from) {
     Map<String, dynamic> params = {
-      'pageNum': newMessage ? 1:(page + 1),
-      'pageSize': newMessage ? 2:10,
+      'pageNum': from == 'newMessage' ? 1:(page + 1),
+      'pageSize': from == 'newMessage' ? 2:10,
       'roleId': roleId
     };
-
     void successFn(res) {
       page++;
       refreshController.refreshCompleted();
-      APPPlugin.logger.d(res);
-      if(newMessage){
+      if(from == 'newMessage'){
         ///新消息，往下加
         messageList.addAll(res['data']['data']);
       }else{
@@ -79,6 +111,17 @@ class ChatLogic extends GetxController {
         canRefresh = false;
       }else{
         canRefresh = true;
+      }
+      update();
+      if(from != 'refresh'){
+        ///新消息或者第一页，滚动到底部
+        Future.delayed(Duration(milliseconds: 300), () {
+          scrollController.animateTo(
+            scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        });
       }
       update();
     }
@@ -97,25 +140,26 @@ class ChatLogic extends GetxController {
     );
   }
   ///发送消息
-  void sendMessage() {
-    if(Utils.isEmpty(currentMessage)){
+  void sendMessage(String message) {
+    if(Utils.isEmpty(message)){
       return;
     }
     focusNode.unfocus();
     showLoadingMask();
     Map<String, dynamic> params = {
-      'message': currentMessage,
+      'message': message,
       'roleId': roleId.toString()
     };
 
     void successFn(res) {
       EasyLoading.dismiss();
       //清空当前消息
-      currentMessage = '';
+      message = '';
+      speechResult = '';
       focusNode.unfocus();
       update();
       //获取最新消息列表
-      getMessageList(newMessage: true);
+      getMessageList('newMessage');
     }
 
     void errorFn(error) {
@@ -130,5 +174,38 @@ class ChatLogic extends GetxController {
       successCallBack: successFn,
       errorCallBack: errorFn,
     );
+  }
+  ///开始录音
+  void startListening() async {
+    if(!speechEnabled){
+      EasyLoading.showToast('please open the microphone permission!');
+      return;
+    }
+    if(!isRecording){
+      ///开始录音,不能重复启动
+      HapticFeedback.vibrate();
+      isRecording = true;
+      update();
+      await speechToText.listen(onResult: onSpeechResult);
+    }
+
+  }
+  ///停止录音
+  void stopListening() async {
+    if(!speechEnabled || !isRecording){
+      return;
+    }
+    await speechToText.stop();
+    isRecording = false;
+    update();
+    if(Utils.isEmpty(speechResult)){
+      EasyLoading.showToast('please say it again!');
+      return;
+    }
+    sendMessage(speechResult);
+  }
+  ///录音监听转化结果
+  void onSpeechResult(SpeechRecognitionResult result) {
+    speechResult = result.recognizedWords;
   }
 }

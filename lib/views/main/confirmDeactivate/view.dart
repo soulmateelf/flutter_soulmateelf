@@ -65,7 +65,8 @@ class ConfirmDeactivatePage extends StatelessWidget {
                     child: TextFieldBlocBuilder(
                       textFieldBloc: bloc.password,
                       suffixButton: SuffixButton.asyncValidating,
-                      decoration: InputDecoration(
+                      decoration: InputDecoration(filled: true,
+                                fillColor: Colors.white,
                           label: Text("Password"),
                           border: OutlineInputBorder(
                               borderSide: BorderSide(
