@@ -405,7 +405,7 @@ class _HomePage extends State<HomePage> {
       } else {
         text = "Chat now";
         onPressed = () async {
-          await Get.toNamed('/chat');
+          await Get.toNamed('/chat',arguments: {"roleId":logic.checkedRole["id"]});
           logic.getRoleList();
         };
       }

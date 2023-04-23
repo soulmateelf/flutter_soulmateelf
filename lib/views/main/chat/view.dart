@@ -16,15 +16,21 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final logic = Get.put(ChatLogic());
     return GetBuilder<ChatLogic>(builder: (logic) {
-      return basePage('role name',
+      return basePage(logic.roleInfo['roleName']??'',
           leading: IconButton(
               onPressed: () {
                 Get.back();
               },
-              icon: Image.asset(
-                'assets/images/icons/avatar.png',
-                width: 60.w,
-                height: 60.w,
+              icon: ClipOval(
+                child: Image.network(
+                  logic.roleInfo['images']??'',
+                  width: 60.w,
+                  height: 60.w,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(Icons.arrow_back_ios_new,color: Colors.black,);
+                  }
+                )
               ),
           ),
           actions:[
@@ -49,7 +55,7 @@ class ChatPage extends StatelessWidget {
       enablePullDown: logic.canRefresh,
       enablePullUp: false,
       controller: logic.refreshController,
-      onRefresh: logic.getDataList,
+      onRefresh: logic.getMessageList,
       child: ListView.builder(
           itemCount: logic.messageList.length,
           itemBuilder: (context, index) {
@@ -76,23 +82,68 @@ class ChatPage extends StatelessWidget {
                 minLines: 1,
                 style: const TextStyle(fontSize: 14, color: Color.fromRGBO(0, 0, 0, 0.85)),
                 textInputAction: TextInputAction.send,
+                controller: TextEditingController.fromValue(TextEditingValue(text: logic.currentMessage)),
+                focusNode: logic.focusNode,
+                onChanged: (String str) {
+                  logic.currentMessage = str;
+                },
+                onSubmitted: (String str) {
+                  logic.currentMessage = str;
+                },
                 decoration: const InputDecoration(
                     isCollapsed: true,
                     border: InputBorder.none
                 ),
-                onSubmitted: (String str) {
-                  APPPlugin.logger.i(str);
-                },
               )
           ),
         ),
-        GestureDetector(onTap: (){Get.toNamed('/textToSpeech');}, child: Icon(Icons.keyboard_voice_outlined,size: 60.w,))
+        _operateIcon(),
       ],
     );
   }
+  /// 操作图标
+  _operateIcon(){
+    switch(logic.iconType){
+      case 'normal':
+        //正常状态，显示录音按钮
+        return GestureDetector(onTap: (){}, child: Icon(Icons.keyboard_voice_outlined,size: 60.w,));
+      case 'input':
+        //消息输入中，显示发送按钮
+        return GestureDetector(onTap: (){logic.sendMessage();}, child: Icon(Icons.send,color: Get.theme.primaryColor,size: 60.w,));
+    }
+  }
   /// 聊天信息展示组件
   Widget _messageItem(index,itemData){
-    print(index);
-    return Text(itemData['content']);
+    return Container(
+      margin: EdgeInsets.only(bottom: 20.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            alignment:Alignment.center,
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(217, 217, 217, 0.6),
+                borderRadius: BorderRadius.circular(40),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 5.w,horizontal: 30.w),
+              child: Text(itemData['createTime'].toString(),style: TextStyle(fontSize: 22.sp, color: Color.fromRGBO(102, 102, 102, 1)),),
+            ),
+          ),
+          Container(
+            alignment: itemData['role']=='user'?Alignment.centerRight:Alignment.centerLeft,
+            margin: EdgeInsets.only(top: 20.w),
+            child:Container(
+              decoration: BoxDecoration(
+                color: itemData['role']=='user'?const Color.fromRGBO(228, 253, 211, 1):Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 10.w,horizontal: 20.w),
+              child: Text(itemData['content'],style: TextStyle(fontSize: 28.sp, color: Color.fromRGBO(102, 102, 102, 1)),),
+            )
+          ),
+        ],
+      ),
+    );
   }
 }

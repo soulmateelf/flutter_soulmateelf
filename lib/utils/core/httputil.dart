@@ -19,7 +19,7 @@ class NetUtils {
       int connectTimeout = 30000}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      Map errorResponseData = {"message": '请检查您的网络连接!'};
+      Map errorResponseData = {"message": 'plase check you network!'};
       _error(errorResponseData['message'], errorResponseData, errorCallBack);
       return null;
     }
@@ -92,19 +92,19 @@ class NetUtils {
       Function? errorCallBack, params) {
     switch (dioError.type) {
       case DioErrorType.cancel:
-        Map errorResponseData = {"message": "请求取消！"};
+        Map errorResponseData = {"message": "request cancel！"};
         _error(errorResponseData['message'], errorResponseData, errorCallBack);
         break;
       case DioErrorType.connectionTimeout:
-        Map errorResponseData = {"message": "连接超时！"};
+        Map errorResponseData = {"message": "connectionTimeout！"};
         _error(errorResponseData['message'], errorResponseData, errorCallBack);
         break;
       case DioErrorType.sendTimeout:
-        Map errorResponseData = {"message": "请求超时！"};
+        Map errorResponseData = {"message": "sendTimeout！"};
         _error(errorResponseData['message'], errorResponseData, errorCallBack);
         break;
       case DioErrorType.receiveTimeout:
-        Map errorResponseData = {"message": "响应超时！"};
+        Map errorResponseData = {"message": "receiveTimeout！"};
         _error(errorResponseData['message'], errorResponseData, errorCallBack);
         break;
       case DioErrorType.badResponse:
@@ -135,9 +135,9 @@ class NetUtils {
         } else {
           Map errorResponseData;
           if (ProjectConfig.getInstance()?.isDebug == true) {
-            errorResponseData = {"message": "请求失败！${responsedata?['message']}"};
+            errorResponseData = {"message": "error！${responsedata?['message']}"};
           } else {
-            errorResponseData = {"message": "请求失败！"};
+            errorResponseData = {"message": "error！"};
           }
           _error(
               errorResponseData['message'], errorResponseData, errorCallBack);
@@ -147,9 +147,9 @@ class NetUtils {
         // var responsedata = dioError.response.data;
         Map errorResponseData;
         if (ProjectConfig.getInstance()?.isDebug == true) {
-          errorResponseData = {"message": "请求失败！$dioError"};
+          errorResponseData = {"message": "error！$dioError"};
         } else {
-          errorResponseData = {"message": "请求失败！"};
+          errorResponseData = {"message": "error！"};
         }
         _error(errorResponseData['message'], errorResponseData, errorCallBack);
     }
@@ -198,7 +198,7 @@ class NetUtils {
       errorCallBack(responsedata);
     } else {
       if (Utils.isEmpty(errorMessage)) {
-        errorMessage = '操作异常，请稍后再试！';
+        errorMessage = 'something wrong！';
       }
       exSnackBar(errorMessage, type: 'error');
     }
