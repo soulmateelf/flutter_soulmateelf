@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:get/get.dart';
+import 'package:moment_dart/moment_dart.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
@@ -98,6 +99,7 @@ class ChatLogic extends GetxController {
     void successFn(res) {
       page++;
       refreshController.refreshCompleted();
+      print(res);
       if(from == 'newMessage'){
         ///新消息，往下加
         messageList.addAll(res['data']['data']);
@@ -174,6 +176,20 @@ class ChatLogic extends GetxController {
       successCallBack: successFn,
       errorCallBack: errorFn,
     );
+  }
+  ///时间显示逻辑
+  showTime(dynamic itemData,int index){
+    var formatDate = Moment(DateTime.fromMillisecondsSinceEpoch((itemData['createTime']*1000).toInt()));
+    if(index == 0){
+      return formatDate;
+    }
+    var diff = formatDate.fromNow();
+    if(diff == 'a day'){
+      return 'yesterday';
+    }else if(diff == 'a week'){
+      return 'week';
+    }
+    return '11';
   }
   ///开始录音
   void startListening() async {

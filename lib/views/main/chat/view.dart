@@ -167,7 +167,8 @@ class ChatPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(40),
               ),
               padding: EdgeInsets.symmetric(vertical: 5.w,horizontal: 30.w),
-              child: Text("${Moment(DateTime.fromMillisecondsSinceEpoch(1682249383751))}",style: TextStyle(fontSize: 22.sp, color: Color.fromRGBO(102, 102, 102, 1)),),
+              child: Text("${Moment(DateTime.fromMillisecondsSinceEpoch((itemData['createTime']*1000).toInt()))}",style: TextStyle(fontSize: 22.sp, color: Color.fromRGBO(102, 102, 102, 1)),),
+            // ),
             ),
           ),
           Container(
