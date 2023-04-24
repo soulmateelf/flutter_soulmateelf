@@ -57,6 +57,10 @@ class NetUtils {
           //图片类型，在这里特殊处理response
           return handler.next(response); // continue
         },
+        onError: (e, handler) {
+          print(e);
+          return handler.next(e);
+        },
       ));
 
       ///正式请求
@@ -64,6 +68,7 @@ class NetUtils {
         url,
         queryParameters: method == 'get' ? params : null,
         data: method == 'post' ? params : null,
+        
         options: Options(
             method: method,
             headers: localHeaders,
