@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-21 15:41:34
+ * @LastEditTime: 2023-04-23 19:41:51
  * @FilePath: \soulmate\lib\utils\core\route.dart
  */
 import 'package:flutter_soulmateelf/views/base/continue/view.dart';
@@ -13,6 +13,7 @@ import 'package:flutter_soulmateelf/views/base/welcome/view.dart';
 import 'package:flutter_soulmateelf/views/base/signup/view.dart';
 import 'package:flutter_soulmateelf/views/main/account/view.dart';
 import 'package:flutter_soulmateelf/views/main/confirmDeactivate/view.dart';
+import 'package:flutter_soulmateelf/views/main/customRole/view.dart';
 import 'package:flutter_soulmateelf/views/main/deactivate/view.dart';
 import 'package:flutter_soulmateelf/views/main/discount/view.dart';
 import 'package:flutter_soulmateelf/views/main/privacyPolicy/view.dart';
@@ -63,6 +64,7 @@ class AppRoute {
     GetPage(name: '/termsOfService', page: ()=>TermsOfServicePage()), /// 服务条款
     GetPage(name: '/recharge', page:()=>RechargePage()), /// 充值
     GetPage(name: '/previewPhoto', page:()=>PreviewPhotoPage()), /// 预览图片
+    GetPage(name: '/customRole', page:()=>CustomRole()),
     /// text
     GetPage(name: '/textToSpeech', page: () => TextToSpeechPage()),/// 语言测试
     GetPage(name: '/testPay', page: () => TestPayPage()),/// 支付测试

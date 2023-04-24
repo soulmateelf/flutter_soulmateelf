@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-23 16:09:04
+ * @LastEditTime: 2023-04-24 10:28:06
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -86,15 +86,14 @@ class _HomePage extends State<HomePage> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.w),
-                              color: Colors.white,
-                            ),
+                                borderRadius: BorderRadius.circular(10.w),
+                                color: Colors.white30),
                             child: Row(
                               children: [
                                 Expanded(
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.horizontal(
-                                        left: Radius.circular(10.w)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.w)),
                                     child: Container(
                                       height: 448.w,
                                       width: 280.w,
@@ -117,7 +116,6 @@ class _HomePage extends State<HomePage> {
                                     child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.w),
-                                    color: Colors.white,
                                   ),
                                   padding: EdgeInsets.all(20.w),
                                   height: 448.w,
@@ -161,18 +159,23 @@ class _HomePage extends State<HomePage> {
                                                                 "Changing role names",
                                                             textFields: [
                                                           DialogTextField(
-                                                            validator: (value) {
-                                                              if(value ==null ||  value.length <=0){
+                                                              validator:
+                                                                  (value) {
+                                                                if (value ==
+                                                                        null ||
+                                                                    value.length <=
+                                                                        0) {
                                                                   return "The name cannot be empty";
-                                                              }
-                                                            },
+                                                                }
+                                                              },
                                                               initialText: logic
                                                                           .checkedRole?[
                                                                       "roleName"] ??
                                                                   "Soulmate ELF")
                                                         ]);
                                                     if (result == null) return;
-                                                    APPPlugin.logger.d(result[0]);
+                                                    APPPlugin.logger
+                                                        .d(result[0]);
                                                   },
                                                   child: logic.checkedRole?[
                                                               "share"] ==
@@ -279,7 +282,10 @@ class _HomePage extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(16.w),
                                 color: const Color.fromRGBO(78, 162, 79, 1)),
                             child: LinearPercentIndicator(
-                              percent: (logic.checkedRole?['amout'] ?? 0) / 100,
+                              percent: min(
+                                  (logic.checkedRole?['amout'] ?? 0) /
+                                      (logic.checkedRole?["baseAmout"] ?? 100),
+                                  1),
                               padding: EdgeInsets.zero,
                               progressColor:
                                   const Color.fromRGBO(78, 162, 79, 1),
@@ -352,6 +358,7 @@ class _HomePage extends State<HomePage> {
         onTap: () {
           // Get.toNamed('/settings');
           logic.checkedRoleId = role["id"];
+          Get.toNamed('/customRole');
         },
         child: Container(
           width: 220.w,

@@ -76,8 +76,7 @@ class ChatPage extends StatelessWidget {
                 minLines: 1,
                 style: const TextStyle(fontSize: 14, color: Color.fromRGBO(0, 0, 0, 0.85)),
                 textInputAction: TextInputAction.send,
-                decoration: const InputDecoration(filled: true,
-                                fillColor: Colors.white,
+                decoration: const InputDecoration(
                     isCollapsed: true,
                     border: InputBorder.none
                 ),
