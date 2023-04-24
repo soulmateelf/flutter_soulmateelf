@@ -71,8 +71,8 @@
 		<string>fb-messenger-share-api</string>
 	</array>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>abcd-todo</string>
+	<string>we need to use your Mircrophone to record your voice</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>speech-todo</string>
+	<string>we need to use your Speech Recognition  to recognition your voice</string>
 </dict>
 </plist>

@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
-import 'package:flutter_plugin_record_plus/flutter_plugin_record.dart';
+// import 'package:flutter_plugin_record_plus/flutter_plugin_record.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -34,11 +34,11 @@ class TextToSpeechLogic extends GetxController {
   //识别结果
   String lastWords = '';
   //录音
-  FlutterPluginRecord recordPlugin = FlutterPluginRecord();
+  // FlutterPluginRecord recordPlugin = FlutterPluginRecord();
   //录音文件路径
-  String recordPath = '';
+  // String recordPath = '';
   //录音文件大小
-  double recordTime = 0;
+  // double recordTime = 0;
 
   @override
   void onInit(){
@@ -171,6 +171,7 @@ class TextToSpeechLogic extends GetxController {
   }
 
   initRecord() async{
+    /*
     print('record init');
     recordPlugin.response.listen((data) {
       if (data.msg == "onStop") {
@@ -184,11 +185,14 @@ class TextToSpeechLogic extends GetxController {
         print('监听到录音开始');
       }
     });
+    */
   }
   playAudio(){
+    /*
     print(recordTime);
     update();
     recordPlugin.playByPath(recordPath, 'file');
+    */
   }
 
 }

@@ -83,9 +83,8 @@ class NetUtils {
       String realUrl = dio.options.baseUrl + url;
       print('$realUrl接口错误,请求方式$method');
       print('请求参数${params.toString()}');
-      print(dioError.response);
-      return _dealDioError(
-          dioError, url, successCallBack, errorCallBack, params);
+      print(dioError);
+      return _dealDioError(dioError, url, successCallBack, errorCallBack, params);
     } catch (exception) {
       APPPlugin.logger.d(exception);
       Map errorResponseData = {"message": exception.toString()};

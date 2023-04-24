@@ -81,17 +81,20 @@ class TextToSpeechPage extends StatelessWidget {
               GestureDetector(
                 onLongPressStart: (LongPressStartDetails details) {
                   print('长按开始');
-                  logic.recordPlugin.start();
+                  // logic.recordPlugin.start();
                 },
                 onLongPressEnd: (LongPressEndDetails details) {
                   print('长按结束');
-                  logic.recordPlugin.stop();
+                  // logic.recordPlugin.stop();
                 },
                 child: Container(
                   height: 50,
                   width: 50,
                   color: Colors.amber,
-                  child: Row(children: [const Icon(Icons.mic),Text(logic.recordTime.toInt().toString())],),
+                  child: Row(children: [
+                    const Icon(Icons.mic),
+                    // Text(logic.recordTime.toInt().toString())
+                  ],),
                 ),
               ),
               ElevatedButton(
