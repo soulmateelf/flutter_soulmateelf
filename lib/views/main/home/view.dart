@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-24 10:28:06
+ * @LastEditTime: 2023-04-24 10:34:45
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -439,7 +439,7 @@ class _HomePage extends State<HomePage> {
       } else {
         text = "Chat now";
         onPressed = () async {
-          await Get.toNamed('/chat');
+          await Get.toNamed('/chat',arguments: {"roleId":logic.checkedRole["id"]});
           logic.getRoleList();
         };
       }

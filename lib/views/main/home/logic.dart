@@ -49,7 +49,7 @@ class HomeLogic extends GetxController {
     final result = await NetUtils.diorequst("/role/getRoleList", 'get');
 
     if (result?.data?["code"] == 200) {
-      APPPlugin.logger.d(result.data["data"]["data"]);
+      // APPPlugin.logger.d(result.data["data"]["data"]);
       roleList = result.data["data"]["data"];
       if (roleList.length > 0) {
         checkedRoleId = roleList[0]?["id"];
