@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-23 16:30:58
+ * @LastEditTime: 2023-04-24 10:49:55
  * @FilePath: \soulmate\lib\views\base\login\view.dart
  */
 /// Author: kele
@@ -41,7 +41,8 @@ class LoginPage extends StatelessWidget {
       if (result?.data?["code"] == 200) {
         Application.userInfo = result?.data?["data"];
         Application.token = result?.data?["token"];
-        Get.offAllNamed('/home');
+        // Get.offAllNamed('/home');
+        Get.toNamed('/home');
       } else {
         exSnackBar("password error", type: "error");
       }

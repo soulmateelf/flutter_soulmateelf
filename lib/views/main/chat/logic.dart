@@ -32,16 +32,16 @@ class ChatLogic extends GetxController {
   String speechResult = '';
   @override
   void onInit() {
-    super.onInit();
-    roleId = Get.arguments['roleId'];
-    ///初始化语音转文字
-    initSpeechToText();
-    ///初始化消息输入框监听
-    initMessageInputListener();
-    ///获取角色信息
-    getRoleInfo();
-    ///获取消息列表
-    getMessageList('init');
+    // super.onInit();
+    // roleId = Get.arguments['roleId'];
+    // ///初始化语音转文字
+    // initSpeechToText();
+    // ///初始化消息输入框监听
+    // initMessageInputListener();
+    // ///获取角色信息
+    // getRoleInfo();
+    // ///获取消息列表
+    // getMessageList('init');
   }
   @override
   void onDispose() {
