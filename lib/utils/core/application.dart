@@ -1,14 +1,8 @@
-/*
- * @Date: 2023-04-10 09:35:33
- * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-23 15:00:54
- * @FilePath: \soulmate\lib\utils\core\application.dart
- */
 /// Author: kele
-/// Date: 2022-03-07 13:31:49
+/// Date: 2023-04-23 15:41:48
 /// LastEditors: kele
-/// LastEditTime: 2022-03-14 15:52:02
-/// Description:
+/// LastEditTime: 2023-04-25 11:13:49
+/// Description: 全局变量
 
 import 'dart:convert';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
@@ -32,6 +26,10 @@ class Application {
     ///初始化个人信息
     String? userInfo = Application.pres?.getString("userInfo");
     _userInfo = userInfo;
+
+    ///初始化token
+    String? token = Application.pres?.getString("token");
+    _token = token;
   }
 
   static Map? get userInfo {
@@ -50,7 +48,6 @@ class Application {
   }
 
   static String? get token {
-    print(_token);
     return _token;
   }
 

@@ -39,7 +39,7 @@ class TestPay extends GetxController {
       print(purchaseDetails.status);
       if (purchaseDetails.status == PurchaseStatus.pending) {
         //购买进行中，展示加载框
-        showLoadingMask();
+        EasyLoading.show(status: 'loading...');
       } else {
         EasyLoading.dismiss();
         if (purchaseDetails.status == PurchaseStatus.error) {

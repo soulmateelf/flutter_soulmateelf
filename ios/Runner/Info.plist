@@ -74,5 +74,9 @@
 	<string>we need to use your Mircrophone to record your voice</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>we need to use your Speech Recognition  to recognition your voice</string>
+	<key>NSCameraUsageDescription</key>
+	<string>we need to use your Camera  to take a photo</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>we need to use your Photo Library  to choose a picture</string>
 </dict>
 </plist>

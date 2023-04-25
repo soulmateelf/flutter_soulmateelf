@@ -168,7 +168,7 @@ class ChatLogic extends GetxController {
       return;
     }
     focusNode.unfocus();
-    showLoadingMask();
+    EasyLoading.show(status: 'loading...');
     Map<String, dynamic> params = {
       'message': message,
       'roleId': roleId.toString()

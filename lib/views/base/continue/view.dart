@@ -5,6 +5,7 @@
  * @FilePath: \soulmate\lib\views\base\continue\view.dart
  */
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/utils/core/application.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
@@ -32,8 +33,9 @@ class ContinuePage extends StatelessWidget {
         Application.token = result?.data["token"];
         APPPlugin.logger.d(result);
         Get.offAllNamed('/home');
-      }else{
-        exSnackBar("登录失败");
+      } else {
+        EasyLoading.showToast('login failed',
+            toastPosition: EasyLoadingToastPosition.top);
       }
     }
   }
