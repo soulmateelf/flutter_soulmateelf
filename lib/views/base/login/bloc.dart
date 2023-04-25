@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 14:49:30
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-25 18:27:30
+ * @LastEditTime: 2023-04-25 19:57:40
  * @FilePath: \soulmate\lib\views\base\login\bloc.dart
  */
 import "dart:async";
@@ -32,7 +32,7 @@ class LoginFormBloc extends FormBloc<String, String> {
   }
 
   final password = TextFieldBloc(
-    initialValue: "",
+    initialValue: "11111111",
     validators: [FieldBlocValidators.required, _min8Chars],
   );
 
