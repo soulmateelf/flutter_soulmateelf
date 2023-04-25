@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-24 13:54:29
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-24 18:50:16
+ * @LastEditTime: 2023-04-25 17:02:02
  * @FilePath: \soulmate\lib\views\main\customRole\logic.dart
  */
 import 'package:flutter/material.dart';
@@ -28,8 +28,14 @@ class CustomRoleLogic extends GetxController {
 
   step1ViewSubmit() {
     if (formKey.currentState!.validate()) {
+      getCharacterList();
       Get.toNamed("/customRoleStep2");
     }
+  }
+
+  getCharacterList() async {
+    final result = await NetUtils.diorequst("/role/getCharacter", "get");
+    APPPlugin.logger.d(result?.data);
   }
 
   step2ViewSubmit() {
@@ -53,6 +59,5 @@ class CustomRoleLogic extends GetxController {
   step3ViewSubmit() {
     final validated = step3FormKey.currentState!.validate();
     if (!(validated && sendEmail)) return;
-    
   }
 }
