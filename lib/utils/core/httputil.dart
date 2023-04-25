@@ -112,35 +112,15 @@ class NetUtils {
         break;
       case DioErrorType.badResponse:
         // 其他类型的http返回码，比如 500 403 400 等等
-        // 4.0app约定的账号登录信息失效是http状态码403
-        // ----内部自定义code  403 未登录或登录信息失效！
-        // ----内部自定义code  1000 账号在别处登录！
         int? errCode = dioError.response?.statusCode;
         print("请求失败，错误代码【$errCode】！");
-        var responsedata = dioError.response?.data;
-        if (errCode == 403) {
-          if (responsedata['code'] == 403) {
-            _error(responsedata['message'], responsedata, errorCallBack);
-            Application.clearStorage().then((val) {
-              Get.offAllNamed('login');
-            });
-          } else if (responsedata['code'] == 1000) {
-            _error(responsedata['message'], responsedata, errorCallBack);
-            Application.clearStorage().then((val) {
-              Get.offAllNamed('login');
-            });
-          } else {
-            _error(responsedata['message'], responsedata, errorCallBack);
-          }
-        } else {
-          Map errorResponseData;
-          errorResponseData = {"message": "error！"};
-          if (ProjectConfig.getInstance()?.isDebug == true) {
-            APPPlugin.logger.d(dioError);
-          }
-          _error(
-              errorResponseData['message'], errorResponseData, errorCallBack);
+        Map errorResponseData;
+        errorResponseData = {"message": "error！"};
+        if (ProjectConfig.getInstance()?.isDebug == true) {
+          APPPlugin.logger.d(dioError);
         }
+        _error(
+            errorResponseData['message'], errorResponseData, errorCallBack);
         break;
       default:
         Map errorResponseData;
@@ -157,7 +137,6 @@ class NetUtils {
     ///--自定义code  200 操作成功！
     ///--自定义code  500 操作失败！系统繁忙！非法参数！
     ///--自定义code  400 未登录！权限不足！
-    ///
 
     return Future(() {
       if (response.statusCode == 200) {
@@ -171,7 +150,14 @@ class NetUtils {
           } catch (e) {
             return response;
           }
-        } else {
+        } else if(responsedata['code'] == 4001){
+          // icyberelf约定的账号登录信息失效是http状态码200
+          // ----内部自定义code  4001 未登录或登录信息失效！
+          _error(responsedata['message'], responsedata, errorCallBack);
+          Application.clearStorage().then((val) {
+            Get.offAllNamed('/welcome');
+          });
+        }else {
           // kele
           // 2020-09-10
           // 这里是后段自定义的错误码，此时http的状态码是200，app只需要弹出message即可

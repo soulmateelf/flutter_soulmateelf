@@ -18,6 +18,7 @@ import 'package:flutter_soulmateelf/views/main/sendFeedback/bloc.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SendFeedbackPage extends StatefulWidget {
   @override
@@ -69,6 +70,20 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
   Future<void> getImage(GetImageActionType actionType) async {
     /// 如果选择的是相册
     if (actionType == GetImageActionType.photo) {
+      await Permission.photos.status.then((status) async{
+        print(status);
+        print(PermissionStatus.permanentlyDenied == status);
+        if(status == PermissionStatus.permanentlyDenied){
+          print(222);
+          openAppSettings();
+        } else if (status != PermissionStatus.granted) {
+          print(1111);
+          var aa = await Permission.photos.request();
+          print(aa);
+          print(await Permission.photos.status);
+        }
+      });
+      return;
       final files = await ImagePicker().pickMultiImage();
       files.forEach((file) {
         _images.add({"path": file.path});

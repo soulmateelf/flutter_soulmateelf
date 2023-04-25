@@ -118,17 +118,18 @@ class ChatLogic extends GetxController {
       'roleId': roleId
     };
     void successFn(res) {
+      print(res);
       page++;
       refreshController.refreshCompleted();
       if (from == 'newMessage') {
         ///新消息，往下加
-        messageList.addAll(res['data']['data']);
+        messageList.addAll(res['data']);
       } else {
         ///历史消息,往上插入
-        messageList.insertAll(0, res['data']['data']);
+        messageList.insertAll(0, res['data']);
       }
 
-      if (res['data']['data'] == null || res['data']['data'].length == 0) {
+      if (res['data'] == null || res['data'].length == 0) {
         ///没有更多数据了
         canRefresh = false;
       } else {
