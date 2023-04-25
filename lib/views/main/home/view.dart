@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-24 18:54:16
+ * @LastEditTime: 2023-04-25 15:55:23
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -374,6 +374,7 @@ class _HomePage extends State<HomePage> {
         onTap: () {
           // Get.toNamed('/settings');
           logic.checkedRoleId = role["id"];
+
           Get.toNamed('/customRole');
         },
         child: Container(

@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-21 17:23:04
+ * @LastEditTime: 2023-04-25 16:47:15
  * @FilePath: \soulmate\lib\views\main\home\logic.dart
  */
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -47,7 +47,6 @@ class HomeLogic extends GetxController {
   /// 获取角色列表
   getRoleList() async {
     final result = await NetUtils.diorequst("/role/getRoleList", 'get');
-
     if (result?.data?["code"] == 200) {
       // APPPlugin.logger.d(result.data["data"]["data"]);
       roleList = result.data["data"]["data"];
@@ -59,11 +58,10 @@ class HomeLogic extends GetxController {
 
   // 分享成功，修改角色名称状态
   shareCallBack() async {
-    final result = await NetUtils.diorequst("/role/updateShare", 'post',
-        params: {
-          "roleId": checkedRoleId,
-        }
-    );
+    final result =
+        await NetUtils.diorequst("/role/updateShare", 'post', params: {
+      "roleId": checkedRoleId,
+    });
     if (result?.data?["code"] == 200) {
       getRoleList();
     }

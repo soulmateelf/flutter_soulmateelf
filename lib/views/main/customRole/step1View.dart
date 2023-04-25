@@ -1,11 +1,12 @@
 /*
  * @Date: 2023-04-23 19:37:53
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-24 14:36:11
+ * @LastEditTime: 2023-04-25 16:52:03
  * @FilePath: \soulmate\lib\views\main\customRole\step1View.dart
  */
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/views/main/customRole/logic.dart';
@@ -157,7 +158,10 @@ class CustomRolePage extends StatelessWidget {
   List<Widget> renderStarList() {
     List<Widget> widgets = [];
     for (int i = 0; i < 5; i++) {
-      onTap() {
+      onTap() async {
+        Loading.toast("123");
+        await Future.delayed(Duration(milliseconds: 2000));
+        Loading.dismiss();
         if (i + 1 >= 3) {
           logic.star = i + 1;
         }
