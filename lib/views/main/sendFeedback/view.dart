@@ -14,6 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/utils/core/application.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
+import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:flutter_soulmateelf/views/main/sendFeedback/bloc.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
@@ -68,29 +69,23 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
   }
 
   Future<void> getImage(GetImageActionType actionType) async {
-    /// 如果选择的是相册
     if (actionType == GetImageActionType.photo) {
-      await Permission.photos.status.then((status) async{
-        print(status);
-        print(PermissionStatus.permanentlyDenied == status);
-        if(status == PermissionStatus.permanentlyDenied){
-          print(222);
-          openAppSettings();
-        } else if (status != PermissionStatus.granted) {
-          print(1111);
-          var aa = await Permission.photos.request();
-          print(aa);
-          print(await Permission.photos.status);
-        }
-      });
-      return;
+      /// 如果选择的是相册
+      /// 检查权限
+      bool result = await Utils.checkPremission(Permission.photos);
+      if(!result) return;
+      /// 选择图片
       final files = await ImagePicker().pickMultiImage();
       files.forEach((file) {
         _images.add({"path": file.path});
       });
       setState(() {});
     } else if (actionType == GetImageActionType.shoot) {
-      // 如果选择的拍摄
+      /// 如果选择的拍摄
+      /// 检查权限
+      bool result = await Utils.checkPremission(Permission.camera);
+      if(!result) return;
+      /// 拍摄
       final XFile? image =
           await ImagePicker().pickImage(source: ImageSource.camera);
       if (image != null) {

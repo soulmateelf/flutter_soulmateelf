@@ -31,8 +31,6 @@ class _SettingsPage extends State<SettingsPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     final userInfo = Application.userInfo;
-    APPPlugin.logger.d(userInfo);
-
     return basePage(
       "",
       child: SingleChildScrollView(

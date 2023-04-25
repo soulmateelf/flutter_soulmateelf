@@ -176,6 +176,8 @@ class ChatPage extends StatelessWidget {
           },
           onLongPressEnd: (event){
             logic.stopListening();
+          },onLongPressUp: (){
+            logic.stopListening();
           },
           onLongPressMoveUpdate: (event){
             logic.moveListening(event);

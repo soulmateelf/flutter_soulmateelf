@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:get/get.dart';
 import 'package:moment_dart/moment_dart.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
@@ -118,7 +120,6 @@ class ChatLogic extends GetxController {
       'roleId': roleId
     };
     void successFn(res) {
-      print(res);
       page++;
       refreshController.refreshCompleted();
       if (from == 'newMessage') {
@@ -219,8 +220,10 @@ class ChatLogic extends GetxController {
 
   ///开始录音
   void startListening(event) async {
-    if (!speechEnabled) {
-      EasyLoading.showToast('please open the microphone permission!');
+    /// 检查权限
+    bool microphoneResult = await Utils.checkPremission(Permission.microphone);
+    bool speechResult = await Utils.checkPremission(Permission.speech);
+    if (!speechEnabled || !microphoneResult || !speechResult) {
       return;
     }
     if (!isRecording) {
@@ -255,10 +258,10 @@ class ChatLogic extends GetxController {
     if (!speechEnabled || !isRecording) {
       return;
     }
-    await speechToText.stop();
     isRecording = false;
     startPosition = 0;
     update();
+    speechToText.stop();
     ///如果手指移动位置大，是取消录音状态，那么停止的时候就不要去发送消息了
     if(cancelStatus){
       cancelStatus = false;
@@ -268,7 +271,7 @@ class ChatLogic extends GetxController {
       EasyLoading.showToast('please say it again!');
       return;
     }
-    sendMessage(speechResult);
+    // sendMessage(speechResult);
   }
 
   ///录音监听转化结果

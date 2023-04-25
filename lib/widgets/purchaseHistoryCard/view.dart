@@ -33,7 +33,7 @@ class PurchaseHistoryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "${history?["id"]}",
+                "${history?["orderId"]}",
                 style: TextStyle(
                   fontSize: 28.sp,
                 ),

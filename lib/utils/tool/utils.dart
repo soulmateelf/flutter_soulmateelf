@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_soulmateelf/utils/core/application.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'dart:math';
 
@@ -137,6 +139,49 @@ class Utils {
     );
     if (shareResult.status == ShareResultStatus.success) {
       successCallBack?.call();
+    }
+  }
+
+  ///权限判断
+  static Future<bool> checkPremission(Permission permission) async {
+    if (isEmpty(permission)) return false;
+    var status = await permission.status;
+    print(status);
+    if(status.isDenied){
+      /// 没有权限,但是还可以请求权限
+      var result = await permission.request();
+      if(result.isPermanentlyDenied){
+        /// 没有权限,并且不能请求权限
+        return false;
+      } else{
+        return true;
+      }
+    } else if(status.isPermanentlyDenied){
+      /// 没有权限,并且不能请求权限,需要用户手动打开权限
+      showAlertDialog(
+        context: Get.context!,
+        title: 'tips',
+        message: "you don't have permission to access this feature[${permission.toString()}], please open it in the settings]",
+        actions: <AlertDialogAction>[
+          const AlertDialogAction(
+            label: 'Cancel',
+            key: 0,
+            isDestructiveAction: true,
+          ),
+          const AlertDialogAction(
+            label: 'Settings',
+            key: 1,
+          ),
+        ],
+      ).then((value) {
+        if (value == 1) {
+          openAppSettings();
+        }
+      });
+      return false;
+    }else{
+      /// 有权限或者部分权限
+      return true;
     }
   }
 }
