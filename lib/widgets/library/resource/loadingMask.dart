@@ -6,8 +6,8 @@
 
 part of projectLibrary;
 
-Future<void> showLoadingMask({String message = 'Loading……'}) {
-  return EasyLoading.show(
+void showLoadingMask({String message = 'Loading……'}) {
+   EasyLoading.show(
       maskType: EasyLoadingMaskType.black,
       indicator: Container(
         margin: const EdgeInsets.all(0),

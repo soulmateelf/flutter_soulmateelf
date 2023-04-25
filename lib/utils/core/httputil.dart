@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:flutter_soulmateelf/utils/core/application.dart';
@@ -33,11 +35,10 @@ class NetUtils {
       Map<String, dynamic>? localHeaders;
 
       ///有传自定义head或者没传head参数取默认值
-      var head = Application.pres?.getString('headers') ?? "{}";
-      localHeaders = headers ?? jsonDecode(head);
+      localHeaders = headers ?? {};
 
-      localHeaders?["Authorization"] = "Bearer ${Application.token}";
-      localHeaders?["userId"] = Application.userInfo?["userId"];
+      localHeaders["Authorization"] = "Bearer ${Application.token}";
+      localHeaders["userId"] = Application.userInfo?["userId"];
 
       ///拦截器
       dio.interceptors.add(InterceptorsWrapper(
@@ -58,7 +59,6 @@ class NetUtils {
           return handler.next(response); // continue
         },
         onError: (e, handler) {
-          print(e);
           return handler.next(e);
         },
       ));
@@ -68,7 +68,6 @@ class NetUtils {
         url,
         queryParameters: method == 'get' ? params : null,
         data: method == 'post' ? params : null,
-        
         options: Options(
             method: method,
             headers: localHeaders,
@@ -83,7 +82,6 @@ class NetUtils {
       String realUrl = dio.options.baseUrl + url;
       print('$realUrl接口错误,请求方式$method');
       print('请求参数${params.toString()}');
-      print(dioError.response);
       return _dealDioError(
           dioError, url, successCallBack, errorCallBack, params);
     } catch (exception) {
@@ -119,9 +117,6 @@ class NetUtils {
         // ----内部自定义code  1000 账号在别处登录！
         int? errCode = dioError.response?.statusCode;
         print("请求失败，错误代码【$errCode】！");
-        if (errCode == 400) {
-          print('请检查请求的url是否正确！');
-        }
         var responsedata = dioError.response?.data;
         if (errCode == 403) {
           if (responsedata['code'] == 403) {
@@ -139,22 +134,19 @@ class NetUtils {
           }
         } else {
           Map errorResponseData;
+          errorResponseData = {"message": "error！"};
           if (ProjectConfig.getInstance()?.isDebug == true) {
-            errorResponseData = {"message": "error！${responsedata?['message']}"};
-          } else {
-            errorResponseData = {"message": "error！"};
+            APPPlugin.logger.d(dioError);
           }
           _error(
               errorResponseData['message'], errorResponseData, errorCallBack);
         }
         break;
       default:
-        // var responsedata = dioError.response.data;
         Map errorResponseData;
+        errorResponseData = {"message": "error！"};
         if (ProjectConfig.getInstance()?.isDebug == true) {
-          errorResponseData = {"message": "error！$dioError"};
-        } else {
-          errorResponseData = {"message": "error！"};
+          APPPlugin.logger.d(dioError);
         }
         _error(errorResponseData['message'], errorResponseData, errorCallBack);
     }
@@ -171,10 +163,6 @@ class NetUtils {
       if (response.statusCode == 200) {
         //http成功
         var responsedata = response.data;
-        if (responsedata == null || responsedata == "") {
-          successCallBack(responsedata);
-        }
-
         //服务端返回码
         if (responsedata['code'] == 200) {
           // try捕获successCallBack异常，导致response无法返回给futureBuilderContainer来判断页面显示问题
@@ -187,7 +175,7 @@ class NetUtils {
           // kele
           // 2020-09-10
           // 这里是后段自定义的错误码，此时http的状态码是200，app只需要弹出message即可
-          // _error(responsedata['message'], responsedata, errorCallBack);
+          _error(responsedata['message'], responsedata, errorCallBack);
         }
       } else {
         //http失败
@@ -205,7 +193,8 @@ class NetUtils {
       if (Utils.isEmpty(errorMessage)) {
         errorMessage = 'something wrong！';
       }
-      exSnackBar(errorMessage, type: 'error');
+      EasyLoading.showToast(errorMessage,
+          toastPosition: EasyLoadingToastPosition.top);
     }
   }
 }

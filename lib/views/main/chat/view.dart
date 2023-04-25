@@ -1,5 +1,6 @@
 
 import 'dart:ffi';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 import 'package:moment_dart/moment_dart.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:simple_animations/animation_builder/custom_animation_builder.dart';
 
 import 'logic.dart';
 
@@ -37,7 +39,7 @@ class ChatPage extends StatelessWidget {
               ),
           ),
           actions:[
-            IconButton(icon:const Icon(Icons.settings_outlined), onPressed: () { logic.stopListening;
+            IconButton(icon:const Icon(Icons.settings_outlined), onPressed: () {
               Get.toNamed('/settings');
               },),
           ],
@@ -45,17 +47,51 @@ class ChatPage extends StatelessWidget {
             width: double.infinity,
             height: double.infinity,
             color: Color.fromRGBO(242, 242, 242, 1),
-            child: Column(
+            child: Stack(
               children: [
-                Expanded(child:
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child:
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.w),
-                      child:_refreshListView
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.w),
+                        child:_refreshListView
                     )
+                    ),
+                    _bottomContainer()
+                  ],
                 ),
-                _bottomContainer()
+                Positioned(
+                    right: -40.w,
+                    bottom: -40.w,
+                    child: Offstage (
+                        offstage: !logic.isRecording, // 设置是否可见：true:不可见 false:可见
+                        child: CustomAnimationBuilder<double>(
+                          control: logic.isRecording?Control.mirror:Control.stop,
+                          tween: Tween(begin: 220.w, end: 270.w),
+                          duration: const Duration(milliseconds: 1200),
+                          delay: const Duration(seconds: 1),
+                          curve: Curves.easeInOut,
+                          startPosition: 0.5,
+                          animationStatusListener: (status) {
+                            debugPrint('status updated: $status');
+                          },
+                          builder: (context, value, child) {
+                            return Container(
+                              width: value,
+                              height: value,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blue,
+                              ),
+                              child: child,
+                            );
+                          },
+                        )
+                    )
+                )
               ],
-            ),
+            )
           ),
       );
     });
@@ -77,49 +113,57 @@ class ChatPage extends StatelessWidget {
   /// 底部用户输入区域
   Widget _bottomContainer(){
     return Container(
-      color: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.w),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Expanded(
-            child: logic.isRecording?
-            Container(height: 200.w,alignment: Alignment.center
-                ,child:Text('< slide left to cancel',style: TextStyle(fontSize: 34.sp, color: Color.fromRGBO(102, 102, 102, 0.6)),textAlign: TextAlign.center,)):
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 15.w),
-                decoration: BoxDecoration(
-                    color: const Color.fromARGB(1,204, 204, 204),
-                    borderRadius: BorderRadius.circular(27.w),
-                    border:Border.all(color:Colors.grey,width: 1)
-                ),
-                child: TextField(
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 6,
-                  minLines: 1,
-                  style: const TextStyle(fontSize: 14, color: Color.fromRGBO(0, 0, 0, 0.85)),
-                  textInputAction: TextInputAction.send,
-                  controller: TextEditingController.fromValue(TextEditingValue(text: logic.currentMessage)),
-                  focusNode: logic.focusNode,
-                  onChanged: (String str) {
-                    logic.currentMessage = str;
-                  },
-                  onSubmitted: (String str) {
-                    logic.currentMessage = str;
-                    logic.sendMessage(logic.currentMessage);
-                  },
-                  decoration: const InputDecoration(filled: true,
-                      fillColor: Colors.white,
-                      isCollapsed: true,
-                      border: InputBorder.none
+            color: Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.w),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: logic.isRecording?
+                  Container(
+                      alignment: Alignment.center,
+                      child:Text(
+                        logic.cancelStatus?'release to cancel':'slide up to cancel',
+                        style: TextStyle(fontSize: 34.sp, color: const Color.fromRGBO(102, 102, 102, 0.6)),
+                        textAlign: TextAlign.center,),
+                    )
+                   : Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 15.w),
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(1,204, 204, 204),
+                          borderRadius: BorderRadius.circular(27.w),
+                          border:Border.all(color:Colors.grey,width: 1)
+                      ),
+                      child: TextField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 6,
+                        minLines: 1,
+                        style: const TextStyle(fontSize: 14, color: Color.fromRGBO(0, 0, 0, 0.85)),
+                        textInputAction: TextInputAction.send,
+                        controller: TextEditingController.fromValue(TextEditingValue(text: logic.inputContent,selection: TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: logic.inputContent.length)))),
+                        focusNode: logic.focusNode,
+                        onChanged: (String str) {
+                          logic.inputContent = str;
+                        },
+                        onSubmitted: (String str) {
+                          logic.inputContent = str;
+                          logic.sendMessage(logic.inputContent);
+                        },
+                        decoration: const InputDecoration(filled: true,
+                            fillColor: Colors.white,
+                            isCollapsed: true,
+                            border: InputBorder.none
+                        ),
+                      )
                   ),
+                ),
+                Container(
+                  width: 80.w,
+                  child: _operateIcon(),
                 )
-            ),
-          ),
-          _operateIcon(),
-        ],
-      )
-    );
+              ],
+            )
+        );
   }
   /// 操作图标
   _operateIcon(){
@@ -128,28 +172,19 @@ class ChatPage extends StatelessWidget {
         //正常状态，显示录音按钮
         return GestureDetector(
           onLongPressStart: (event){
-            logic.startListening();
+            logic.startListening(event);
           },
           onLongPressEnd: (event){
             logic.stopListening();
           },
-          onLongPressUp: (){
-            logic.stopListening();
+          onLongPressMoveUpdate: (event){
+            logic.moveListening(event);
           },
-          child: logic.isRecording?
-              Container(
-                width: 200.w,
-                height: 200.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100.w),
-                  color: Color.fromRGBO(228, 253, 211, 1),
-                ),
-              )
-              :Icon(Icons.keyboard_voice_outlined,size: 60.w,)
+          child: Icon(Icons.keyboard_voice_outlined,size: 60.w,)
         );
       case 'input':
         //消息输入中，显示发送按钮
-        return GestureDetector(onTap: (){logic.sendMessage(logic.currentMessage);}, child: Icon(Icons.send,color: Get.theme.primaryColor,size: 60.w,));
+        return GestureDetector(onTap: (){logic.sendMessage(logic.inputContent);}, child: Icon(Icons.send,color: Get.theme.primaryColor,size: 60.w,));
     }
   }
   /// 聊天信息展示组件
@@ -167,7 +202,8 @@ class ChatPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(40),
               ),
               padding: EdgeInsets.symmetric(vertical: 5.w,horizontal: 30.w),
-              child: Text("${Moment(DateTime.fromMillisecondsSinceEpoch(1682249383751))}",style: TextStyle(fontSize: 22.sp, color: Color.fromRGBO(102, 102, 102, 1)),),
+              child: Text(logic.showTime(itemData,index),style: TextStyle(fontSize: 22.sp, color: Color.fromRGBO(102, 102, 102, 1)),),
+            // ),
             ),
           ),
           Container(

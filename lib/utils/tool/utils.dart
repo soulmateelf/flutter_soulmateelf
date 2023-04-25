@@ -95,7 +95,7 @@ class Utils {
   /// UpdateDate:
   /// UpdateRemark:
   static void logout() {
-    showLoadingMask();
+    EasyLoading.show(status: 'loading...');
     successFn(res) {
       EasyLoading.dismiss();
       Application.clearStorage().then((type) {
@@ -105,7 +105,8 @@ class Utils {
 
     errorFn(error) {
       EasyLoading.dismiss();
-      exSnackBar(error['message'], type: 'error');
+      EasyLoading.showToast(error['message'],
+          toastPosition: EasyLoadingToastPosition.top);
     }
 
     NetUtils.diorequst('/base/logout', 'post',
@@ -131,6 +132,7 @@ class Utils {
           mimeType: 'image/png',
         ),
       ],
+      subject: 'icyberelf',
       text: path,
     );
     if (shareResult.status == ShareResultStatus.success) {

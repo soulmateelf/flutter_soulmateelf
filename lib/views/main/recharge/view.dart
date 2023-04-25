@@ -169,7 +169,7 @@ class RechargePage extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 18.w),
               width: 290.w,
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {logic.payNow(product);},
                   style: ButtonStyle(
                       padding: MaterialStateProperty.all(
                           EdgeInsets.symmetric(vertical: 8.w)),

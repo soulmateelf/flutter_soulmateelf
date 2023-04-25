@@ -53,9 +53,9 @@ class SplashLogic extends GetxController {
   /// UpdateDate:
   /// UpdateRemark:
   void whereToGo() {
-    String? headers = Application.pres?.getString('headers');
+    String? token = Application.pres?.getString('token');
     String? userInfo = Application.pres?.getString("userInfo");
-    if (headers == null || userInfo == null) {
+    if (token == null || userInfo == null) {
       /// 未登录状态
       Get.offNamed('/welcome');
     } else {
@@ -146,7 +146,6 @@ class SplashLogic extends GetxController {
 
     void errorFn(error) {
       /// 升级失败不能提示
-      // exSnackBar(error['message'], type: 'error');
     }
     return NetUtils.diorequst(
       '/iot4-crpm-api/user/new/app/version',
