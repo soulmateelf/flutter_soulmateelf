@@ -72,7 +72,7 @@ class Utils {
       if (await canLaunchUrl(Uri.parse(url))) {
         await launchUrl(Uri.parse(url));
       } else {
-        EasyLoading.showToast('拨打电话 $tel 失败！');
+        Loading.toast('拨打电话 $tel 失败！');
       }
     }
   }
@@ -83,7 +83,7 @@ class Utils {
       if (await canLaunchUrl(Uri.parse(path))) {
         await launchUrl(Uri.parse(path));
       } else {
-        EasyLoading.showToast('打开网页 $path 失败！');
+        Loading.toast('打开网页 $path 失败！');
       }
     }
   }
@@ -97,17 +97,17 @@ class Utils {
   /// UpdateDate:
   /// UpdateRemark:
   static void logout() {
-    EasyLoading.show(status: 'loading...');
+    Loading.show();
     successFn(res) {
-      EasyLoading.dismiss();
+      Loading.dismiss();
       Application.clearStorage().then((type) {
         Get.offAllNamed('/welcome');
       });
     }
 
     errorFn(error) {
-      EasyLoading.dismiss();
-      EasyLoading.showToast(error['message'],
+      Loading.dismiss();
+      Loading.toast(error['message'],
           toastPosition: EasyLoadingToastPosition.top);
     }
 
@@ -121,7 +121,7 @@ class Utils {
   static void share(String path, String imagePath,
       {Function? successCallBack}) async {
     if (isEmpty(path) || isEmpty(imagePath)) {
-      EasyLoading.showToast('no path or imagePath');
+      Loading.toast('no path or imagePath');
       return;
     }
     final data = await rootBundle.load(imagePath);
@@ -146,22 +146,22 @@ class Utils {
   static Future<bool> checkPremission(Permission permission) async {
     if (isEmpty(permission)) return false;
     var status = await permission.status;
-    print(status);
-    if(status.isDenied){
+    if (status.isDenied) {
       /// 没有权限,但是还可以请求权限
       var result = await permission.request();
-      if(result.isPermanentlyDenied){
+      if (result.isPermanentlyDenied) {
         /// 没有权限,并且不能请求权限
         return false;
-      } else{
+      } else {
         return true;
       }
-    } else if(status.isPermanentlyDenied){
+    } else if (status.isPermanentlyDenied) {
       /// 没有权限,并且不能请求权限,需要用户手动打开权限
       showAlertDialog(
         context: Get.context!,
         title: 'tips',
-        message: "you don't have permission to access this feature[${permission.toString()}], please open it in the settings]",
+        message:
+            "you don't have permission to access this feature[${permission.toString()}], please open it in the settings]",
         actions: <AlertDialogAction>[
           const AlertDialogAction(
             label: 'Cancel',
@@ -179,7 +179,7 @@ class Utils {
         }
       });
       return false;
-    }else{
+    } else {
       /// 有权限或者部分权限
       return true;
     }

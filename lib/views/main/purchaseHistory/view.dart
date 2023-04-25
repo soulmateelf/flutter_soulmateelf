@@ -26,23 +26,25 @@ class _PurchaseHistoryPage extends State<PurchaseHistoryPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return basePage("Purchase history",
+    return GetBuilder<PurchaseHistoryLogic>(builder: (logic) {
+      return basePage("Purchase history",
         child: Container(
           child: _refreshListView
-        ));
+        ));});
   }
 
   /// 上下拉列表
   Widget get _refreshListView => SmartRefresher(
       enablePullDown: true,
-      enablePullUp: false,
+      enablePullUp: logic.refreshController.footerMode?.value != LoadStatus.noMore,
       controller: logic.refreshController,
-      onRefresh: logic.getOrderList,
+      onRefresh: logic.onRefresh,
+      onLoading: logic.onLoading,
       child: ListView.builder(
           itemCount: logic.orderList.length,
           itemBuilder: (context, index) {
             return GestureDetector(
                 onTap: () {},
-                child: PurchaseHistoryCard(history: logic.orderList[index],));
+                child: PurchaseHistoryCard(history: logic.orderList[index]));
           }));
 }

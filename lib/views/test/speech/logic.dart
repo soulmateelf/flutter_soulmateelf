@@ -41,7 +41,7 @@ class TextToSpeechLogic extends GetxController {
   // double recordTime = 0;
 
   @override
-  void onInit(){
+  void onInit() {
     super.onInit();
     //获取可选的声音
     getVoice();
@@ -51,42 +51,51 @@ class TextToSpeechLogic extends GetxController {
     initRecord();
     return;
   }
+
   getVoice() async {
     List<dynamic> voicesAll = await flutterTts.getVoices;
-    print('all:${voicesAll.length}');
-    voicesList = voicesAll.where((element) => element['locale'] == 'en-US').toList();
+    // print('all:${voicesAll.length}');
+    voicesList =
+        voicesAll.where((element) => element['locale'] == 'en-US').toList();
     // voicesList = voicesAll;
-    print('voicesList:${voicesList.length}');
+    // print('voicesList:${voicesList.length}');
     return;
   }
+
   choiceVoice() async {
     final result = await showModalActionSheet(
       context: Get.context!,
       title: '选择声音',
       message: '请选择你喜欢的声音',
-      actions: voicesList.map((e) => SheetAction(
-        label: e['name']!,
-        key: e,
-      )).toList(),
+      actions: voicesList
+          .map((e) => SheetAction(
+                label: e['name']!,
+                key: e,
+              ))
+          .toList(),
     );
-    if(result != null){
+    if (result != null) {
       print(result);
       currentVoice = result;
-      flutterTts.setVoice({'name': (result as dynamic)['name'], 'locale': (result as dynamic)['locale']});
+      flutterTts.setVoice({
+        'name': (result as dynamic)['name'],
+        'locale': (result as dynamic)['locale']
+      });
     }
     update();
   }
+
   speech() async {
     // flutterTts.setVoice({'name': 'Good News', 'locale': 'en-US'});
     var result = await flutterTts.speak("Hello, what is your name?");
-    APPPlugin.logger.i(result);
   }
 
   googleLogin() async {
     GoogleSignInAccount? result = await _googleSignIn.signIn();
+
     ///{displayName: kele zxw, email: kelezxw@gmail.com, id: 103920106817470890713, photoUrl: https://lh3.googleusercontent.com/a/AGNmyxbsax2bXt55bBGEUSHb7Ghsaxjsm14OmqvIVuf2=s1337,}
-    APPPlugin.logger.i(result);
   }
+
   faceBookLogin() async {
     // Log in
     final res = await fb.logIn(permissions: [
@@ -97,9 +106,9 @@ class TextToSpeechLogic extends GetxController {
 // Check result status
     switch (res.status) {
       case FacebookLoginStatus.success:
-      // Logged in
+        // Logged in
 
-      // Send access token to server for validation and auth
+        // Send access token to server for validation and auth
         final FacebookAccessToken? accessToken = res.accessToken;
         print('Access token: ${accessToken?.token}');
 
@@ -114,19 +123,19 @@ class TextToSpeechLogic extends GetxController {
         // Get email (since we request email permission)
         final email = await fb.getUserEmail();
         // But user can decline permission
-        if (email != null)
-          print('And your email is $email');
+        if (email != null) print('And your email is $email');
 
         break;
       case FacebookLoginStatus.cancel:
-      // User cancel log in
+        // User cancel log in
         break;
       case FacebookLoginStatus.error:
-      // Log in failed
+        // Log in failed
         print('Error while log in: ${res.error}');
         break;
     }
   }
+
   systemShare(BuildContext context) async {
     // var shareResult = await Share.shareWithResult(
     //     'code:#123456;downLoadUrl:https://whatsapp.com/dl/',
@@ -150,27 +159,28 @@ class TextToSpeechLogic extends GetxController {
     //   subject: 'I am subject!',
     //   text: 'code:123456;downLoadUrl:https://icyberelf.com/PrivacyPolicy.html;',
     // );
-
-    APPPlugin.logger.i(shareResult.status);
   }
 
-  initSpeechToText() async{
+  initSpeechToText() async {
     speechEnabled = await speechToText.initialize();
   }
+
   void startListening() async {
     await speechToText.listen(onResult: onSpeechResult);
     update();
   }
+
   void stopListening() async {
     await speechToText.stop();
     update();
   }
+
   void onSpeechResult(SpeechRecognitionResult result) {
     lastWords = result.recognizedWords;
     update();
   }
 
-  initRecord() async{
+  initRecord() async {
     /*
     print('record init');
     recordPlugin.response.listen((data) {
@@ -187,12 +197,11 @@ class TextToSpeechLogic extends GetxController {
     });
     */
   }
-  playAudio(){
+  playAudio() {
     /*
     print(recordTime);
     update();
     recordPlugin.playByPath(recordPath, 'file');
     */
   }
-
 }

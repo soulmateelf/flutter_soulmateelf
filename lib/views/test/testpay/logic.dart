@@ -36,15 +36,14 @@ class TestPay extends GetxController {
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     print('purchaseDetailsList:${purchaseDetailsList.length}}');
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
-      print(purchaseDetails.status);
       if (purchaseDetails.status == PurchaseStatus.pending) {
         //购买进行中，展示加载框
-        EasyLoading.show(status: 'loading...');
+        Loading.show();
       } else {
-        EasyLoading.dismiss();
+        Loading.dismiss();
         if (purchaseDetails.status == PurchaseStatus.error) {
           //购买失败，展示失败信息
-          exSnackBar(purchaseDetails.error!.message!, type: 'error');
+          Loading.error("${purchaseDetails.error!.message!}");
           print('购买进行中');
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
@@ -86,15 +85,15 @@ class TestPay extends GetxController {
     products = response.productDetails;
     products.forEach((element) {
       // print(jsonEncode(element));
-      APPPlugin.logger.i({
-        'id': element.id,
-        'title': element.title,
-        'description': element.description,
-        'price': element.price,
-        'currencyCode': element.currencyCode,
-        'rawPrice': element.rawPrice,
-        'currencySymbol': element.currencySymbol
-      });
+      // APPPlugin.logger.i({
+      //   'id': element.id,
+      //   'title': element.title,
+      //   'description': element.description,
+      //   'price': element.price,
+      //   'currencyCode': element.currencyCode,
+      //   'rawPrice': element.rawPrice,
+      //   'currencySymbol': element.currencySymbol
+      // });
     });
   }
 

@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-24 15:27:55
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-24 18:30:32
+ * @LastEditTime: 2023-04-25 17:57:29
  * @FilePath: \soulmate\lib\views\main\customRole\step3view.dart
  */
 import 'package:flutter/material.dart';
@@ -52,8 +52,14 @@ class CustomRoleStep3Page extends StatelessWidget {
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 18.w),
-                          child: TextField(
+                          child: TextFormField(
+                            controller: logic.introductionController,
                             maxLines: 7,
+                            validator: (v) {
+                              return v!.trim().isNotEmpty
+                                  ? null
+                                  : "This field is required";
+                            },
                             decoration: InputDecoration(
                                 hintText: "Enter",
                                 border: OutlineInputBorder(
@@ -71,8 +77,9 @@ class CustomRoleStep3Page extends StatelessWidget {
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 18.w),
-                          child: TextField(
+                          child: TextFormField(
                             maxLines: 7,
+                            controller: logic.replenishController,
                             decoration: InputDecoration(
                                 hintText: "Enter",
                                 border: OutlineInputBorder(
@@ -83,7 +90,8 @@ class CustomRoleStep3Page extends StatelessWidget {
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 24.w),
-                          child: TextField(
+                          child: TextFormField(
+                            controller: logic.emailController,
                             decoration: InputDecoration(
                                 labelText: "Email for contact",
                                 border: OutlineInputBorder(
@@ -103,11 +111,11 @@ class CustomRoleStep3Page extends StatelessWidget {
                                     logic.sendEmail = !logic.sendEmail;
                                   },
                                   child: logic.sendEmail
-                                      ? Icon(Icons.check_box_outline_blank)
-                                      : Icon(
+                                      ? Icon(
                                           Icons.check_box,
                                           color: Colors.green,
-                                        ),
+                                        )
+                                      : Icon(Icons.check_box_outline_blank),
                                 ),
                                 Text(
                                   "We may email you for more information or updates.",
@@ -134,7 +142,7 @@ class CustomRoleStep3Page extends StatelessWidget {
                         Text("\$ 199.00"),
                         ElevatedButton(
                             onPressed: () {
-                              logic.step3ViewSubmit();
+                              logic.payNow();
                             },
                             style: ButtonStyle(
                                 shape: MaterialStateProperty.all(

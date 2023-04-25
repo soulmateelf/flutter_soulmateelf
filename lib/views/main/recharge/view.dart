@@ -169,7 +169,9 @@ class RechargePage extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 18.w),
               width: 290.w,
               child: ElevatedButton(
-                  onPressed: () {logic.payNow(product);},
+                  onPressed: () {
+                    logic.payNow(product);
+                  },
                   style: ButtonStyle(
                       padding: MaterialStateProperty.all(
                           EdgeInsets.symmetric(vertical: 8.w)),
@@ -218,13 +220,7 @@ class RechargePage extends StatelessWidget {
                 ),
                 child: Text("\$ 2.00")),
           ),
-          Radio(
-              value: 1,
-              toggleable: true,
-              groupValue: 1,
-              onChanged: (obj) {
-                print(obj);
-              })
+          Radio(value: 1, toggleable: true, groupValue: 1, onChanged: (obj) {})
         ],
       ),
     );

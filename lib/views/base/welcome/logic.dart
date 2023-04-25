@@ -1,12 +1,14 @@
 /*
  * @Date: 2023-04-10 14:14:57
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-10 14:23:22
+ * @LastEditTime: 2023-04-25 19:18:56
  * @FilePath: \soulmate\lib\views\base\welcome\logic.dart
  */
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+
+import '../../../widgets/library/projectLibrary.dart';
 
 class WelcomeLogic extends GetxController {
   // 上次点击返回键时间
@@ -24,7 +26,7 @@ class WelcomeLogic extends GetxController {
     int now = DateTime.now().millisecondsSinceEpoch;
     if (now - lastClickTime > 1000) {
       lastClickTime = DateTime.now().millisecondsSinceEpoch;
-      EasyLoading.showToast('再按一次退出应用');
+       Loading.toast('再按一次退出应用');
       return Future.value(false);
     } else {
       return Future.value(true);

@@ -1,7 +1,13 @@
+/// Author: kele
+/// Date: 2023-04-25 20:04:35
+/// LastEditors: kele
+/// LastEditTime: 2023-04-25 20:21:33
+/// Description:
+
 /*
  * @Date: 2023-04-11 15:10:40
- * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-21 17:15:09
+/// LastEditors: kele
+/// LastEditTime: 2023-04-25 20:23:47
  * @FilePath: \soulmate\lib\views\base\continue\view.dart
  */
 import 'package:flutter/material.dart';
@@ -17,24 +23,23 @@ class ContinuePage extends StatelessWidget {
   const ContinuePage({super.key});
 
   _continue() async {
-    // print(Get.arguments);
-    APPPlugin.logger.d(Get.arguments);
     final type = Get.arguments["type"];
     final email = Get.arguments["email"];
     final password = Get.arguments["password"];
     if (type == "register" || type == "forget") {
+      Loading.show();
       final result = await NetUtils.diorequst("/base/login", 'post', params: {
         "email": email,
         "password": password,
       });
+      Loading.dismiss();
 
       if (result?.data?["code"] == 200) {
         Application.userInfo = result?.data?["data"];
         Application.token = result?.data["token"];
-        APPPlugin.logger.d(result);
         Get.offAllNamed('/home');
       } else {
-        EasyLoading.showToast('login failed',
+        Loading.toast('login failed',
             toastPosition: EasyLoadingToastPosition.top);
       }
     }

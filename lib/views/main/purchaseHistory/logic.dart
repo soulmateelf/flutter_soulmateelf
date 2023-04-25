@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
@@ -20,35 +20,61 @@ class PurchaseHistoryLogic extends GetxController {
   }
 
   ///获取消息列表
-  void getOrderList() {
+  void getOrderList({bool loadMore = false}) {
     Map<String, dynamic> params = {
       'pageNum': page + 1,
-      'pageSize': 10,
+      'pageSize': 10
     };
     void successFn(res) {
+      /// 重置允许上拉加载更多变量
+      refreshController.resetNoData();
       page++;
-      refreshController.refreshCompleted();
-      if (page == 1) {
-        orderList = res['data']['list'];
+      List resList = res['data']['data'] ?? [];
+      if (loadMore) {
+        //加载更多
+        orderList.addAll(resList);
+        refreshController.loadComplete();
       } else {
-        orderList.addAll(res['data']['list']);
+        //刷新
+        orderList = resList;
+        refreshController.refreshCompleted();
+      }
+      if (res['data']['data'].length == 0) {
+        //没有更多数据了
+        refreshController.loadNoData();
+        // 不允许上拉加载更多
+        refreshController.footerMode?.value = LoadStatus.noMore;
       }
       update();
-
     }
 
     void errorFn(error) {
-      refreshController.refreshFailed();
-      exSnackBar(error['message'], type: 'error');
+      if (refreshController.isLoading) {
+        refreshController.loadFailed();
+      } else if (refreshController.isRefresh) {
+        refreshController.refreshFailed();
+      }
+      Loading.error(error['message']);
     }
 
     NetUtils.diorequst(
       '/base/orderHistory',
-      'get',
+      'post',
       params: params,
       successCallBack: successFn,
       errorCallBack: errorFn,
     );
+  }
+
+  void onRefresh() {
+    //下拉刷新
+    page = 0;
+    getOrderList();
+  }
+
+  void onLoading() {
+    //上拉加载更多
+    getOrderList(loadMore: true);
   }
 
 }

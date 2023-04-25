@@ -29,7 +29,6 @@ class _AccountPage extends State<AccountPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     final userInfo = Application.userInfo;
-    APPPlugin.logger.d(userInfo);
 
     return basePage("Your account",
         child: SingleChildScrollView(
@@ -80,10 +79,10 @@ class _AccountPage extends State<AccountPage> {
                   child: Ink(
                     color: Colors.white,
                     child: InkWell(
-                      onTap: () async{
+                      onTap: () async {
                         await Get.toNamed('/updatePassword');
                         update();
-                      }, 
+                      },
                       child: Container(
                         padding: EdgeInsets.all(20.w),
                         child: Row(

@@ -36,8 +36,6 @@ class _DiscountPage extends State<DiscountPage> {
         setState(() {
           _cardList = data;
         });
-
-        APPPlugin.logger.d(data);
       }
     }
   }
@@ -60,7 +58,6 @@ class _DiscountPage extends State<DiscountPage> {
           "\$ ${money}",
           style: TextStyle(fontSize: 36.sp, color: Colors.white),
         ),
-        
       ));
     });
     return widgets;

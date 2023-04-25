@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 18:59:42
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-18 17:33:41
+ * @LastEditTime: 2023-04-25 18:59:48
  * @FilePath: \soulmate\lib\views\base\verification\view.dart
  */
 import 'package:flutter/material.dart';
@@ -23,23 +23,23 @@ class VerificationPage extends StatefulWidget {
 
 class _VerificationPage extends State<VerificationPage> {
   bool _error = false;
+  FocusNode focus = FocusNode();
 
   _sendCode() {
     final type = Get.arguments["type"];
     final email = Get.arguments["email"];
-    APPPlugin.logger.d(Get.arguments);
     if (type == null || email == null) {
       return;
     }
-
+    Loading.show(status: "Sending");
     NetUtils.diorequst("/base/email", 'post', params: {
       "email": email,
       "type": type,
     }).then((value) {
-      exSnackBar("发送验证码成功,请查看邮箱");
+      focus.requestFocus();
     }, onError: (err) {
-      exSnackBar("发送验证码失败");
-    });
+      Loading.dismiss();
+    }).whenComplete(() => Loading.success("send success"));
   }
 
   @override
@@ -49,17 +49,25 @@ class _VerificationPage extends State<VerificationPage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    Loading.dismiss();
+  }
+
   void _validate(String value) async {
     final type = Get.arguments["type"];
     final email = Get.arguments["email"];
     if (type == null || email == null) {
       return;
     }
+    Loading.show();
     final result = await NetUtils.diorequst("/base/verify", 'post', params: {
       "code": value,
       "email": "${type}_${email}",
     });
-    print(result);
+    Loading.dismiss();
     if (result?.data?["code"] == 200) {
       final arguments = Get.arguments;
       arguments["code"] = value;
@@ -102,8 +110,8 @@ class _VerificationPage extends State<VerificationPage> {
           Padding(
             padding: EdgeInsets.only(top: 60.w),
             child: PinCodeTextField(
+                focusNode: focus,
                 appContext: context,
-                autoFocus: true,
                 keyboardType: TextInputType.number,
                 length: 6,
                 pinTheme: PinTheme(

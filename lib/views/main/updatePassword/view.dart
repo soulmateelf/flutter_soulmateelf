@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-12 19:06:54
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-23 16:31:30
+ * @LastEditTime: 2023-04-25 19:14:46
  * @FilePath: \soulmate\lib\views\main\updatePassword\view.dart
  */
 import 'package:flutter/material.dart';
@@ -17,7 +17,6 @@ import 'package:get/get.dart';
 class UpdatePasswordPage extends StatelessWidget {
   _submit(UpdatePasswordFormBloc bloc) async {
     final blocs = bloc.state.fieldBlocs()?.values ?? [];
-    APPPlugin.logger.d(blocs);
     final validates = await Future.wait(blocs.map((e) => e.validate()));
     final validate = validates.every((element) => element);
     if (!validate) {
@@ -29,10 +28,9 @@ class UpdatePasswordPage extends StatelessWidget {
       "newPassword": bloc.newPassword.value,
       "oldPassword": bloc.currentPassword.value,
     });
-    APPPlugin.logger.d(result.data);
     if (result.data?["code"] == 200) {
+      Loading.success("success");
       Get.back();
-      exSnackBar("sucess");
     }
   }
 

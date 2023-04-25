@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-13 14:39:24
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-23 16:29:35
+ * @LastEditTime: 2023-04-25 19:13:43
  * @FilePath: \soulmate\lib\views\main\sendFeedback\view.dart
  */
 import 'dart:io';
@@ -48,7 +48,6 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
     final validated = validates.every((element) => element);
 
     if (!validated) return;
-    APPPlugin.logger.d(_images);
     final files = await Future.wait(
         _images.map((e) => MultipartFile.fromFile(e["path"])));
 
@@ -61,10 +60,8 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
     final result = await NetUtils.diorequst("/base/feedback", 'post',
         params: formData, extra: {'isUrlencoded': true});
     if (result.data?["code"] == 200) {
-      exSnackBar(result.data?["message"], onClose: () {
-        print("back");
-        Get.back();
-      });
+      Loading.success("${result.data?["message"]}");
+      Get.back();
     }
   }
 
@@ -73,7 +70,8 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
       /// 如果选择的是相册
       /// 检查权限
       bool result = await Utils.checkPremission(Permission.photos);
-      if(!result) return;
+      if (!result) return;
+
       /// 选择图片
       final files = await ImagePicker().pickMultiImage();
       files.forEach((file) {
@@ -84,7 +82,8 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
       /// 如果选择的拍摄
       /// 检查权限
       bool result = await Utils.checkPremission(Permission.camera);
-      if(!result) return;
+      if (!result) return;
+
       /// 拍摄
       final XFile? image =
           await ImagePicker().pickImage(source: ImageSource.camera);

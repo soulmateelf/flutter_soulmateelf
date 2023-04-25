@@ -1,3 +1,9 @@
+/*
+ * @Date: 2023-04-10 09:35:33
+ * @LastEditors: Wws wuwensheng@donganyun.com
+ * @LastEditTime: 2023-04-25 19:18:17
+ * @FilePath: \soulmate\lib\views\base\login\logic.dart
+ */
 import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
@@ -56,7 +62,7 @@ class LoginLogic extends GetxController {
         return;
       case FacebookLoginStatus.error:
         // Log in failed
-        EasyLoading.showToast('something wrong');
+        Loading.toast('something wrong');
         return;
     }
   }
@@ -66,20 +72,20 @@ class LoginLogic extends GetxController {
     if (Utils.isEmpty(params['loginId']) ||
         Utils.isEmpty(params['nickName']) ||
         Utils.isEmpty(params['email'])) {
-      EasyLoading.showToast('something wrong');
+      Loading.toast('something wrong');
       return;
     }
-    EasyLoading.show(status: 'loading...');
+    Loading.show();
     void successFn(res) {
-      EasyLoading.dismiss();
+      Loading.dismiss();
       Application.userInfo = res?["data"];
       Application.token = res?["token"];
       Get.offNamed('/home');
     }
 
     void errorFn(error) {
-      EasyLoading.dismiss();
-      EasyLoading.showToast(error['message'],
+      Loading.dismiss();
+       Loading.toast(error['message'],
           toastPosition: EasyLoadingToastPosition.top);
     }
 

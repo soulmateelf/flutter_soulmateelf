@@ -1,13 +1,12 @@
 /*
  * @Date: 2023-04-20 10:33:15
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 17:36:31
+ * @LastEditTime: 2023-04-25 19:11:13
  * @FilePath: \soulmate\lib\views\main\recharge\logic.dart
  */
 
-import 'dart:async';
 
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_soulmateelf/utils/plugin/IOSAppPurchase.dart';
 import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
@@ -17,8 +16,6 @@ import '../../../utils/core/httputil.dart';
 import '../../../utils/plugin/plugin.dart';
 
 class RechargetLogic extends GetxController {
-  ///ios订单信息订阅
-  late StreamSubscription<dynamic> _subscription;
 
   ///ios云端商品列表
   List<ProductDetails> appleProductsList = [];
@@ -84,7 +81,7 @@ class RechargetLogic extends GetxController {
       if (result.data?["code"] == 200) {
         final data = result.data?["data"]?["data"] ?? [];
         productList = data;
-        // APPPlugin.logger.d(productList);
+
         ///根据服务端商品列表获取ios商品列表
         getIOSProducts();
       }
@@ -103,46 +100,6 @@ class RechargetLogic extends GetxController {
     update();
   }
 
-  /// 初始化ios支付订单状态订阅
-  initApplePayConfig() {
-    final Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
-    _subscription = purchaseUpdated.listen((purchaseDetailsList) {
-      _listenToPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
-      _subscription.cancel();
-    }, onError: (error) {
-      // handle error here.
-    });
-  }
-
-  ///applePay支付状态逻辑处理
-  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
-    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
-      if (purchaseDetails.status == PurchaseStatus.pending) {
-        ///购买进行中，展示加载框
-        EasyLoading.show(status: 'loading...');
-      } else {
-        EasyLoading.dismiss();
-        if (purchaseDetails.status == PurchaseStatus.error) {
-          ///购买失败，展示失败信息
-          exSnackBar(purchaseDetails.error!.message!, type: 'error');
-        } else if (purchaseDetails.status == PurchaseStatus.purchased ||
-            purchaseDetails.status == PurchaseStatus.restored) {
-          ///购买成功，展示成功信息
-          // print(purchaseDetails.status);
-          // print('purchaseID：${purchaseDetails.purchaseID}');
-          // print('productID：${purchaseDetails.productID}');
-        }
-        if (purchaseDetails.pendingCompletePurchase) {
-          ///通知IAP平台，已经完成了购买，不管成功还是失败都是结束
-          await InAppPurchase.instance.completePurchase(purchaseDetails);
-        }
-
-        ///调用后台接口，通知后台购买成功或者失败
-        notifyServerPurchaseResult(purchaseDetails);
-      }
-    });
-  }
 
   ///获取ios云端的商品列表
   getIOSProducts() async {
@@ -152,15 +109,8 @@ class RechargetLogic extends GetxController {
       if (!Utils.isEmpty(product['appleProductId']))
         pIds.add(product["appleProductId"]);
     });
-
     ///根据商品id获取ios云端商品列表
-    final ProductDetailsResponse response =
-        await InAppPurchase.instance.queryProductDetails(pIds);
-    if (response.notFoundIDs.isNotEmpty) {
-      exSnackBar('something wrong', type: 'error');
-    }
-    appleProductsList = response.productDetails;
-
+    appleProductsList = await IOSAppPurchase.getIOSServerProducts(pIds);
     ///服务端的商品如果在ios云端没有找到，就不能购买，所以需要过滤掉
     productList = productList
         .where((element) => appleProductsList
@@ -171,18 +121,18 @@ class RechargetLogic extends GetxController {
 
   ///购买商品
   payNow(var productDetail) async {
+    ///根据服务端商品详情获取apple商品详情
     final ProductDetails? appleProductDetails =
         appleProductsList.firstWhereOrNull((product) =>
             product.id ==
             productDetail[
                 "appleProductId"]); // Saved earlier from queryProductDetails().
     if (appleProductDetails == null) {
-      exSnackBar('something wrong', type: 'error');
+      Loading.error("something wrong");
       return;
     }
-    final PurchaseParam purchaseParam =
-        PurchaseParam(productDetails: appleProductDetails);
-    InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
+    ///购买商品
+    IOSAppPurchase.payProductNow(appleProductDetails);
   }
 
   ///通知服务端商品购买成功或者失败
@@ -211,13 +161,11 @@ class RechargetLogic extends GetxController {
       "transactionDate": purchaseDetails.transactionDate, //apple交易时间
     };
     void successFn(res) {
-      print(res);
-      exSnackBar('success');
       update();
     }
 
     void errorFn(error) {
-      exSnackBar(error['message'], type: 'error');
+      Loading.error("${error['message']}");
     }
 
     return NetUtils.diorequst(
@@ -232,10 +180,8 @@ class RechargetLogic extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    ///初始化ios支付订单状态订阅
-    initApplePayConfig();
-    return;
+    ///设置回调
+    IOSAppPurchase.orderCallback = notifyServerPurchaseResult;
   }
 
   @override
@@ -243,13 +189,12 @@ class RechargetLogic extends GetxController {
     super.onReady();
     getRoleList();
     getProductList();
-    return;
   }
 
   @override
   void onClose() {
-    _subscription.cancel();
+    ///清除回调
+    IOSAppPurchase.orderCallback = null;
     super.onClose();
-    return;
   }
 }

@@ -27,8 +27,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 part 'resource/basePage.dart';
-part 'resource/exSnackBar.dart';
-part 'resource/loadingMask.dart';
 part 'resource/commonUseWidget.dart';
 part 'picker/singleColumnPicker.dart';
 part 'inputSearch/customSearchInput.dart';

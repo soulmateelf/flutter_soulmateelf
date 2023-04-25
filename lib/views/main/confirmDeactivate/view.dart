@@ -20,7 +20,6 @@ class ConfirmDeactivatePage extends StatelessWidget {
       "userId": userInfo["userId"],
       "password": bloc.password.value,
     });
-    APPPlugin.logger.d(result);
     if (result?.data["code"] == 200) {
       Utils.logout();
     }
@@ -65,8 +64,9 @@ class ConfirmDeactivatePage extends StatelessWidget {
                     child: TextFieldBlocBuilder(
                       textFieldBloc: bloc.password,
                       suffixButton: SuffixButton.asyncValidating,
-                      decoration: InputDecoration(filled: true,
-                                fillColor: Colors.white,
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
                           label: Text("Password"),
                           border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -90,7 +90,6 @@ class ConfirmDeactivatePage extends StatelessWidget {
                         final result = await showOkCancelAlertDialog(
                             context: context, title: "Confirm Deactivate");
                         if (result == OkCancelResult.ok) {
-                          print("ok");
                           _submit(bloc);
                         }
                       },
