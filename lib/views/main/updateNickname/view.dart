@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-14 17:35:00
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-23 16:31:24
+ * @LastEditTime: 2023-04-25 19:14:11
  * @FilePath: \soulmate\lib\views\main\updateNickname\view.dart
  */
 /*
@@ -28,20 +28,20 @@ class UpdateNicknamePage extends StatelessWidget {
     if (!nicknameValidate) return;
     final userInfo = Application.userInfo;
     if (userInfo != null) {
+      Loading.show();
       final result = await NetUtils.diorequst("/base/update", 'post', params: {
         "userId": userInfo["userId"],
         "nickName": bloc.nickname.value
       });
-      APPPlugin.logger.d(result.data);
+      Loading.dismiss();
 
       /// 这里应该返回用户信息
       if (result?.data?["code"] == 200) {
         if (result?.data?["data"] != null) {
           Application.userInfo = result?.data?["data"];
         }
-        exSnackBar("sucess", onClose: () {
-          Get.back();
-        });
+        Loading.success("success");
+        Get.back();
       }
     }
   }

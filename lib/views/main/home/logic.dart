@@ -1,12 +1,13 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-25 16:47:15
+ * @LastEditTime: 2023-04-25 19:51:12
  * @FilePath: \soulmate\lib\views\main\home\logic.dart
  */
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
+import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
 class HomeLogic extends GetxController {
@@ -45,26 +46,27 @@ class HomeLogic extends GetxController {
   }
 
   /// 获取角色列表
-  getRoleList() async {
-    final result = await NetUtils.diorequst("/role/getRoleList", 'get');
-    if (result?.data?["code"] == 200) {
-      // APPPlugin.logger.d(result.data["data"]["data"]);
-      roleList = result.data["data"]["data"];
-      if (roleList.length > 0) {
-        checkedRoleId = roleList[0]?["id"];
+  getRoleList() {
+    NetUtils.diorequst("/role/getRoleList", 'get').then((result) {
+      if (result?.data?["code"] == 200) {
+        // APPPlugin.logger.d(result.data["data"]["data"]);
+        roleList = result.data["data"]["data"];
+        if (roleList.length > 0) {
+          checkedRoleId = roleList[0]?["id"];
+        }
       }
-    }
+    });
   }
 
   // 分享成功，修改角色名称状态
-  shareCallBack() async {
-    final result =
-        await NetUtils.diorequst("/role/updateShare", 'post', params: {
+  shareCallBack() {
+    NetUtils.diorequst("/role/updateShare", 'post', params: {
       "roleId": checkedRoleId,
-    });
-    if (result?.data?["code"] == 200) {
-      getRoleList();
-    }
+    }).then((result) {
+      if (result?.data?["code"] == 200) {
+        getRoleList();
+      }
+    }).whenComplete(() {});
   }
 
   @override
@@ -93,7 +95,7 @@ class HomeLogic extends GetxController {
     int now = DateTime.now().millisecondsSinceEpoch;
     if (now - lastClickTime > 1000) {
       lastClickTime = DateTime.now().millisecondsSinceEpoch;
-      EasyLoading.showToast('再按一次退出应用');
+      Loading.toast('再按一次退出应用');
       return Future.value(false);
     } else {
       return Future.value(true);

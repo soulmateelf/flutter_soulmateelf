@@ -179,7 +179,7 @@ class NetUtils {
       if (Utils.isEmpty(errorMessage)) {
         errorMessage = 'something wrong！';
       }
-      EasyLoading.showToast(errorMessage,
+      Loading.toast(errorMessage,
           toastPosition: EasyLoadingToastPosition.top);
     }
   }

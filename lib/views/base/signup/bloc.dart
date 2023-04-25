@@ -51,12 +51,6 @@ class SignUpFormBloc extends FormBloc<String, String> {
 
   @override
   FutureOr<void> onSubmitting() async {
-    Get.toNamed('/verification', arguments: {
-      "setPasswordPageTitle": "Create your password",
-      "continuePageTitle": "Your’ve successfully Created your password.",
-      "email": email.value,
-      "nickname": nickname.value,
-      "type": "register",
-    });
+   
   }
 }

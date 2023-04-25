@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-12 19:06:54
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-23 16:31:30
+ * @LastEditTime: 2023-04-25 19:14:46
  * @FilePath: \soulmate\lib\views\main\updatePassword\view.dart
  */
 import 'package:flutter/material.dart';
@@ -31,8 +31,8 @@ class UpdatePasswordPage extends StatelessWidget {
     });
     APPPlugin.logger.d(result.data);
     if (result.data?["code"] == 200) {
+      Loading.success("success");
       Get.back();
-      exSnackBar("sucess");
     }
   }
 

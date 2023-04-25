@@ -39,12 +39,12 @@ class TestPay extends GetxController {
       print(purchaseDetails.status);
       if (purchaseDetails.status == PurchaseStatus.pending) {
         //购买进行中，展示加载框
-        EasyLoading.show(status: 'loading...');
+      Loading.show();
       } else {
-        EasyLoading.dismiss();
+        Loading.dismiss();
         if (purchaseDetails.status == PurchaseStatus.error) {
           //购买失败，展示失败信息
-          exSnackBar(purchaseDetails.error!.message!, type: 'error');
+          Loading.error("${purchaseDetails.error!.message!}");
           print('购买进行中');
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {

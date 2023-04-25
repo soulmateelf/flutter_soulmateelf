@@ -70,7 +70,7 @@ class Utils {
       if (await canLaunchUrl(Uri.parse(url))) {
         await launchUrl(Uri.parse(url));
       } else {
-        EasyLoading.showToast('拨打电话 $tel 失败！');
+        Loading.toast('拨打电话 $tel 失败！');
       }
     }
   }
@@ -81,7 +81,7 @@ class Utils {
       if (await canLaunchUrl(Uri.parse(path))) {
         await launchUrl(Uri.parse(path));
       } else {
-        EasyLoading.showToast('打开网页 $path 失败！');
+         Loading.toast('打开网页 $path 失败！');
       }
     }
   }
@@ -95,17 +95,17 @@ class Utils {
   /// UpdateDate:
   /// UpdateRemark:
   static void logout() {
-    EasyLoading.show(status: 'loading...');
+    Loading.show();
     successFn(res) {
-      EasyLoading.dismiss();
+      Loading.dismiss();
       Application.clearStorage().then((type) {
         Get.offAllNamed('/welcome');
       });
     }
 
     errorFn(error) {
-      EasyLoading.dismiss();
-      EasyLoading.showToast(error['message'],
+      Loading.dismiss();
+      Loading.toast(error['message'],
           toastPosition: EasyLoadingToastPosition.top);
     }
 
@@ -119,7 +119,7 @@ class Utils {
   static void share(String path, String imagePath,
       {Function? successCallBack}) async {
     if (isEmpty(path) || isEmpty(imagePath)) {
-      EasyLoading.showToast('no path or imagePath');
+       Loading.toast('no path or imagePath');
       return;
     }
     final data = await rootBundle.load(imagePath);

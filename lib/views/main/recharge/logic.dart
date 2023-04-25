@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-20 10:33:15
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 17:36:31
+ * @LastEditTime: 2023-04-25 19:11:13
  * @FilePath: \soulmate\lib\views\main\recharge\logic.dart
  */
 
@@ -120,12 +120,13 @@ class RechargetLogic extends GetxController {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       if (purchaseDetails.status == PurchaseStatus.pending) {
         ///购买进行中，展示加载框
-        EasyLoading.show(status: 'loading...');
+        Loading.show();
       } else {
-        EasyLoading.dismiss();
+        Loading.dismiss();
         if (purchaseDetails.status == PurchaseStatus.error) {
           ///购买失败，展示失败信息
-          exSnackBar(purchaseDetails.error!.message!, type: 'error');
+          
+          Loading.error("purchaseDetails.error!.message!");
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
           ///购买成功，展示成功信息
@@ -157,7 +158,7 @@ class RechargetLogic extends GetxController {
     final ProductDetailsResponse response =
         await InAppPurchase.instance.queryProductDetails(pIds);
     if (response.notFoundIDs.isNotEmpty) {
-      exSnackBar('something wrong', type: 'error');
+      Loading.error("something wrong");
     }
     appleProductsList = response.productDetails;
 
@@ -177,7 +178,7 @@ class RechargetLogic extends GetxController {
             productDetail[
                 "appleProductId"]); // Saved earlier from queryProductDetails().
     if (appleProductDetails == null) {
-      exSnackBar('something wrong', type: 'error');
+      Loading.error("something wrong");
       return;
     }
     final PurchaseParam purchaseParam =
@@ -212,12 +213,12 @@ class RechargetLogic extends GetxController {
     };
     void successFn(res) {
       print(res);
-      exSnackBar('success');
+      Loading.success("success");
       update();
     }
 
     void errorFn(error) {
-      exSnackBar(error['message'], type: 'error');
+      Loading.error("${error['message']}");
     }
 
     return NetUtils.diorequst(

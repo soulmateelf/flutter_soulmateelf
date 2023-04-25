@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-25 15:55:23
+ * @LastEditTime: 2023-04-25 19:55:31
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -178,6 +178,7 @@ class _HomePage extends State<HomePage> {
                                                         ]);
                                                     if (result == null) return;
                                                     final newName = result[0];
+                                                    Loading.show();
                                                     NetUtils.diorequst(
                                                         "/role/updateRole",
                                                         'post',
@@ -189,8 +190,8 @@ class _HomePage extends State<HomePage> {
                                                       APPPlugin.logger.d(value);
                                                       logic.getRoleList();
                                                     }).whenComplete(() {
-                                                      exSnackBar(
-                                                          "update success");
+                                                      Loading.dismiss();
+                                                      Loading.success("success");
                                                     });
                                                   },
                                                   child: logic.checkedRole?[

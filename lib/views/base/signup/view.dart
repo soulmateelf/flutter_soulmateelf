@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-23 16:31:08
+ * @LastEditTime: 2023-04-25 19:02:27
  * @FilePath: \soulmate\lib\views\base\signup\view.dart
  */
 /// Author: kele
@@ -22,6 +22,16 @@ import 'package:get/get.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpPage extends StatelessWidget {
+  _submit(SignUpFormBloc bloc) {
+    Get.toNamed('/verification', arguments: {
+      "setPasswordPageTitle": "Create your password",
+      "continuePageTitle": "Your’ve successfully Created your password.",
+      "email": bloc.email.value,
+      "nickname": bloc.nickname.value,
+      "type": "register",
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     /// ScreenUtil初始化
@@ -69,8 +79,9 @@ class SignUpPage extends StatelessWidget {
                                   AutofillHints.email,
                                 ],
                                 suffixButton: SuffixButton.asyncValidating,
-                                decoration: InputDecoration(filled: true,
-                                fillColor: Colors.white,
+                                decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
                                     labelText: "Email",
                                     helperText: " ",
                                     border: OutlineInputBorder(
@@ -88,8 +99,9 @@ class SignUpPage extends StatelessWidget {
                               child: TextFieldBlocBuilder(
                                 textFieldBloc: signupFormBloc.nickname,
                                 autofillHints: const [AutofillHints.nickname],
-                                decoration: InputDecoration(filled: true,
-                                fillColor: Colors.white,
+                                decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
                                     labelText: "Nickname",
                                     helperText: " ",
                                     border: OutlineInputBorder(
@@ -113,7 +125,7 @@ class SignUpPage extends StatelessWidget {
                                               const Color.fromRGBO(
                                                   78, 162, 79, 1))),
                                   onPressed: () {
-                                    signupFormBloc.submit();
+                                    _submit(signupFormBloc);
                                   },
                                   child: Text(
                                     "Next",

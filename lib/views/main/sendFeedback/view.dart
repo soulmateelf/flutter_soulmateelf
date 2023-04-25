@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-13 14:39:24
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-23 16:29:35
+ * @LastEditTime: 2023-04-25 19:13:43
  * @FilePath: \soulmate\lib\views\main\sendFeedback\view.dart
  */
 import 'dart:io';
@@ -60,20 +60,18 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
     final result = await NetUtils.diorequst("/base/feedback", 'post',
         params: formData, extra: {'isUrlencoded': true});
     if (result.data?["code"] == 200) {
-      exSnackBar(result.data?["message"], onClose: () {
-        print("back");
-        Get.back();
-      });
+      Loading.success("${result.data?["message"]}");
+      Get.back();
     }
   }
 
   Future<void> getImage(GetImageActionType actionType) async {
     /// 如果选择的是相册
     if (actionType == GetImageActionType.photo) {
-      await Permission.photos.status.then((status) async{
+      await Permission.photos.status.then((status) async {
         print(status);
         print(PermissionStatus.permanentlyDenied == status);
-        if(status == PermissionStatus.permanentlyDenied){
+        if (status == PermissionStatus.permanentlyDenied) {
           print(222);
           openAppSettings();
         } else if (status != PermissionStatus.granted) {

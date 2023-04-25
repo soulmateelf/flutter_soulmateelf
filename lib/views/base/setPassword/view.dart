@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-23 16:31:03
+ * @LastEditTime: 2023-04-25 19:00:49
  * @FilePath: \soulmate\lib\views\base\setPassword\view.dart
  */
 /// Author: kele
@@ -31,12 +31,14 @@ class SetPasswordPage extends StatelessWidget {
 
     if (type == "forget") {
       if (email != null && pwd != null) {
-        final result = await NetUtils.diorequst("/base/forget", 'post',
-            params: {
-              "email": email,
-              "code": code,
-              "password": pwd,
-            });
+        Loading.show();
+        final result =
+            await NetUtils.diorequst("/base/forget", 'post', params: {
+          "email": email,
+          "code": code,
+          "password": pwd,
+        });
+        Loading.dismiss();
         if (result?.data?["code"] == 200) {
           dynamic arguments = Get.arguments;
           arguments["password"] = pwd;
@@ -45,12 +47,14 @@ class SetPasswordPage extends StatelessWidget {
       }
     } else if (type == "register") {
       if (email != null && nickname != null && pwd != null) {
+        Loading.show();
         final result =
             await NetUtils.diorequst("/base/register", 'post', params: {
           "email": email,
           "nickName": nickname,
           "password": pwd,
         });
+        Loading.dismiss();
         if (result?.data?["code"] == 200) {
           dynamic arguments = Get.arguments;
           arguments["password"] = pwd;
@@ -106,7 +110,8 @@ class SetPasswordPage extends StatelessWidget {
                               AutofillHints.password,
                             ],
                             suffixButton: SuffixButton.obscureText,
-                            decoration: InputDecoration(filled: true,
+                            decoration: InputDecoration(
+                                filled: true,
                                 fillColor: Colors.white,
                                 labelText: "Password",
                                 helperText: " ",
@@ -126,7 +131,8 @@ class SetPasswordPage extends StatelessWidget {
                             textFieldBloc: setPasswordFormBloc.confirmPassword,
                             suffixButton: SuffixButton.obscureText,
                             autofillHints: const [AutofillHints.password],
-                            decoration: InputDecoration(filled: true,
+                            decoration: InputDecoration(
+                                filled: true,
                                 fillColor: Colors.white,
                                 labelText: "Confirm password",
                                 helperText: " ",

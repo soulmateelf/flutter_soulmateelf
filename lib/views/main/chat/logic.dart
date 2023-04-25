@@ -13,35 +13,51 @@ import 'package:speech_to_text/speech_to_text.dart';
 
 class ChatLogic extends GetxController {
   ///刷新控制器
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
+
   ///滚动控制器
   ScrollController scrollController = ScrollController();
+
   ///输入框焦点
   FocusNode focusNode = FocusNode();
+
   ///右侧图标类型   normal 正常  input 文本输入状态
   String iconType = 'normal';
+
   ///角色id
   int roleId = -1;
+
   ///角色信息
   var roleInfo = {};
+
   ///消息列表
   List messageList = [];
+
   ///页码
   int page = 0;
+
   ///可以下拉刷新
   bool canRefresh = true;
+
   ///消息输入框内容
   String inputContent = '';
+
   ///语音转文字
   SpeechToText speechToText = SpeechToText();
+
   ///语音转文字是否可用
   bool speechEnabled = false;
+
   ///语音转文字是否正在录音
   bool isRecording = false;
+
   ///语音转文字的结果
   String speechResult = '';
+
   ///开始录音的屏幕位置
   double startPosition = 0.0;
+
   ///是否是取消录音状态
   bool cancelStatus = false;
 
@@ -98,7 +114,7 @@ class ChatLogic extends GetxController {
     }
 
     void errorFn(error) {
-      exSnackBar(error['message'], type: 'error');
+      Loading.error("${error['message']}");
     }
 
     return NetUtils.diorequst(
@@ -151,7 +167,7 @@ class ChatLogic extends GetxController {
 
     void errorFn(error) {
       refreshController.refreshFailed();
-      exSnackBar(error['message'], type: 'error');
+      Loading.error("${error['message']}");
     }
 
     NetUtils.diorequst(
@@ -169,14 +185,14 @@ class ChatLogic extends GetxController {
       return;
     }
     focusNode.unfocus();
-    EasyLoading.show(status: 'loading...');
+    Loading.show();
     Map<String, dynamic> params = {
       'message': message,
       'roleId': roleId.toString()
     };
 
     void successFn(res) {
-      EasyLoading.dismiss();
+      Loading.dismiss();
       //清空当前消息
       message = '';
       speechResult = '';
@@ -187,8 +203,8 @@ class ChatLogic extends GetxController {
     }
 
     void errorFn(error) {
-      EasyLoading.dismiss();
-      exSnackBar(error['message'], type: 'error');
+      Loading.dismiss();
+      Loading.error("${error['message']}");
     }
 
     NetUtils.diorequst(
@@ -202,7 +218,8 @@ class ChatLogic extends GetxController {
 
   ///时间显示逻辑
   showTime(dynamic itemData, int index) {
-    var date = DateTime.fromMillisecondsSinceEpoch(itemData['createTime'].toInt());
+    var date =
+        DateTime.fromMillisecondsSinceEpoch(itemData['createTime'].toInt());
     var computeDate = DateTime(date.year, date.month, date.day);
     var now = new DateTime.now();
     var diffDays = now.difference(computeDate).inDays;
@@ -220,26 +237,30 @@ class ChatLogic extends GetxController {
   ///开始录音
   void startListening(event) async {
     if (!speechEnabled) {
-      EasyLoading.showToast('please open the microphone permission!');
+       Loading.toast('please open the microphone permission!');
       return;
     }
     if (!isRecording) {
       ///开始录音,不能重复启动
       ///震动反馈
       HapticFeedback.vibrate();
+
       ///开始录音状态
       isRecording = true;
+
       ///记录开始录音的屏幕位置
       startPosition = event.globalPosition.dy;
       update();
       await speechToText.listen(onResult: onSpeechResult);
     }
   }
+
   ///手指滑动事件
   moveListening(event) {
     if (!isRecording) {
       return;
     }
+
     ///滑动的距离
     var moveDistance = startPosition - event.globalPosition.dy;
     if (moveDistance > 100.w) {
@@ -250,6 +271,7 @@ class ChatLogic extends GetxController {
     }
     update();
   }
+
   ///停止录音
   void stopListening() async {
     if (!speechEnabled || !isRecording) {
@@ -259,13 +281,14 @@ class ChatLogic extends GetxController {
     isRecording = false;
     startPosition = 0;
     update();
+
     ///如果手指移动位置大，是取消录音状态，那么停止的时候就不要去发送消息了
-    if(cancelStatus){
+    if (cancelStatus) {
       cancelStatus = false;
       return;
     }
     if (Utils.isEmpty(speechResult)) {
-      EasyLoading.showToast('please say it again!');
+      Loading.toast('please say it again!');
       return;
     }
     sendMessage(speechResult);
