@@ -222,20 +222,23 @@ class ChatPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            alignment: Alignment.center,
+          Offstage(
+            offstage: !logic.showTime(itemData, index),
             child: Container(
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(217, 217, 217, 0.6),
-                borderRadius: BorderRadius.circular(40),
+              alignment: Alignment.center,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(217, 217, 217, 0.6),
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 30.w),
+                child: Text(
+                  logic.messageTimeFormat(itemData, index),
+                  style: TextStyle(
+                      fontSize: 22.sp, color: Color.fromRGBO(102, 102, 102, 1)),
+                ),
+                // ),
               ),
-              padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 30.w),
-              child: Text(
-                logic.showTime(itemData, index),
-                style: TextStyle(
-                    fontSize: 22.sp, color: Color.fromRGBO(102, 102, 102, 1)),
-              ),
-              // ),
             ),
           ),
           Container(
