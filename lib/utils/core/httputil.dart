@@ -137,8 +137,7 @@ class NetUtils {
     ///--自定义code  200 操作成功！
     ///--自定义code  500 操作失败！系统繁忙！非法参数！
     ///--自定义code  400 未登录！权限不足！
-    ///
-    print('请求成功，返回数据：${response.data.toString()}');
+
     return Future(() {
       if (response.statusCode == 200) {
         //http成功
@@ -151,7 +150,7 @@ class NetUtils {
           } catch (e) {
             return response;
           }
-        } if(responsedata['code'] == 4001){
+        } else if(responsedata['code'] == 4001){
           // icyberelf约定的账号登录信息失效是http状态码200
           // ----内部自定义code  4001 未登录或登录信息失效！
           _error(responsedata['message'], responsedata, errorCallBack);

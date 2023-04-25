@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-24 10:34:45
+ * @LastEditTime: 2023-04-25 15:55:23
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -24,6 +24,7 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../../../utils/core/httputil.dart';
 import 'logic.dart';
 
 class HomePage extends StatefulWidget {
@@ -67,6 +68,8 @@ class _HomePage extends State<HomePage> {
     return GetBuilder<HomeLogic>(builder: (logic) {
       return WillPopScope(
         onWillPop: () {
+          Get.back();
+          return Future.value();
           return logic.dealBack();
         },
         child: basePage("home",
@@ -174,8 +177,21 @@ class _HomePage extends State<HomePage> {
                                                                   "Soulmate ELF")
                                                         ]);
                                                     if (result == null) return;
-                                                    APPPlugin.logger
-                                                        .d(result[0]);
+                                                    final newName = result[0];
+                                                    NetUtils.diorequst(
+                                                        "/role/updateRole",
+                                                        'post',
+                                                        params: {
+                                                          "roleId": logic
+                                                              .checkedRoleId,
+                                                          "roleName": newName
+                                                        }).then((value) {
+                                                      APPPlugin.logger.d(value);
+                                                      logic.getRoleList();
+                                                    }).whenComplete(() {
+                                                      exSnackBar(
+                                                          "update success");
+                                                    });
                                                   },
                                                   child: logic.checkedRole?[
                                                               "share"] ==
@@ -358,6 +374,7 @@ class _HomePage extends State<HomePage> {
         onTap: () {
           // Get.toNamed('/settings');
           logic.checkedRoleId = role["id"];
+
           Get.toNamed('/customRole');
         },
         child: Container(
@@ -439,7 +456,8 @@ class _HomePage extends State<HomePage> {
       } else {
         text = "Chat now";
         onPressed = () async {
-          await Get.toNamed('/chat',arguments: {"roleId":logic.checkedRole["id"]});
+          await Get.toNamed('/chat',
+              arguments: {"roleId": logic.checkedRole["id"]});
           logic.getRoleList();
         };
       }

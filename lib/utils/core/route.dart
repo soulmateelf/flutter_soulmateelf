@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-23 19:41:51
+ * @LastEditTime: 2023-04-24 15:30:57
  * @FilePath: \soulmate\lib\utils\core\route.dart
  */
 import 'package:flutter_soulmateelf/views/base/continue/view.dart';
@@ -13,7 +13,8 @@ import 'package:flutter_soulmateelf/views/base/welcome/view.dart';
 import 'package:flutter_soulmateelf/views/base/signup/view.dart';
 import 'package:flutter_soulmateelf/views/main/account/view.dart';
 import 'package:flutter_soulmateelf/views/main/confirmDeactivate/view.dart';
-import 'package:flutter_soulmateelf/views/main/customRole/view.dart';
+import 'package:flutter_soulmateelf/views/main/customRole/step1View.dart';
+import 'package:flutter_soulmateelf/views/main/customRole/step2view.dart';
 import 'package:flutter_soulmateelf/views/main/deactivate/view.dart';
 import 'package:flutter_soulmateelf/views/main/discount/view.dart';
 import 'package:flutter_soulmateelf/views/main/privacyPolicy/view.dart';
@@ -35,6 +36,8 @@ import 'package:flutter_soulmateelf/views/main/home/view.dart';
 import 'package:flutter_soulmateelf/views/main/chat/view.dart';
 /// text
 import 'package:flutter_soulmateelf/views/test/speech/view.dart';
+
+import '../../views/main/customRole/step3view.dart';
 
 class AppRoute {
   static final List<GetPage> getPages = [
@@ -64,7 +67,9 @@ class AppRoute {
     GetPage(name: '/termsOfService', page: ()=>TermsOfServicePage()), /// 服务条款
     GetPage(name: '/recharge', page:()=>RechargePage()), /// 充值
     GetPage(name: '/previewPhoto', page:()=>PreviewPhotoPage()), /// 预览图片
-    GetPage(name: '/customRole', page:()=>CustomRole()),
+    GetPage(name: '/customRole', page:()=>CustomRolePage()), /// 定制角色第一步
+    GetPage(name: "/customRoleStep2", page:()=>CustomRoleStep2Page()),/// 定制角色第二步
+    GetPage(name: "/customRoleStep3", page:()=>CustomRoleStep3Page()),/// 定制角色第三步
     /// text
     GetPage(name: '/textToSpeech', page: () => TextToSpeechPage()),/// 语言测试
     GetPage(name: '/testPay', page: () => TestPayPage()),/// 支付测试

@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-12 17:45:55
+ * @LastEditTime: 2023-04-25 15:39:09
  * @FilePath: \soulmate\lib\widgets\library\projectLibrary.dart
  */
 /// Author: kele
@@ -35,3 +35,4 @@ part 'inputSearch/customSearchInput.dart';
 part 'inputSearch/customCommonTextField.dart';
 part 'listViewState/listViewNoData.dart';
 part 'backBar/backBar.dart';
+part 'resource/loading.dart';

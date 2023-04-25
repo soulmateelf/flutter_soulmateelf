@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-13 14:25:53
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-23 16:21:29
+ * @LastEditTime: 2023-04-24 18:24:49
  * @FilePath: \soulmate\lib\widgets\purchaseHistoryCard\view.dart
  */
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class PurchaseHistoryCard extends StatelessWidget {
     // TODO: implement build
 
     final time =
-        Moment(DateTime.fromMillisecondsSinceEpoch(history?["createTime"]));
+        Moment(DateTime.fromMillisecondsSinceEpoch(history?["dealTime"]));
 
     return Container(
       margin: EdgeInsets.only(top: 10.w),
