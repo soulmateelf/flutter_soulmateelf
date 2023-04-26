@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-13 14:39:24
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-25 19:13:43
+ * @LastEditTime: 2023-04-26 10:56:14
  * @FilePath: \soulmate\lib\views\main\sendFeedback\view.dart
  */
 import 'dart:io';
@@ -65,37 +65,6 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
     }
   }
 
-  Future<void> getImage(GetImageActionType actionType) async {
-    if (actionType == GetImageActionType.photo) {
-      /// 如果选择的是相册
-      /// 检查权限
-      bool result = await Utils.checkPremission(Permission.photos);
-      if (!result) return;
-
-      /// 选择图片
-      final files = await ImagePicker().pickMultiImage();
-      files.forEach((file) {
-        _images.add({"path": file.path});
-      });
-      setState(() {});
-    } else if (actionType == GetImageActionType.shoot) {
-      /// 如果选择的拍摄
-      /// 检查权限
-      bool result = await Utils.checkPremission(Permission.camera);
-      if (!result) return;
-
-      /// 拍摄
-      final XFile? image =
-          await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image != null) {
-        final imagePath = image.path;
-        setState(() {
-          _images.add({"path": imagePath});
-        });
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -139,23 +108,14 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
                                   children: [
                                     InkWell(
                                       onTap: () async {
-                                        final result =
-                                            await showConfirmationDialog(
-                                                context: context,
-                                                title: "select",
-                                                actions: [
-                                              const AlertDialogAction(
-                                                key: GetImageActionType.shoot,
-                                                label: 'shoot',
-                                              ),
-                                              const AlertDialogAction(
-                                                key: GetImageActionType.photo,
-                                                label: 'photo',
-                                              ),
-                                            ]);
-                                        if (result != null) {
-                                          getImage(result);
-                                        }
+                                        final files = await Utils.pickerImage(
+                                            context,
+                                            multiple: true);
+                                        APPPlugin.logger.d(files);
+                                        files.forEach((file) {
+                                          _images.add({"path": file.path});
+                                        });
+                                        setState(() {});
                                       },
                                       child: Container(
                                         width: 156.w,

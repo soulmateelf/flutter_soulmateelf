@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-12 15:49:59
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-20 18:26:04
+ * @LastEditTime: 2023-04-26 10:57:23
  * @FilePath: \soulmate\lib\views\main\settings\view.dart
  */
 
@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/config.dart';
 import 'package:flutter_soulmateelf/utils/core/application.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
+import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:flutter_soulmateelf/widgets/settingsCard/settingsCard.dart';
 import 'package:get/get.dart';
@@ -31,6 +32,8 @@ class _SettingsPage extends State<SettingsPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     final userInfo = Application.userInfo;
+    APPPlugin.logger.d(userInfo);
+
     return basePage(
       "",
       child: SingleChildScrollView(
@@ -70,7 +73,10 @@ class _SettingsPage extends State<SettingsPage> {
                                 color: Color.fromRGBO(0, 0, 0, 0.4),
                               ),
                               child: IconButton(
-                                  onPressed: () {},
+                                  onPressed: () async{
+                                    final files = await Utils.pickerImage(context);
+                                    
+                                  },
                                   icon: Icon(
                                     Icons.camera_enhance,
                                     color: Colors.white,

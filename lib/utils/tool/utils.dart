@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_soulmateelf/utils/core/application.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'dart:math';
@@ -184,4 +186,85 @@ class Utils {
       return true;
     }
   }
+
+  static Future<List<XFile>> pickerImage(
+    BuildContext context, {
+    bool multiple = false,
+    double? maxWidth,
+    double? maxHeight,
+    int? imageQuality,
+    CameraDevice preferredCameraDevice = CameraDevice.rear,
+    bool requestFullMetadata = true,
+  }) async {
+    var files = <XFile>[];
+
+    final actionType = await showConfirmationDialog(
+        context: context,
+        title: "select",
+        actions: [
+          const AlertDialogAction(
+            key: GetImageActionType.shoot,
+            label: 'shoot',
+          ),
+          const AlertDialogAction(
+            key: GetImageActionType.photo,
+            label: 'photo',
+          ),
+        ]);
+    if (actionType == GetImageActionType.photo) {
+      /// 如果选择的是相册
+      /// 检查权限
+      bool result = await Utils.checkPremission(Permission.photos);
+
+      if (result) {
+        if (multiple) {
+          /// 选择图片
+          files = await ImagePicker().pickMultiImage(
+              maxHeight: maxHeight,
+              maxWidth: maxWidth,
+              imageQuality: imageQuality,
+              requestFullMetadata: requestFullMetadata);
+        } else {
+          final file = await ImagePicker().pickImage(
+              source: ImageSource.gallery,
+              maxHeight: maxHeight,
+              maxWidth: maxWidth,
+              preferredCameraDevice: preferredCameraDevice,
+              imageQuality: imageQuality,
+              requestFullMetadata: requestFullMetadata);
+          if (file != null) {
+            files.add(file);
+          }
+        }
+      }
+    } else if (actionType == GetImageActionType.shoot) {
+      /// 如果选择的拍摄
+      /// 检查权限
+      bool result = await Utils.checkPremission(Permission.camera);
+
+      if (result) {
+        /// 拍摄
+        final XFile? file = await ImagePicker().pickImage(
+            source: ImageSource.camera,
+            maxHeight: maxHeight,
+            maxWidth: maxWidth,
+            preferredCameraDevice: preferredCameraDevice,
+            imageQuality: imageQuality,
+            requestFullMetadata: requestFullMetadata);
+        if (file != null) {
+          files.add(file);
+        }
+      }
+    }
+    return files;
+  }
+}
+
+/// 选择获取图片的方式
+enum GetImageActionType {
+  /// 拍摄
+  shoot,
+
+  /// 相册
+  photo,
 }
