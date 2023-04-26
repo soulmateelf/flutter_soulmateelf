@@ -139,7 +139,7 @@ class CustomRoleStep3Page extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("\$ ${logic.price}"),
+                        Text("\$ ${logic.productDetail?['price']??0}"),
                         ElevatedButton(
                             onPressed: () {
                               logic.payNow();

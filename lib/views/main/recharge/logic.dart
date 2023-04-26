@@ -5,7 +5,6 @@
  * @FilePath: \soulmate\lib\views\main\recharge\logic.dart
  */
 
-
 import 'package:flutter_soulmateelf/utils/plugin/IOSAppPurchase.dart';
 import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
@@ -16,7 +15,6 @@ import '../../../utils/core/httputil.dart';
 import '../../../utils/plugin/plugin.dart';
 
 class RechargetLogic extends GetxController {
-
   ///ios云端商品列表
   List<ProductDetails> appleProductsList = [];
 
@@ -53,7 +51,6 @@ class RechargetLogic extends GetxController {
   /// 获取角色列表
   getRoleList() {
     NetUtils.diorequst("/role/getRoleList", 'get').then((result) {
-    
       if (result?.data?["code"] == 200) {
         final data = result?.data?["data"]?["data"] ?? [];
         roleList = data;
@@ -61,10 +58,6 @@ class RechargetLogic extends GetxController {
         checkedRoleId = Get.arguments["checkedRoleId"] ??
             (data.length > 0 ? (data[0]?["id"]) : 1);
       }
-    },onError: (err){
-      APPPlugin.logger.e(err);
-    }).catchError((err){
-      APPPlugin.logger.e(err);
     });
   }
 
@@ -82,11 +75,10 @@ class RechargetLogic extends GetxController {
 
   // 获取商品列表
   getProductList() {
-    NetUtils.diorequst("/product/list", 'get').then((result) {
+    NetUtils.diorequst("/product/ByProductType", 'get',params:{'productType':1}).then((result) {
       if (result.data?["code"] == 200) {
         final data = result.data?["data"]?["data"] ?? [];
         productList = data;
-
         ///根据服务端商品列表获取ios商品列表
         getIOSProducts();
       }
@@ -105,7 +97,6 @@ class RechargetLogic extends GetxController {
     update();
   }
 
-
   ///获取ios云端的商品列表
   getIOSProducts() async {
     ///取出服务端商品列表中的ios商品id
@@ -114,8 +105,10 @@ class RechargetLogic extends GetxController {
       if (!Utils.isEmpty(product['appleProductId']))
         pIds.add(product["appleProductId"]);
     });
+
     ///根据商品id获取ios云端商品列表
     appleProductsList = await IOSAppPurchase.getIOSServerProducts(pIds);
+
     ///服务端的商品如果在ios云端没有找到，就不能购买，所以需要过滤掉
     productList = productList
         .where((element) => appleProductsList
@@ -136,6 +129,7 @@ class RechargetLogic extends GetxController {
       Loading.error("something wrong");
       return;
     }
+
     ///购买商品
     IOSAppPurchase.payProductNow(appleProductDetails);
   }
@@ -185,6 +179,7 @@ class RechargetLogic extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
     ///设置回调
     IOSAppPurchase.orderCallback = notifyServerPurchaseResult;
   }

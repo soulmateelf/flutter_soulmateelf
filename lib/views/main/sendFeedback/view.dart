@@ -111,7 +111,6 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
                                         final files = await Utils.pickerImage(
                                             context,
                                             multiple: true);
-                                        APPPlugin.logger.d(files);
                                         files.forEach((file) {
                                           _images.add({"path": file.path});
                                         });

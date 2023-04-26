@@ -39,10 +39,6 @@ class NetUtils {
 
       localHeaders["Authorization"] = "Bearer ${Application.token}";
       localHeaders["userId"] = Application.userInfo?["userId"];
-      localHeaders["Connection"] = "Keep-Alive";
-      localHeaders["Keep-Alive"] = "timeout=5, max=1000";
-
-      APPPlugin.logger.d(localHeaders);
 
       ///拦截器
       dio.interceptors.add(InterceptorsWrapper(
@@ -51,8 +47,7 @@ class NetUtils {
           /// header在这里直接赋值会导致其他header属性的丢失
           /// 所以在request函数中处理比较好
           /// 图片类型，在这里特殊处理header
-          /// 
-          APPPlugin.logger.e(options.headers);
+          ///
           if (extra != null && extra?["uploadImage"] == true) {
             options.data = params?["formdata"];
           }
@@ -62,7 +57,6 @@ class NetUtils {
         onResponse: (Response response, handler) async {
           // Do something with response data
           //图片类型，在这里特殊处理response
-          // APPPlugin.logger.d();
           return handler.next(response); // continue
         },
         onError: (e, handler) {
@@ -92,7 +86,6 @@ class NetUtils {
       return _dealDioError(
           dioError, url, successCallBack, errorCallBack, params);
     } catch (exception) {
-      APPPlugin.logger.d(exception);
       Map errorResponseData = {"message": exception.toString()};
       _error(errorResponseData['message'], errorResponseData, errorCallBack);
     }
@@ -100,7 +93,6 @@ class NetUtils {
 
   static _dealDioError(DioError dioError, String url, Function? successCallBack,
       Function? errorCallBack, params) {
-        APPPlugin.logger.d(dioError.type);
     switch (dioError.type) {
       case DioErrorType.cancel:
         Map errorResponseData = {"message": "request cancel！"};
@@ -130,8 +122,6 @@ class NetUtils {
         _error(errorResponseData['message'], errorResponseData, errorCallBack);
         break;
       default:
-        print('777777777777');
-        print(dioError.toString());
         // print(dioError.response);
         Map errorResponseData;
         errorResponseData = {"message": "error！"};

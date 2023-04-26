@@ -71,13 +71,7 @@ class _HomePage extends State<HomePage> {
         },
         child: basePage("home",
             backgroundColor: Colors.transparent,
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    logic.getRoleList();
-                  },
-                  icon: Icon(Icons.refresh))
-            ],
+            showAppBar: false,
             child: Container(
                 width: double.infinity,
                 height: double.infinity,
@@ -378,10 +372,7 @@ class _HomePage extends State<HomePage> {
       var images = role["images"];
       widgets.add(InkWell(
         onTap: () {
-          // Get.toNamed('/settings');
           logic.checkedRoleId = role["id"];
-
-          Get.toNamed('/customRole');
         },
         child: Container(
           width: 220.w,
@@ -451,8 +442,12 @@ class _HomePage extends State<HomePage> {
     }
     var text = "";
     var onPressed = () async {};
+    /// roleType 1 为普通角色 2 为用户自定义角色 3 为可点击定制的假角色
     if (logic.checkedRole["roleType"] == 3) {
       text = "Character customization";
+      onPressed = () async {
+        Get.toNamed('/customRole');
+      };
     } else {
       if ((logic.checkedRole["amout"] ?? 0) <= 0) {
         text = "Pay for me";

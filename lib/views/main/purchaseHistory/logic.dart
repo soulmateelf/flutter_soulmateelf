@@ -37,7 +37,6 @@ class PurchaseHistoryLogic extends GetxController {
       /// 重置允许上拉加载更多变量
       refreshController.resetNoData();
       page++;
-      APPPlugin.logger.d(res.data);
       List resList = res?['data']?['data'] ?? [];
       if (loadMore) {
         //加载更多
@@ -58,7 +57,6 @@ class PurchaseHistoryLogic extends GetxController {
     }
 
     void errorFn(error) {
-      APPPlugin.logger.e(error);
       if (refreshController.isLoading) {
         refreshController.loadFailed();
       } else if (refreshController.isRefresh) {
@@ -71,11 +69,9 @@ class PurchaseHistoryLogic extends GetxController {
       '/base/orderHistory',
       'post',
       params: params,
-      // successCallBack: successFn,
-      // errorCallBack: errorFn,
-    ).then((value){
-      APPPlugin.logger.d(value);
-    });
+      successCallBack: successFn,
+      errorCallBack: errorFn,
+    );
   }
 
   void onRefresh() {

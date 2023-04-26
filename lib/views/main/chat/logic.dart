@@ -216,23 +216,27 @@ class ChatLogic extends GetxController {
       errorCallBack: errorFn,
     );
   }
+
   ///是否展示时间模块
   bool showTime(dynamic itemData, int index) {
     if (index == 0) {
       ///第一条消息就展示时间
       return true;
     }
+
     ///与上一条消息的时间差在5分钟内不展示
-    var lastMessgeDate = DateTime.fromMillisecondsSinceEpoch(messageList[index-1]['createTime'].toInt());
-    var currentMessgeDate = DateTime.fromMillisecondsSinceEpoch(itemData['createTime'].toInt());
+    var lastMessgeDate = DateTime.fromMillisecondsSinceEpoch(
+        messageList[index - 1]['createTime'].toInt());
+    var currentMessgeDate =
+        DateTime.fromMillisecondsSinceEpoch(itemData['createTime'].toInt());
     var diffMinutes = currentMessgeDate.difference(lastMessgeDate).inMinutes;
-    print(diffMinutes);
     if (diffMinutes < 5) {
       return false;
     } else {
       return true;
     }
   }
+
   ///时间显示逻辑
   messageTimeFormat(dynamic itemData, int index) {
     var date =
@@ -300,6 +304,7 @@ class ChatLogic extends GetxController {
     startPosition = 0;
     update();
     speechToText.stop();
+
     ///如果手指移动位置大，是取消录音状态，那么停止的时候就不要去发送消息了
     if (cancelStatus) {
       cancelStatus = false;
