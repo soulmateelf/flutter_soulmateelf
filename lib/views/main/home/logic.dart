@@ -4,6 +4,8 @@
  * @LastEditTime: 2023-04-25 19:51:12
  * @FilePath: \soulmate\lib\views\main\home\logic.dart
  */
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
@@ -14,7 +16,7 @@ class HomeLogic extends GetxController {
   /// 角色列表
   var _roleList = [];
 
-  get roleList {
+  List<dynamic> get roleList {
     return _roleList;
   }
 
@@ -49,14 +51,49 @@ class HomeLogic extends GetxController {
   getRoleList() {
     NetUtils.diorequst("/role/getRoleList", 'get').then((result) {
       if (result?.data?["code"] == 200) {
-        roleList = result.data["data"]["data"];
+        roleList = result?.data?["data"]?["data"] ?? [];
         if (roleList.length > 0) {
-          checkedRoleId = roleList[0]?["id"];
+           final  hasCheckedRole =   roleList.any((element) => element["id"] == checkedRoleId);
+           if(!hasCheckedRole){
+             checkedRoleId = roleList?[0]?["id"];
+           }
         }
       }
     });
   }
-
+  /// 修改角色名称
+  updateRoleName(BuildContext context) async{
+    if (checkedRole?["share"] != 1) return;
+    final result = await showTextInputDialog(
+        context: context,
+        title: "name",
+        message: "Changing role names",
+        textFields: [
+          DialogTextField(
+              validator:
+                  (value) {
+                if (value == null || value.length <= 0) {
+                  return "The name cannot be empty";
+                }
+              },
+              initialText: checkedRole?["roleName"] ?? "Soulmate ELF")
+        ]);
+    if (result == null) return;
+    final newName = result[0];
+    Loading.show();
+    NetUtils.diorequst(
+        "/role/updateRole",
+        'post',
+        params: {
+          "roleId": checkedRoleId,
+          "roleName": newName
+        }).then((value) {
+      getRoleList();
+    }).whenComplete(() {
+      Loading.dismiss();
+      Loading.success("success");
+    });
+  }
   // 分享成功，修改角色名称状态
   shareCallBack() {
     NetUtils.diorequst("/role/updateShare", 'post', params: {

@@ -13,6 +13,7 @@ import 'package:flutter_soulmateelf/utils/core/application.dart';
 import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/utils/tool/utils.dart';
+import 'package:flutter_soulmateelf/views/main/home/logic.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:flutter_soulmateelf/widgets/settingsCard/settingsCard.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
@@ -176,7 +177,16 @@ class _SettingsPage extends State<SettingsPage> {
             height: 120.w,
             margin: EdgeInsets.only(top: 10.w),
             color: Colors.green,
-            child: Image.asset("assets/images/backGround/advertisement.png"),
+            child: GestureDetector(
+              onTap: () {
+                Utils.share(
+                  "https://icyberelf.com",
+                  "assets/images/icons/avatar.png",
+                  successCallBack: (){},
+                );
+              },
+              child: Image.asset("assets/images/backGround/advertisement.png"),
+            )
           ),
           // SettingsCard(
           //     icon: Icon(Icons.money),

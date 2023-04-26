@@ -54,10 +54,23 @@ class ChatPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16.w, vertical: 12.w),
-                            child: _refreshListView)),
+                        child: Stack(
+                            children: [
+                                Image.network(
+                                  logic.roleInfo['roleBackground']??"",
+                                  fit: BoxFit.fill,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  errorBuilder: (context, error, stackTrace) {return const SizedBox();}
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 16.w, vertical: 12.w),
+                                    child: _refreshListView,
+                                )
+                            ],
+                        )
+                    ),
                     _bottomContainer()
                   ],
                 ),

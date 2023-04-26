@@ -47,7 +47,7 @@ class _HomePage extends State<HomePage> {
   void toRecharge() async {
     await Get.toNamed('/recharge',
         arguments: {"checkedRoleId": logic.checkedRoleId});
-    update();
+    logic.getRoleList();
   }
 
   update() {
@@ -150,48 +150,7 @@ class _HomePage extends State<HomePage> {
                                                 height: 36.w,
                                                 child: GestureDetector(
                                                   onTap: () async {
-                                                    if (logic.checkedRole?[
-                                                            "share"] !=
-                                                        1) return;
-                                                    final result =
-                                                        await showTextInputDialog(
-                                                            context: context,
-                                                            title: "name",
-                                                            message:
-                                                                "Changing role names",
-                                                            textFields: [
-                                                          DialogTextField(
-                                                              validator:
-                                                                  (value) {
-                                                                if (value ==
-                                                                        null ||
-                                                                    value.length <=
-                                                                        0) {
-                                                                  return "The name cannot be empty";
-                                                                }
-                                                              },
-                                                              initialText: logic
-                                                                          .checkedRole?[
-                                                                      "roleName"] ??
-                                                                  "Soulmate ELF")
-                                                        ]);
-                                                    if (result == null) return;
-                                                    final newName = result[0];
-                                                    Loading.show();
-                                                    NetUtils.diorequst(
-                                                        "/role/updateRole",
-                                                        'post',
-                                                        params: {
-                                                          "roleId": logic
-                                                              .checkedRoleId,
-                                                          "roleName": newName
-                                                        }).then((value) {
-                                                      logic.getRoleList();
-                                                    }).whenComplete(() {
-                                                      Loading.dismiss();
-                                                      Loading.success(
-                                                          "success");
-                                                    });
+                                                    logic.updateRoleName(context);
                                                   },
                                                   child: logic.checkedRole?[
                                                               "share"] ==
