@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -56,13 +57,13 @@ class ChatPage extends StatelessWidget {
                     Expanded(
                         child: Stack(
                             children: [
-                                Image.network(
-                                  logic.roleInfo['roleBackground']??"",
-                                  fit: BoxFit.fill,
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  errorBuilder: (context, error, stackTrace) {return const SizedBox();}
-                                ),
+                              CachedNetworkImage(
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.fill,
+                                imageUrl: logic.roleInfo['roleBackground']??"",
+                                errorWidget: (context, url, error) => Text(''),
+                              ),
                                 Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 16.w, vertical: 12.w),

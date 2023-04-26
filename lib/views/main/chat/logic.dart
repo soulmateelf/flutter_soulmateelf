@@ -129,14 +129,12 @@ class ChatLogic extends GetxController {
 
   ///获取消息列表
   void getMessageList(from) {
-    Loading.show();
     Map<String, dynamic> params = {
       'pageNum': from == 'newMessage' ? 1 : (page + 1),
       'pageSize': from == 'newMessage' ? 2 : 10,
       'roleId': roleId
     };
     void successFn(res) {
-      Loading.dismiss();
       page++;
       refreshController.refreshCompleted();
       if (from == 'newMessage') {
@@ -168,7 +166,6 @@ class ChatLogic extends GetxController {
     }
 
     void errorFn(error) {
-      Loading.dismiss();
       refreshController.refreshFailed();
       Loading.error("${error['message']}");
     }

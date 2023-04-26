@@ -141,6 +141,10 @@ class CustomRoleLogic extends GetxController {
   }
 
   step2ViewSubmit() async {
+    if (checkedCharacterIdList.length == 0) {
+      Loading.toast("plase choose character");
+      return;
+    }
     Get.toNamed("/customRoleStep3");
   }
 
@@ -160,6 +164,9 @@ class CustomRoleLogic extends GetxController {
   }
 
   step3ViewSubmit(PurchaseDetails? purchaseDetails) async {
+    if(purchaseDetails == null || purchaseDetails.status == PurchaseStatus.canceled || purchaseDetails.status == PurchaseStatus.restored){
+      return;
+    }
     final validated = step3FormKey.currentState!.validate();
     if (!validated || purchaseDetails == null) return;
     Loading.show();
@@ -189,6 +196,10 @@ class CustomRoleLogic extends GetxController {
       },
       "transactionDate": purchaseDetails?.transactionDate, //apple交易时间
     }).then((value) {
+      if(value?.data?["code"] != 200){
+        Loading.error("${value?.data?["message"]}");
+        return;
+      }
       Loading.success("${value?.data?["message"]}");
       /// 返回home，清空home之后的路由栈
       Get.until(ModalRoute.withName('/home'));
@@ -201,6 +212,8 @@ class CustomRoleLogic extends GetxController {
   payNow() async {
     // 让页面失焦 达到关闭键盘输入的目的
     FocusManager.instance.primaryFocus?.unfocus();
+    final validated = step3FormKey.currentState!.validate();
+    if (!validated) return;
     ///根据商品id获取ios商品详情
     final appleProductsDetail = appleProductsList
         .firstWhere((element) => element.id == productDetail["appleProductId"]);

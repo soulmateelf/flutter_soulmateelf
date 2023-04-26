@@ -136,6 +136,9 @@ class RechargetLogic extends GetxController {
 
   ///通知服务端商品购买成功或者失败
   notifyServerPurchaseResult(PurchaseDetails purchaseDetails) async {
+    if(purchaseDetails == null || purchaseDetails.status == PurchaseStatus.canceled || purchaseDetails.status == PurchaseStatus.restored){
+      return;
+    }
     ///根据商品id获取apple商品详情
     final ProductDetails? appleProductDetails = appleProductsList
         .firstWhereOrNull((product) => product.id == purchaseDetails.productID);
