@@ -49,6 +49,11 @@ class MyApp extends StatelessWidget {
               fallbackLocale: const Locale("en", "US"),
               initialRoute: '/splash',
               getPages: AppRoute.getPages,
+              routingCallback: (value) {
+                if (FocusManager.instance.primaryFocus?.hasFocus == true) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                }
+              },
               builder: EasyLoading.init(),
               localizationsDelegates: const [
                 GlobalMaterialLocalizations.delegate,
@@ -94,7 +99,8 @@ class MyApp extends StatelessWidget {
                     Container(
                       width: 3.0,
                     ),
-                    const Text('something wrong', style: TextStyle(color: Colors.grey))
+                    const Text('something wrong',
+                        style: TextStyle(color: Colors.grey))
                   ]),
             ), // 配置默认头部指示器,假如你每个页面的头部指示器都一样的话,你需要设置这个// 自定义底部指示器
         headerTriggerDistance: 60.0, // 头部触发刷新的越界距离

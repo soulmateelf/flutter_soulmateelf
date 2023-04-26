@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-25 19:55:31
+ * @LastEditTime: 2023-04-26 15:47:05
  * @FilePath: \soulmate\lib\views\main\home\view.dart
  */
 ////////////////////////
@@ -62,8 +62,6 @@ class _HomePage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(Get.context!, designSize: const Size(750, 1624));
-
     return GetBuilder<HomeLogic>(builder: (logic) {
       return WillPopScope(
         onWillPop: () {
@@ -73,7 +71,13 @@ class _HomePage extends State<HomePage> {
         },
         child: basePage("home",
             backgroundColor: Colors.transparent,
-            showAppBar: false,
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    logic.getRoleList();
+                  },
+                  icon: Icon(Icons.refresh))
+            ],
             child: Container(
                 width: double.infinity,
                 height: double.infinity,
@@ -152,6 +156,9 @@ class _HomePage extends State<HomePage> {
                                                 height: 36.w,
                                                 child: GestureDetector(
                                                   onTap: () async {
+                                                    if (logic.checkedRole?[
+                                                            "share"] !=
+                                                        1) return;
                                                     final result =
                                                         await showTextInputDialog(
                                                             context: context,

@@ -30,7 +30,6 @@ class ForgetPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    ScreenUtil.init(Get.context!, designSize: const Size(750, 1624));
     return BlocProvider(
       create: (context) => ForgetPasswordFormBloc(),
       child: Builder(

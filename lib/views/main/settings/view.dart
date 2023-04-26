@@ -1,19 +1,21 @@
 /*
  * @Date: 2023-04-12 15:49:59
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-26 10:57:23
+ * @LastEditTime: 2023-04-26 13:59:23
  * @FilePath: \soulmate\lib\views\main\settings\view.dart
  */
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/config.dart';
 import 'package:flutter_soulmateelf/utils/core/application.dart';
+import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:flutter_soulmateelf/widgets/library/projectLibrary.dart';
 import 'package:flutter_soulmateelf/widgets/settingsCard/settingsCard.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData, MultipartFile;
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -33,7 +35,7 @@ class _SettingsPage extends State<SettingsPage> {
     // TODO: implement build
     final userInfo = Application.userInfo;
     APPPlugin.logger.d(userInfo);
-
+    final userImage = userInfo?["userImage"];
     return basePage(
       "",
       child: SingleChildScrollView(
@@ -46,44 +48,92 @@ class _SettingsPage extends State<SettingsPage> {
             child: Row(
               children: [
                 Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.green, width: 2.w),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Stack(children: [
-                    Image.asset(
-                      'assets/images/icons/avatar.png',
-                      width: 160.w,
-                      height: 160.w,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.green, width: 2.w),
+                      shape: BoxShape.circle,
                     ),
-                    Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        child: Container(
-                            constraints: BoxConstraints(
-                                maxHeight: 160.w, minHeight: 160.w),
-                            alignment: Alignment.center,
-                            child: Container(
-                              width: double.infinity,
-                              height: double.infinity,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromRGBO(0, 0, 0, 0.4),
-                              ),
-                              child: IconButton(
-                                  onPressed: () async{
-                                    final files = await Utils.pickerImage(context);
-                                    
+                    child: GestureDetector(
+                      onTap: () async {
+                        final files = await Utils.pickerImage(context);
+                        if (files.length > 0) {
+                          final image =
+                              await MultipartFile.fromFile(files[0].path);
+                          final fd = FormData.fromMap({"file": image});
+                          Loading.show();
+                          final result = await NetUtils.diorequst(
+                              "/base/uploadHeadImg", 'post',
+                              params: fd);
+                          Loading.dismiss();
+                          if (result?.data?["code"] == 200) {
+                            Application.userInfo = result?.data?["data"];
+                            update();
+                          }
+                        }
+                      },
+                      child: Stack(children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(80.w),
+                          child: userImage != null
+                              ? Image.network(
+                                  userImage,
+                                  width: 160.w,
+                                  height: 160.w,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Text("");
                                   },
-                                  icon: Icon(
-                                    Icons.camera_enhance,
-                                    color: Colors.white,
-                                  )),
-                            )))
-                  ]),
-                ),
+                                )
+                              : Image.asset(
+                                  'assets/images/icons/avatar.png',
+                                  width: 160.w,
+                                  height: 160.w,
+                                ),
+                        ),
+                        // Positioned(
+                        //     top: 0,
+                        //     left: 0,
+                        //     right: 0,
+                        //     bottom: 0,
+                        //     child: Container(
+                        //         constraints: BoxConstraints(
+                        //             maxHeight: 160.w, minHeight: 160.w),
+                        //         alignment: Alignment.center,
+                        //         child: Container(
+                        //           width: double.infinity,
+                        //           height: double.infinity,
+                        //           decoration: BoxDecoration(
+                        //             shape: BoxShape.circle,
+                        //             color: Color.fromRGBO(0, 0, 0, 0.4),
+                        //           ),
+                        //           child: IconButton(
+                        //               onPressed: () async {
+                        //                 final files =
+                        //                     await Utils.pickerImage(context);
+                        //                 if (files.length > 0) {
+                        //                   final image =
+                        //                       await MultipartFile.fromFile(
+                        //                           files[0].path);
+                        //                   final fd =
+                        //                       FormData.fromMap({"file": image});
+                        //                   Loading.show();
+                        //                   final result = await NetUtils.diorequst(
+                        //                       "/base/uploadHeadImg", 'post',
+                        //                       params: fd);
+                        //                   Loading.dismiss();
+                        //                   if (result?.data?["code"] == 200) {
+                        //                     Application.userInfo =
+                        //                         result?.data?["data"];
+                        //                     update();
+                        //                   }
+                        //                 }
+                        //               },
+                        //               icon: Icon(
+                        //                 Icons.camera_enhance,
+                        //                 color: Colors.white,
+                        //               )),
+                        //         )))
+                      ]),
+                    )),
                 Expanded(
                     child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 48.w),

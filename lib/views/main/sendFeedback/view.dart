@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-13 14:39:24
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-26 10:56:14
+ * @LastEditTime: 2023-04-26 15:22:39
  * @FilePath: \soulmate\lib\views\main\sendFeedback\view.dart
  */
 import 'dart:io';
@@ -123,8 +123,7 @@ class _SendFeedbackPage extends State<SendFeedbackPage> {
                                         decoration: BoxDecoration(
                                             border: Border.all(
                                                 width: 1.w,
-                                                color: Color.fromRGBO(
-                                                    153, 153, 153, 1)),
+                                                color: Colors.white),
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(4.w))),
                                         child: Column(

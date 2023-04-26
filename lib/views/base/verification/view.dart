@@ -81,8 +81,6 @@ class _VerificationPage extends State<VerificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    /// ScreenUtil初始化
-    ScreenUtil.init(Get.context!, designSize: const Size(750, 1624));
     return Scaffold(
       appBar: backBar(),
       body: Container(

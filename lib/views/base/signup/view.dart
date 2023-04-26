@@ -34,8 +34,6 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// ScreenUtil初始化
-    ScreenUtil.init(Get.context!, designSize: const Size(750, 1624));
     return BlocProvider(
       create: (context) => SignUpFormBloc(),
       child: Builder(builder: (context) {

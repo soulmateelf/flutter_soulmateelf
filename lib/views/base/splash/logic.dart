@@ -55,6 +55,7 @@ class SplashLogic extends GetxController {
   void whereToGo() {
     String? token = Application.pres?.getString('token');
     String? userInfo = Application.pres?.getString("userInfo");
+    APPPlugin.logger.d({"token": token, "userInfo": userInfo});
     if (token == null || userInfo == null) {
       /// 未登录状态
       Get.offNamed('/welcome');

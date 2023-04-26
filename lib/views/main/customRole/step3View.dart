@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-24 15:27:55
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-25 17:57:29
+ * @LastEditTime: 2023-04-26 14:35:05
  * @FilePath: \soulmate\lib\views\main\customRole\step3view.dart
  */
 import 'package:flutter/material.dart';
@@ -139,7 +139,7 @@ class CustomRoleStep3Page extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("\$ 199.00"),
+                        Text("\$ ${logic.price}"),
                         ElevatedButton(
                             onPressed: () {
                               logic.payNow();

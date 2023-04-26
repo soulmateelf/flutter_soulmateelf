@@ -39,6 +39,10 @@ class NetUtils {
 
       localHeaders["Authorization"] = "Bearer ${Application.token}";
       localHeaders["userId"] = Application.userInfo?["userId"];
+      localHeaders["Connection"] = "Keep-Alive";
+      localHeaders["Keep-Alive"] = "timeout=5, max=1000";
+
+      APPPlugin.logger.d(localHeaders);
 
       ///拦截器
       dio.interceptors.add(InterceptorsWrapper(
@@ -47,6 +51,8 @@ class NetUtils {
           /// header在这里直接赋值会导致其他header属性的丢失
           /// 所以在request函数中处理比较好
           /// 图片类型，在这里特殊处理header
+          /// 
+          APPPlugin.logger.e(options.headers);
           if (extra != null && extra?["uploadImage"] == true) {
             options.data = params?["formdata"];
           }
@@ -56,6 +62,7 @@ class NetUtils {
         onResponse: (Response response, handler) async {
           // Do something with response data
           //图片类型，在这里特殊处理response
+          // APPPlugin.logger.d();
           return handler.next(response); // continue
         },
         onError: (e, handler) {
@@ -93,6 +100,7 @@ class NetUtils {
 
   static _dealDioError(DioError dioError, String url, Function? successCallBack,
       Function? errorCallBack, params) {
+        APPPlugin.logger.d(dioError.type);
     switch (dioError.type) {
       case DioErrorType.cancel:
         Map errorResponseData = {"message": "request cancel！"};
@@ -119,10 +127,12 @@ class NetUtils {
         if (ProjectConfig.getInstance()?.isDebug == true) {
           APPPlugin.logger.d(dioError);
         }
-        _error(
-            errorResponseData['message'], errorResponseData, errorCallBack);
+        _error(errorResponseData['message'], errorResponseData, errorCallBack);
         break;
       default:
+        print('777777777777');
+        print(dioError.toString());
+        // print(dioError.response);
         Map errorResponseData;
         errorResponseData = {"message": "error！"};
         if (ProjectConfig.getInstance()?.isDebug == true) {
@@ -150,14 +160,14 @@ class NetUtils {
           } catch (e) {
             return response;
           }
-        } else if(responsedata['code'] == 4001){
+        } else if (responsedata['code'] == 4001) {
           // icyberelf约定的账号登录信息失效是http状态码200
           // ----内部自定义code  4001 未登录或登录信息失效！
           _error(responsedata['message'], responsedata, errorCallBack);
           Application.clearStorage().then((val) {
             Get.offAllNamed('/welcome');
           });
-        }else {
+        } else {
           // kele
           // 2020-09-10
           // 这里是后段自定义的错误码，此时http的状态码是200，app只需要弹出message即可
@@ -179,8 +189,7 @@ class NetUtils {
       if (Utils.isEmpty(errorMessage)) {
         errorMessage = 'something wrong！';
       }
-      Loading.toast(errorMessage,
-          toastPosition: EasyLoadingToastPosition.top);
+      Loading.toast(errorMessage, toastPosition: EasyLoadingToastPosition.top);
     }
   }
 }

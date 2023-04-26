@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-20 10:33:15
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-25 19:11:13
+ * @LastEditTime: 2023-04-26 15:41:13
  * @FilePath: \soulmate\lib\views\main\recharge\logic.dart
  */
 
@@ -53,13 +53,18 @@ class RechargetLogic extends GetxController {
   /// 获取角色列表
   getRoleList() {
     NetUtils.diorequst("/role/getRoleList", 'get').then((result) {
-      if (result.data?["code"] == 200) {
-        final data = result.data["data"]["data"];
+    
+      if (result?.data?["code"] == 200) {
+        final data = result?.data?["data"]?["data"] ?? [];
         roleList = data;
 
         checkedRoleId = Get.arguments["checkedRoleId"] ??
             (data.length > 0 ? (data[0]?["id"]) : 1);
       }
+    },onError: (err){
+      APPPlugin.logger.e(err);
+    }).catchError((err){
+      APPPlugin.logger.e(err);
     });
   }
 

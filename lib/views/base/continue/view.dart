@@ -49,7 +49,6 @@ class ContinuePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     /// ScreenUtil初始化
-    ScreenUtil.init(Get.context!, designSize: const Size(750, 1624));
     final title = Get.arguments?["continuePageTitle"] ??
         "Your’ve successfully Created your password.";
     return Scaffold(

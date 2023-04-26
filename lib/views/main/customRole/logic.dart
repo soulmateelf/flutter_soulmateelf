@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-04-24 13:54:29
  * @LastEditors: Wws wuwensheng@donganyun.com
- * @LastEditTime: 2023-04-25 18:19:47
+ * @LastEditTime: 2023-04-26 15:14:41
  * @FilePath: \soulmate\lib\views\main\customRole\logic.dart
  */
 import 'package:flutter/material.dart';
@@ -32,12 +32,14 @@ class CustomRoleLogic extends GetxController {
 
   ///ios云端商品详情
   late ProductDetails appleProductsDetail;
+
   /// 服务端商品详情
   var productDetail = {};
 
   @override
   void onInit() {
     super.onInit();
+
     ///设置回调
     IOSAppPurchase.orderCallback = step3ViewSubmit;
   }
@@ -54,14 +56,16 @@ class CustomRoleLogic extends GetxController {
     IOSAppPurchase.orderCallback = null;
     super.onClose();
   }
+
   /// 获取商品详情
   getProductDetail() async {
     /// 获取服务端商品详情
     productDetail = {'appleProductId': 'test2'};
+
     /// 获取ios端商品列表
     Set<String> pIds = <String>{productDetail['appleProductId']};
     List<ProductDetails> list = await IOSAppPurchase.getIOSServerProducts(pIds);
-    if(list.length != 1){
+    if (list.length != 1) {
       Loading.error('something wrong');
     }
     appleProductsDetail = list[0];
@@ -72,8 +76,6 @@ class CustomRoleLogic extends GetxController {
       productDetail = data;
     }
   }
-
-
 
   step1ViewSubmit() {
     if (formKey.currentState!.validate()) {
@@ -124,10 +126,20 @@ class CustomRoleLogic extends GetxController {
     }
   }
 
-  step2ViewSubmit() {
+  step2ViewSubmit() async {
+    final result =
+        await NetUtils.diorequst("/product/ByProductType", 'get', params: {
+      "productType": 2,
+    });
+    if (result?.data?["code"] == 200) {
+      price = result?.data?["data"]?["data"]?[0]?["price"] ?? "0";
+      update();
+    }
+    APPPlugin.logger.d(result.data);
     Get.toNamed("/customRoleStep3");
   }
 
+  var price = "0";
   final step3FormKey = GlobalKey<FormState>();
   final introductionController = TextEditingController();
   final replenishController = TextEditingController();
@@ -143,28 +155,47 @@ class CustomRoleLogic extends GetxController {
     update();
   }
 
-  step3ViewSubmit(PurchaseDetails purchaseDetails) async {
+  step3ViewSubmit(PurchaseDetails? purchaseDetails) async {
     final validated = step3FormKey.currentState!.validate();
     if (!validated) return;
     Loading.show();
     NetUtils.diorequst("/role/addcustomization", 'post', params: {
-      "roleName": nameController.value,
-      "gender": genderController.value,
-      "age": ageController.value,
+      "roleName": nameController.value.text,
+      "gender": genderController.value.text,
+      "age": ageController.value.text,
       "roleCharacter": checkedCharacterIdList.join(","),
-      "roleIntroduction": introductionController.value,
-      "replenish": replenishController.value,
-      "gptModel": 3.5,
+      "roleIntroduction": introductionController.value.text,
+      "replenish": replenishController.value.text,
+      "gptModel": "3.5",
       "roleStar": star,
-      "email": emailController.value ?? Application.userInfo?["email"],
-      "sendEmail": sendEmail,
-    }).then((value) {}).whenComplete(() {
+      "email": emailController.value.text ?? Application.userInfo?["email"],
+      "sendEmail": sendEmail ? 1 : 0,
+      "money": 100,
+      "status": 1,
+      "productId": 4,
+      "purchaseID": "purchaseID",
+      "appleProductID": "appleProductID",
+      "verificationData": {
+        "localVerificationData":
+            "purchaseDetails.verificationData.localVerificationData",
+        "serverVerificationData":
+            "purchaseDetails.verificationData.serverVerificationData"
+      },
+      "transactionDate": "purchaseDetails.transactionDate",
+      "currencyCode": "\$"
+    }).then((value) {
+      APPPlugin.logger.d(value?.data);
+      Loading.success("${value?.data?["message"]}");
+    }).whenComplete(() {
       Loading.dismiss();
     });
   }
 
   ///购买商品
   payNow() async {
-    IOSAppPurchase.payProductNow(appleProductsDetail);
+    // IOSAppPurchase.payProductNow(appleProductsDetail);
+    // 让页面失焦 达到关闭键盘输入的目的
+    FocusManager.instance.primaryFocus?.unfocus();
+    step3ViewSubmit(null);
   }
 }
