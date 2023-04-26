@@ -17,7 +17,7 @@ import "logic.dart";
 class LoginFormBloc extends FormBloc<String, String> {
   final logic = Get.find<LoginLogic>();
   final email = TextFieldBloc(
-    initialValue: "1404388651@qq.com",
+    // initialValue: "1404388651@qq.com",
     validators: [
       FieldBlocValidators.required,
       FieldBlocValidators.email,
@@ -32,7 +32,7 @@ class LoginFormBloc extends FormBloc<String, String> {
   }
 
   final password = TextFieldBloc(
-    initialValue: "11111111",
+    // initialValue: "11111111",
     validators: [FieldBlocValidators.required, _min8Chars],
   );
 
