@@ -1,3 +1,9 @@
+/// Author: kele
+/// Date: 2023-04-25 20:04:35
+/// LastEditors: kele
+/// LastEditTime: 2023-05-04 18:54:38
+/// Description:
+
 /*
  * @Date: 2023-04-10 09:35:33
  * @LastEditors: Wws wuwensheng@donganyun.com
@@ -19,7 +25,7 @@ class ProjectConfig {
   Map baseConfig = {
     'PrivacyPolicyUrl': 'https://icyberelf.com/PrivacyPolicy.html', //隐私协议
     'TermsofServiceUrl': 'https://icyberelf.com/TermsofService.html', //服务条款
-    'packageName': 'com.donganyun.elf', // 包名
+    'packageName': 'com.icyberelf.elf', // 包名
   };
 
   Map debugConfig = {

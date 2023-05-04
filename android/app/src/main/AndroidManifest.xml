@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.donganyun.elf">
+    package="com.icyberelf.elf">
    <application
         android:label="SoulmateElf"
         android:name="${applicationName}"

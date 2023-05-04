@@ -1,4 +1,4 @@
-package com.donganyun.elf
+package com.icyberelf.elf
 
 import io.flutter.embedding.android.FlutterActivity
 
