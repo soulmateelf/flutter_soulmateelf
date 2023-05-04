@@ -22,10 +22,41 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.128169344051-2onq20ui246e8t8nk9217brdtlrma1v5</string>
+				<string>fb100140749751136</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FacebookAppID</key>
+	<string>100140749751136</string>
+	<key>FacebookClientToken</key>
+	<string>07909ba2f7a4a42d089e4dd90bedff0f</string>
+	<key>FacebookDisplayName</key>
+	<string>SoulmateElf</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>we need to use your Camera  to take a photo</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>we need to use your Mircrophone to record your voice</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>we need to use your Photo Library  to choose a picture</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>we need to use your Speech Recognition  to recognition your voice</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -35,48 +66,15 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.128169344051-589eiabhjm8t21fbaerps9ufmpjqo74t</string>
-				<string>fb1207666199882588</string>
-			</array>
-		</dict>
-	</array>
-	<key>FacebookAppID</key>
-	<string>1207666199882588</string>
-	<key>FacebookClientToken</key>
-	<string>d1db57ea58922d3a3cc209eaa3e8f7f6</string>
-	<key>FacebookDisplayName</key>
-	<string>SoulmateElf</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>fbapi</string>
-		<string>fb-messenger-share-api</string>
-	</array>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>we need to use your Mircrophone to record your voice</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>we need to use your Speech Recognition  to recognition your voice</string>
-	<key>NSCameraUsageDescription</key>
-	<string>we need to use your Camera  to take a photo</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>we need to use your Photo Library  to choose a picture</string>
 </dict>
 </plist>

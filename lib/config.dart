@@ -31,7 +31,8 @@ class ProjectConfig {
   Map debugConfig = {
     // 'BaseUrl': 'http://192.168.244.161:8787', //测试环境,
     // 'BaseUrl': 'http://192.168.156.111:8787', //测试环境,
-    'BaseUrl': 'http://192.168.26.200:8787', //测试环境,
+    // 'BaseUrl': 'http://192.168.26.200:8787', //测试环境,
+    'BaseUrl': 'http://dev.icyberelf.com', //测试环境,
   };
   Map releaseConfig = {
     'BaseUrl': 'http://api.timcloud.club/api', //生产环境

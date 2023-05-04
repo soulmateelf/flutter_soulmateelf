@@ -60,7 +60,7 @@ class ChatPage extends StatelessWidget {
                               CachedNetworkImage(
                                 width: double.infinity,
                                 height: double.infinity,
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                                 imageUrl: logic.roleInfo['roleBackground']??"",
                                 errorWidget: (context, url, error) => Text(''),
                               ),
@@ -76,15 +76,15 @@ class ChatPage extends StatelessWidget {
                   ],
                 ),
                 Positioned(
-                    right: -40.w,
-                    bottom: -40.w,
+                    right: -50.w,
+                    bottom: -50.w,
                     child: Offstage(
                         offstage:
-                            !logic.isRecording, // 设置是否可见：true:不可见 false:可见
+                        !logic.isRecording, // 设置是否可见：true:不可见 false:可见
                         child: CustomAnimationBuilder<double>(
                           control:
-                              logic.isRecording ? Control.mirror : Control.stop,
-                          tween: Tween(begin: 220.w, end: 270.w),
+                          logic.isRecording ? Control.mirror : Control.stop,
+                          tween: Tween(begin: 0.3, end: 0.8),
                           duration: const Duration(milliseconds: 1200),
                           delay: const Duration(seconds: 1),
                           curve: Curves.easeInOut,
@@ -93,17 +93,82 @@ class ChatPage extends StatelessWidget {
                             // debugPrint('status updated: $status');
                           },
                           builder: (context, value, child) {
-                            return Container(
-                              width: value,
-                              height: value,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                              ),
-                              child: child,
-                            );
+                            return Opacity(
+                                opacity: value,
+                                child: Container(
+                                  width: 260.w,
+                                  height: 260.w,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color.fromRGBO(30, 141, 237, 0.4),
+                                  ),
+                                  child: child,
+                                ));
                           },
-                        )))
+                        ))),
+
+                Positioned(
+                    right: -50.w,
+                    bottom: -50.w,
+                    child: Offstage(
+                        offstage:
+                        !logic.isRecording, // 设置是否可见：true:不可见 false:可见
+                        child: CustomAnimationBuilder<double>(
+                          control:
+                          logic.isRecording ? Control.mirror : Control.stop,
+                          tween: Tween(begin: 0.3, end: 0.8),
+                          duration: const Duration(milliseconds: 1200),
+                          delay: const Duration(seconds: 1),
+                          curve: Curves.easeInOut,
+                          startPosition: 0.5,
+                          animationStatusListener: (status) {
+                            // debugPrint('status updated: $status');
+                          },
+                          builder: (context, value, child) {
+                            return Opacity(
+                                opacity: value,
+                                child: Container(
+                                  width: 240.w,
+                                  height: 240.w,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color.fromRGBO(30, 141, 237, 0.6),
+                                  ),
+                                  child: child,
+                                ));
+                          },
+                        ))),
+                Positioned(
+                    right: -40.w,
+                    bottom: -40.w,
+                    child: Offstage(
+                        offstage:
+                        !logic.isRecording, // 设置是否可见：true:不可见 false:可见
+                        child: CustomAnimationBuilder<double>(
+                          control:
+                          logic.isRecording ? Control.mirror : Control.stop,
+                          tween: Tween(begin: 0.3, end: 0.8),
+                          duration: const Duration(milliseconds: 1200),
+                          delay: const Duration(seconds: 1),
+                          curve: Curves.easeInOut,
+                          startPosition: 0.5,
+                          animationStatusListener: (status) {
+                            // debugPrint('status updated: $status');
+                          },
+                          builder: (context, value, child) {
+                            return Opacity(
+                              opacity: value,
+                              child: Container(
+                                width: 200.w,
+                                height: 200.w,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color.fromRGBO(30, 141, 237, 0.8),
+                                ),
+                                child: child,
+                              ));
+                          },
+                        ))),
               ],
             )),
       );

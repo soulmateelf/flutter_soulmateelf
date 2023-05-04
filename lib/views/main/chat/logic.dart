@@ -194,7 +194,7 @@ class ChatLogic extends GetxController {
     void successFn(res) {
       Loading.dismiss();
       //清空当前消息
-      message = '';
+      inputContent = '';
       speechResult = '';
       focusNode.unfocus();
       update();
