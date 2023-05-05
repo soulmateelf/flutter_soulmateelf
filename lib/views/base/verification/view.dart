@@ -23,6 +23,7 @@ class VerificationPage extends StatefulWidget {
 
 class _VerificationPage extends State<VerificationPage> {
   bool _error = false;
+  String _errorMessage = "The code you entered is incorrect.Please try again.";
   FocusNode focus = FocusNode();
 
   _sendCode() {
@@ -66,7 +67,7 @@ class _VerificationPage extends State<VerificationPage> {
     final result = await NetUtils.diorequst("/base/verify", 'post', params: {
       "code": value,
       "email": "${type}_${email}",
-    });
+    },errorCallBack: (err){});
     Loading.dismiss();
     if (result?.data?["code"] == 200) {
       final arguments = Get.arguments;
@@ -74,6 +75,7 @@ class _VerificationPage extends State<VerificationPage> {
       Get.toNamed('/setPassword', arguments: arguments);
     } else {
       setState(() {
+        _errorMessage = result?.data?["message"] ?? _errorMessage;
         _error = true;
       });
     }
@@ -126,7 +128,7 @@ class _VerificationPage extends State<VerificationPage> {
           ),
           if (_error)
             Text(
-              "The code you entered is incorrect.Please try again.",
+              _errorMessage,
               style: TextStyle(
                 color: Colors.red,
                 fontSize: 22.sp,

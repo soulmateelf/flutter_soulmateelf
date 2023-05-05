@@ -58,9 +58,9 @@ class ChatPage extends StatelessWidget {
                         child: Stack(
                             children: [
                               CachedNetworkImage(
-                                width: double.infinity,
+                                // width: double.infinity,
                                 height: double.infinity,
-                                fit: BoxFit.cover,
+                                // fit: BoxFit.cover,
                                 imageUrl: logic.roleInfo['roleBackground']??"",
                                 errorWidget: (context, url, error) => Text(''),
                               ),
@@ -180,11 +180,11 @@ class ChatPage extends StatelessWidget {
       enablePullDown: logic.canRefresh,
       enablePullUp: false,
       controller: logic.refreshController,
+      scrollController: logic.scrollController,
       onRefresh: () {
         logic.getMessageList('refresh');
       },
       child: ListView.builder(
-          controller: logic.scrollController,
           itemCount: logic.messageList.length,
           itemBuilder: (context, index) {
             return GestureDetector(

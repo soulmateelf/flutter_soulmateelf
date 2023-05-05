@@ -45,9 +45,9 @@ class UpdatePasswordFormBloc extends FormBloc<String, String> {
 
   Future<String?> _checkPassword(String value) async {
     final result = await NetUtils.diorequst("/base/existsPassword", 'post',
-        params: {"password": value});
-    if (result.data?["code"] == 205) {
-      return "Password error";
+        params: {"password": value},errorCallBack: (err){});
+    if (result.data?["code"] != 200) {
+      return result.data?["message"]??'password error';
     }
     return null;
   }
