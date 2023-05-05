@@ -6,6 +6,7 @@
  */
 import 'dart:async';
 
+import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +16,7 @@ import '../../../utils/plugin/plugin.dart';
 class ForgetPasswordFormBloc extends FormBloc<String, String> {
   final email = TextFieldBloc(validators: [
     FieldBlocValidators.required,
-    FieldBlocValidators.email,
+    Utils.customEmailValidators,
   ], asyncValidatorDebounceTime: const Duration(milliseconds: 300));
 
   Future<String?> _checkEmail(String? email) async {

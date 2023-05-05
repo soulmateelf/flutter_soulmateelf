@@ -37,7 +37,7 @@ class LoginLogic extends GetxController {
   //facebook登录
   void facebookLogin() async {
     Map<String, dynamic> params = {
-      'type': 1, //1:google 2:facebook
+      'type': 2, //1:google 2:facebook
     };
     final fbResult =
         await facebookSignIn.logIn(permissions: [FacebookPermission.email]);

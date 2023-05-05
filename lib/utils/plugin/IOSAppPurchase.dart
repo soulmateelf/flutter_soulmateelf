@@ -30,10 +30,12 @@ class IOSAppPurchase {
         ///购买进行中，展示加载框
         Loading.show();
       } else {
+        // APPPlugin.logger.d(purchaseDetails.status);
+        // APPPlugin.logger.d(purchaseDetails.purchaseID);
         Loading.dismiss();
         if (purchaseDetails.status == PurchaseStatus.error) {
           ///购买失败，展示失败信息
-          Loading.error("purchaseDetails.error!.message!");
+          // Loading.error(purchaseDetails.error!.message!);
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
           ///购买成功，展示成功信息

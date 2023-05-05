@@ -9,6 +9,7 @@ import "dart:async";
 import "package:flutter_form_bloc/flutter_form_bloc.dart";
 import "package:flutter_soulmateelf/utils/core/httputil.dart";
 import "package:flutter_soulmateelf/utils/plugin/plugin.dart";
+import "package:flutter_soulmateelf/utils/tool/utils.dart";
 import "package:flutter_soulmateelf/widgets/library/projectLibrary.dart";
 import "package:get/get.dart";
 
@@ -20,7 +21,7 @@ class LoginFormBloc extends FormBloc<String, String> {
     // initialValue: "1404388651@qq.com",
     validators: [
       FieldBlocValidators.required,
-      FieldBlocValidators.email,
+      Utils.customEmailValidators,
     ],
   );
 

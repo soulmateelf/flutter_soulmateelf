@@ -152,17 +152,21 @@ class RechargetLogic extends GetxController {
       "money": appleProductDetails?.rawPrice, //apple商品价格
       "currencyCode": appleProductDetails?.currencyCode, //商品价格单位
       "status": purchaseDetails.status.toString(), //购买状态
-      "purchaseID": purchaseDetails.purchaseID, //购买id
-      "appleProductID": purchaseDetails.productID, //apple商品id
+      "purchaseID": purchaseDetails?.purchaseID??'', //购买id
+      "appleProductID": purchaseDetails.productID??'', //apple商品id
       "verificationData": {
-        "localVerificationData":
-            purchaseDetails.verificationData.localVerificationData, //local验证数据
-        "serverVerificationData": purchaseDetails
-            .verificationData.serverVerificationData, //server验证数据
+        "localVerificationData": purchaseDetails?.verificationData?.localVerificationData??'', //local验证数据
+        "serverVerificationData": purchaseDetails?.verificationData?.serverVerificationData??'', //server验证数据
       },
-      "transactionDate": purchaseDetails.transactionDate, //apple交易时间
+      "transactionDate": purchaseDetails?.transactionDate??'', //apple交易时间
     };
+
     void successFn(res) {
+      if(purchaseDetails?.status == PurchaseStatus.error){
+        Loading.error("${purchaseDetails?.error?.message}");
+      }else if(purchaseDetails.status == PurchaseStatus.purchased) {
+        Loading.success("purchase success");
+      }
       update();
     }
 

@@ -258,6 +258,14 @@ class Utils {
     }
     return files;
   }
+  //自定义邮箱验证
+  static String? customEmailValidators(String string) {
+    final emailRegExp = RegExp(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$');
+    if (string == null || string.isEmpty || emailRegExp.hasMatch(string)) {
+      return null;
+    }
+    return 'Please enter a valid email';
+  }
 }
 
 /// 选择获取图片的方式
@@ -268,3 +276,4 @@ enum GetImageActionType {
   /// 相册
   photo,
 }
+

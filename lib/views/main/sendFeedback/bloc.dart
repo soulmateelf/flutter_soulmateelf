@@ -7,6 +7,7 @@
 import 'dart:async';
 
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+import 'package:flutter_soulmateelf/utils/tool/utils.dart';
 
 class SendFeedbackFormBloc extends FormBloc<String, String> {
   /// 反馈
@@ -16,8 +17,10 @@ class SendFeedbackFormBloc extends FormBloc<String, String> {
   final files = MultiSelectFieldBloc();
 
   /// Email
-  final email = TextFieldBloc(
-      validators: [FieldBlocValidators.required, FieldBlocValidators.email]);
+  final email = TextFieldBloc(validators: [
+    FieldBlocValidators.required,
+    Utils.customEmailValidators,
+  ]);
 
   /// 允许电子邮件发送更多信息
   final allowConcact = BooleanFieldBloc();

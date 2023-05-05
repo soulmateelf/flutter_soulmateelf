@@ -9,15 +9,16 @@ import "dart:async";
 import "package:flutter_form_bloc/flutter_form_bloc.dart";
 import "package:flutter_soulmateelf/utils/core/httputil.dart";
 import "package:flutter_soulmateelf/utils/plugin/plugin.dart";
+import "package:flutter_soulmateelf/utils/tool/utils.dart";
 import "package:get/get.dart";
 
 class SignUpFormBloc extends FormBloc<String, String> {
+
   final email = TextFieldBloc(
     validators: [
       FieldBlocValidators.required,
-      FieldBlocValidators.email,
+      Utils.customEmailValidators,
     ],
-    asyncValidatorDebounceTime: const Duration(milliseconds: 300),
   );
 
   final nickname = TextFieldBloc(
