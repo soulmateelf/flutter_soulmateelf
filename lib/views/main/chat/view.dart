@@ -58,15 +58,15 @@ class ChatPage extends StatelessWidget {
                         child: Stack(
                             children: [
                               CachedNetworkImage(
-                                // width: double.infinity,
+                                width: double.infinity,
                                 height: double.infinity,
-                                // fit: BoxFit.cover,
+                                fit: BoxFit.cover,
                                 imageUrl: logic.roleInfo['roleBackground']??"",
                                 errorWidget: (context, url, error) => Text(''),
                               ),
                                 Padding(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: 16.w, vertical: 12.w),
+                                        horizontal: 16.w, vertical: 2.w),
                                     child: _refreshListView,
                                 )
                             ],

@@ -99,10 +99,10 @@ class ChatLogic extends GetxController {
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
         iconType = 'input';
-        Future.delayed(Duration(milliseconds: 350), () {
+        Future.delayed(Duration(milliseconds: 400), () {
           scrollController.animateTo(
             scrollController.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 1),
+            duration: const Duration(milliseconds: 100),
             curve: Curves.easeInToLinear,
           );
         });
