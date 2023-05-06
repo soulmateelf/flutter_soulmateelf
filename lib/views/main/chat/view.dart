@@ -186,6 +186,7 @@ class ChatPage extends StatelessWidget {
       },
       child: ListView.builder(
           itemCount: logic.messageList.length,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           itemBuilder: (context, index) {
             return GestureDetector(
                 onTap: () {},

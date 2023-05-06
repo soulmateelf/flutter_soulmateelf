@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soulmateelf/utils/plugin/plugin.dart';
 import 'package:flutter_soulmateelf/utils/tool/utils.dart';
@@ -13,13 +14,15 @@ import 'package:flutter_soulmateelf/utils/core/httputil.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
-class ChatLogic extends GetxController {
+class ChatLogic extends GetxController{
   ///刷新控制器
-  RefreshController refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController refreshController = RefreshController(initialRefresh: false);
 
   ///滚动控制器
   ScrollController scrollController = ScrollController();
+
+  ///键盘控制器
+  KeyboardVisibilityController keyboardVisibilityController = KeyboardVisibilityController();
 
   ///输入框焦点
   FocusNode focusNode = FocusNode();
@@ -63,9 +66,15 @@ class ChatLogic extends GetxController {
   ///是否是取消录音状态
   bool cancelStatus = false;
 
+  ///键盘订阅
+  dynamic keyboardVisibilitySubscriber;
+
   @override
   void onInit() {
     super.onInit();
+    ///监听键盘
+    initKeyBoardSubscription();
+    ///获取角色id
     roleId = Get.arguments['roleId'];
     ///初始化语音转文字
     initSpeechToText();
@@ -86,9 +95,23 @@ class ChatLogic extends GetxController {
     refreshController.dispose();
     scrollController.dispose();
     focusNode.dispose();
+    keyboardVisibilitySubscriber?.cancel();
     super.onClose();
   }
-
+  ///初始键盘监听
+  initKeyBoardSubscription() async {
+    // Subscribe
+    keyboardVisibilitySubscriber = keyboardVisibilityController.onChange.listen((bool visible) {
+      if(visible) {
+        Future.delayed(Duration(milliseconds: 300), () {
+          print(scrollController.position);
+          scrollController.jumpTo(
+            scrollController.position.maxScrollExtent,
+          );
+        });
+      }
+    });
+  }
   ///初始化语音转文字
   initSpeechToText() async {
     speechEnabled = await speechToText.initialize();
@@ -99,13 +122,6 @@ class ChatLogic extends GetxController {
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
         iconType = 'input';
-        Future.delayed(Duration(milliseconds: 400), () {
-          scrollController.animateTo(
-            scrollController.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 100),
-            curve: Curves.easeInToLinear,
-          );
-        });
       } else {
         iconType = 'normal';
       }
