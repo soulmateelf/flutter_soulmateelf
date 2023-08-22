@@ -1,6 +1,6 @@
-# flutter_soulmateelf
+# soulmate
 
-soulmateelf
+A new Flutter project.
 
 ## Getting Started
 
