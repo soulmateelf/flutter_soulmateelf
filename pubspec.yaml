@@ -50,6 +50,9 @@ dependencies:
   # 屏幕适配
   # https://github.com/OpenFlutter/flutter_screenutil
   flutter_screenutil: ^5.7.0
+  # 自定义菜单
+  # https://github.com/rickywen911/custom_bubble_navigation_bar
+  custom_navigation_bar: ^0.8.2
   # 图片预览
   # https://github.com/renancaraujo/photo_view
   photo_view: ^0.14.0
@@ -120,4 +123,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  
+  assets:
+    - assets/images/image/
+    - assets/images/icons/
+    - assets/images/menuIcon/
+
