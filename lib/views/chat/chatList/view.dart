@@ -43,19 +43,21 @@ class ChatListPage extends StatelessWidget {
               )
           )
         ],
-        child:Container(
-                color: Colors.transparent,
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('chatList'),
-                    Text(logic.num.toString()),
-                    TextButton(onPressed: logic.add, child: const Text('+5')),
-                    TextButton(onPressed: ()=>Get.toNamed('/chat'), child: const Text('CHAT')),
-                  ],
-                ),
-            )
+        child:GetBuilder<ChatListLogic>(builder: (logic) {
+          return  Container(
+                    color: Colors.transparent,
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('chatList'),
+                        Text(logic.num.toString()),
+                        TextButton(onPressed: logic.add, child: const Text('+5')),
+                        TextButton(onPressed: ()=>Get.toNamed('/chat'), child: const Text('CHAT')),
+                      ],
+                    ),
+              );
+          })
         );
   }
 }
