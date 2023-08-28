@@ -6,19 +6,20 @@
  */
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
-class MineLogic extends GetxController {
+class ChatLogic extends GetxController {
   int num = 0;
-
-  void add(){
-    num+=5;
+  void add() {
+    num += 5;
     update();
   }
+
   @override
   void onInit() {
     super.onInit();
@@ -36,5 +37,4 @@ class MineLogic extends GetxController {
     super.onClose();
     return;
   }
-
 }

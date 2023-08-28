@@ -37,7 +37,8 @@ class MyApp extends StatelessWidget {
 
                   /// 设置默认ios风格主题
                   platform: TargetPlatform.iOS,
-                  primarySwatch: Colors.green,
+                  primaryColor: Colors.white,
+                  // primary: Colors.yellow,
                   iconTheme: const IconThemeData(
                       color: Color.fromRGBO(151, 151, 151, 1))),
 

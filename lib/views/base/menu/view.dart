@@ -40,44 +40,32 @@ class MenuPage extends StatelessWidget {
   /// 菜单
   Widget _buildBottomNavigationBar() {
     return CustomNavigationBar(
-      scaleFactor: 0.5,
+      scaleFactor: 0.3,
       iconSize: 25.w,
       strokeColor: const Color.fromRGBO(255, 255, 255, 0),
-
-      /// 设置透明度0，去掉波纹效果
-      backgroundColor: const Color.fromRGBO(242, 242, 242, 1),
+      borderRadius: Radius.circular(24.w),
       items: [
         CustomNavigationBarItem(
-            icon: Image.asset(logic.currentIndex == 0
-                ? 'assets/images/menuIcon/homeActive.png'
-                : 'assets/images/menuIcon/home.png'),
-            title: Text('首页',
-                style: TextStyle(
-                    fontSize: 13.sp,
-                    color: logic.currentIndex == 0
-                        ? const Color.fromRGBO(0, 123, 245, 1)
-                        : const Color.fromRGBO(162, 162, 162, 1)))),
+          badgeCount: 30,
+          showBadge: true,
+          icon: Image.asset(logic.currentIndex == 0
+                ? 'assets/images/menuIcon/messageActive.png'
+                : 'assets/images/menuIcon/message.png'),
+          title: const Text('')
+        ),
         CustomNavigationBarItem(
-            icon: Image.asset(logic.currentIndex == 1
-                ? 'assets/images/menuIcon/projectActive.png'
-                : 'assets/images/menuIcon/project.png'),
-            title: Text('项目',
-                style: TextStyle(
-                    fontSize: 13.sp,
-                    color: logic.currentIndex == 1
-                        ? const Color.fromRGBO(0, 123, 245, 1)
-                        : const Color.fromRGBO(162, 162, 162, 1)))),
+          icon: Image.asset(logic.currentIndex == 1
+                ? 'assets/images/menuIcon/roleActive.png'
+                : 'assets/images/menuIcon/role.png'),
+          title: const Text('')
+        ),
 
         CustomNavigationBarItem(
-            icon: Image.asset(logic.currentIndex == 4
+          icon: Image.asset(logic.currentIndex == 2
                 ? 'assets/images/menuIcon/mineActive.png'
                 : 'assets/images/menuIcon/mine.png'),
-            title: Text('我的',
-                style: TextStyle(
-                    fontSize: 13.sp,
-                    color: logic.currentIndex == 4
-                        ? const Color.fromRGBO(0, 123, 245, 1)
-                        : const Color.fromRGBO(162, 162, 162, 1))))
+          title: const Text('')
+        )
       ],
       currentIndex: logic.currentIndex,
       onTap: (index) {

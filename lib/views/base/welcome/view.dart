@@ -22,7 +22,7 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /// ScreenUtil初始化
-    ScreenUtil.init(Get.context!, designSize: const Size(750, 1624));
+    ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
     return WillPopScope(
         onWillPop: logic.dealBack,
         child: Scaffold(

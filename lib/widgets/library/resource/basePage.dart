@@ -1,70 +1,75 @@
 part of projectLibrary;
 
 Widget basePage(
-  String title,
-
   /// 标题
+  String title,
   {
-  required Widget child,
+    /// 显示背景图
+    bool showBgImage = false,
 
-  /// body
-  Widget? leading,
-  double? leadingWidth,
+    /// body
+    required Widget child,
 
-  // 是否显示appBar
-  bool showAppBar = true,
+    /// 自定义左侧按钮
+    Widget? leading,
+    double? leadingWidth,
 
-  /// 自定义左侧按钮
-  List<Widget>? actions,
+    /// 自定义右侧按钮
+    List<Widget>? actions,
 
-  /// 自定义右侧按钮
-  Color? backgroundColor,
+    /// 自定义头部背景色
+    Color? backgroundColor,
 
-  /// 自定义头部背景色
-  AppBar? appBar,
+    /// 自定义整个appBar
+    AppBar? appBar,
+    /// 默认灰色
+    Color mainColor = const Color.fromRGBO(242, 242, 242, 1),
 
-  /// 自定义整个appBar
-  double elevation = 1,
-    Color bodyColor = const Color.fromRGBO(242, 242, 242, 1),
+    ///是否开启避免底部被键盘遮挡
+    bool? resizeToAvoidBottomInset,
 
-  ///是否开启避免底部被键盘遮挡
-  bool? resizeToAvoidBottomInset,
+    /// 自定义appbar 底部
+    PreferredSizeWidget? bottom,
 
-  // 自定义appbar 底部
-  PreferredSizeWidget? bottom,
 
-  /// 自定义头部背景色
-}) {
-  return Scaffold(
-      backgroundColor: bodyColor,
-      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      appBar: !showAppBar
-          ? null
-          : appBar ??
-              AppBar(
-                  leadingWidth: leadingWidth,
-                  elevation: elevation,
-                  shadowColor: const Color.fromRGBO(0, 0, 0, 0.12),
-                  centerTitle: true,
-                  title: Text(
-                    title,
-                    style: const TextStyle(color: Colors.black),
-                  ),
-                  leading: leading ??
-                      IconButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_ios_new,
-                            size: 44.w,
-                            color: const Color.fromRGBO(151, 151, 151, 1),
-                          )),
-                  actions: actions ?? [],
-                  actionsIconTheme: const IconThemeData(color: Colors.black),
-                  bottom: bottom,
-                  backgroundColor: backgroundColor ?? Colors.white
-              ),
-      body: SafeArea(child: child),
-  );
+  }) {
+    return Container(
+        decoration: BoxDecoration(
+          color: showBgImage?Colors.transparent:mainColor,
+          image: showBgImage?const DecorationImage(
+            image: AssetImage('assets/images/image/background.png'), // 替换为你的图片路径
+            fit: BoxFit.cover,
+          ):null,
+        ),
+        child:Scaffold(
+          backgroundColor: showBgImage?Colors.transparent:mainColor,
+            resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+            appBar: appBar ??
+                    AppBar(
+                        leadingWidth: leadingWidth??64.w,
+                        elevation: 0,
+                        shadowColor: showBgImage?Colors.transparent:mainColor,
+                        centerTitle: true,
+                        title: Text(
+                          title,
+                          style: TextStyle(color: const Color.fromRGBO(0, 0, 0, 0.8),fontSize: 22.sp,fontWeight: FontWeight.bold),
+                        ),
+                        leading: leading ??
+                            IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: Image.asset(
+                                  "assets/images/icons/backIcon.png",
+                                  height: 44.w,
+                                  width: 44.w,
+                                )
+                            ),
+                        actions: actions ?? [],
+                        actionsIconTheme: const IconThemeData(color: Colors.black),
+                        bottom: bottom,
+                        backgroundColor: showBgImage?Colors.transparent:backgroundColor ?? mainColor
+                    ),
+            body: SafeArea(child: child),
+        ));
 }
