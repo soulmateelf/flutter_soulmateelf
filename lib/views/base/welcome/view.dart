@@ -24,8 +24,6 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     /// ScreenUtil初始化
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
-
-    print("123");
     return WillPopScope(
         onWillPop: logic.dealBack,
         child: basePage('',

@@ -7,6 +7,7 @@ import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
   ///这句代码是确保使用ios/android原生代码的这些插件有与flutter层交互的能力；
@@ -14,12 +15,26 @@ void main() async {
   ///参考链接:https://stackoverflow.com/questions/63873338/what-does-widgetsflutterbinding-ensureinitialized-do
   WidgetsFlutterBinding.ensureInitialized();
 
+
+  //启动图延时移除方法
+  initialization(null);
+
+
+
   /// 全局变量初始化
   await Application.initGlobe();
 
   /// 插件初始化
   await APPPlugin.initPlugin();
   runApp(const MyApp());
+}
+
+//启动图延时移除方法
+void initialization (BuildContext? context) async {
+  // 延时3秒
+  await Future.delayed(const Duration(seconds: 3));
+
+  FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatelessWidget {

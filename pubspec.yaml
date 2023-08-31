@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+
+
   # IOS风格icon
   # https://github.com/flutter/packages/tree/master/third_party/packages/cupertino_icons
   cupertino_icons: ^1.0.5
@@ -95,10 +97,15 @@ dependencies:
   # https://github.com/felixblaschke/simple_animations
   simple_animations: ^5.0.2
 
+  # 添加原生启动屏幕
+  # https://pub.dev/packages/flutter_native_splash
+  flutter_native_splash: ^2.3.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+
 
 flutter:
   # the material Icons class.
