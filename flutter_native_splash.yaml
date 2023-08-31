@@ -1,3 +1,8 @@
+
+
+#要指定 YAML 文件的位置，只需在终端命令后添加 --path
+#    flutter pub run flutter_native_splash:create --path=path/to/my/file.yaml
+
 flutter_native_splash:
 
   # 该锯生成原生代码来自定义 Flutter 默认白色原生闪屏界面的背景色和闪屏图像。

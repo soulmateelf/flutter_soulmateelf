@@ -16,7 +16,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
 
-  //启动图延时移除方法
+  //启动图延时移除方法  一定要放在这句代码下面
+  // WidgetsFlutterBinding.ensureInitialized();
   initialization(null);
 
 
@@ -31,6 +32,9 @@ void main() async {
 
 //启动图延时移除方法
 void initialization (BuildContext? context) async {
+
+  // 这里可以在闪屏界面显示时初始化应用所需的资源。
+  // 该函数完成后，闪屏界面会被移除。
   // 延时3秒
   await Future.delayed(const Duration(seconds: 3));
 
