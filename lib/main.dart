@@ -54,6 +54,11 @@ class MyApp extends StatelessWidget {
               /// 主题
               theme: ThemeData(
 
+                /// 设置自定义文本颜色
+                textTheme: TextTheme(
+                  bodyMedium: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8))
+                ),
+
                   /// 设置默认ios风格主题
                   platform: TargetPlatform.iOS,
                   primaryColor: Colors.white,

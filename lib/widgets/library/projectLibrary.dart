@@ -34,3 +34,5 @@ part 'inputSearch/customCommonTextField.dart';
 part 'listViewState/listViewNoData.dart';
 part 'backBar/backBar.dart';
 part 'resource/loading.dart';
+
+part 'MakeInput/MakeInput.dart';

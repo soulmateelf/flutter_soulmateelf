@@ -1,5 +1,7 @@
 
 import 'package:get/get.dart';
+import 'package:soulmate/views/base/authCode/view.dart';
+import 'package:soulmate/views/base/signUp/view.dart';
 
 /// base
 import 'package:soulmate/views/base/splash/view.dart';
@@ -36,6 +38,10 @@ class AppRoute {
     GetPage(name: '/webView', page: () => WebviewPage()),
     /// 菜单
     GetPage(name: '/menu', page: () => MenuPage()),
+    /// 注册
+    GetPage(name: '/signUp', page: ()=>SignUpPage()),
+    /// 验证码
+    GetPage(name: '/authCode', page: ()=>AuthCodePage()),
 
     /// chat模块
     /// 聊天列表
