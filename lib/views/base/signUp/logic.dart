@@ -11,7 +11,7 @@ class SignUpLogic extends GetxController {
   }
 
 
-  bool nextBtnDisabled = true;
+  bool nextBtnDisabled = false;
 
 
   // 上次点击返回键时间

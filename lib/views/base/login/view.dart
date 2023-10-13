@@ -27,25 +27,19 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return basePage('',
         showBgImage: true,
-        resizeToAvoidBottomInset: false,
-        child: Container(
+        child: SingleChildScrollView(child: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // SizedBox(height: 97.w),
-              // Text(
-              //   'Enter your phone or email',
-              //   style: TextStyle(
-              //       fontSize: 27.sp, color: const Color.fromRGBO(0, 0, 0, 0.8)),
-              // ),
-              // SizedBox(height: 126.w),
-              Expanded(child: Center(child:Text(
+              SizedBox(height: 97.w),
+              Text(
                 'Enter your phone or email',
                 style: TextStyle(
                     fontSize: 27.sp, color: const Color.fromRGBO(0, 0, 0, 0.8)),
-              ) ,)),
+              ),
+              SizedBox(height: 126.w),
               TextField(
                 obscureText: false,
                 textAlign: TextAlign.center,
@@ -56,7 +50,7 @@ class LoginPage extends StatelessWidget {
                     filled: true,
                     fillColor: Colors.white,
                     contentPadding:
-                        EdgeInsets.symmetric(vertical: 20.w, horizontal: 10.w),
+                    EdgeInsets.symmetric(vertical: 20.w, horizontal: 10.w),
                     suffixIcon: GestureDetector(
                       onTap: () {},
                       child: Text(''),
@@ -195,6 +189,6 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: 48.w,),
             ],
           ),
-        ));
+        ),));
   }
 }

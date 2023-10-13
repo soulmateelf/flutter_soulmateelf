@@ -36,13 +36,13 @@ class AuthCodePage extends StatelessWidget {
         onWillPop: logic.dealBack,
         child: basePage('',
             showBgImage: true,
-            resizeToAvoidBottomInset: false,
-            child: Container(
+            child: SingleChildScrollView(child: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.symmetric(vertical: 40.w, horizontal: 24.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(height: 72.w,),
                   Text(
                     'We sent you a code',
                     style: TextStyle(fontSize: 27.sp),
@@ -81,6 +81,6 @@ class AuthCodePage extends StatelessWidget {
                       ))
                 ],
               ),
-            )));
+            ),)));
   }
 }

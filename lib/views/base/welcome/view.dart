@@ -32,7 +32,6 @@ class WelcomePage extends StatelessWidget {
         child: basePage('',
             showAppbar: false,
             showBgImage: true,
-            resizeToAvoidBottomInset: false,
             child: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.symmetric(vertical: 40.w, horizontal: 24.w),
@@ -53,7 +52,7 @@ class WelcomePage extends StatelessWidget {
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
                         side:
-                            BorderSide(width: borderWidth, color: borderColor),
+                        BorderSide(width: borderWidth, color: borderColor),
                         borderRadius: borderRadius),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,7 +78,7 @@ class WelcomePage extends StatelessWidget {
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
                         side:
-                            BorderSide(width: borderWidth, color: borderColor),
+                        BorderSide(width: borderWidth, color: borderColor),
                         borderRadius: borderRadius),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -161,6 +160,6 @@ class WelcomePage extends StatelessWidget {
                   ),
                 ],
               ),
-            )));
+            ),));
   }
 }
