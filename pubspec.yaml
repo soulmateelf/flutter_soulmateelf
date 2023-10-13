@@ -97,6 +97,9 @@ dependencies:
   # 动画
   # https://github.com/felixblaschke/simple_animations
   simple_animations: ^5.0.2
+  # 滑动菜单
+  #https://github.com/letsar/flutter_slidable
+  flutter_slidable: ^3.0.0
 
   # 添加原生启动屏幕
   # https://pub.dev/packages/flutter_native_splash
