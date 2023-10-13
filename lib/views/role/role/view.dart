@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
-import 'logic.dart';
+import 'controller.dart';
 
 class RolePage extends StatelessWidget {
-  final logic = Get.put(RoleLogic());
+  final logic = Get.put(RoleController());
 
   @override
   Widget build(BuildContext context) {

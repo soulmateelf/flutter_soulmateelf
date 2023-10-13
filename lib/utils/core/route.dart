@@ -1,6 +1,7 @@
 
 import 'package:get/get.dart';
 import 'package:soulmate/views/base/authCode/view.dart';
+import 'package:soulmate/views/base/setPassword/view.dart';
 import 'package:soulmate/views/base/signUp/view.dart';
 
 /// base
@@ -42,6 +43,8 @@ class AppRoute {
     GetPage(name: '/signUp', page: ()=>SignUpPage()),
     /// 验证码
     GetPage(name: '/authCode', page: ()=>AuthCodePage()),
+    /// 设置密码
+    GetPage(name: '/setPassword', page: ()=>SetPasswordPage()),
 
     /// chat模块
     /// 聊天列表

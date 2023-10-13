@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'logic.dart';
+import 'controller.dart';
 
 class WebviewPage extends StatelessWidget {
-  final logic = Get.put(WebviewLogic());
+  final logic = Get.put(WebviewController());
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<WebviewLogic>(builder: (logic) {
+    return GetBuilder<WebviewController>(builder: (logic) {
       return basePage(
         logic.title,
         child: WebViewWidget(controller: logic.controller!),

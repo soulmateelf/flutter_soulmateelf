@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
-import 'logic.dart';
+import 'controller.dart';
 
 class MessagePage extends StatelessWidget {
-  final logic = Get.put(MessageLogic());
+  final logic = Get.put(MessageController());
 
   @override
   Widget build(BuildContext context) {

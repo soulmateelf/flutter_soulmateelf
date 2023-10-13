@@ -2,14 +2,14 @@
  * @Date: 2023-04-10 14:14:57
  * @LastEditors: Wws wuwensheng@donganyun.com
  * @LastEditTime: 2023-04-25 19:18:56
- * @FilePath: \soulmate\lib\views\base\welcome\logic.dart
+ * @FilePath: \soulmate\lib\views\base\welcome\controller.dart
  */
 
 
 import 'package:get/get.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
-class WelcomeLogic extends GetxController {
+class WelcomeController extends GetxController {
   // 上次点击返回键时间
   int lastClickTime = 0;
 

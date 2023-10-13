@@ -14,7 +14,7 @@ import 'package:soulmate/config.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class WebviewLogic extends GetxController {
+class WebviewController extends GetxController {
   /// 加载页面title和url
   String title = '';
   String url = '';

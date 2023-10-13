@@ -1,8 +1,8 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide MenuController;
 
-class MenuLogic extends GetxController {
+class MenuController extends GetxController {
 
   int currentIndex = 0;/// 菜单index
   int lastClickTime = 0;/// 点击安卓返回键时间

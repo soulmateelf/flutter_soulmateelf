@@ -16,12 +16,12 @@ import 'package:flutter/material.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:soulmate/views/base/welcome/logic.dart';
+import 'package:soulmate/views/base/welcome/controller.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class WelcomePage extends StatelessWidget {
-  final logic = Get.put(WelcomeLogic());
+  final logic = Get.put(WelcomeController());
 
   @override
   Widget build(BuildContext context) {

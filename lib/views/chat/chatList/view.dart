@@ -10,10 +10,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
-import 'logic.dart';
+import 'controller.dart';
 
 class ChatListPage extends StatelessWidget {
-  final logic = Get.put(ChatListLogic());
+  final logic = Get.put(ChatListController());
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class ChatListPage extends StatelessWidget {
               )
           )
         ],
-        child:GetBuilder<ChatListLogic>(builder: (logic) {
+        child:GetBuilder<ChatListController>(builder: (logic) {
           return  Container(
                     color: Colors.transparent,
                     width: double.infinity,

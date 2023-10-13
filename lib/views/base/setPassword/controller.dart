@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import '../../../widgets/library/projectLibrary.dart';
 
-class SignUpLogic extends GetxController {
+class SetPasswordController extends GetxController {
 
   var passwordVisible = false.obs;
 
