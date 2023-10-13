@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
-import 'logic.dart';
+import 'controller.dart';
 
 class FeedbackPage extends StatelessWidget {
-  final logic = Get.put(FeedbackLogic());
+  final logic = Get.put(FeedbackController());
 
   @override
   Widget build(BuildContext context) {

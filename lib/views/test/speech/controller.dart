@@ -15,7 +15,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
-class TextToSpeechLogic extends GetxController {
+class TextToSpeechController extends GetxController {
   // FlutterTts flutterTts = FlutterTts();
   //可以选的声音
   List<dynamic> voicesList = [];

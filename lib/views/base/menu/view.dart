@@ -5,24 +5,24 @@
 /// Description:
 
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide MenuController;
 import 'package:soulmate/views/chat/chatList/view.dart';
 import 'package:soulmate/views/role/roleList/view.dart';
 import 'package:soulmate/widgets/library/resource/keepalive.dart';
 import 'package:soulmate/views/mine/mine/view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
-import 'logic.dart';
+import 'controller.dart';
 
 class MenuPage extends StatelessWidget {
-  final logic = Get.put(MenuLogic());
+  final logic = Get.put(MenuController());
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: logic.dealBack,
         child: Scaffold(
-          bottomNavigationBar: GetBuilder<MenuLogic>(builder: (logic) {
+          bottomNavigationBar: GetBuilder<MenuController>(builder: (logic) {
             return _buildBottomNavigationBar();
           }),
           body: PageView(
@@ -46,26 +46,22 @@ class MenuPage extends StatelessWidget {
       borderRadius: Radius.circular(24.w),
       items: [
         CustomNavigationBarItem(
-          badgeCount: 30,
-          showBadge: true,
-          icon: Image.asset(logic.currentIndex == 0
+            badgeCount: 30,
+            showBadge: true,
+            icon: Image.asset(logic.currentIndex == 0
                 ? 'assets/images/menuIcon/messageActive.png'
                 : 'assets/images/menuIcon/message.png'),
-          title: const Text('')
-        ),
+            title: const Text('')),
         CustomNavigationBarItem(
-          icon: Image.asset(logic.currentIndex == 1
+            icon: Image.asset(logic.currentIndex == 1
                 ? 'assets/images/menuIcon/roleActive.png'
                 : 'assets/images/menuIcon/role.png'),
-          title: const Text('')
-        ),
-
+            title: const Text('')),
         CustomNavigationBarItem(
-          icon: Image.asset(logic.currentIndex == 2
+            icon: Image.asset(logic.currentIndex == 2
                 ? 'assets/images/menuIcon/mineActive.png'
                 : 'assets/images/menuIcon/mine.png'),
-          title: const Text('')
-        )
+            title: const Text(''))
       ],
       currentIndex: logic.currentIndex,
       onTap: (index) {

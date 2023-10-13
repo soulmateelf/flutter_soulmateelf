@@ -16,12 +16,12 @@ import 'package:flutter/material.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:soulmate/views/base/welcome/logic.dart';
+import 'package:soulmate/views/base/welcome/controller.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class WelcomePage extends StatelessWidget {
-  final logic = Get.put(WelcomeLogic());
+  final logic = Get.put(WelcomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,6 @@ class WelcomePage extends StatelessWidget {
         child: basePage('',
             showAppbar: false,
             showBgImage: true,
-            resizeToAvoidBottomInset: false,
             child: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.symmetric(vertical: 40.w, horizontal: 24.w),
@@ -53,7 +52,7 @@ class WelcomePage extends StatelessWidget {
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
                         side:
-                            BorderSide(width: borderWidth, color: borderColor),
+                        BorderSide(width: borderWidth, color: borderColor),
                         borderRadius: borderRadius),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,7 +78,7 @@ class WelcomePage extends StatelessWidget {
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
                         side:
-                            BorderSide(width: borderWidth, color: borderColor),
+                        BorderSide(width: borderWidth, color: borderColor),
                         borderRadius: borderRadius),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -161,6 +160,6 @@ class WelcomePage extends StatelessWidget {
                   ),
                 ],
               ),
-            )));
+            ),));
   }
 }

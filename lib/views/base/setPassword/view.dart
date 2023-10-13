@@ -15,17 +15,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/utils/core/constants.dart';
-import 'package:soulmate/views/base/signUp/controller.dart';
+import 'package:soulmate/views/base/setPassword/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
-class SignUpPage extends StatelessWidget {
-  final logic = Get.put(SignUpController());
+class SetPasswordPage extends StatelessWidget {
+  final logic = Get.put(SetPasswordController());
 
   final _formKey = GlobalKey<FormState>();
 
-  final _emialController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  final _nicknameController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,22 +49,22 @@ class SignUpPage extends StatelessWidget {
                           height: 72.w,
                         ),
                         Text(
-                          'Create your account',
+                          'Create your password',
                           style: TextStyle(fontSize: 27.sp),
                         ),
                         SizedBox(
                           height: 186.w,
                         ),
                         TextFormField(
-                          controller: _emialController,
+                          controller: _passwordController,
                           validator: (v) => "please enter!",
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           obscureText: false,
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 18.sp),
-                          cursorColor: Color.fromRGBO(255, 128, 0, 1),
+                          cursorColor: primaryColor,
                           decoration: InputDecoration(
-                            hintText: 'Email',
+                            hintText: 'password',
                             filled: true,
                             fillColor: Colors.white,
                             contentPadding: EdgeInsets.symmetric(
@@ -97,7 +97,7 @@ class SignUpPage extends StatelessWidget {
                           height: 12.w,
                         ),
                         TextFormField(
-                          controller: _nicknameController,
+                          controller: _confirmPasswordController,
                           validator: (v) => "please enter!",
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           obscureText: false,
@@ -105,7 +105,7 @@ class SignUpPage extends StatelessWidget {
                           style: TextStyle(fontSize: 18.sp),
                           cursorColor: Color.fromRGBO(255, 128, 0, 1),
                           decoration: InputDecoration(
-                              hintText: 'Nickname',
+                              hintText: 'confirm password',
                               filled: true,
                               fillColor: Colors.white,
                               contentPadding: EdgeInsets.symmetric(
@@ -146,11 +146,7 @@ class SignUpPage extends StatelessWidget {
                           textColor: logic.nextBtnDisabled
                               ? const Color.fromRGBO(0, 0, 0, 0.24)
                               : Colors.white,
-                          onPressed: logic.nextBtnDisabled
-                              ? null
-                              : () {
-                                  Get.toNamed('/authCode');
-                                },
+                          onPressed: logic.nextBtnDisabled ? null : () {},
                           color: const Color.fromRGBO(255, 128, 0, 1),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16.w),

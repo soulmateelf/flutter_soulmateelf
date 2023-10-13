@@ -9,14 +9,14 @@ import 'package:soulmate/widgets/library/projectLibrary.dart';
 // import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 
-import 'logic.dart';
+import 'controller.dart';
 
 class TextToSpeechPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final logic = Get.put(TextToSpeechLogic());
+    final logic = Get.put(TextToSpeechController());
     List<Object?> voices;
-    return GetBuilder<TextToSpeechLogic>(builder: (logic) {
+    return GetBuilder<TextToSpeechController>(builder: (logic) {
       return basePage('测试功能页面',
           child: Column(
             children: [

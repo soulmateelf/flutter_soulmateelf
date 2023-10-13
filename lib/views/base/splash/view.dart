@@ -9,10 +9,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
-import 'logic.dart';
+import 'controller.dart';
 
 class SplashPage extends StatelessWidget {
-  final logic = Get.put(SplashLogic());
+  final logic = Get.put(SplashController());
 
   @override
   Widget build(BuildContext context) {

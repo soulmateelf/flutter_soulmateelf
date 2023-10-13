@@ -8,26 +8,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
-import 'logic.dart';
+import 'controller.dart';
 
 class ChatPage extends StatelessWidget {
-  final logic = Get.put(ChatLogic());
+  final logic = Get.put(ChatController());
 
   @override
   Widget build(BuildContext context) {
     return basePage('chat',
-      showBgImage: true,
-      child:Container(
-        color: Colors.transparent,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('chat'),
-            Text(logic.num.toString()),
-            TextButton(onPressed: logic.add, child: const Text('+5')),
-          ],
-        ),
-      ));
+        showBgImage: true,
+        child: Container(
+          color: Colors.transparent,
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('chat'),
+            ],
+          ),
+        ));
   }
 }

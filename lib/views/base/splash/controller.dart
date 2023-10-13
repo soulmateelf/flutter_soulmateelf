@@ -18,7 +18,7 @@ import 'package:soulmate/utils/core/application.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:soulmate/config.dart';
 
-class SplashLogic extends GetxController {
+class SplashController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit

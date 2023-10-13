@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
-import 'logic.dart';
+import 'controller.dart';
 
 class TestPayPage extends StatelessWidget {
   @override

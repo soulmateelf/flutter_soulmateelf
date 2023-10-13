@@ -12,10 +12,10 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import 'logic.dart';
+import 'controller.dart';
 
 class ChatListPage extends StatelessWidget {
-  final logic = Get.put(ChatListLogic());
+  final logic = Get.put(ChatListController());
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class ChatListPage extends StatelessWidget {
               )
           )
         ],
-        child:GetBuilder<ChatListLogic>(builder: (logic) {
+        child:GetBuilder<ChatListController>(builder: (logic) {
           return  Container(
                     width: double.infinity,
                     height: double.infinity,

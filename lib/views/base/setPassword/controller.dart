@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import '../../../widgets/library/projectLibrary.dart';
 
-class AuthCodeLogic extends GetxController {
+class SetPasswordController extends GetxController {
 
   var passwordVisible = false.obs;
 
@@ -11,7 +11,7 @@ class AuthCodeLogic extends GetxController {
   }
 
 
-  bool nextBtnDisabled = true;
+  bool nextBtnDisabled = false;
 
 
   // 上次点击返回键时间
