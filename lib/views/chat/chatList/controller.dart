@@ -58,4 +58,7 @@ class ChatListController extends GetxController {
   void chatItemClick(item) {
     print(item);
   }
+  void deleteChatItem(index,itemData){
+    print(index);
+  }
 }

@@ -85,18 +85,10 @@ class ChatListPage extends StatelessWidget {
         extentRatio: 0.22,
         motion: const ScrollMotion(),
         children: [
-          SlidableAction(
-            borderRadius: BorderRadius.all(Radius.circular(38)),
-            padding: EdgeInsets.zero,
-            foregroundColor: Colors.red,
-            onPressed: (context){},
-            icon: Icons.delete_forever_outlined,
+          CustomSlidableAction(
+            onPressed: (context){logic.deleteChatItem(index,itemData);},
+            child: Image.asset('assets/images/icons/slideDelete.png',width: 44.w,height: 44.w),
           ),
-          Container(
-            color: Colors.red,
-            child: const Text('aa'),
-          )
-
         ],
       ),
       child: _listItem(index, itemData),
