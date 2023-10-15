@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/views/base/signUp/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
@@ -26,6 +27,8 @@ class SignUpPage extends StatelessWidget {
   final _emialController = TextEditingController();
 
   final _nicknameController = TextEditingController();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +48,30 @@ class SignUpPage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Container(
+                          color: Colors.white,
+                          child: GetBuilder<SignUpController>(
+                            builder: (controller) {
+                              return MakeInput(
+                                // suffix: Icon(Icons.abc),
+                                // prefix: Icon(Icons.abc_rounded),
+                                hintText: "email",
+                                controller: controller.textController,
+                                allowClear: true,
+                                onClear: () {
+                                  APPPlugin.logger.d("message");
+                                  controller.textController.clear();
+                                },
+                                onChanged: (value) {
+                                  APPPlugin.logger.d(value);
+                                },
+                                error: true,
+                                errorText: "1234",
+                                // errorWidget: Text('11'),
+                              );
+                            },
+                          ),
+                        ),
                         SizedBox(
                           height: 72.w,
                         ),

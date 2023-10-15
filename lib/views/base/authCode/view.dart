@@ -56,7 +56,7 @@ class AuthCodePage extends StatelessWidget {
                     PinCodeTextField(
                       pinTheme: PinTheme(
                         shape: PinCodeFieldShape.box,
-                        borderRadius: borderRadius,
+                        borderRadius: BorderRadius.circular(borderRadius),
                         borderWidth: borderWidth,
                         inactiveColor: borderColor,
                         activeColor: primaryColor,

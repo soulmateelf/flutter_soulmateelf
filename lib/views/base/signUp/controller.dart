@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../../widgets/library/projectLibrary.dart';
+import 'package:flutter/src/widgets/editable_text.dart';
 
 class SignUpController extends GetxController {
 
@@ -8,6 +9,28 @@ class SignUpController extends GetxController {
 
   void togglePasswordVisible (){
     passwordVisible.value = !passwordVisible.value;
+  }
+
+  var textController = TextEditingController();
+
+  @override
+  void onInit() async {
+    // TODO: implement onInit
+    super.onInit();
+    await Future.delayed(Duration(seconds: 3));
+    textController.text = "1111";
+  }
+
+
+  var _inputValue = "123";
+
+  set inputValue(String value){
+    inputValue = value;
+    update();
+  }
+
+  String get inputValue{
+    return _inputValue;
   }
 
 

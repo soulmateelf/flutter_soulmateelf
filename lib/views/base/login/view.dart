@@ -13,6 +13,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 import 'controller.dart';
@@ -37,16 +38,14 @@ class LoginPage extends StatelessWidget {
                 SizedBox(height: 97.w),
                 Text(
                   'Enter your phone or email',
-                  style: TextStyle(
-                      fontSize: 27.sp,
-                      color: const Color.fromRGBO(0, 0, 0, 0.8)),
+                  style: TextStyle(fontSize: 27.sp, color: textColor),
                 ),
                 SizedBox(height: 126.w),
                 TextField(
                   obscureText: false,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 18.sp),
-                  cursorColor: Color.fromRGBO(255, 128, 0, 1),
+                  cursorColor: primaryColor,
                   decoration: InputDecoration(
                       hintText: 'Email',
                       filled: true,
@@ -59,26 +58,25 @@ class LoginPage extends StatelessWidget {
                       ),
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                              color: Color.fromRGBO(255, 128, 0, 1),
-                              width: 3.w),
-                          borderRadius: BorderRadius.circular(16.w)),
+                              color: primaryColor, width: borderWidth),
+                          borderRadius: BorderRadius.circular(borderRadius)),
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: const Color.fromRGBO(245, 245, 245, 1),
-                            width: 3.w,
+                            color: borderColor,
+                            width: borderWidth,
                           ),
-                          borderRadius: BorderRadius.circular(16.w))),
+                          borderRadius: BorderRadius.circular(borderRadius))),
                 ),
                 SizedBox(
                   height: 12.w,
                 ),
                 GetBuilder<LoginController>(
                   builder: (controller) {
-                    return  TextField(
+                    return TextField(
                       obscureText: controller.passwordVisible,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 18.sp),
-                      cursorColor: Color.fromRGBO(255, 128, 0, 1),
+                      cursorColor: primaryColor,
                       decoration: InputDecoration(
                           hintText: 'Password',
                           filled: true,
@@ -98,15 +96,16 @@ class LoginPage extends StatelessWidget {
                           ),
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color: Color.fromRGBO(255, 128, 0, 1),
-                                  width: 3.w),
-                              borderRadius: BorderRadius.circular(16.w)),
+                                  color: primaryColor, width: borderWidth),
+                              borderRadius:
+                                  BorderRadius.circular(borderRadius)),
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: const Color.fromRGBO(245, 245, 245, 1),
-                                width: 3.w,
+                                color: borderColor,
+                                width: borderWidth,
                               ),
-                              borderRadius: BorderRadius.circular(16.w))),
+                              borderRadius:
+                                  BorderRadius.circular(borderRadius))),
                     );
                   },
                 ),
@@ -117,7 +116,7 @@ class LoginPage extends StatelessWidget {
                   onTap: () {},
                   child: const Text(
                     'Forgot password',
-                    style: TextStyle(color: Color.fromRGBO(255, 128, 0, 1)),
+                    style: TextStyle(color: primaryColor),
                   ),
                 ),
                 SizedBox(
@@ -127,7 +126,7 @@ class LoginPage extends StatelessWidget {
                   onPressed: () {
                     Get.toNamed('/menu');
                   },
-                  color: Color.fromRGBO(255, 128, 0, 1),
+                  color: primaryColor,
                   child: Text(
                     'Login',
                     style: TextStyle(color: Colors.white, fontSize: 18.sp),
@@ -135,7 +134,7 @@ class LoginPage extends StatelessWidget {
                   minWidth: double.infinity,
                   height: 64.w,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.w)),
+                      borderRadius: BorderRadius.circular(borderRadius)),
                 ),
                 SizedBox(
                   height: 48.w,
@@ -162,7 +161,7 @@ class LoginPage extends StatelessWidget {
                         padding: EdgeInsets.all(15.w),
                         decoration: BoxDecoration(
                             border: Border.all(width: 3.w, color: Colors.grey),
-                            borderRadius: BorderRadius.circular(16.w)),
+                            borderRadius: BorderRadius.circular(borderRadius)),
                         child: Icon(Icons.developer_board),
                       ),
                     ),
@@ -175,7 +174,7 @@ class LoginPage extends StatelessWidget {
                         padding: EdgeInsets.all(15.w),
                         decoration: BoxDecoration(
                             border: Border.all(width: 3.w, color: Colors.grey),
-                            borderRadius: BorderRadius.circular(16.w)),
+                            borderRadius: BorderRadius.circular(borderRadius)),
                         child: Icon(Icons.developer_board),
                       ),
                     ),
@@ -197,8 +196,7 @@ class LoginPage extends StatelessWidget {
                         },
                         child: const Text(
                           'Sign up',
-                          style:
-                              TextStyle(color: Color.fromRGBO(255, 128, 0, 1)),
+                          style: TextStyle(color: primaryColor),
                         ))
                   ],
                 ),

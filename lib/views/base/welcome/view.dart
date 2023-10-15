@@ -53,7 +53,7 @@ class WelcomePage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         side:
                         BorderSide(width: borderWidth, color: borderColor),
-                        borderRadius: borderRadius),
+                        borderRadius: BorderRadius.circular(borderRadius)),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -79,7 +79,7 @@ class WelcomePage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         side:
                         BorderSide(width: borderWidth, color: borderColor),
-                        borderRadius: borderRadius),
+                        borderRadius: BorderRadius.circular(borderRadius)),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
