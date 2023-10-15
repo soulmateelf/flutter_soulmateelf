@@ -72,42 +72,44 @@ class LoginPage extends StatelessWidget {
                 SizedBox(
                   height: 12.w,
                 ),
-                Obx(() {
-                  return TextField(
-                    obscureText: logic.passwordVisible.value,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18.sp),
-                    cursorColor: Color.fromRGBO(255, 128, 0, 1),
-                    decoration: InputDecoration(
-                        hintText: 'Password',
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 20.w, horizontal: 10.w),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            logic.togglePasswordVisible();
-                          },
-                          child: Icon(
-                            logic.passwordVisible.value
-                                ? CupertinoIcons.eye_slash
-                                : CupertinoIcons.eye,
-                            color: Colors.orange,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromRGBO(255, 128, 0, 1),
-                                width: 3.w),
-                            borderRadius: BorderRadius.circular(16.w)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: const Color.fromRGBO(245, 245, 245, 1),
-                              width: 3.w,
+                GetBuilder<LoginController>(
+                  builder: (controller) {
+                    return  TextField(
+                      obscureText: controller.passwordVisible,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18.sp),
+                      cursorColor: Color.fromRGBO(255, 128, 0, 1),
+                      decoration: InputDecoration(
+                          hintText: 'Password',
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 20.w, horizontal: 10.w),
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              controller.togglePasswordVisible();
+                            },
+                            child: Icon(
+                              controller.passwordVisible
+                                  ? CupertinoIcons.eye_slash
+                                  : CupertinoIcons.eye,
+                              color: Colors.orange,
                             ),
-                            borderRadius: BorderRadius.circular(16.w))),
-                  );
-                }),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromRGBO(255, 128, 0, 1),
+                                  width: 3.w),
+                              borderRadius: BorderRadius.circular(16.w)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: const Color.fromRGBO(245, 245, 245, 1),
+                                width: 3.w,
+                              ),
+                              borderRadius: BorderRadius.circular(16.w))),
+                    );
+                  },
+                ),
                 SizedBox(
                   height: 12.w,
                 ),

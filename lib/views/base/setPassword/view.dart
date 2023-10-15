@@ -18,6 +18,8 @@ import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/views/base/setPassword/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
+import 'package:flutter/cupertino.dart';
+
 class SetPasswordPage extends StatelessWidget {
   final logic = Get.put(SetPasswordController());
 
@@ -55,85 +57,92 @@ class SetPasswordPage extends StatelessWidget {
                         SizedBox(
                           height: 186.w,
                         ),
-                        TextFormField(
-                          controller: _passwordController,
-                          validator: (v) => "please enter!",
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          obscureText: false,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 18.sp),
-                          cursorColor: primaryColor,
-                          decoration: InputDecoration(
-                            hintText: 'password',
-                            filled: true,
-                            fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 20.w, horizontal: 10.w),
-                            suffixIcon: GestureDetector(
-                              onTap: () {},
-                              child: Text(''),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color.fromRGBO(255, 128, 0, 1),
-                                  width: 3.w),
-                              borderRadius: BorderRadius.circular(16.w),
-                            ),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: const Color.fromRGBO(245, 245, 245, 1),
-                                  width: 3.w,
-                                ),
-                                borderRadius: BorderRadius.circular(16.w)),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: const Color.fromRGBO(245, 245, 245, 1),
-                                  width: 3.w,
-                                ),
-                                borderRadius: BorderRadius.circular(16.w)),
-                          ),
+                        GetBuilder<SetPasswordController>(
+                          builder: (controller) {
+                            return TextField(
+                              controller: _passwordController,
+                              obscureText: controller.passwordVisible,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 18.sp),
+                              cursorColor: Color.fromRGBO(255, 128, 0, 1),
+                              decoration: InputDecoration(
+                                  hintText: 'Password',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 20.w, horizontal: 10.w),
+                                  suffixIcon: GestureDetector(
+                                    onTap: () {
+                                      controller.togglePasswordVisible();
+                                    },
+                                    child: Icon(
+                                      controller.passwordVisible
+                                          ? CupertinoIcons.eye_slash
+                                          : CupertinoIcons.eye,
+                                      color: Colors.orange,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Color.fromRGBO(255, 128, 0, 1),
+                                          width: 3.w),
+                                      borderRadius:
+                                          BorderRadius.circular(16.w)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: const Color.fromRGBO(
+                                            245, 245, 245, 1),
+                                        width: 3.w,
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.circular(16.w))),
+                            );
+                          },
                         ),
                         SizedBox(
                           height: 12.w,
                         ),
-                        TextFormField(
-                          controller: _confirmPasswordController,
-                          validator: (v) => "please enter!",
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          obscureText: false,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 18.sp),
-                          cursorColor: Color.fromRGBO(255, 128, 0, 1),
-                          decoration: InputDecoration(
-                              hintText: 'confirm password',
-                              filled: true,
-                              fillColor: Colors.white,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 20.w, horizontal: 10.w),
-                              suffixIcon: GestureDetector(
-                                onTap: () {},
-                                child: Text(''),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromRGBO(255, 128, 0, 1),
-                                    width: 3.w),
-                                borderRadius: BorderRadius.circular(16.w),
-                              ),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color:
-                                        const Color.fromRGBO(245, 245, 245, 1),
-                                    width: 3.w,
+                        GetBuilder<SetPasswordController>(
+                          builder: (controller) {
+                            return TextField(
+                              controller: _confirmPasswordController,
+                              obscureText: controller.confirmPasswordVisible,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 18.sp),
+                              cursorColor: Color.fromRGBO(255, 128, 0, 1),
+                              decoration: InputDecoration(
+                                  hintText: 'confirm password',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 20.w, horizontal: 10.w),
+                                  suffixIcon: GestureDetector(
+                                    onTap: () {
+                                      controller.toggleConfirmPasswordVisible();
+                                    },
+                                    child: Icon(
+                                      controller.confirmPasswordVisible
+                                          ? CupertinoIcons.eye_slash
+                                          : CupertinoIcons.eye,
+                                      color: Colors.orange,
+                                    ),
                                   ),
-                                  borderRadius: BorderRadius.circular(16.w)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color:
-                                        const Color.fromRGBO(245, 245, 245, 1),
-                                    width: 3.w,
-                                  ),
-                                  borderRadius: BorderRadius.circular(16.w))),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Color.fromRGBO(255, 128, 0, 1),
+                                          width: 3.w),
+                                      borderRadius:
+                                          BorderRadius.circular(16.w)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: const Color.fromRGBO(
+                                            245, 245, 245, 1),
+                                        width: 3.w,
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.circular(16.w))),
+                            );
+                          },
                         ),
                         SizedBox(
                           height: 161.w,
@@ -153,31 +162,6 @@ class SetPasswordPage extends StatelessWidget {
                           ),
                           child:
                               Text('Next', style: TextStyle(fontSize: 18.sp)),
-                        ),
-                        SizedBox(
-                          height: 40.w,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'By signing up, you agree to our ',
-                              style: TextStyle(fontSize: 14.sp),
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Text(
-                                'Terms,Privacy Policy',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: Color.fromRGBO(255, 128, 0, 1)),
-                              ),
-                            ),
-                            Text(
-                              '.',
-                              style: TextStyle(fontSize: 14.sp),
-                            )
-                          ],
                         ),
                       ],
                     ),
