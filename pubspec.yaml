@@ -35,8 +35,8 @@ dependencies:
   # https://github.com/OpenFlutter/flutter_screenutil
   flutter_screenutil: ^5.8.4
   # 自定义菜单
-  # https://github.com/rickywen911/custom_bubble_navigation_bar
-  custom_navigation_bar: ^0.8.2
+  # https://github.com/LanarsInc/animated-bottom-navigation-bar-flutter
+  animated_bottom_navigation_bar: ^1.3.0
   # 图片预览
   # https://github.com/renancaraujo/photo_view
   photo_view: ^0.14.0

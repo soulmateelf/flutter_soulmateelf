@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' hide MenuController;
 class MenuController extends GetxController {
 
   int currentIndex = 0;/// 菜单index
+  int chatMessageNumber = 100;/// 聊天列表未读消息数
   int lastClickTime = 0;/// 点击安卓返回键时间
   late PageController controller;
 

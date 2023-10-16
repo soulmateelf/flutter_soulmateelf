@@ -49,7 +49,7 @@ class ChatListPage extends StatelessWidget {
           return  Container(
                     width: double.infinity,
                     height: double.infinity,
-                    padding: EdgeInsets.only(top: 30.w,left: 16.w,right: 16.w),
+                    padding: EdgeInsets.only(top: 18.w,left: 16.w,right: 16.w),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(24.sp),topRight: Radius.circular(24.sp)),

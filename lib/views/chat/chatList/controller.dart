@@ -51,6 +51,41 @@ class ChatListController extends GetxController {
           "content": "Hi, could you help me find the science fiction",
           "time": "20231010"
         },
+        {
+          "id":"4",
+          "avatar": "http://kele.bestkele.cn/beaut.jpg",
+          "roleName": "3Daisy Riley",
+          "content": "Hi, could you help me find the science fiction",
+          "time": "20231010"
+        },
+        {
+          "id":"5",
+          "avatar": "http://kele.bestkele.cn/beaut.jpg",
+          "roleName": "3Daisy Riley",
+          "content": "Hi, could you help me find the science fiction",
+          "time": "20231010"
+        },
+        {
+          "id":"6",
+          "avatar": "http://kele.bestkele.cn/beaut.jpg",
+          "roleName": "6Daisy Riley",
+          "content": "Hi, could you help me find the science fiction",
+          "time": "20231010"
+        },
+        {
+          "id":"7",
+          "avatar": "http://kele.bestkele.cn/beaut.jpg",
+          "roleName": "7Daisy Riley",
+          "content": "Hi, could you help me find the science fiction",
+          "time": "20231010"
+        },
+        {
+          "id":"8",
+          "avatar": "http://kele.bestkele.cn/beaut.jpg",
+          "roleName": "8Daisy Riley",
+          "content": "Hi, could you help me find the science fiction",
+          "time": "20231010"
+        },
       ];
       refreshController.refreshCompleted();
       update();
@@ -60,6 +95,7 @@ class ChatListController extends GetxController {
   ///点击聊天列表项
   void chatItemClick(item) {
     print(item);
+    Get.toNamed('/chat');
   }
   void deleteChatItem(index,itemData){
     print(index);
