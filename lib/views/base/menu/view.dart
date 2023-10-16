@@ -76,7 +76,7 @@ class MenuPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(9.sp),  // Defines the border radius
                         ),
                         child: Container(
-                            width: 30.w,
+                            width: 32.w,
                             alignment: Alignment.center,
                             padding: EdgeInsets.symmetric(vertical: 1.w,horizontal: 2.w),
                             decoration: BoxDecoration(
