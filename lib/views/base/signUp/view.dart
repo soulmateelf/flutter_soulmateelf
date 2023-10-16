@@ -18,17 +18,18 @@ import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/views/base/signUp/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
+import 'package:flutter/cupertino.dart';
 
 class SignUpPage extends StatelessWidget {
   final logic = Get.put(SignUpController());
-
-  final _formKey = GlobalKey<FormState>();
 
   final _emialController = TextEditingController();
 
   final _nicknameController = TextEditingController();
 
+  FocusNode _emailFocusNode = FocusNode();
 
+  FocusNode _nicknameFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -38,142 +39,90 @@ class SignUpPage extends StatelessWidget {
         onWillPop: logic.dealBack,
         child: basePage('',
             showBgImage: true,
-            child: Form(
-                key: _formKey,
-                child: SingleChildScrollView(
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding:
-                        EdgeInsets.symmetric(vertical: 40.w, horizontal: 24.w),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          color: Colors.white,
-                          child: GetBuilder<SignUpController>(
-                            builder: (controller) {
-                              return MakeInput(
-                                // suffix: Icon(Icons.abc),
-                                // prefix: Icon(Icons.abc_rounded),
-                                hintText: "email",
-                                controller: controller.textController,
-                                allowClear: true,
-                                onClear: () {
-                                  APPPlugin.logger.d("message");
-                                  controller.textController.clear();
-                                },
-                                onChanged: (value) {
-                                  APPPlugin.logger.d(value);
-                                },
-                                error: true,
-                                errorText: "1234",
-                                // errorWidget: Text('11'),
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 72.w,
-                        ),
-                        Text(
-                          'Create your account',
-                          style: TextStyle(fontSize: 27.sp),
-                        ),
-                        SizedBox(
-                          height: 186.w,
-                        ),
-                        TextFormField(
+            child: SingleChildScrollView(
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(vertical: 40.w, horizontal: 24.w),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      height: 72.w,
+                    ),
+                    Text(
+                      'Create your account',
+                      style: TextStyle(fontSize: 27.sp),
+                    ),
+                    SizedBox(
+                      height: 186.w,
+                    ),
+                    GetBuilder<SignUpController>(
+                      builder: (controller) {
+                        return MakeInput(
                           controller: _emialController,
-                          validator: (v) => "please enter!",
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          obscureText: false,
+                          onChanged: (v) {
+                            controller.email = v;
+                            controller.validateEmail(v);
+                          },
+                          focusNode: _emailFocusNode,
+                          textInputAction: TextInputAction.next,
+                          onEditingComplete: () {
+                            _nicknameFocusNode.requestFocus();
+                          },
+                          error: controller.emailErrorText != null,
+                          errorText: controller.emailErrorText,
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 18.sp),
-                          cursorColor: Color.fromRGBO(255, 128, 0, 1),
-                          decoration: InputDecoration(
-                            hintText: 'Email',
-                            filled: true,
-                            fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 20.w, horizontal: 10.w),
-                            suffixIcon: GestureDetector(
-                              onTap: () {},
-                              child: Text(''),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color.fromRGBO(255, 128, 0, 1),
-                                  width: 3.w),
-                              borderRadius: BorderRadius.circular(16.w),
-                            ),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: const Color.fromRGBO(245, 245, 245, 1),
-                                  width: 3.w,
-                                ),
-                                borderRadius: BorderRadius.circular(16.w)),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: const Color.fromRGBO(245, 245, 245, 1),
-                                  width: 3.w,
-                                ),
-                                borderRadius: BorderRadius.circular(16.w)),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 12.w,
-                        ),
-                        TextFormField(
+                          hintText: "Email",
+                          allowClear: true,
+                          keyboardType: TextInputType.emailAddress,
+                          onClear: () {
+                            _emialController.text = "";
+                          },
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: 12.w,
+                    ),
+                    GetBuilder<SignUpController>(
+                      builder: (controller) {
+                        return MakeInput(
                           controller: _nicknameController,
-                          validator: (v) => "please enter!",
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          obscureText: false,
+                          onChanged: (v) {
+                            controller.nickname = v;
+                            controller.validateNickname(v);
+                          },
+                          focusNode: _nicknameFocusNode,
+                          textInputAction: TextInputAction.done,
+                          onEditingComplete: () {
+                            _nicknameFocusNode.unfocus();
+                          },
+                          error: controller.nicknameErrorText != null,
+                          errorText: controller.nicknameErrorText,
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 18.sp),
-                          cursorColor: Color.fromRGBO(255, 128, 0, 1),
-                          decoration: InputDecoration(
-                              hintText: 'Nickname',
-                              filled: true,
-                              fillColor: Colors.white,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 20.w, horizontal: 10.w),
-                              suffixIcon: GestureDetector(
-                                onTap: () {},
-                                child: Text(''),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromRGBO(255, 128, 0, 1),
-                                    width: 3.w),
-                                borderRadius: BorderRadius.circular(16.w),
-                              ),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color:
-                                        const Color.fromRGBO(245, 245, 245, 1),
-                                    width: 3.w,
-                                  ),
-                                  borderRadius: BorderRadius.circular(16.w)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color:
-                                        const Color.fromRGBO(245, 245, 245, 1),
-                                    width: 3.w,
-                                  ),
-                                  borderRadius: BorderRadius.circular(16.w))),
-                        ),
-                        SizedBox(
-                          height: 161.w,
-                        ),
-                        MaterialButton(
+                          hintText: "Nickname",
+                          allowClear: true,
+                          keyboardType: TextInputType.name,
+                          onClear: () {
+                            _nicknameController.text = "";
+                          },
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: 161.w,
+                    ),
+                    GetBuilder<SignUpController>(
+                      builder: (controller) {
+                        return MaterialButton(
                           minWidth: double.infinity,
                           height: 64.w,
                           enableFeedback: true,
                           disabledColor: disableColor,
-                          textColor: logic.nextBtnDisabled
+                          textColor: controller.nextBtnDisabled
                               ? const Color.fromRGBO(0, 0, 0, 0.24)
                               : Colors.white,
-                          onPressed: logic.nextBtnDisabled
+                          onPressed: controller.nextBtnDisabled
                               ? null
                               : () {
                                   Get.toNamed('/authCode');
@@ -184,35 +133,37 @@ class SignUpPage extends StatelessWidget {
                           ),
                           child:
                               Text('Next', style: TextStyle(fontSize: 18.sp)),
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: 40.w,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'By signing up, you agree to our ',
+                          style: TextStyle(fontSize: 14.sp),
                         ),
-                        SizedBox(
-                          height: 40.w,
+                        GestureDetector(
+                          onTap: () {},
+                          child: Text(
+                            'Terms,Privacy Policy',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                color: Color.fromRGBO(255, 128, 0, 1)),
+                          ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'By signing up, you agree to our ',
-                              style: TextStyle(fontSize: 14.sp),
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Text(
-                                'Terms,Privacy Policy',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: Color.fromRGBO(255, 128, 0, 1)),
-                              ),
-                            ),
-                            Text(
-                              '.',
-                              style: TextStyle(fontSize: 14.sp),
-                            )
-                          ],
-                        ),
+                        Text(
+                          '.',
+                          style: TextStyle(fontSize: 14.sp),
+                        )
                       ],
                     ),
-                  ),
-                ))));
+                  ],
+                ),
+              ),
+            )));
   }
 }
