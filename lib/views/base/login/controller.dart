@@ -7,9 +7,10 @@
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-    var passwordVisible = false.obs;
+    var passwordVisible = false;
 
     void togglePasswordVisible (){
-        passwordVisible.value = !passwordVisible.value;
+        passwordVisible = !passwordVisible;
+        update();
     }
 }

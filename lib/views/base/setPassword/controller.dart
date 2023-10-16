@@ -4,10 +4,18 @@ import '../../../widgets/library/projectLibrary.dart';
 
 class SetPasswordController extends GetxController {
 
-  var passwordVisible = false.obs;
+  var passwordVisible = false;
 
   void togglePasswordVisible (){
-    passwordVisible.value = !passwordVisible.value;
+    passwordVisible = !passwordVisible;
+    update();
+  }
+
+  var confirmPasswordVisible = false;
+
+  void toggleConfirmPasswordVisible (){
+    confirmPasswordVisible = !confirmPasswordVisible;
+    update();
   }
 
 
