@@ -2,7 +2,9 @@ part of projectLibrary;
 
 class MakeInput extends StatefulWidget {
   Widget? suffix;
+  bool focusShowSuffix;
   Widget? prefix;
+  bool focusShowPrefix;
   String? hintText;
   double? space;
   EdgeInsetsGeometry? padding;
@@ -15,6 +17,11 @@ class MakeInput extends StatefulWidget {
   bool obscureText;
   TextInputType? keyboardType;
   TextEditingController? controller;
+  TextAlign textAlign;
+  Alignment errorBoxAligment;
+  Function()? onEditingComplete;
+  TextInputAction? textInputAction;
+  FocusNode? focusNode;
 
   /// 这些是组件内部自己的状态
   bool focus = false;
@@ -23,7 +30,9 @@ class MakeInput extends StatefulWidget {
   MakeInput({
     super.key,
     this.prefix,
+    this.focusShowPrefix = false,
     this.suffix,
+    this.focusShowSuffix = false,
     this.hintText,
     this.space = 12,
     this.padding = const EdgeInsets.symmetric(horizontal: 15),
@@ -36,13 +45,16 @@ class MakeInput extends StatefulWidget {
     this.onClear,
     this.keyboardType,
     this.controller,
+    this.textAlign = TextAlign.start,
+    this.errorBoxAligment = Alignment.center,
+    this.onEditingComplete,
+    this.textInputAction,
+    this.focusNode,
   }) : assert(((errorText != null && errorWidget == null) ||
                 (errorText == null && errorWidget != null) ||
                 (errorText == null && errorWidget == null)) &&
-            ((allowClear == true && onClear != null) ||
-                (allowClear == null && onClear == null)));
-
-  FocusNode focusNode = FocusNode();
+            ((allowClear && onClear != null) ||
+                (!allowClear && onClear == null)));
 
   @override
   State<StatefulWidget> createState() {
@@ -51,27 +63,28 @@ class MakeInput extends StatefulWidget {
 }
 
 class _MakeInput extends State<MakeInput> {
+  FocusNode _focusNode = FocusNode();
+
   @override
   void initState() {
     // TODO: implement initState
-    APPPlugin.logger.d(widget.padding?.horizontal);
-    widget.focusNode.addListener(() {
-      setState(() {
-        var focus = widget.focusNode.hasFocus;
-        widget.focus = focus;
-      });
-    });
-    if (widget.controller?.text != null) {
-      widget.controller?.selection =
-          TextSelection.collapsed(offset: widget.controller!.text.length);
+    if (widget.focusNode is FocusNode) {
+      _focusNode = widget.focusNode!;
     }
+    _focusNode.addListener(_handleFocusChange);
+  }
+
+  void _handleFocusChange() {
+    setState(() {
+      widget.focus = _focusNode.hasFocus;
+    });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
+    _focusNode.dispose();
     super.dispose();
-    widget.focusNode.dispose();
   }
 
   /// 根据传入的状态(error,focus,default)渲染不同的样式
@@ -134,7 +147,9 @@ class _MakeInput extends State<MakeInput> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    if (_focusNode.hasFocus) {
+      widget.focus = _focusNode.hasFocus;
+    }
     return Column(
       children: [
         AnimatedContainer(
@@ -144,8 +159,12 @@ class _MakeInput extends State<MakeInput> {
           duration: widget.animateDuration,
           child: Row(
             children: [
-              Container(
-                child: widget.prefix,
+              Visibility(
+                visible: ((widget.focusShowPrefix && widget.focus) ||
+                    !widget.focusShowPrefix),
+                child: Container(
+                  child: widget.prefix,
+                ),
               ),
               Visibility(
                   visible: widget.prefix != null,
@@ -155,12 +174,14 @@ class _MakeInput extends State<MakeInput> {
               Expanded(
                 child: TextField(
                   controller: widget.controller,
-                  textAlign: TextAlign.center,
+                  textAlign: widget.textAlign,
                   obscureText: widget.obscureText,
                   keyboardType: widget.keyboardType,
                   cursorColor: primaryColor,
                   style: TextStyle(fontSize: 18.sp, color: textColor),
-                  focusNode: widget.focusNode,
+                  textInputAction: widget.textInputAction,
+                  onEditingComplete: widget.onEditingComplete,
+                  focusNode: _focusNode,
                   onChanged: widget.onChanged,
                   decoration: InputDecoration(
                     hintText: widget.hintText,
@@ -175,24 +196,60 @@ class _MakeInput extends State<MakeInput> {
                   child: SizedBox(
                     width: widget.space,
                   )),
-              Container(
-                child: renderSuffix(),
+              Visibility(
+                visible: ((widget.focusShowSuffix && widget.focus) ||
+                    !widget.focusShowPrefix),
+                child: Container(
+                  child: renderSuffix(),
+                ),
               ),
             ],
           ),
         ),
-        AnimatedOpacity(
-          opacity:
-              (widget.errorWidget != null || widget.errorText != null) ? 1 : 0,
-          duration: widget.animateDuration,
-          child: Container(
-            margin: EdgeInsets.fromLTRB(0, 10.w, 27.w, 0),
-            child: Text(
-              widget?.errorText ?? "",
-              style: const TextStyle(color: errorTextColor),
-            ),
-          ),
-        ),
+        Visibility(
+            maintainSize: true,
+            visible: widget.error,
+            maintainState: true,
+            maintainAnimation: true,
+            child: AnimatedOpacity(
+              opacity: widget.error ? 1 : 0,
+              duration: widget.animateDuration,
+              child: Column(
+                children: [
+                  widget.errorText != null
+                      ? Container(
+                          margin: EdgeInsets.fromLTRB(0, 10.w, 27.w, 0),
+                          alignment: widget.errorBoxAligment,
+                          child: Text(
+                            widget?.errorText ?? "",
+                            style: const TextStyle(
+                              color: errorTextColor,
+                            ),
+                          ),
+                        )
+                      : (widget?.errorWidget ?? SizedBox()),
+
+                  // Offstage(
+                  //   offstage: widget.errorWidget == null,
+                  //   child: widget.errorWidget,
+                  // ),
+                  // Offstage(
+                  //   offstage: widget.errorText == null,
+                  //   child: AnimatedOpacity(
+                  //     opacity: widget.errorText != null ? 1 : 0,
+                  //     duration: widget.animateDuration,
+                  //     child: Container(
+                  //       margin: EdgeInsets.fromLTRB(0, 10.w, 27.w, 0),
+                  //       child: Text(
+                  //         widget?.errorText ?? "",
+                  //         style: const TextStyle(color: errorTextColor),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
+            )),
       ],
     );
   }

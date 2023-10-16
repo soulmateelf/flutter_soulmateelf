@@ -24,6 +24,14 @@ class LoginPage extends StatelessWidget {
 
   final logic = Get.put(LoginController());
 
+  final _emialController = TextEditingController();
+
+  final _passwordController = TextEditingController();
+
+  FocusNode _emailFocusNode = FocusNode();
+
+  FocusNode _passwordFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return basePage('',
@@ -41,71 +49,66 @@ class LoginPage extends StatelessWidget {
                   style: TextStyle(fontSize: 27.sp, color: textColor),
                 ),
                 SizedBox(height: 126.w),
-                TextField(
-                  obscureText: false,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18.sp),
-                  cursorColor: primaryColor,
-                  decoration: InputDecoration(
-                      hintText: 'Email',
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 20.w, horizontal: 10.w),
-                      suffixIcon: GestureDetector(
-                        onTap: () {},
-                        child: Text(''),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: primaryColor, width: borderWidth),
-                          borderRadius: BorderRadius.circular(borderRadius)),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: borderColor,
-                            width: borderWidth,
-                          ),
-                          borderRadius: BorderRadius.circular(borderRadius))),
+                GetBuilder<LoginController>(
+                  builder: (controller) {
+                    return MakeInput(
+                      controller: _emialController,
+                      onChanged: (v) {
+                        controller.email = v;
+                        controller.validateEmail(v);
+                      },
+                      focusNode: _emailFocusNode,
+                      textInputAction: TextInputAction.next,
+                      onEditingComplete: () {
+                        _passwordFocusNode.requestFocus();
+                      },
+                      error: controller.emailErrorText != null,
+                      errorText: controller.emailErrorText,
+                      textAlign: TextAlign.center,
+                      hintText: "Email",
+                      allowClear: true,
+                      keyboardType: TextInputType.emailAddress,
+                      onClear: () {
+                        _emialController.text = "";
+                      },
+                    );
+                  },
                 ),
                 SizedBox(
                   height: 12.w,
                 ),
                 GetBuilder<LoginController>(
                   builder: (controller) {
-                    return TextField(
-                      obscureText: controller.passwordVisible,
+                    return MakeInput(
+                      controller: _passwordController,
+                      onChanged: (v) {
+                        controller.password = v;
+                        controller.validatePassword(v);
+                      },
+                      focusNode: _passwordFocusNode,
+                      textInputAction: TextInputAction.done,
+                      onEditingComplete: () {
+                        _passwordFocusNode.unfocus();
+                      },
+                      suffix: GestureDetector(
+                        onTap: () {
+                          controller.togglePasswordVisible();
+                        },
+                        child: Icon(
+                          controller.passwordVisible
+                              ? CupertinoIcons.eye_slash
+                              : CupertinoIcons.eye,
+                        ),
+                      ),
+                      error: controller.passwordErrorText != null,
+                      errorText: controller.passwordErrorText,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18.sp),
-                      cursorColor: primaryColor,
-                      decoration: InputDecoration(
-                          hintText: 'Password',
-                          filled: true,
-                          fillColor: Colors.white,
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 20.w, horizontal: 10.w),
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              controller.togglePasswordVisible();
-                            },
-                            child: Icon(
-                              controller.passwordVisible
-                                  ? CupertinoIcons.eye_slash
-                                  : CupertinoIcons.eye,
-                              color: Colors.orange,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: primaryColor, width: borderWidth),
-                              borderRadius:
-                                  BorderRadius.circular(borderRadius)),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: borderColor,
-                                width: borderWidth,
-                              ),
-                              borderRadius:
-                                  BorderRadius.circular(borderRadius))),
+                      hintText: "Password",
+                      allowClear: true,
+                      keyboardType: TextInputType.visiblePassword,
+                      onClear: () {
+                        _passwordController.text = "";
+                      },
                     );
                   },
                 ),
