@@ -81,6 +81,7 @@ class ChatListPage extends StatelessWidget {
   /// 滑动组件
   Widget _sliderItem(index, itemData){
     return Slidable(
+      key: ValueKey("${itemData['id']}"),
       endActionPane: ActionPane(
         extentRatio: 0.22,
         motion: const ScrollMotion(),

@@ -31,18 +31,21 @@ class ChatListController extends GetxController {
     Future.delayed(const Duration(milliseconds: 500), () {
       dataList = [
         {
+          "id":"111",
           "avatar": "http://kele.bestkele.cn/beaut.jpg",
           "roleName": "1Daisy Riley",
           "content": "Hi, could you help me find the science fiction",
           "time": "20231010"
         },
         {
+          "id":"222",
           "avatar": "http://kele.bestkele.cn/beaut.jpg",
           "roleName": "2Daisy Riley",
           "content": "Hi, could you help me find the science fiction",
           "time": "20231010"
         },
         {
+          "id":"333",
           "avatar": "http://kele.bestkele.cn/beaut.jpg",
           "roleName": "3Daisy Riley",
           "content": "Hi, could you help me find the science fiction",
@@ -60,5 +63,7 @@ class ChatListController extends GetxController {
   }
   void deleteChatItem(index,itemData){
     print(index);
+    dataList.removeAt(index);
+    update();
   }
 }
