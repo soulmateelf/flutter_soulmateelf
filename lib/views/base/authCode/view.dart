@@ -16,17 +16,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/views/base/authCode/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class AuthCodePage extends StatelessWidget {
   final logic = Get.put(AuthCodeController());
 
-  final _formKey = GlobalKey<FormState>();
-
-  final _emialController = TextEditingController();
-
-  final _nicknameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,23 +50,31 @@ class AuthCodePage extends StatelessWidget {
                       height: 186.w,
                     ),
                     PinCodeTextField(
+
                       pinTheme: PinTheme(
                         shape: PinCodeFieldShape.box,
                         borderRadius: BorderRadius.circular(borderRadius),
                         borderWidth: borderWidth,
                         inactiveColor: borderColor,
                         activeColor: primaryColor,
+                        selectedColor: primaryColor,
                         errorBorderColor: Colors.red,
                         errorBorderWidth: borderWidth,
+                        selectedBorderWidth: 4
                       ),
                       cursorColor: Colors.transparent,
                       animationDuration: const Duration(milliseconds: 300),
-                      validator: (v) {
+                      onEditingComplete: (){
+                        APPPlugin.logger.d(logic.code);
+                      },
+                      onChanged: (v){
+                        APPPlugin.logger.d(v);
+                        logic.code = v;
                         if (v != null && v.length == 6) {
                           if (v != "123456") {
-                            return "error";
+                            APPPlugin.logger.d("The code you entered is incorrect.Please try again.");
                           } else {
-                            // Get.toNamed("/setPassword");
+                            Get.toNamed("/password");
                           }
                         }
                       },
