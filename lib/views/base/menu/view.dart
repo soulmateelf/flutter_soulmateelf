@@ -37,18 +37,19 @@ class MenuPage extends StatelessWidget {
           ),
         ));
   }
-
+  /// 图标列表
   final normalIconList = <String>[
     'assets/images/menuIcon/message.png',
     'assets/images/menuIcon/role.png',
     'assets/images/menuIcon/mine.png',
   ];
+  /// 选中状态图标列表
   final activeIconList = <String>[
     'assets/images/menuIcon/messageActive.png',
     'assets/images/menuIcon/roleActive.png',
     'assets/images/menuIcon/mineActive.png',
   ];
-
+  /// 菜单
   Widget _buildBottomNavigationBar() {
     return AnimatedBottomNavigationBar.builder(
       itemCount: normalIconList.length,
@@ -66,7 +67,8 @@ class MenuPage extends StatelessWidget {
                     Center(
                       child: Image.asset(logic.currentIndex == index?activeIconList[index]:normalIconList[index],width: 26.w,height: 24.w,),
                     ),
-                    Positioned(
+                    /// 聊天的未读消息展示组件
+                    (index == 0 && logic.chatMessageNumber > 0) ? Positioned(
                       top: -1,
                       right: 0,
                       child: Container(
@@ -83,12 +85,24 @@ class MenuPage extends StatelessWidget {
                               color: primaryColor,
                               borderRadius: BorderRadius.circular(9.sp),  // Defines the border radius
                             ),
-                            child: Text("99+",
-                              style:
-                                  TextStyle(fontSize: 14.sp, color: Colors.white),
+                            child: Text(logic.chatMessageNumber>99?'99+':logic.chatMessageNumber.toString(),
+                              style: TextStyle(fontSize: 14.sp, color: Colors.white),
                             )),
                       ),
-                    ),
+                    ):Container(),
+                    /// 角色的朋友圈的未读消息展示组件
+                    (index == 1 && logic.roleEventNumber > 0) ? Positioned(
+                      top: 8,
+                      right: 14,
+                      child: Container(
+                        width: 8.w,
+                        height: 8.w,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(9.sp),  // Defines the border radius
+                        ),
+                      ),
+                    ):Container(),
                   ],
                 ))
           ],
