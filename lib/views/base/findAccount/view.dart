@@ -15,21 +15,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/utils/core/constants.dart';
-import 'package:soulmate/utils/plugin/plugin.dart';
-import 'package:soulmate/views/base/signUp/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:flutter/cupertino.dart';
 
-class SignUpPage extends StatelessWidget {
-  final logic = Get.put(SignUpController());
+import 'controller.dart';
+
+class FindAccountPage extends StatelessWidget {
+  final logic = Get.put(FindAccountController());
 
   final _emialController = TextEditingController();
 
-  final _nicknameController = TextEditingController();
-
   FocusNode _emailFocusNode = FocusNode();
-
-  FocusNode _nicknameFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +46,13 @@ class SignUpPage extends StatelessWidget {
                       height: 72.w,
                     ),
                     Text(
-                      'Create your account',
+                      "Find your account",
                       style: TextStyle(fontSize: 27.sp),
                     ),
                     SizedBox(
                       height: 186.w,
                     ),
-                    GetBuilder<SignUpController>(
+                    GetBuilder<FindAccountController>(
                       builder: (controller) {
                         return MakeInput(
                           controller: _emialController,
@@ -64,10 +60,11 @@ class SignUpPage extends StatelessWidget {
                             controller.email = v;
                             controller.validateEmail(v);
                           },
+                          autofocus: true,
                           focusNode: _emailFocusNode,
                           textInputAction: TextInputAction.next,
                           onEditingComplete: () {
-                            _nicknameFocusNode.requestFocus();
+                            _emailFocusNode.unfocus();
                           },
                           error: controller.emailErrorText != null,
                           errorText: controller.emailErrorText,
@@ -82,37 +79,9 @@ class SignUpPage extends StatelessWidget {
                       },
                     ),
                     SizedBox(
-                      height: 12.w,
+                      height: 237.w,
                     ),
-                    GetBuilder<SignUpController>(
-                      builder: (controller) {
-                        return MakeInput(
-                          controller: _nicknameController,
-                          onChanged: (v) {
-                            controller.nickname = v;
-                            controller.validateNickname(v);
-                          },
-                          focusNode: _nicknameFocusNode,
-                          textInputAction: TextInputAction.done,
-                          onEditingComplete: () {
-                            _nicknameFocusNode.unfocus();
-                          },
-                          error: controller.nicknameErrorText != null,
-                          errorText: controller.nicknameErrorText,
-                          textAlign: TextAlign.center,
-                          hintText: "Nickname",
-                          allowClear: true,
-                          keyboardType: TextInputType.name,
-                          onClear: () {
-                            _nicknameController.text = "";
-                          },
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: 161.w,
-                    ),
-                    GetBuilder<SignUpController>(
+                    GetBuilder<FindAccountController>(
                       builder: (controller) {
                         return MaterialButton(
                           minWidth: double.infinity,
@@ -126,7 +95,7 @@ class SignUpPage extends StatelessWidget {
                               ? null
                               : () {
                                   Get.toNamed('/authCode', arguments: {
-                                    "type": "signUp",
+                                    "type": "forgotPassword",
                                     "email": controller.email,
                                   });
                                 },
@@ -138,31 +107,6 @@ class SignUpPage extends StatelessWidget {
                               Text('Next', style: TextStyle(fontSize: 18.sp)),
                         );
                       },
-                    ),
-                    SizedBox(
-                      height: 40.w,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'By signing up, you agree to our ',
-                          style: TextStyle(fontSize: 14.sp),
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Text(
-                            'Terms,Privacy Policy',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                color: Color.fromRGBO(255, 128, 0, 1)),
-                          ),
-                        ),
-                        Text(
-                          '.',
-                          style: TextStyle(fontSize: 14.sp),
-                        )
-                      ],
                     ),
                   ],
                 ),

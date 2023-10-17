@@ -23,11 +23,13 @@ import 'package:soulmate/widgets/library/projectLibrary.dart';
 class AuthCodePage extends StatelessWidget {
   final logic = Get.put(AuthCodeController());
 
+  final arguments = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
     /// ScreenUtil初始化
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
+
     return WillPopScope(
         onWillPop: logic.dealBack,
         child: basePage('',
@@ -50,31 +52,35 @@ class AuthCodePage extends StatelessWidget {
                       height: 186.w,
                     ),
                     PinCodeTextField(
-
                       pinTheme: PinTheme(
-                        shape: PinCodeFieldShape.box,
-                        borderRadius: BorderRadius.circular(borderRadius),
-                        borderWidth: borderWidth,
-                        inactiveColor: borderColor,
-                        activeColor: primaryColor,
-                        selectedColor: primaryColor,
-                        errorBorderColor: Colors.red,
-                        errorBorderWidth: borderWidth,
-                        selectedBorderWidth: 4
-                      ),
+                          shape: PinCodeFieldShape.box,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          borderWidth: borderWidth,
+                          inactiveColor: borderColor,
+                          activeColor: primaryColor,
+                          selectedColor: primaryColor,
+                          errorBorderColor: Colors.red,
+                          errorBorderWidth: borderWidth,
+                          selectedBorderWidth: 4),
+                      autoFocus: true,
+                      autoUnfocus: true,
                       cursorColor: Colors.transparent,
                       animationDuration: const Duration(milliseconds: 300),
-                      onEditingComplete: (){
+                      onEditingComplete: () {
                         APPPlugin.logger.d(logic.code);
                       },
-                      onChanged: (v){
+                      onChanged: (v) {
                         APPPlugin.logger.d(v);
                         logic.code = v;
                         if (v != null && v.length == 6) {
                           if (v != "123456") {
-                            APPPlugin.logger.d("The code you entered is incorrect.Please try again.");
+                            APPPlugin.logger.d(
+                                "The code you entered is incorrect.Please try again.");
                           } else {
-                            Get.toNamed("/password");
+                            Get.toNamed("/password", arguments: {
+                              ...arguments as Map,
+                              "authCode": logic.code,
+                            });
                           }
                         }
                       },

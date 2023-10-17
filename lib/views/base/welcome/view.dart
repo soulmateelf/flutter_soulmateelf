@@ -11,10 +11,8 @@
 /// LastEditTime: 2022-03-08 15:39:16
 /// Description: 登录
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:soulmate/utils/core/constants.dart';
-import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:soulmate/views/base/welcome/controller.dart';
 import 'package:get/get.dart';

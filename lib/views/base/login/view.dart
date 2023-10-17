@@ -116,7 +116,9 @@ class LoginPage extends StatelessWidget {
                   height: 12.w,
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed("/findAccount");
+                  },
                   child: const Text(
                     'Forgot password',
                     style: TextStyle(color: primaryColor),

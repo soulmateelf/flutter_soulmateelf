@@ -16,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
+import '../../../utils/plugin/plugin.dart';
 import 'controller.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -24,6 +25,8 @@ class PasswordPage extends StatelessWidget {
 
   final logic = Get.put(PasswordController());
 
+  final arguments = Get.arguments;
+
   final _emialController = TextEditingController();
 
   final _passwordController = TextEditingController();
@@ -31,6 +34,17 @@ class PasswordPage extends StatelessWidget {
   FocusNode _confirmPasswordFocusNode = FocusNode();
 
   FocusNode _passwordFocusNode = FocusNode();
+
+  final typeMap = {
+    "signUp": {
+      "title": 'Create your password',
+      "nextPage": "/menu",
+    },
+    "forgotPassword": {
+      "title": "Choose a new password",
+      "nextPage": "/successfully"
+    },
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +59,7 @@ class PasswordPage extends StatelessWidget {
               children: [
                 SizedBox(height: 97.w),
                 Text(
-                  'Create your password',
+                  "${typeMap[arguments['type']]?['title']}",
                   style: TextStyle(fontSize: 27.sp, color: textColor),
                 ),
                 SizedBox(height: 126.w),
@@ -132,7 +146,8 @@ class PasswordPage extends StatelessWidget {
                 ),
                 MaterialButton(
                   onPressed: () {
-                    Get.toNamed('/menu');
+                    Get.toNamed(
+                        typeMap[arguments['type']]?['nextPage'] as String);
                   },
                   color: primaryColor,
                   child: Text(
