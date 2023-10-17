@@ -14,8 +14,14 @@ import 'package:get/get.dart';
 
 class MineController extends GetxController {
 
+  double size = 117;
+
+  setSize(double s){
+    size = s;
+    update();
+  }
+
   void logout(){
-    print(113);
     Get.offAllNamed('/welcome');
   }
   @override
