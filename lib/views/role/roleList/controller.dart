@@ -96,7 +96,7 @@ class RoleListController extends GetxController {
   void roleItemClick(index) {
     var itemData = roleList[index];
     print(itemData);
-    Get.toNamed('/chat');
+    Get.toNamed('/role');
   }
 
 }

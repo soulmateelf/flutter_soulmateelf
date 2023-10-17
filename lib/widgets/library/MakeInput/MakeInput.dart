@@ -22,6 +22,7 @@ class MakeInput extends StatefulWidget {
   Function()? onEditingComplete;
   TextInputAction? textInputAction;
   FocusNode? focusNode;
+  bool autofocus;
 
   /// 这些是组件内部自己的状态
   bool focus = false;
@@ -50,6 +51,7 @@ class MakeInput extends StatefulWidget {
     this.onEditingComplete,
     this.textInputAction,
     this.focusNode,
+    this.autofocus = false,
   }) : assert(((errorText != null && errorWidget == null) ||
                 (errorText == null && errorWidget != null) ||
                 (errorText == null && errorWidget == null)) &&
@@ -183,6 +185,7 @@ class _MakeInput extends State<MakeInput> {
                   onEditingComplete: widget.onEditingComplete,
                   focusNode: _focusNode,
                   onChanged: widget.onChanged,
+                  autofocus: widget.autofocus,
                   decoration: InputDecoration(
                     hintText: widget.hintText,
                     hintStyle:

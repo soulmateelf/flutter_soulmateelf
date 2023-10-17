@@ -4,11 +4,8 @@ import '../../../widgets/library/projectLibrary.dart';
 
 class AuthCodeController extends GetxController {
 
-  var passwordVisible = false.obs;
 
-  void togglePasswordVisible (){
-    passwordVisible.value = !passwordVisible.value;
-  }
+  var code = "";
 
 
   bool nextBtnDisabled = true;

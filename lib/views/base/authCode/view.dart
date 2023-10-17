@@ -16,22 +16,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/views/base/authCode/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class AuthCodePage extends StatelessWidget {
   final logic = Get.put(AuthCodeController());
 
-  final _formKey = GlobalKey<FormState>();
-
-  final _emialController = TextEditingController();
-
-  final _nicknameController = TextEditingController();
+  final arguments = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
     /// ScreenUtil初始化
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
+
     return WillPopScope(
         onWillPop: logic.dealBack,
         child: basePage('',
@@ -55,22 +53,34 @@ class AuthCodePage extends StatelessWidget {
                     ),
                     PinCodeTextField(
                       pinTheme: PinTheme(
-                        shape: PinCodeFieldShape.box,
-                        borderRadius: BorderRadius.circular(borderRadius),
-                        borderWidth: borderWidth,
-                        inactiveColor: borderColor,
-                        activeColor: primaryColor,
-                        errorBorderColor: Colors.red,
-                        errorBorderWidth: borderWidth,
-                      ),
+                          shape: PinCodeFieldShape.box,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          borderWidth: borderWidth,
+                          inactiveColor: borderColor,
+                          activeColor: primaryColor,
+                          selectedColor: primaryColor,
+                          errorBorderColor: Colors.red,
+                          errorBorderWidth: borderWidth,
+                          selectedBorderWidth: 4),
+                      autoFocus: true,
+                      autoUnfocus: true,
                       cursorColor: Colors.transparent,
                       animationDuration: const Duration(milliseconds: 300),
-                      validator: (v) {
+                      onEditingComplete: () {
+                        APPPlugin.logger.d(logic.code);
+                      },
+                      onChanged: (v) {
+                        APPPlugin.logger.d(v);
+                        logic.code = v;
                         if (v != null && v.length == 6) {
                           if (v != "123456") {
-                            return "error";
+                            APPPlugin.logger.d(
+                                "The code you entered is incorrect.Please try again.");
                           } else {
-                            // Get.toNamed("/setPassword");
+                            Get.toNamed("/password", arguments: {
+                              ...arguments as Map,
+                              "authCode": logic.code,
+                            });
                           }
                         }
                       },
