@@ -100,6 +100,9 @@ dependencies:
   # 滑动菜单
   #https://github.com/letsar/flutter_slidable
   flutter_slidable: ^3.0.0
+  # 交错的瀑布流布局
+  # https://github.com/letsar/flutter_staggered_grid_view
+  flutter_staggered_grid_view: ^0.7.0
 
   # 添加原生启动屏幕
   # https://pub.dev/packages/flutter_native_splash

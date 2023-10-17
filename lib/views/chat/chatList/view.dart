@@ -73,30 +73,32 @@ class ChatListPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return GestureDetector(
                     onTap: () {
-                      logic.chatItemClick(logic.dataList[index]);
+                      logic.chatItemClick(index);
                     },
-                    child: _sliderItem(index, logic.dataList[index]));
+                    child: _sliderItem(index));
               }))
   );
   /// 滑动组件
-  Widget _sliderItem(index, itemData){
+  Widget _sliderItem(index){
+    var itemData = logic.dataList[index];
     return Slidable(
-      key: ValueKey("${itemData['id']}"),
+      key: ValueKey(itemData['id']),
       endActionPane: ActionPane(
         extentRatio: 0.22,
         motion: const ScrollMotion(),
         children: [
           CustomSlidableAction(
-            onPressed: (context){logic.deleteChatItem(index,itemData);},
+            onPressed: (context){logic.deleteChatItem(index);},
             child: Image.asset('assets/images/icons/slideDelete.png',width: 44.w,height: 44.w),
           ),
         ],
       ),
-      child: _listItem(index, itemData),
+      child: _listItem(index),
     );
   }
   /// 聊天列表项
-  Widget _listItem(index, itemData) {
+  Widget _listItem(index) {
+    var itemData = logic.dataList[index];
     return Container(
       margin: EdgeInsets.only(bottom: 24.w),
       child: Row(
@@ -106,7 +108,7 @@ class ChatListPage extends StatelessWidget {
             height: 64.w,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage('${itemData['avatar']}'),
+                image: NetworkImage(itemData['avatar']),
                 fit: BoxFit.cover,
               ),
               shape: BoxShape.circle,
@@ -119,7 +121,7 @@ class ChatListPage extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: Text('${itemData['roleName'] ?? '--'}',
+                      child: Text(itemData['roleName'] ?? '--',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -129,7 +131,7 @@ class ChatListPage extends StatelessWidget {
                               color: const Color.fromRGBO(0, 0, 0, 0.8))),
                     ),
                     Text(
-                      '${itemData['time'] ?? '--'}',
+                      itemData['time'] ?? '--',
                       style: TextStyle(
                           fontSize: 12.sp,
                           fontFamily: 'PingFang SC Regular',
@@ -143,7 +145,7 @@ class ChatListPage extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      '${itemData['content'] ?? '--'}',
+                      itemData['content'] ?? '--',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

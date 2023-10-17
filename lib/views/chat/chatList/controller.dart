@@ -93,11 +93,12 @@ class ChatListController extends GetxController {
   }
 
   ///点击聊天列表项
-  void chatItemClick(item) {
-    print(item);
+  void chatItemClick(index) {
+    var itemData = dataList[index];
+    print(itemData);
     Get.toNamed('/chat');
   }
-  void deleteChatItem(index,itemData){
+  void deleteChatItem(index){
     print(index);
     dataList.removeAt(index);
     update();

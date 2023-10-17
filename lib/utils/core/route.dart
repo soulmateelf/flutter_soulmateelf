@@ -57,7 +57,7 @@ class AppRoute {
     /// role模块
     /// 角色列表
     GetPage(name: '/roleList', page: () => RoleListPage()),
-    /// 角色朋友圈
+    /// 角色详情-朋友圈
     GetPage(name: '/role', page: () => RolePage()),
 
     /// mine模块
