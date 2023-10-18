@@ -13,17 +13,26 @@ import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
 class MineController extends GetxController {
-
+  /// 头部组件的高度
   double size = 117;
 
-  setSize(double s){
+  setSize(double s) {
     size = s;
     update();
   }
 
-  void logout(){
+  /// 开启紧急联系邮箱
+  bool contact = false;
+
+  setContact(bool c) {
+    contact = c;
+    update();
+  }
+
+  void logout() {
     Get.offAllNamed('/welcome');
   }
+
   @override
   void onInit() {
     super.onInit();
@@ -41,5 +50,4 @@ class MineController extends GetxController {
     super.onClose();
     return;
   }
-
 }
