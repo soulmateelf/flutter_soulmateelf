@@ -15,22 +15,29 @@ import 'package:get/get.dart';
 
 class RoleController extends GetxController {
 
+  Map<dynamic,dynamic> roleDetail = {};/// 角色详情信息
 
   @override
   void onInit() {
-    super.onInit();
-    return;
-  }
-
-  @override
-  void onReady() {
     super.onReady();
+    getRoleDetail();
     return;
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-    return;
+  /// 获取角色详情
+  void getRoleDetail() {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      roleDetail = {
+        "id":"333",
+        "avatar": "http://kele.bestkele.cn/beaut.jpg",
+        "roleName": "Johanna Gonzalez",
+        "age":26,
+        "hobby": "Baking, Reading, Writing, Dancing, Knitting",
+        "describe": "I am delighted to lend an ear to your narrative, willing to partake in both your elation and distress, and remain by your side as your steadfast companion, available at your beck and call.",
+        "intimacy": 55
+      };
+      update();
+    });
   }
+
 }

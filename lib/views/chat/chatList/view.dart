@@ -106,12 +106,9 @@ class ChatListPage extends StatelessWidget {
           Container(
             width: 64.w,
             height: 64.w,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(itemData['avatar']),
-                fit: BoxFit.cover,
-              ),
-              shape: BoxShape.circle,
+            child: CircleAvatar(
+              backgroundImage: itemData['avatar'] != null
+                  ? Image.network("${itemData['avatar']}",fit: BoxFit.cover,).image: Image.asset("assets/images/icons/avatar.png",fit: BoxFit.cover).image,
             ),
           ),
           Expanded(child: Container(

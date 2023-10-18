@@ -172,7 +172,8 @@ class RoleListPage extends StatelessWidget {
               children: [
                 ClipRRect(
                     borderRadius: BorderRadius.circular(10.w), // 圆角半径
-                    child: Image.network(itemData['avatar'],width: double.infinity,)
+                    child: itemData['avatar'] != null
+                        ? Image.network(itemData['avatar'],width: double.infinity,): Image.asset("assets/images/icons/avatar.png",fit: BoxFit.cover)
                 ),
                 Container(
                   padding: EdgeInsets.only(top: 8.w,left: 12.w,right: 12.w,bottom: 4.w),
