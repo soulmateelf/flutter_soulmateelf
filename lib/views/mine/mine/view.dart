@@ -36,7 +36,7 @@ class _MinePage extends State<MinePage> {
     // TODO: implement initState
 
     _scrollController.addListener(() {
-      final offset = _scrollController.offset / 3;
+      final offset = _scrollController.offset / 3  ;
       setState(() {
         if (offset > gap) {
           logic.setSize(appBarMaxHeight - gap);
@@ -498,60 +498,63 @@ class _MinePage extends State<MinePage> {
                           ),
                           GetBuilder<MineController>(
                             builder: (controller) {
-                              return Column(
-                                children: [
-                                  Container(
-                                    height: 1,
-                                    color: Color.fromRGBO(0, 0, 0, 0.06),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      height: 64.w,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 19.w),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            width: 26.w,
-                                            height: 26.w,
-                                          ),
-                                          SizedBox(
-                                            width: 19.w,
-                                          ),
-                                          Text(
-                                            "Email",
-                                            style: TextStyle(
-                                                color: textColor,
-                                                fontSize: 18.sp),
-                                          ),
-                                          SizedBox(
-                                            width: 19.w,
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              "Sally02@gmail.com",
+                              return Offstage(
+                                offstage: !controller.contact,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 1,
+                                      color: Color.fromRGBO(0, 0, 0, 0.06),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {},
+                                      child: Container(
+                                        height: 64.w,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 19.w),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: 26.w,
+                                              height: 26.w,
+                                            ),
+                                            SizedBox(
+                                              width: 19.w,
+                                            ),
+                                            Text(
+                                              "Email",
                                               style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      0, 0, 0, 0.48),
+                                                  color: textColor,
                                                   fontSize: 18.sp),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: 19.w,
-                                          ),
-                                          Image.asset(
-                                            "assets/images/icons/right_arrow.png",
-                                            width: 26.w,
-                                            height: 26.w,
-                                          ),
-                                        ],
+                                            SizedBox(
+                                              width: 19.w,
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                "Sally02@gmail.com",
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        0, 0, 0, 0.48),
+                                                    fontSize: 18.sp),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 19.w,
+                                            ),
+                                            Image.asset(
+                                              "assets/images/icons/right_arrow.png",
+                                              width: 26.w,
+                                              height: 26.w,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               );
                             },
                           ),
