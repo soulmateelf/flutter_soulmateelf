@@ -7,6 +7,8 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
@@ -30,7 +32,82 @@ class MineController extends GetxController {
   }
 
   void logout() {
-    Get.offAllNamed('/welcome');
+    final GlobalKey<MakeDialogContentState> _globalKey = GlobalKey();
+    showDialog(
+        context: Get.context!,
+        builder: (BuildContext context) {
+          return MakeDialog(
+            stateKey: _globalKey,
+            iconWidget: Image.asset("assets/images/icons/logOut.png"),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Log out",
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: 32.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 8.w,
+                ),
+                Text(
+                  "Are you sure you want to \nlog out?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Color.fromRGBO(0, 0, 0, 0.48), fontSize: 24.sp),
+                ),
+                SizedBox(
+                  height: 30.w,
+                ),
+                Container(
+                  height: 64.w,
+                  width: double.maxFinite,
+                  child: TextButton(
+                      onPressed: () {
+                        Get.offAllNamed("/welcome");
+                      },
+                      style: ButtonStyle(
+                          textStyle: MaterialStateProperty.all(
+                              TextStyle(color: Colors.white)),
+                          backgroundColor:
+                              MaterialStateProperty.all(primaryColor),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.w)))),
+                      child: Text(
+                        "yes，log out",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.w),
+                      )),
+                ),
+                SizedBox(
+                  height: 20.w,
+                ),
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      _globalKey.currentState?.close();
+                    },
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(
+                          color: Color.fromRGBO(0, 0, 0, 0.32),
+                          fontSize: 20.sp),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 12.w,
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   @override
