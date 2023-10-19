@@ -113,9 +113,7 @@ class Utils {
           toastPosition: EasyLoadingToastPosition.top);
     }
 
-    NetUtils.diorequst('/base/logout', 'post',
-        successCallBack: successFn,
-        errorCallBack: errorFn,
+    HttpUtils.diorequst('/base/logout', 'post',
         extra: {"isUrlencoded": true});
   }
 

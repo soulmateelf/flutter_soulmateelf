@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
@@ -10,49 +8,50 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart' hide Response;
 
-class NetUtils {
-  /// 可选参数 params headers successCallBack errorCallBack
+class HttpUtils {
+  /// dio实体初始化
+  static Dio dio = Dio(BaseOptions(
+    baseUrl: ProjectConfig.getInstance()?.baseConfig['BaseUrl'],
+    connectTimeout: const Duration(milliseconds: 10000),
+    receiveTimeout: const Duration(milliseconds: 30000),
+  ));
+
+  /// 请求方法
   static Future diorequst(String url, String method,
       {dynamic? params,
       Map<String, dynamic>? headers,
       Map<String, dynamic>? extra,
-      Function? successCallBack,
-      Function? errorCallBack,
-      int connectTimeout = 30000}) async {
+      int connectTimeout = 10000}) async {
+    /// 判断网络状态
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      Map errorResponseData = {"message": 'plase check you network!'};
-      _error(errorResponseData['message'], errorResponseData, errorCallBack);
-      return null;
+      String errMessage = "please check you network!";
+      Loading.toast(errMessage, toastPosition: EasyLoadingToastPosition.top);
+      return _error(message: errMessage);
     }
-    Dio dio = Dio(BaseOptions(
-      baseUrl: ProjectConfig.getInstance()?.baseConfig['BaseUrl'],
-      connectTimeout: Duration(milliseconds: connectTimeout),
-      receiveTimeout: const Duration(milliseconds: 30000),
-    ));
+    /// 覆盖参数
+    HttpUtils.dio.options.connectTimeout = Duration(milliseconds: connectTimeout);
+    /// response
     Response response;
+
     try {
+      /// 有传自定义head或者没传head参数取默认值
       Map<String, dynamic>? localHeaders;
-
-      ///有传自定义head或者没传head参数取默认值
       localHeaders = headers ?? {};
-
       localHeaders["Authorization"] = "Bearer ${Application.token}";
       localHeaders["userId"] = Application.userInfo?["userId"];
 
       ///拦截器
-      dio.interceptors.add(InterceptorsWrapper(
+      HttpUtils.dio.interceptors.add(InterceptorsWrapper(
         onRequest: (RequestOptions options, handler) async {
           // Do something before request is sent
           /// header在这里直接赋值会导致其他header属性的丢失
           /// 所以在request函数中处理比较好
           /// 图片类型，在这里特殊处理header
-          ///
           if (extra != null && extra?["uploadImage"] == true) {
             options.data = params?["formdata"];
           }
           return handler.next(options);
-          //continue
         },
         onResponse: (Response response, handler) async {
           // Do something with response data
@@ -64,7 +63,7 @@ class NetUtils {
         },
       ));
 
-      ///正式请求
+      /// 正式请求
       response = await dio.request(
         url,
         queryParameters: method == 'get' ? params : null,
@@ -78,108 +77,90 @@ class NetUtils {
       );
 
       ///处理response
-      return _dealWithResponse(response, successCallBack, errorCallBack);
-    } on DioError catch (dioError) {
+      return _dealWithResponse(response);
+    } on DioException catch (dioError) {
       String realUrl = dio.options.baseUrl + url;
-      print('$realUrl接口错误,请求方式$method');
-      print('请求参数${params.toString()}');
-      return _dealDioError(
-          dioError, url, successCallBack, errorCallBack, params);
+      if (ProjectConfig.getInstance()?.isDebug == true) {
+        APPPlugin.logger.d('$realUrl接口错误,请求方式$method');
+        APPPlugin.logger.d('请求参数${params.toString()}');
+      }
+      return _dealDioError( dioError, url, params);
     } catch (exception) {
       Map errorResponseData = {"message": exception.toString()};
-      _error(errorResponseData['message'], errorResponseData, errorCallBack);
+      return _error(message:errorResponseData['message']);
     }
   }
 
-  static _dealDioError(DioError dioError, String url, Function? successCallBack,
-      Function? errorCallBack, params) {
+  static _dealDioError(DioException dioError, String url,params) {
+    String errMessage = "";
     switch (dioError.type) {
-      case DioErrorType.cancel:
-        Map errorResponseData = {"message": "request cancel！"};
-        _error(errorResponseData['message'], errorResponseData, errorCallBack);
+      case DioExceptionType.cancel:
+        errMessage = "request cancel";
         break;
-      case DioErrorType.connectionTimeout:
-        Map errorResponseData = {"message": "connectionTimeout！"};
-        _error(errorResponseData['message'], errorResponseData, errorCallBack);
+      case DioExceptionType.connectionTimeout:
+        errMessage = "connectionTimeout!";
         break;
-      case DioErrorType.sendTimeout:
-        Map errorResponseData = {"message": "sendTimeout！"};
-        _error(errorResponseData['message'], errorResponseData, errorCallBack);
+      case DioExceptionType.sendTimeout:
+        errMessage = "sendTimeout!";
         break;
-      case DioErrorType.receiveTimeout:
-        Map errorResponseData = {"message": "receiveTimeout！"};
-        _error(errorResponseData['message'], errorResponseData, errorCallBack);
+      case DioExceptionType.receiveTimeout:
+        errMessage = "receiveTimeout!";
         break;
-      case DioErrorType.badResponse:
-        // 其他类型的http返回码，比如 500 403 400 等等
+      case DioExceptionType.badResponse:
+        // 其他类型的http返回码，比如 500 401 400 等等
         int? errCode = dioError.response?.statusCode;
-        print("请求失败，错误代码【$errCode】！");
-        Map errorResponseData;
-        errorResponseData = {"message": "error！"};
-        if (ProjectConfig.getInstance()?.isDebug == true) {
-          APPPlugin.logger.d(dioError);
+        if(errCode == 401){
+          // 无效的登录信息
+          if(Get.currentRoute != "/login"){
+            errMessage = dioError.response?.data?['message'];
+            Loading.toast(errMessage, toastPosition: EasyLoadingToastPosition.top);
+            // Application.clearStorage().then((val) {
+            //   Get.offAllNamed('login');
+            // });
+            return Future.error(errMessage);
+          }
+        }else{
+          errMessage = "[$errCode]-something wrong!";
+          if (ProjectConfig.getInstance()?.isDebug == true) {
+            APPPlugin.logger.d("请求失败，错误代码【$errCode】！");
+            APPPlugin.logger.d(dioError);
+          }
         }
-        _error(errorResponseData['message'], errorResponseData, errorCallBack);
         break;
       default:
         // print(dioError.response);
-        Map errorResponseData;
-        errorResponseData = {"message": "error！"};
+        errMessage = "something wrong!";
         if (ProjectConfig.getInstance()?.isDebug == true) {
           APPPlugin.logger.d(dioError);
         }
-        _error(errorResponseData['message'], errorResponseData, errorCallBack);
     }
+    return _error(message: errMessage);
   }
 
-  static _dealWithResponse(response, successCallBack, errorCallBack) {
+  static _dealWithResponse(response) {
     ///httpCode 200
     ///--自定义code  200 操作成功！
     ///--自定义code  500 操作失败！系统繁忙！非法参数！
-    ///--自定义code  400 未登录！权限不足！
-
-    return Future(() {
-      if (response.statusCode == 200) {
-        //http成功
-        var responsedata = response.data;
-        //服务端返回码
-        if (responsedata['code'] == 200) {
-          // try捕获successCallBack异常，导致response无法返回给futureBuilderContainer来判断页面显示问题
-          try {
-            successCallBack(responsedata);
-          } catch (e) {
-            return response;
-          }
-        } else if (responsedata['code'] == 4001) {
-          // icyberelf约定的账号登录信息失效是http状态码200
-          // ----内部自定义code  4001 未登录或登录信息失效！
-          _error(responsedata['message'], responsedata, errorCallBack);
-          Application.clearStorage().then((val) {
-            Get.offAllNamed('/welcome');
-          });
-        } else {
-          // kele
-          // 2020-09-10
-          // 这里是后段自定义的错误码，此时http的状态码是200，app只需要弹出message即可
-          _error(responsedata['message'], responsedata, errorCallBack);
-        }
+    if (response.statusCode == 200) {
+      //http成功
+      var responsedata = response.data;
+      //服务端返回码
+      if (responsedata['code'] == 200) {
+        return responsedata;
       } else {
-        //http失败
-        _error('', null, errorCallBack);
+        // 这里是后端自定义的错误码，此时http的状态码是200，app只需要弹出message即可
+        return _error(message: responsedata['message']);
       }
-      return response;
-    });
+    } else {
+      //http失败
+      return _error();
+    }
   }
 
-  static _error(
-      String errorMessage, Map? responsedata, Function? errorCallBack) {
-    if (errorCallBack != null) {
-      errorCallBack(responsedata);
-    } else {
-      if (Utils.isEmpty(errorMessage)) {
-        errorMessage = 'something wrong！';
-      }
-      Loading.toast(errorMessage, toastPosition: EasyLoadingToastPosition.top);
-    }
+  /// 错误提示
+  static _error({String message = 'something wrong！'}) {
+    /// 本来是想在这里默认弹窗提示错误信息的，但是有些接口失败不想提示错误，比如升级接口，所以这里不做处理，错误处理统一交给页面的业务方法自己搞定
+    /// Loading.toast(message, toastPosition: EasyLoadingToastPosition.top);
+    return Future.error(message);
   }
 }

@@ -37,10 +37,12 @@ Widget basePage(
   }) {
     return Container(
         decoration: BoxDecoration(
-          color: showBgImage?Colors.transparent:mainColor,
+          // color: showBgImage?Colors.transparent:mainColor,
+          color: Colors.transparent,
           image: showBgImage?const DecorationImage(
+            alignment: Alignment.topCenter,
             image: AssetImage('assets/images/image/background.png'), // 替换为你的图片路径
-            fit: BoxFit.cover,
+            fit: BoxFit.fitWidth,
           ):null,
         ),
         child:Scaffold(

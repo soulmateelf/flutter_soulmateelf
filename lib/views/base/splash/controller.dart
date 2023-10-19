@@ -143,15 +143,10 @@ class SplashController extends GetxController {
       }
     }
 
-    void errorFn(error) {
-      /// 升级失败不能提示
-    }
-    return NetUtils.diorequst(
+    return HttpUtils.diorequst(
       '/iot4-crpm-api/user/new/app/version',
       'get',
       params: params,
-      successCallBack: successFn,
-      errorCallBack: errorFn,
     );
   }
 

@@ -8,6 +8,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:soulmate/config.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
@@ -26,6 +27,16 @@ class RoleController extends GetxController {
 
   /// 获取角色详情
   void getRoleDetail() {
+    Map<String, dynamic> params = {
+      'email': "keykong167@163.com",
+      'password': "12345678",
+    };
+    HttpUtils.diorequst('/login', 'post', params: params).then((response){
+      print(response);
+    }).catchError((error){
+      Loading.error(error);
+    });
+    return;
     Future.delayed(const Duration(milliseconds: 500), () {
       roleDetail = {
         "id":"333",
