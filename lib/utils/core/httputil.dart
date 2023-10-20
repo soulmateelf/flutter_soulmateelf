@@ -17,8 +17,10 @@ class HttpUtils {
   ));
 
   /// 请求方法
-  static Future diorequst(String url, String method,
-      {dynamic? params,
+  static Future diorequst(String url,
+      {String method = "get",
+      dynamic? query,
+      dynamic? params,
       Map<String, dynamic>? headers,
       Map<String, dynamic>? extra,
       int connectTimeout = 10000}) async {
@@ -29,8 +31,11 @@ class HttpUtils {
       Loading.toast(errMessage, toastPosition: EasyLoadingToastPosition.top);
       return _error(message: errMessage);
     }
+
     /// 覆盖参数
-    HttpUtils.dio.options.connectTimeout = Duration(milliseconds: connectTimeout);
+    HttpUtils.dio.options.connectTimeout =
+        Duration(milliseconds: connectTimeout);
+
     /// response
     Response response;
 
@@ -66,8 +71,8 @@ class HttpUtils {
       /// 正式请求
       response = await dio.request(
         url,
-        queryParameters: method == 'get' ? params : null,
-        data: method == 'post' ? params : null,
+        queryParameters: query,
+        data: params,
         options: Options(
             method: method,
             headers: localHeaders,
@@ -82,16 +87,16 @@ class HttpUtils {
       String realUrl = dio.options.baseUrl + url;
       if (ProjectConfig.getInstance()?.isDebug == true) {
         APPPlugin.logger.d('$realUrl接口错误,请求方式$method');
-        APPPlugin.logger.d('请求参数${params.toString()}');
+        APPPlugin.logger.d('请求参数${query?.toString()}${params?.toString()}');
       }
-      return _dealDioError( dioError, url, params);
+      return _dealDioError(dioError, url);
     } catch (exception) {
       Map errorResponseData = {"message": exception.toString()};
-      return _error(message:errorResponseData['message']);
+      return _error(message: errorResponseData['message']);
     }
   }
 
-  static _dealDioError(DioException dioError, String url,params) {
+  static _dealDioError(DioException dioError, String url) {
     String errMessage = "";
     switch (dioError.type) {
       case DioExceptionType.cancel:
@@ -109,17 +114,18 @@ class HttpUtils {
       case DioExceptionType.badResponse:
         // 其他类型的http返回码，比如 500 401 400 等等
         int? errCode = dioError.response?.statusCode;
-        if(errCode == 401){
+        if (errCode == 401) {
           // 无效的登录信息
-          if(Get.currentRoute != "/login"){
+          if (Get.currentRoute != "/login") {
             errMessage = dioError.response?.data?['message'];
-            Loading.toast(errMessage, toastPosition: EasyLoadingToastPosition.top);
-            // Application.clearStorage().then((val) {
-            //   Get.offAllNamed('login');
-            // });
+            Loading.toast(errMessage,
+                toastPosition: EasyLoadingToastPosition.top);
+            Application.clearStorage().then((val) {
+              Get.offAllNamed('login');
+            });
             return Future.error(errMessage);
           }
-        }else{
+        } else {
           errMessage = "[$errCode]-something wrong!";
           if (ProjectConfig.getInstance()?.isDebug == true) {
             APPPlugin.logger.d("请求失败，错误代码【$errCode】！");

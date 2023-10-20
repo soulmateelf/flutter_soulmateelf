@@ -23,6 +23,7 @@ class MenuPage extends StatelessWidget {
     return WillPopScope(
         onWillPop: logic.dealBack,
         child: Scaffold(
+          backgroundColor:const Color.fromRGBO(242, 242, 242, 1),
           bottomNavigationBar: GetBuilder<MenuController>(builder: (logic) {
             return _buildBottomNavigationBar();
           }),
@@ -114,8 +115,8 @@ class MenuPage extends StatelessWidget {
       splashSpeedInMilliseconds: 300,
       notchSmoothness: NotchSmoothness.defaultEdge,
       gapLocation: GapLocation.none,
-      leftCornerRadius: 32,
-      rightCornerRadius: 24,
+      leftCornerRadius: 24.w,
+      rightCornerRadius: 24.w,
       onTap: (index) {
         logic.changeMenu(index);
       },

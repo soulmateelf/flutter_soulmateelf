@@ -113,8 +113,8 @@ class Utils {
           toastPosition: EasyLoadingToastPosition.top);
     }
 
-    HttpUtils.diorequst('/base/logout', 'post',
-        extra: {"isUrlencoded": true});
+    HttpUtils.diorequst('/base/logout',
+        method: 'post', extra: {"isUrlencoded": true});
   }
 
   /// 分享

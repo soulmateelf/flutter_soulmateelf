@@ -5,6 +5,9 @@
  * @FilePath: \soulmate\lib\views\base\login\controller.dart
  */
 import 'package:get/get.dart';
+import 'package:soulmate/models/user.dart';
+import 'package:soulmate/utils/core/httputil.dart';
+import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class LoginController extends GetxController {
   var email = "";
@@ -54,5 +57,32 @@ class LoginController extends GetxController {
   togglePasswordVisible() {
     passwordVisible = !passwordVisible;
     update();
+  }
+
+  void login(){
+    Map<String, dynamic> params = {
+      'email': "keykong167@163.com",
+      'password': "123456",
+    };
+    HttpUtils.diorequst('/login', method: 'post', params: params).then((response){
+      print(response);
+      // Get.toNamed('/menu');
+    }).catchError((error){
+      Loading.error(error);
+    });
+
+    Get.offAllNamed('/menu');
+
+
+
+    // var jsonRole = {"id":"12","roleName":"rolekele","roleAge":4};
+    // var jsonUser = {"id":"12","name1":"kele","age":45,"role":jsonRole};
+    // print(jsonUser);
+    // User user = User.fromJson(jsonUser);
+    // print(user.name);
+    // print(user.toJson());
+
+
+
   }
 }

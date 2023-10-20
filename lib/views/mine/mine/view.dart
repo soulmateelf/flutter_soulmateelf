@@ -36,7 +36,7 @@ class _MinePage extends State<MinePage> {
     // TODO: implement initState
 
     _scrollController.addListener(() {
-      final offset = _scrollController.offset / 3  ;
+      final offset = _scrollController.offset / 3;
       setState(() {
         if (offset > gap) {
           logic.setSize(appBarMaxHeight - gap);
@@ -55,7 +55,7 @@ class _MinePage extends State<MinePage> {
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
 
     return basePage('Chat',
-        showBgImage: true,
+        backGroundImage: BackGroundImageType.gray,
         showAppbar: false,
         child: Column(
           children: [
@@ -514,7 +514,7 @@ class _MinePage extends State<MinePage> {
                                             horizontal: 19.w),
                                         child: Row(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                              CrossAxisAlignment.center,
                                           children: [
                                             SizedBox(
                                               width: 26.w,

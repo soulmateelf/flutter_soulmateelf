@@ -145,8 +145,7 @@ class SplashController extends GetxController {
 
     return HttpUtils.diorequst(
       '/iot4-crpm-api/user/new/app/version',
-      'get',
-      params: params,
+      query: params,
     );
   }
 

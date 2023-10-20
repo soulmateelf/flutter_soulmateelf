@@ -16,7 +16,6 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return basePage('chat',
-        showBgImage: true,
         child: Container(
           color: Colors.transparent,
           width: double.infinity,

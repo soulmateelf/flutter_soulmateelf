@@ -8,7 +8,7 @@
 /// Author: kele
 /// Date: 2022-01-13 15:18:59
 /// LastEditors: kele
-/// LastEditTime: 2022-03-08 15:39:16
+/// LastEditTime: 2023-10-20 17:18:50
 /// Description: 登录
 
 import 'package:flutter/material.dart';
@@ -38,7 +38,6 @@ class SignUpPage extends StatelessWidget {
     return WillPopScope(
         onWillPop: logic.dealBack,
         child: basePage('',
-            showBgImage: true,
             child: SingleChildScrollView(
               child: Container(
                 alignment: Alignment.center,

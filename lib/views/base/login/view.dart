@@ -8,7 +8,7 @@
 /// Author: kele
 /// Date: 2022-01-13 15:18:59
 /// LastEditors: kele
-/// LastEditTime: 2022-03-08 15:39:16
+/// LastEditTime: 2023-10-20 17:18:40
 /// Description: 登录
 
 import 'package:flutter/material.dart';
@@ -35,7 +35,6 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return basePage('',
-        showBgImage: true,
         child: SingleChildScrollView(
           child: Container(
             alignment: Alignment.center,
@@ -129,7 +128,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 MaterialButton(
                   onPressed: () {
-                    Get.toNamed('/menu');
+                    logic.login();
                   },
                   color: primaryColor,
                   child: Text(

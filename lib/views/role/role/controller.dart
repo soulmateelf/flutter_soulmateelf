@@ -29,9 +29,9 @@ class RoleController extends GetxController {
   void getRoleDetail() {
     Map<String, dynamic> params = {
       'email': "keykong167@163.com",
-      'password': "12345678",
+      'password': "123456",
     };
-    HttpUtils.diorequst('/login', 'post', params: params).then((response){
+    HttpUtils.diorequst('/login', method: 'post', params: params).then((response){
       print(response);
     }).catchError((error){
       Loading.error(error);

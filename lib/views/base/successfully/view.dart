@@ -10,7 +10,6 @@ class SuccessfullyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return basePage("",
-        showBgImage: true,
         child: Container(
           child: Column(
             children: [

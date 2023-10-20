@@ -19,38 +19,38 @@ class SplashPage extends StatelessWidget {
     /// ScreenUtil初始化
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
     return basePage('',
-      showAppbar: false,
-      showBgImage: true,
-      child:Container(
-        color: Colors.transparent,
-        width: double.infinity,
-        height: 570.w,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Stack(
-              children: [
-                Image.asset(
-                  'assets/images/image/logo.png',
-                  width: 216.w,
-                  height: 216.w,
-                ),
-                Positioned(
-                  bottom: 25.w,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                      alignment: Alignment.center,
-                        child:Text('Soulmate ELF',style: TextStyle(color: const Color.fromRGBO(21, 10, 0, 1),fontWeight: FontWeight.w500,fontSize: 22.sp),)
-                    )
-
-                )
-
-              ],
-            )
-
-          ],
-        ),
-      ));
+        showAppbar: false,
+        child: Container(
+          color: Colors.transparent,
+          width: double.infinity,
+          height: 570.w,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Stack(
+                children: [
+                  Image.asset(
+                    'assets/images/image/logo.png',
+                    width: 216.w,
+                    height: 216.w,
+                  ),
+                  Positioned(
+                      bottom: 25.w,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Soulmate ELF',
+                            style: TextStyle(
+                                color: const Color.fromRGBO(21, 10, 0, 1),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 22.sp),
+                          )))
+                ],
+              )
+            ],
+          ),
+        ));
   }
 }
