@@ -1,3 +1,9 @@
+
+/// 序列化最好的两个工具是json_serializable和freezed，都需要安装好几个依赖包，又繁琐，实在太烦人了
+/// 还是自己写吧，冗余是有点，而且费事，但是有 Copilot 就没关系，没有助手的话，下面有个在线生成的工具，nice
+/// 生成实体类的工具
+/// https://app.quicktype.io/
+
 /// 用户
 class User {
   int id;
