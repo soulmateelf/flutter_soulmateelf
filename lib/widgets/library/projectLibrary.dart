@@ -40,3 +40,4 @@ part 'backBar/backBar.dart';
 part 'resource/loading.dart';
 
 part 'MakeInput/MakeInput.dart';
+part 'MakeDialog/MakeDialog.dart';
