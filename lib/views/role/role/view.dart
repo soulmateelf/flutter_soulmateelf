@@ -47,8 +47,8 @@ class RolePage extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: Colors.white, width: 2.w)),
           child: CircleAvatar(
-            backgroundImage: logic.roleDetail?['avatar'] != null
-                ? Image.network("${logic.roleDetail?['avatar']}",fit: BoxFit.cover,).image: Image.asset("assets/images/icons/avatar.png",fit: BoxFit.cover).image,
+            backgroundImage: logic.roleDetail?.avatar != null
+                ? Image.network(logic.roleDetail!.avatar!,fit: BoxFit.cover,).image: Image.asset("assets/images/icons/avatar.png",fit: BoxFit.cover).image,
           ),
         ),
         Expanded(
@@ -57,7 +57,7 @@ class RolePage extends StatelessWidget {
           children: [
             Container(
                 margin: EdgeInsets.only(top: 4.w),
-                child: Text(logic.roleDetail['roleName'] ?? '--',
+                child: Text(logic.roleDetail?.name ?? '--',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -75,7 +75,7 @@ class RolePage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(logic.roleDetail['age']?.toString() ?? '--',
+                  Text(logic.roleDetail?.age != null ? logic.roleDetail!.age!.toString() : '--',
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontFamily: 'PingFangSC-Medium',
@@ -98,7 +98,7 @@ class RolePage extends StatelessWidget {
             ),
             Container(
                 margin: EdgeInsets.only(top: 8.w),
-                child: Text(logic.roleDetail['hobby'] ?? '--',
+                child: Text(logic.roleDetail?.hobby ?? '--',
                     style: TextStyle(
                         fontSize: 15.sp,
                         fontFamily: 'SFProRounded-Semibold',
@@ -106,7 +106,7 @@ class RolePage extends StatelessWidget {
                         color: const Color.fromRGBO(0, 0, 0, 0.64)))),
             Container(
                 margin: EdgeInsets.only(top: 16.w),
-                child: Text(logic.roleDetail['describe'] ?? '--',
+                child: Text(logic.roleDetail?.description ?? '--',
                     style: TextStyle(
                         fontSize: 15.sp,
                         fontFamily: 'PingFangSC-Regular',

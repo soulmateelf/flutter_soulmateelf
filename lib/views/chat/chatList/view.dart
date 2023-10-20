@@ -103,7 +103,7 @@ class ChatListPage extends StatelessWidget {
   Widget _listItem(index) {
     var itemData = logic.dataList[index];
     return Container(
-        margin: EdgeInsets.only(bottom: 24.w),
+        margin: EdgeInsets.only(bottom: 20.w),
         child: Row(
           children: [
             Container(

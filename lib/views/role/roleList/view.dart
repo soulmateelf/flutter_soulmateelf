@@ -148,7 +148,7 @@ class RoleListPage extends StatelessWidget {
 
   /// 列表项
   Widget _roleItem(index) {
-    var itemData = logic.roleList[index];
+    var roleData = logic.roleList[index];
     return Container(
       decoration: BoxDecoration(
         gradient: index % 3 == 0
@@ -178,9 +178,9 @@ class RoleListPage extends StatelessWidget {
                 children: [
                   ClipRRect(
                       borderRadius: BorderRadius.circular(10.w), // 圆角半径
-                      child: itemData['avatar'] != null
+                      child: roleData.avatar != null
                           ? Image.network(
-                              itemData['avatar'],
+                              roleData.avatar!,
                               width: double.infinity,
                             )
                           : Image.asset("assets/images/icons/avatar.png",
@@ -189,7 +189,7 @@ class RoleListPage extends StatelessWidget {
                     padding: EdgeInsets.only(
                         top: 8.w, left: 12.w, right: 12.w, bottom: 4.w),
                     alignment: Alignment.centerLeft,
-                    child: Text(itemData['roleName'],
+                    child: Text(roleData.name??"--",
                         style: TextStyle(
                             fontSize: 18.sp,
                             fontFamily: 'SFProRounded-Medium',
@@ -200,7 +200,7 @@ class RoleListPage extends StatelessWidget {
                       padding: EdgeInsets.only(
                           left: 12.w, right: 12.w, bottom: 12.w),
                       alignment: Alignment.centerLeft,
-                      child: Text(itemData['hobby'],
+                      child: Text(roleData.hobby??'--',
                           style: TextStyle(
                               fontSize: 12.sp,
                               fontFamily: 'SFProRounded-Regular',
@@ -229,7 +229,7 @@ class RoleListPage extends StatelessWidget {
                         height: 16.w,
                         fit: BoxFit.cover,
                       ),
-                      Text(itemData['intimacy'].toString(),
+                      Text(roleData.intimacy != null?roleData.intimacy.toString():'0',
                           style: TextStyle(
                               fontSize: 13.sp,
                               fontFamily: 'SFProRounded-Medium',

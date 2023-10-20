@@ -44,7 +44,6 @@ class HttpUtils {
       Map<String, dynamic>? localHeaders;
       localHeaders = headers ?? {};
       localHeaders["Authorization"] = "Bearer ${Application.token}";
-      localHeaders["userId"] = Application.userInfo?["userId"];
 
       ///拦截器
       HttpUtils.dio.interceptors.add(InterceptorsWrapper(

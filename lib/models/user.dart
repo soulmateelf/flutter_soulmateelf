@@ -1,88 +1,94 @@
-/*class User{
+/// 用户
+class User {
   int id;
+  /// 用户id
   String userId;
+  /// 邮箱
   String email;
-  String password;
+  /// 密码
+  String? password;
   /// 昵称
-  String nickName;
+  String? nickName;
   /// 头像
-  String avatar;
+  String? avatar;
   /// 注册类型,0自主注册,1google,2facebook
-  String registerType;
+  int? registerType;
   /// 聊天模式,0简单,1普通,2高级
-  String model;
+  int model;
   /// 用户设定
-  String setting;
+  String? setting;
   /// 用户当前能量
-  int energy;
+  int? energy;
+  /// 是否评价过
+  int? evaluate;
   /// 用户是否开启紧急联系人选项,0未开启, 1已开启
-  int emergencyContact;
+  int? emergencyContact;
   /// 紧急联系人邮箱
-  String emergencyEmail;
+  String? emergencyEmail;
   /// 0 正常状态，1删除状态
-  int status;
+  int? status;
   /// 备注
-  String remark;
+  String? remark;
   int createTime;
-  int updateTime;
+  int? updateTime;
 
-  User();
-
-  ///将Map转成User对象
-  User.fromJson(Map<String,dynamic> map)
-      :id=map['id'],
-      name=map['name'],
-      age=map['age'],
-      role=Role.fromJson(map['role']);
-  //将User对象转化成Map
-  Map<String,dynamic> toJson()=>{
-    'id':id,
-    'name':name,
-    'age':age,
-    'role':role.toJson()
-  };
-
-
-}*/
-import 'dart:convert';
-Welcome welcomeFromJson(String str) => Welcome.fromJson(json.decode(str));
-String welcomeToJson(Welcome data) => json.encode(data.toJson());
-class Welcome {
-  String userId;
-  int sdss;
-
-  Welcome({
+  User({
+    required this.id,
     required this.userId,
-    required this.sdss,
+    required this.email,
+    this.password,
+    this.nickName,
+    this.avatar,
+    this.registerType,
+    required this.model,
+    this.setting,
+    this.energy,
+    this.evaluate,
+    this.emergencyContact,
+    this.emergencyEmail,
+    this.status,
+    this.remark,
+    required this.createTime,
+    this.updateTime
   });
 
-  factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
-    userId: json["userId"],
-    sdss: json["sdss"],
-  );
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json["id"],
+        userId: json["userId"],
+        email: json["email"],
+        password: json["password"],
+        nickName: json["nickName"],
+        avatar: json["avatar"],
+        registerType: json["registerType"],
+        model: json["model"],
+        setting: json["setting"],
+        energy: json["energy"],
+        evaluate: json["evaluate"],
+        emergencyContact: json["emergencyContact"],
+        emergencyEmail: json["emergencyEmail"],
+        status: json["status"],
+        remark: json["remark"],
+        createTime: json["createTime"],
+        updateTime: json["updateTime"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "userId": userId,
-    "sdss": sdss,
-  };
-}
-
-class Role{
-  String id;
-  String roleName;
-  int roleAge;
-
-  Role(this.id,this.roleName,this.roleAge);
-  ///重点来了
-  ///将Map转成User对象
-  Role.fromJson(Map<String,dynamic> map)
-      :id=map['id'],
-        roleName=map['roleName'],
-        roleAge=map['roleAge'];
-  //将User对象转化成Map
-  Map<String,dynamic> toJson()=>{
-    'id':id,
-    'roleName':roleName,
-    'roleAge':roleAge,
-  };
+        "id": id,
+        "userId": userId,
+        "email": email,
+        "password": password,
+        "nickName": nickName,
+        "avatar": avatar,
+        "registerType": registerType,
+        "model": model,
+        "setting": setting,
+        "energy": energy,
+        "evaluate": evaluate,
+        "emergencyContact": emergencyContact,
+        "emergencyEmail": emergencyEmail,
+        "status": status,
+        "remark": remark,
+        "createTime": createTime,
+        "updateTime": updateTime,
+      };
 }
