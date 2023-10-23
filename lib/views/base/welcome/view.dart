@@ -38,7 +38,11 @@ class WelcomePage extends StatelessWidget {
               children: [
                 Text(
                   'Let’s you in',
-                  style: TextStyle(fontSize: 27.sp),
+                  style: TextStyle(
+                      fontSize: 27.sp,
+                      fontFamily: "SFProRounded-Blod",
+                      fontWeight: FontWeight.w700
+                  ),
                 ),
                 SizedBox(
                   height: 70.w,
@@ -54,7 +58,11 @@ class WelcomePage extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Icon(Icons.logo_dev_outlined),
+                      Image.asset(
+                        "assets/images/icons/google.png",
+                        width: 34.w,
+                        height: 34.w,
+                      ),
                       SizedBox(
                         width: 49.w,
                       ),
@@ -79,7 +87,11 @@ class WelcomePage extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Icon(Icons.logo_dev_outlined),
+                      Image.asset(
+                        "assets/images/icons/facebook.png",
+                        width: 34.w,
+                        height: 34.w,
+                      ),
                       SizedBox(
                         width: 49.w,
                       ),
