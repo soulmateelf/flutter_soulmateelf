@@ -9,6 +9,11 @@ version: 1.0.0+1
 environment:
   sdk: '>=3.1.0 <4.0.0'
 
+flutter_icons:
+  image_path: "assets/images/image/icon1024.png"
+  android: true 
+  ios: true 
+
 dependencies:
   flutter_test:
     sdk: flutter
@@ -112,6 +117,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
 
 
 flutter:
@@ -122,3 +128,16 @@ flutter:
     - assets/images/image/
     - assets/images/icons/
     - assets/images/menuIcon/
+    - assets/fonts/
+
+  fonts:
+    - family: SFProRounded
+      fonts:
+        - asset: assets/fonts/SF-Pro-Rounded-Regular.otf
+        - asset: assets/fonts/SF-Pro-Rounded-Black.otf
+          style: italic
+    - family: SFProRounded-Blod
+      fonts:
+        - asset: assets/fonts/SF-Pro-Rounded-Regular.otf
+        - asset: assets/fonts/SF-Pro-Rounded-Bold.otf
+          weight: 700
