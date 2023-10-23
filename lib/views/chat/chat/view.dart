@@ -5,7 +5,10 @@
 /// Description:
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 import 'controller.dart';
@@ -16,15 +19,234 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return basePage('chat',
+        appBar: AppBar(
+          leadingWidth: 64.w,
+          elevation: 0,
+          toolbarHeight: 100.w,
+          centerTitle: true,
+          title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 28.w,),
+              Container(
+                width: 44.w,
+                height: 44.w,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 2.w)),
+                child: CircleAvatar(
+                  backgroundImage: logic.roleDetail?.avatar != null
+                      ? Image.network(
+                    logic.roleDetail!.avatar!,
+                    fit: BoxFit.cover,
+                  ).image
+                      : Image.asset("assets/images/icons/avatar.png",
+                      fit: BoxFit.cover)
+                      .image,
+                ),
+              ),
+              Text(logic.roleDetail?.name??'--',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: 18.sp,
+                      fontFamily: 'SFProRounded-Regular',
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromRGBO(0, 0, 0, 0.8))
+              ),
+            ],
+          ),
+          leading: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: Image.asset(
+                "assets/images/icons/backIcon.png",
+                height: 44.w,
+                width: 44.w,
+              )),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Loading.toast("别点");
+                  // Get.toNamed('/feedback');
+                },
+                icon: Image.asset(
+                  "assets/images/icons/more.png",
+                  height: 44.w,
+                  width: 44.w,
+                ))
+          ],
+          actionsIconTheme: const IconThemeData(color: Colors.black),
+          backgroundColor: Colors.transparent,
+        ),
         child: Container(
           color: Colors.transparent,
           width: double.infinity,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('chat'),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.only(top: 20.w),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.symmetric( horizontal: BorderSide(color: const Color.fromRGBO(0, 0, 0, 0.1), width: 1.w)),
+                      image: const DecorationImage(image: AssetImage(("assets/images/image/chatBg.png")),fit: BoxFit.fitWidth)
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 10.w),
+                      child: _refreshListView,
+                    ),
+                  ),
+                ),
+              ),
+              _bottomContainer()
             ],
           ),
         ));
   }
+  /// 下拉列表
+  Widget get _refreshListView => SmartRefresher(
+      enablePullDown: logic.canRefresh,
+      enablePullUp: false,
+      controller: logic.refreshController,
+      scrollController: logic.scrollController,
+      onRefresh: () {
+        logic.getMessageList('refresh');
+      },
+      child: ListView.builder(
+          itemCount: logic.messageList.length,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+                onTap: () {},
+                child: _messageItem(index, logic.messageList[index]));
+          }));
+
+  /// 底部用户输入区域
+  Widget _bottomContainer() {
+    return Container(
+        color: Colors.white,
+        constraints: BoxConstraints(
+          minHeight: 90.w, // 设置最小高度为100.0像素
+        ),
+        child: Container(
+        color: Colors.white,
+        padding: EdgeInsets.all(16.w,),
+        alignment: Alignment.center,
+        child: Container(
+          constraints: BoxConstraints(
+            minHeight: 56.w, // 设置最小高度为100.0像素
+          ),
+          decoration: BoxDecoration(
+              color: const Color.fromRGBO(0, 0, 0, 0.06),
+              borderRadius: BorderRadius.circular(27.w),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child:  Container(
+                    padding: EdgeInsets.only(
+                        top: 10.w,bottom: 10.w, left: 10.w,right: 1.w),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(27.w),
+                    ),
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 6,
+                      minLines: 1,
+                      style: TextStyle(
+                          fontSize: 16.sp, color: const Color.fromRGBO(0, 0, 0, 0.48),fontFamily: "SF Pro Rounded Regular",fontWeight: FontWeight.w400),
+                      textInputAction: TextInputAction.send,
+                      controller: TextEditingController.fromValue(
+                          TextEditingValue(
+                              text: logic.inputContent,
+                              selection: TextSelection.fromPosition(
+                                  TextPosition(
+                                      affinity: TextAffinity.downstream,
+                                      offset: logic.inputContent.length)))),
+                      focusNode: logic.focusNode,
+                      onChanged: (String str) {
+                        logic.inputContent = str;
+                      },
+                      onSubmitted: (String str) {
+                        logic.inputContent = str;
+                        logic.sendMessage(logic.inputContent);
+                      },
+                      decoration: InputDecoration(
+                          hintText:"Talk to ${logic.roleDetail?.name??'me'}",
+                          filled: true,
+                          fillColor: Colors.transparent,
+                          isCollapsed: true,
+                          border: InputBorder.none),
+                    )),
+              ),
+              Container(
+                width: 48.w,
+                padding: EdgeInsets.only(top:10.w,bottom: 5.w),
+                child: Image.asset('assets/images/icons/microphone.png',width: 22.w,height: 23.w,),
+              )
+            ],
+          )
+        )));
+  }
+  /// 聊天信息展示组件
+  Widget _messageItem(index, itemData) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 12.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Offstage(
+            offstage: !logic.showTime(itemData, index),
+            child: Container(
+              alignment: Alignment.center,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(255,255,255,0.7),
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 30.w),
+                child: Text(
+                  logic.messageTimeFormat(itemData, index),
+                  style: TextStyle(
+                      fontFamily: "SF Pro Rounded Regular",
+                      fontSize: 16.sp,fontWeight: FontWeight.w400, color: const Color.fromRGBO(0, 0, 0, 0.48)),
+                ),
+                // ),
+              ),
+            ),
+          ),
+          Container(
+              alignment: itemData['role'] == 'user'
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
+              margin: EdgeInsets.only(top: 12.w),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: itemData['role'] == 'user'
+                      ? primaryColor
+                      : const Color.fromRGBO(239, 239, 239, 1),
+                  borderRadius: itemData['role'] == 'user'
+                      ?BorderRadius.only(topLeft: Radius.circular(20.w),topRight: Radius.circular(20.w),bottomLeft: Radius.circular(20.w)):BorderRadius.only(topLeft: Radius.circular(20.w),topRight: Radius.circular(20.w),bottomRight: Radius.circular(20.w)),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 12.w, horizontal: 20.w),
+                child: Text(
+                  itemData['content'],
+                  style: TextStyle(
+                    fontFamily: "PingFang SC Regular",
+                    fontSize: 16.sp,fontWeight: FontWeight.w400,height: 1.3, color: itemData['role'] == 'user'
+                    ? Colors.white:const Color.fromRGBO(0, 0, 0, 0.8)),
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+
+
 }

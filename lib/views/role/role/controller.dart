@@ -18,18 +18,19 @@ import 'package:get/get.dart';
 
 class RoleController extends GetxController {
 
+  String roleId = "";/// 角色id
   Role? roleDetail;/// 角色详情信息
 
   @override
   void onReady() {
     super.onReady();
+    roleId = Get.arguments?["roleId"];
     getRoleDetail();
     return;
   }
 
   /// 获取角色详情
   void getRoleDetail() {
-    String roleId = Get.arguments?["roleId"];
     if(roleId == null) return;
     HttpUtils.diorequst('/role/roleInfo',query: {"roleId":roleId}).then((response){
       print(response);

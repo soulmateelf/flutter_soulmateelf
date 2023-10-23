@@ -115,8 +115,7 @@ class RolePage extends StatelessWidget {
                         color: const Color.fromRGBO(0, 0, 0, 0.56)))),
             GestureDetector(
                 onTap: () {
-                  logic.getRoleDetail();
-                  // Get.toNamed('/chat');
+                  Get.toNamed('/chat',arguments: {"roleId":logic.roleDetail?.roleId});
                 },
                 child: Container(
                     width: double.infinity,
