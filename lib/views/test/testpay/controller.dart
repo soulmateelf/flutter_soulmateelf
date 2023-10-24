@@ -43,7 +43,8 @@ class TestPay extends GetxController {
         Loading.dismiss();
         if (purchaseDetails.status == PurchaseStatus.error) {
           //购买失败，展示失败信息
-          Loading.error("${purchaseDetails.error!.message!}");
+          exSnackBar(purchaseDetails.error!.message,
+              type: ExSnackBarType.error);
           print('购买进行中');
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {

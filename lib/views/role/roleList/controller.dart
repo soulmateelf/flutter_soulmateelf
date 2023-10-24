@@ -27,7 +27,7 @@ class RoleListController extends GetxController {
     return;
   }
 
-  /// 获取聊天列表数据
+  /// 获取角色列表数据
   void getDataList() {
     HttpUtils.diorequst('/role/roleList').then((response){
       List roleListMap = response["data"];
@@ -36,7 +36,7 @@ class RoleListController extends GetxController {
       update();
     }).catchError((error){
       refreshController.refreshCompleted();
-      Loading.error(error);
+      exSnackBar(error,type: ExSnackBarType.error);
     });
   }
 

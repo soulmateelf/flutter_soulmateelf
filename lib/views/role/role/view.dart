@@ -78,7 +78,7 @@ class RolePage extends StatelessWidget {
                   Text(logic.roleDetail?.age != null ? logic.roleDetail!.age!.toString() : '--',
                       style: TextStyle(
                           fontSize: 14.sp,
-                          fontFamily: 'PingFangSC-Medium',
+                          fontFamily: 'SFProRounded-Medium',
                           fontWeight: FontWeight.w500,
                           height: 1.5,
                           color: const Color.fromRGBO(55, 61, 67, 1))),
@@ -109,7 +109,6 @@ class RolePage extends StatelessWidget {
                 child: Text(logic.roleDetail?.description ?? '--',
                     style: TextStyle(
                         fontSize: 15.sp,
-                        fontFamily: 'PingFangSC-Regular',
                         fontWeight: FontWeight.w400,
                         height: 1.3,
                         color: const Color.fromRGBO(0, 0, 0, 0.56)))),

@@ -131,7 +131,6 @@ flutter:
     - assets/images/image/
     - assets/images/icons/
     - assets/images/menuIcon/
-    - assets/fonts/
 
   fonts:
     - family: SFProRounded
@@ -144,3 +143,12 @@ flutter:
         - asset: assets/fonts/SF-Pro-Rounded-Regular.otf
         - asset: assets/fonts/SF-Pro-Rounded-Bold.otf
           weight: 700
+    - family: SFProRounded-Medium
+      fonts:
+        - asset: assets/fonts/SF-Pro-Rounded-Medium.otf
+    - family: SFProRounded-Semibold
+      fonts:
+        - asset: assets/fonts/SF-Pro-Rounded-Semibold.otf
+    - family: PingFangRegular
+      fonts:
+        - asset: assets/fonts/PingFang-Regular.otf

@@ -3,6 +3,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:moment_dart/moment_dart.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
@@ -23,7 +24,28 @@ class Utils {
       return false;
     }
   }
-
+  ///时间显示逻辑
+  static String messageTimeFormat(int time) {
+    /// 消息的时间和当前时间比较
+    /// 今天的显示 HH:mm
+    /// 昨天的显示 yesterday HH:mm
+    /// 一周内的显示 Monday HH:mm
+    /// 其余显示 May 24 2023
+    if(time == null) return "--";
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(time);
+    DateTime computeDate = DateTime(date.year, date.month, date.day);
+    DateTime now = DateTime.now();
+    int diffDays = now.difference(computeDate).inDays;
+    var result = date.format(payload: 'LL');
+    if (diffDays == 0) {
+      result = date.format(payload: 'HH:mm');
+    } else if (diffDays == 1) {
+      result = 'yesterday ${date.format(payload: 'HH:mm')}';
+    } else if ([2, 3, 4, 5, 6, 7].contains(diffDays)) {
+      result = date.format(payload: 'dddd HH:mm');
+    }
+    return result;
+  }
   ///页面空值默认显示方式
   static String defaultValue(dynamic value, {omit = '--'}) {
     if (isEmpty(value)) {

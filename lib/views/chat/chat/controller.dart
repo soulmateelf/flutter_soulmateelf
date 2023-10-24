@@ -19,43 +19,56 @@ import 'package:soulmate/widgets/library/projectLibrary.dart';
 class ChatController extends GetxController {
   /// 角色id
   String roleId = "";
+
   /// 角色详情信息
   Role? roleDetail;
+
   /// 聊天记录
   List messageList = [
     {
-      "role":"user",
-      "content":"ok记录得到了打开都觉得多劳多得顶顶顶顶夸德拉多ok记录得到了打开都觉得多劳多得顶顶顶顶夸德拉多ok记录得到了打开都觉得多劳多得多",
-      "createTime":1698062170,
+      "role": "user",
+      "content":
+          "ok记录得到了打开都觉得多劳多得顶顶顶顶夸德拉多ok记录得到了打开都觉得多劳多得顶顶顶顶夸德拉多ok记录得到了打开都觉得多劳多得多",
+      "createTime": 1684597262000,
     },
     {
-      "role":"system",
-      "content":"555",
-      "createTime":1698062170,
+      "role": "system",
+      "content": "555",
+      "createTime": 1698062170000,
     },
     {
-      "role":"user",
-      "content":"好多快递寄快递",
-      "createTime":1698062170,
+      "role": "user",
+      "content": "好多快递寄快递",
+      "createTime": 1698062170000,
     },
     {
-      "role":"system",
-      "content":"好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递",
-      "createTime":1698062170,
+      "role": "system",
+      "content":
+          "好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递",
+      "createTime": 1698062170000,
     },
   ];
+
   ///刷新控制器
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
+
   ///滚动控制器
   ScrollController scrollController = ScrollController();
+
   ///键盘控制器
-  KeyboardVisibilityController keyboardVisibilityController = KeyboardVisibilityController();
+  KeyboardVisibilityController keyboardVisibilityController =
+      KeyboardVisibilityController();
+
   ///输入框焦点
   FocusNode focusNode = FocusNode();
+
   ///页码
   int page = 0;
+
   ///可以下拉刷新
   bool canRefresh = true;
+
   ///消息输入框内容
   String inputContent = '';
 
@@ -67,6 +80,7 @@ class ChatController extends GetxController {
     // getMessageList('init');
     return;
   }
+
   @override
   void onClose() {
     scrollController.dispose();
@@ -79,12 +93,12 @@ class ChatController extends GetxController {
   void getRoleDetail() {
     HttpUtils.diorequst('/role/roleInfo', query: {"roleId": roleId})
         .then((response) {
-      print(response);
-      var roleDetailMap = response["data"]?[0];
+      var roleDetailMap = response["data"];
       roleDetail = Role.fromJson(roleDetailMap);
+      print(roleDetail?.name);
       update();
     }).catchError((error) {
-      Loading.error(error);
+      exSnackBar(error, type: ExSnackBarType.error);
     });
   }
 
@@ -96,29 +110,23 @@ class ChatController extends GetxController {
       'pageSize': from == 'newMessage' ? 2 : 10,
       'roleId': roleId
     };
-    HttpUtils.diorequst('/role/roleInfo', query: query)
-        .then((response) {
+    HttpUtils.diorequst('/role/roleInfo', query: query).then((response) {
       print(response);
     }).catchError((error) {
-      Loading.error(error);
+      exSnackBar(error, type: ExSnackBarType.error);
     });
   }
+
   ///发送消息
   void sendMessage(String message) {
-    print(message);return;
     if (Utils.isEmpty(message)) {
       return;
     }
     focusNode.unfocus();
-    Loading.show();
-    Map<String, dynamic> params = {
-      'message': message,
-      'roleId': roleId.toString()
-    };
-    HttpUtils.diorequst('/role/roleInfo',method: 'post', params: params)
+    Map<String, dynamic> params = {'message': message, 'roleId': roleId};
+    HttpUtils.diorequst('/chat/sendMessage', method: 'post', params: params)
         .then((response) {
       print(response);
-      // Loading.dismiss();
       // //清空当前消息
       // inputContent = '';
       // speechResult = '';
@@ -127,11 +135,9 @@ class ChatController extends GetxController {
       // //获取最新消息列表
       // getMessageList('newMessage');
     }).catchError((error) {
-      Loading.dismiss();
-      Loading.error(error);
+      exSnackBar(error, type: ExSnackBarType.error);
     });
   }
-
 
   ///是否展示时间模块
   bool showTime(dynamic itemData, int index) {
@@ -151,23 +157,5 @@ class ChatController extends GetxController {
     } else {
       return true;
     }
-  }
-
-  ///时间显示逻辑
-  messageTimeFormat(dynamic itemData, int index) {
-    DateTime date =
-        DateTime.fromMillisecondsSinceEpoch(itemData['createTime']);
-    DateTime computeDate = DateTime(date.year, date.month, date.day);
-    DateTime now = DateTime.now();
-    int diffDays = now.difference(computeDate).inDays;
-    var result = date.format(payload: 'LL HH:mm');
-    if (diffDays == 0) {
-      result = date.format(payload: 'HH:mm');
-    } else if (diffDays == 1) {
-      result = 'yesterday ${date.format(payload: 'HH:mm')}';
-    } else if ([2, 3, 4, 5, 6, 7].contains(diffDays)) {
-      result = date.format(payload: 'dddd HH:mm');
-    }
-    return result;
   }
 }

@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -133,15 +134,15 @@ class ChatListPage extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontSize: 20.sp,
-                                fontFamily: 'SF Pro Rounded Medium',
+                                fontFamily: 'SFProRounded-Medium',
                                 fontWeight: FontWeight.w500,
                                 color: const Color.fromRGBO(0, 0, 0, 0.8))),
                       ),
                       Text(
-                        itemData['time'] ?? '--',
+                        Utils.messageTimeFormat(itemData["time"]),
                         style: TextStyle(
                             fontSize: 12.sp,
-                            fontFamily: 'PingFang SC Regular',
+                            fontFamily: 'PingFangRegular',
                             fontWeight: FontWeight.w400,
                             color: const Color.fromRGBO(0, 0, 0, 0.24)),
                       )
@@ -157,7 +158,6 @@ class ChatListPage extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontSize: 16.sp,
-                            fontFamily: 'SFProRounded-Regular',
                             fontWeight: FontWeight.w400,
                             color: const Color.fromRGBO(0, 0, 0, 0.32)),
                       ),

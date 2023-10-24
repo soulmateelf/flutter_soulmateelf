@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 import 'controller.dart';
@@ -18,95 +19,97 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return basePage('chat',
-        appBar: AppBar(
-          leadingWidth: 64.w,
-          elevation: 0,
-          toolbarHeight: 100.w,
-          centerTitle: true,
-          title: Column(
+    return GetBuilder<ChatController>(builder: (logic) {
+      return basePage('chat',
+          appBar: AppBar(
+            leadingWidth: 64.w,
+            elevation: 0,
+            toolbarHeight: 100.w,
+            centerTitle: true,
+            title: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 28.w,),
-              Container(
-                width: 44.w,
-                height: 44.w,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2.w)),
-                child: CircleAvatar(
-                  backgroundImage: logic.roleDetail?.avatar != null
-                      ? Image.network(
-                    logic.roleDetail!.avatar!,
-                    fit: BoxFit.cover,
-                  ).image
-                      : Image.asset("assets/images/icons/avatar.png",
-                      fit: BoxFit.cover)
-                      .image,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 28.w,),
+                Container(
+                  width: 44.w,
+                  height: 44.w,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 2.w)),
+                  child: CircleAvatar(
+                    backgroundImage: logic.roleDetail?.avatar != null
+                        ? Image.network(
+                      logic.roleDetail!.avatar!,
+                      fit: BoxFit.cover,
+                    ).image
+                        : Image.asset("assets/images/icons/avatar.png",
+                        fit: BoxFit.cover)
+                        .image,
+                  ),
                 ),
-              ),
-              Text(logic.roleDetail?.name??'--',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 18.sp,
-                      fontFamily: 'SFProRounded-Regular',
-                      fontWeight: FontWeight.w400,
-                      color: const Color.fromRGBO(0, 0, 0, 0.8))
-              ),
-            ],
-          ),
-          leading: IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: Image.asset(
-                "assets/images/icons/backIcon.png",
-                height: 44.w,
-                width: 44.w,
-              )),
-          actions: [
-            IconButton(
+                Text(logic.roleDetail?.name??'--',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        fontFamily: 'SFProRounded',
+                        fontWeight: FontWeight.w400,
+                        color: const Color.fromRGBO(0, 0, 0, 0.8))
+                ),
+              ],
+            ),
+            leading: IconButton(
                 onPressed: () {
-                  Loading.toast("别点");
-                  // Get.toNamed('/feedback');
+                  Get.back();
                 },
                 icon: Image.asset(
-                  "assets/images/icons/more.png",
+                  "assets/images/icons/backIcon.png",
                   height: 44.w,
                   width: 44.w,
-                ))
-          ],
-          actionsIconTheme: const IconThemeData(color: Colors.black),
-          backgroundColor: Colors.transparent,
-        ),
-        child: Container(
-          color: Colors.transparent,
-          width: double.infinity,
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.only(top: 20.w),
+                )),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Loading.toast("别点");
+                    // Get.toNamed('/feedback');
+                  },
+                  icon: Image.asset(
+                    "assets/images/icons/more.png",
+                    height: 44.w,
+                    width: 44.w,
+                  ))
+            ],
+            actionsIconTheme: const IconThemeData(color: Colors.black),
+            backgroundColor: Colors.transparent,
+          ),
+          child: Container(
+            color: Colors.transparent,
+            width: double.infinity,
+            child: Column(
+              children: [
+                Expanded(
                   child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.symmetric( horizontal: BorderSide(color: const Color.fromRGBO(0, 0, 0, 0.1), width: 1.w)),
-                      image: const DecorationImage(image: AssetImage(("assets/images/image/chatBg.png")),fit: BoxFit.fitWidth)
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 10.w),
-                      child: _refreshListView,
+                    padding: EdgeInsets.only(top: 20.w),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.symmetric( horizontal: BorderSide(color: const Color.fromRGBO(0, 0, 0, 0.1), width: 1.w)),
+                          image: const DecorationImage(image: AssetImage(("assets/images/image/chatBg.png")),fit: BoxFit.fitWidth)
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 10.w),
+                        child: _refreshListView,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              _bottomContainer()
-            ],
-          ),
-        ));
+                _bottomContainer()
+              ],
+            ),
+          ));
+    });
   }
   /// 下拉列表
   Widget get _refreshListView => SmartRefresher(
@@ -160,7 +163,7 @@ class ChatPage extends StatelessWidget {
                       maxLines: 6,
                       minLines: 1,
                       style: TextStyle(
-                          fontSize: 16.sp, color: const Color.fromRGBO(0, 0, 0, 0.48),fontFamily: "SF Pro Rounded Regular",fontWeight: FontWeight.w400),
+                          fontSize: 16.sp, color: const Color.fromRGBO(0, 0, 0, 0.48),fontFamily: "SFProRounded",fontWeight: FontWeight.w400),
                       textInputAction: TextInputAction.send,
                       controller: TextEditingController.fromValue(
                           TextEditingValue(
@@ -212,9 +215,9 @@ class ChatPage extends StatelessWidget {
                 ),
                 padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 30.w),
                 child: Text(
-                  logic.messageTimeFormat(itemData, index),
+                  Utils.messageTimeFormat(itemData["createTime"]),
                   style: TextStyle(
-                      fontFamily: "SF Pro Rounded Regular",
+                      fontFamily: "SFProRounded",
                       fontSize: 16.sp,fontWeight: FontWeight.w400, color: const Color.fromRGBO(0, 0, 0, 0.48)),
                 ),
                 // ),
@@ -238,7 +241,6 @@ class ChatPage extends StatelessWidget {
                 child: Text(
                   itemData['content'],
                   style: TextStyle(
-                    fontFamily: "PingFang SC Regular",
                     fontSize: 16.sp,fontWeight: FontWeight.w400,height: 1.3, color: itemData['role'] == 'user'
                     ? Colors.white:const Color.fromRGBO(0, 0, 0, 0.8)),
                 ),

@@ -28,67 +28,14 @@ class ChatListController extends GetxController {
 
   /// 获取聊天列表数据
   void getDataList() {
-    Future.delayed(const Duration(milliseconds: 500), () {
-      dataList = [
-        {
-          "id":"111",
-          "avatar": "http://kele.bestkele.cn/beaut.jpg",
-          "roleName": "1Daisy Riley",
-          "content": "Hi, could you help me find the science fiction",
-          "time": "20231010"
-        },
-        {
-          "id":"222",
-          "avatar": "http://kele.bestkele.cn/beaut.jpg",
-          "roleName": "2Daisy Riley",
-          "content": "Hi, could you help me find the science fiction",
-          "time": "20231010"
-        },
-        {
-          "id":"333",
-          "avatar": "http://kele.bestkele.cn/beaut.jpg",
-          "roleName": "3Daisy Riley",
-          "content": "Hi, could you help me find the science fiction",
-          "time": "20231010"
-        },
-        {
-          "id":"4",
-          "avatar": "http://kele.bestkele.cn/beaut.jpg",
-          "roleName": "3Daisy Riley",
-          "content": "Hi, could you help me find the science fiction",
-          "time": "20231010"
-        },
-        {
-          "id":"5",
-          "avatar": "http://kele.bestkele.cn/beaut.jpg",
-          "roleName": "3Daisy Riley",
-          "content": "Hi, could you help me find the science fiction",
-          "time": "20231010"
-        },
-        {
-          "id":"6",
-          "avatar": "http://kele.bestkele.cn/beaut.jpg",
-          "roleName": "6Daisy Riley",
-          "content": "Hi, could you help me find the science fiction",
-          "time": "20231010"
-        },
-        {
-          "id":"7",
-          "avatar": "http://kele.bestkele.cn/beaut.jpg",
-          "roleName": "7Daisy Riley",
-          "content": "Hi, could you help me find the science fiction",
-          "time": "20231010"
-        },
-        {
-          "id":"8",
-          "avatar": "http://kele.bestkele.cn/beaut.jpg",
-          "roleName": "8Daisy Riley",
-          "content": "Hi, could you help me find the science fiction",
-          "time": "20231010"
-        },
-      ];
+    HttpUtils.diorequst('/chat/chatList', query: {"limit": 999})
+        .then((response) {
+      print(response);
       refreshController.refreshCompleted();
       update();
+      // update();
+    }).catchError((error) {
+      exSnackBar(error, type: ExSnackBarType.error);
     });
   }
 
@@ -98,7 +45,8 @@ class ChatListController extends GetxController {
     print(itemData);
     Get.toNamed('/chat');
   }
-  void deleteChatItem(index){
+
+  void deleteChatItem(index) {
     print(index);
     dataList.removeAt(index);
     update();

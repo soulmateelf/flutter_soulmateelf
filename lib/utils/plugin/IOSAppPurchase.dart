@@ -64,7 +64,7 @@ class IOSAppPurchase {
     final ProductDetailsResponse response =
         await InAppPurchase.instance.queryProductDetails(pIds);
     if (response.notFoundIDs.isNotEmpty) {
-      Loading.error("something wrong");
+      exSnackBar("something wrong", type: ExSnackBarType.error);
       return [];
     }
     return response.productDetails;
@@ -73,7 +73,7 @@ class IOSAppPurchase {
   ///购买商品
   static payProductNow(ProductDetails appleProductDetails) {
     if (appleProductDetails == null) {
-      Loading.error("something wrong");
+      exSnackBar("something wrong", type: ExSnackBarType.error);
       return;
     }
     final PurchaseParam purchaseParam =

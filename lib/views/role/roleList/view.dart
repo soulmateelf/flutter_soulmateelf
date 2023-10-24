@@ -151,7 +151,8 @@ class RoleListPage extends StatelessWidget {
     var roleData = logic.roleList[index];
     return Container(
       decoration: BoxDecoration(
-        gradient: index % 3 == 0
+        /// todo-这里是有朋友圈事件展示边框，第二版做
+        gradient: roleData.intimacy == -1
             ? const LinearGradient(
                 colors: [
                   Color.fromRGBO(217, 78, 255, 1),
@@ -203,7 +204,7 @@ class RoleListPage extends StatelessWidget {
                       child: Text(roleData.hobby??'--',
                           style: TextStyle(
                               fontSize: 12.sp,
-                              fontFamily: 'SFProRounded-Regular',
+                              fontFamily: 'SFProRounded',
                               fontWeight: FontWeight.w500,
                               color: const Color.fromRGBO(0, 0, 0, 0.4))))
                 ],

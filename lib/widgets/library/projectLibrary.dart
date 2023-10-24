@@ -31,6 +31,7 @@ import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 
 part 'resource/basePage.dart';
+part 'resource/exSnackBar.dart';
 part 'resource/commonUseWidget.dart';
 part 'picker/singleColumnPicker.dart';
 part 'inputSearch/customSearchInput.dart';
@@ -38,6 +39,5 @@ part 'inputSearch/customCommonTextField.dart';
 part 'listViewState/listViewNoData.dart';
 part 'backBar/backBar.dart';
 part 'resource/loading.dart';
-
 part 'MakeInput/MakeInput.dart';
 part 'MakeDialog/MakeDialog.dart';

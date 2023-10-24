@@ -17,9 +17,12 @@ import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
 class RoleController extends GetxController {
+  String roleId = "";
 
-  String roleId = "";/// 角色id
-  Role? roleDetail;/// 角色详情信息
+  /// 角色id
+  Role? roleDetail;
+
+  /// 角色详情信息
 
   @override
   void onReady() {
@@ -31,15 +34,15 @@ class RoleController extends GetxController {
 
   /// 获取角色详情
   void getRoleDetail() {
-    if(roleId == null) return;
-    HttpUtils.diorequst('/role/roleInfo',query: {"roleId":roleId}).then((response){
+    if (roleId == null) return;
+    HttpUtils.diorequst('/role/roleInfo', query: {"roleId": roleId})
+        .then((response) {
       print(response);
-      var roleDetailMap = response["data"]?[0];
+      var roleDetailMap = response["data"];
       roleDetail = Role.fromJson(roleDetailMap);
       update();
-    }).catchError((error){
-      Loading.error(error);
+    }).catchError((error) {
+      exSnackBar(error, type: ExSnackBarType.error);
     });
   }
-
 }

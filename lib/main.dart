@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
 
                 fontFamily: "SFProRounded",
                 /// 设置自定义文本颜色
-                textTheme: TextTheme(
+                textTheme: const TextTheme(
                   bodyMedium: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8))
                 ),
 
