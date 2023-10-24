@@ -15,9 +15,9 @@ import 'controller.dart';
 
 class RoleListPage extends StatelessWidget {
   final logic = Get.put(RoleListController());
-
   @override
   Widget build(BuildContext context) {
+    logic.refreshController = RefreshController(initialRefresh: false);
     /// 在三个主模块入口ScreenUtil初始化，真机调试刷新就没问题了
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
     return basePage('Friend',

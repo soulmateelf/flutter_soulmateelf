@@ -22,6 +22,10 @@ class Role {
   String? remark;
   String? roleUser;
   int? intimacy;
+  /// 最后一次聊天时间
+  int? lastChatTime;
+  /// 最后一次聊天内容
+  String? content;
 
   Role({
     required this.roleId,
@@ -36,6 +40,8 @@ class Role {
     this.remark,
     this.roleUser,
     this.intimacy,
+    this.lastChatTime,
+    this.content
   });
 
   factory Role.fromJson(Map<String, dynamic> json) => Role(
@@ -51,6 +57,8 @@ class Role {
         remark: json["remark"],
         roleUser: json["roleUser"],
         intimacy: json["intimacy"],
+        lastChatTime: json["lastChatTime"],
+        content: json["content"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -66,5 +74,7 @@ class Role {
         "remark": remark,
         "roleUser": roleUser,
         "intimacy": intimacy,
+        "lastChatTime": lastChatTime,
+        "content": content,
       };
 }

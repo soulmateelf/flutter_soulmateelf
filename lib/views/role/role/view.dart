@@ -89,7 +89,7 @@ class RolePage extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: 6.w),
                   ),
                   Image.asset(
-                    'assets/images/icons/male.png',
+                    showGender(logic.roleDetail?.gender??''),
                     width: 16.w,
                     height: 16.w,
                   )
@@ -134,5 +134,12 @@ class RolePage extends StatelessWidget {
         ))
       ],
     );
+  }
+
+  /// 展示性别
+  String showGender(String gender){
+    if(gender == "male") return "assets/images/icons/male.png";
+    if(gender == "female") return "assets/images/icons/female.png";
+    return "assets/images/icons/genderOther.png";
   }
 }

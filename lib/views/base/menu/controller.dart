@@ -1,15 +1,21 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart' hide MenuController;
+import 'package:flutter/material.dart';
 
-class MenuController extends GetxController {
+class SoulMateMenuController extends GetxController {
 
   int currentIndex = 0;/// 菜单index
-  int chatMessageNumber = 100;/// 聊天列表未读消息数
-  int roleEventNumber = 10;/// 角色朋友圈未读消息数
+  int chatMessageNumber = 0;/// 聊天列表未读消息数
+  int roleEventNumber = 0;/// 角色朋友圈未读消息数
   int lastClickTime = 0;/// 点击安卓返回键时间
   late PageController controller;
 
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    controller = PageController(initialPage: currentIndex);
+  }
   /// 切换菜单
   changeMenu(index){
     currentIndex = index;
@@ -27,11 +33,11 @@ class MenuController extends GetxController {
       return Future.value(true);
     }
   }
-
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    controller = PageController(initialPage: currentIndex);
+  /// 修改未读消息数
+  void updateMessageNum({int? chatMessageNum,int? roleMessageNum,}){
+    chatMessageNumber = chatMessageNum??chatMessageNumber;
+    roleEventNumber = chatMessageNum??roleEventNumber;
+    update();
   }
+
 }

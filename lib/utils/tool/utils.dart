@@ -25,7 +25,7 @@ class Utils {
     }
   }
   ///时间显示逻辑
-  static String messageTimeFormat(int time) {
+  static String messageTimeFormat(int? time) {
     /// 消息的时间和当前时间比较
     /// 今天的显示 HH:mm
     /// 昨天的显示 yesterday HH:mm

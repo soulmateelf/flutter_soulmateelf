@@ -17,9 +17,9 @@ import 'controller.dart';
 
 class ChatListPage extends StatelessWidget {
   final logic = Get.put(ChatListController());
-
   @override
   Widget build(BuildContext context) {
+    logic.refreshController = RefreshController(initialRefresh: false);
     /// 在三个主模块入口ScreenUtil初始化，真机调试刷新就没问题了
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
     return basePage('Chat',
@@ -80,9 +80,9 @@ class ChatListPage extends StatelessWidget {
 
   /// 滑动组件
   Widget _sliderItem(index) {
-    var itemData = logic.dataList[index];
+    var roleData = logic.dataList[index];
     return Slidable(
-      key: ValueKey(itemData['id']),
+      key: ValueKey(roleData.roleId),
       endActionPane: ActionPane(
         extentRatio: 0.22,
         motion: const ScrollMotion(),
@@ -102,7 +102,7 @@ class ChatListPage extends StatelessWidget {
 
   /// 聊天列表项
   Widget _listItem(index) {
-    var itemData = logic.dataList[index];
+    var roleData = logic.dataList[index];
     return Container(
         margin: EdgeInsets.only(bottom: 20.w),
         child: Row(
@@ -111,9 +111,9 @@ class ChatListPage extends StatelessWidget {
               width: 64.w,
               height: 64.w,
               child: CircleAvatar(
-                backgroundImage: itemData['avatar'] != null
+                backgroundImage: roleData.avatar != null
                     ? Image.network(
-                        "${itemData['avatar']}",
+                        "${roleData.avatar}",
                         fit: BoxFit.cover,
                       ).image
                     : Image.asset("assets/images/icons/avatar.png",
@@ -129,7 +129,7 @@ class ChatListPage extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Text(itemData['roleName'] ?? '--',
+                        child: Text(roleData.name ?? '--',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -139,7 +139,7 @@ class ChatListPage extends StatelessWidget {
                                 color: const Color.fromRGBO(0, 0, 0, 0.8))),
                       ),
                       Text(
-                        Utils.messageTimeFormat(itemData["time"]),
+                        Utils.messageTimeFormat(roleData.lastChatTime),
                         style: TextStyle(
                             fontSize: 12.sp,
                             fontFamily: 'PingFangRegular',
@@ -153,7 +153,7 @@ class ChatListPage extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        itemData['content'] ?? '--',
+                        roleData.content ?? '--',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

@@ -26,7 +26,7 @@ dependencies:
   cupertino_icons: ^1.0.5
   # get框架
   # https://github.com/jonataslaw/getx
-  get: ^4.6.5
+  get: ^4.6.6
   # 网络请求
   # https://github.com/flutterchina/dio
   dio: ^5.3.2

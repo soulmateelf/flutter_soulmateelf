@@ -24,12 +24,16 @@ class RoleListController extends GetxController {
   void onReady() {
     super.onReady();
     getDataList();
-    return;
+  }
+  @override
+  void onClose() {
+    refreshController.dispose();
+    super.onClose();
   }
 
   /// 获取角色列表数据
   void getDataList() {
-    HttpUtils.diorequst('/role/roleList').then((response){
+    HttpUtils.diorequst('/role/roleList',query: {'page':1,'limit':999}).then((response){
       List roleListMap = response["data"];
       roleList = roleListMap.map((json) => Role.fromJson(json)).toList();
       refreshController.refreshCompleted();

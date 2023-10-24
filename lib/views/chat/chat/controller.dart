@@ -5,11 +5,11 @@
  * @FilePath: \soulmate\lib\views\main\home\controller.dart
  */
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:moment_dart/moment_dart.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/models/role.dart';
 import 'package:soulmate/utils/core/httputil.dart';
@@ -57,8 +57,8 @@ class ChatController extends GetxController {
   ScrollController scrollController = ScrollController();
 
   ///键盘控制器
-  KeyboardVisibilityController keyboardVisibilityController =
-      KeyboardVisibilityController();
+  // KeyboardVisibilityController keyboardVisibilityController =
+  //     KeyboardVisibilityController();
 
   ///输入框焦点
   FocusNode focusNode = FocusNode();
@@ -72,22 +72,26 @@ class ChatController extends GetxController {
   ///消息输入框内容
   String inputContent = '';
 
+  /// 防抖，用户停止输入2秒调用接口，使用gpt回答
+  Timer? _debounce;
+
   @override
   void onReady() {
     super.onReady();
     roleId = Get.arguments?["roleId"];
     getRoleDetail();
     // getMessageList('init');
-    return;
   }
 
   @override
   void onClose() {
+    refreshController.dispose();
     scrollController.dispose();
     focusNode.dispose();
-    // keyboardVisibilitySubscriber?.cancel();
+    _debounce?.cancel();
     super.onClose();
   }
+
 
   /// 获取角色详情
   void getRoleDetail() {
@@ -95,7 +99,6 @@ class ChatController extends GetxController {
         .then((response) {
       var roleDetailMap = response["data"];
       roleDetail = Role.fromJson(roleDetailMap);
-      print(roleDetail?.name);
       update();
     }).catchError((error) {
       exSnackBar(error, type: ExSnackBarType.error);
@@ -104,15 +107,16 @@ class ChatController extends GetxController {
 
   /// 获取聊天记录
   void getMessageList(String from) {
-    return;
     Map<String, dynamic> query = {
-      'pageNum': from == 'newMessage' ? 1 : (page + 1),
-      'pageSize': from == 'newMessage' ? 2 : 10,
+      'page': from == 'newMessage' ? 1 : (page + 1),
+      'size': from == 'newMessage' ? 2 : 10,
       'roleId': roleId
     };
-    HttpUtils.diorequst('/role/roleInfo', query: query).then((response) {
+    HttpUtils.diorequst('/chat/getMessageList', query: query).then((response) {
       print(response);
+      refreshController.refreshCompleted();
     }).catchError((error) {
+      refreshController.refreshCompleted();
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }
@@ -157,5 +161,15 @@ class ChatController extends GetxController {
     } else {
       return true;
     }
+  }
+  void textInputChange(String value){
+    inputContent = value;
+    update();
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(seconds: 2), () {
+        // 在用户停止输入2秒后触发事件
+        print('用户已经停止输入了！');
+        // 在这里执行你想要触发的事件
+    });
   }
 }

@@ -4,50 +4,52 @@
  * @LastEditTime: 2023-04-25 19:51:12
  * @FilePath: \soulmate\lib\views\main\home\controller.dart
  */
-import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:soulmate/models/role.dart';
 import 'package:soulmate/utils/core/httputil.dart';
-import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/views/base/menu/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
 class ChatListController extends GetxController {
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
-  List dataList = [];
-
+  List<Role> dataList = [];
+  final menuLogic = Get.find<SoulMateMenuController>();
   @override
   void onReady() {
     super.onReady();
     getDataList();
-    return;
+  }
+  @override
+  void onClose() {
+    refreshController.dispose();
+    super.onClose();
   }
 
   /// 获取聊天列表数据
   void getDataList() {
-    HttpUtils.diorequst('/chat/chatList', query: {"limit": 999})
+    HttpUtils.diorequst('/role/roleListByUser', query: {"limit": 999})
         .then((response) {
-      print(response);
+      List roleListMap = response["data"];
+      dataList = roleListMap.map((json) => Role.fromJson(json)).toList();
       refreshController.refreshCompleted();
+      // menuLogic.updateMessageNum(chatMessageNum: 8);
       update();
-      // update();
     }).catchError((error) {
+      refreshController.refreshCompleted();
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }
 
   ///点击聊天列表项
   void chatItemClick(index) {
-    var itemData = dataList[index];
-    print(itemData);
-    Get.toNamed('/chat');
+    Role itemData = dataList[index];
+    Get.toNamed("/chat",arguments: {"roleId":itemData.roleId});
   }
 
   void deleteChatItem(index) {
-    print(index);
     dataList.removeAt(index);
     update();
   }

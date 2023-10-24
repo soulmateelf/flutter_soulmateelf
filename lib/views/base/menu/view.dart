@@ -16,7 +16,7 @@ import 'package:get/get.dart';
 import 'controller.dart';
 
 class MenuPage extends StatelessWidget {
-  final logic = Get.put(MenuController());
+  final logic = Get.put(SoulMateMenuController());
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class MenuPage extends StatelessWidget {
         onWillPop: logic.dealBack,
         child: Scaffold(
           backgroundColor:const Color.fromRGBO(242, 242, 242, 1),
-          bottomNavigationBar: GetBuilder<MenuController>(builder: (logic) {
+          bottomNavigationBar: GetBuilder<SoulMateMenuController>(builder: (logic) {
             return _buildBottomNavigationBar();
           }),
           body: PageView(

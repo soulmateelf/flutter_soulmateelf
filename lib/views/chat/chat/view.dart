@@ -16,9 +16,9 @@ import 'controller.dart';
 
 class ChatPage extends StatelessWidget {
   final logic = Get.put(ChatController());
-
   @override
   Widget build(BuildContext context) {
+    logic.refreshController = RefreshController(initialRefresh: false);
     return GetBuilder<ChatController>(builder: (logic) {
       return basePage('chat',
           appBar: AppBar(
@@ -95,7 +95,7 @@ class ChatPage extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                           border: Border.symmetric( horizontal: BorderSide(color: const Color.fromRGBO(0, 0, 0, 0.1), width: 1.w)),
-                          image: const DecorationImage(image: AssetImage(("assets/images/image/chatBg.png")),fit: BoxFit.fitWidth)
+                          // image: const DecorationImage(image: AssetImage(("assets/images/image/chatBg.png")),fit: BoxFit.fitWidth)
                       ),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
@@ -173,9 +173,7 @@ class ChatPage extends StatelessWidget {
                                       affinity: TextAffinity.downstream,
                                       offset: logic.inputContent.length)))),
                       focusNode: logic.focusNode,
-                      onChanged: (String str) {
-                        logic.inputContent = str;
-                      },
+                      onChanged: logic.textInputChange,
                       onSubmitted: (String str) {
                         logic.inputContent = str;
                         logic.sendMessage(logic.inputContent);
