@@ -62,18 +62,20 @@ class LoginController extends GetxController {
     update();
   }
 
-  void login(){
+  void login() {
     Map<String, dynamic> params = {
-      'email': "keykong167@163.com",
-      'password': "123456",
+      'email': email.length != 0 ? email : "keykong167@163.com",
+      'password': password.length != 0 ? password : "123456",
     };
-    HttpUtils.diorequst('/login', method: 'post', params: params).then((response){
+    HttpUtils.diorequst('/login', method: 'post', params: params)
+        .then((response) {
       var userInfoMap = response["data"]["userInfo"];
+
       /// 存储全局信息
       Application.token = response["data"]["token"];
       Application.userInfo = userInfoMap;
       Get.offAllNamed('/menu');
-    }).catchError((error){
+    }).catchError((error) {
       Loading.error(error);
     });
   }

@@ -40,7 +40,7 @@ class SuccessfullyPage extends StatelessWidget {
                   enableFeedback: true,
                   textColor: const Color.fromRGBO(0, 0, 0, 0.24),
                   onPressed: () {
-                    Get.toNamed('/menu');
+                    Get.toNamed('/login/');
                   },
                   color: primaryColor,
                   shape: RoundedRectangleBorder(

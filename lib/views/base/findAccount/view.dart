@@ -94,7 +94,7 @@ class FindAccountPage extends StatelessWidget {
                               ? null
                               : () {
                                   Get.toNamed('/authCode', arguments: {
-                                    "type": "forgotPassword",
+                                    "codeType": VerifyState.forgot,
                                     "email": controller.email,
                                   });
                                 },

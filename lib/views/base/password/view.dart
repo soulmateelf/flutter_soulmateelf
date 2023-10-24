@@ -17,6 +17,7 @@ import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
+import '../../../utils/core/application.dart';
 import '../../../utils/plugin/plugin.dart';
 import 'controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -49,8 +50,6 @@ class PasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    APPPlugin.logger.d(arguments);
-    APPPlugin.logger.d(typeMap);
     return basePage('',
         child: SingleChildScrollView(
           child: Container(
@@ -161,23 +160,41 @@ class PasswordPage extends StatelessWidget {
                           : () {
                               final codeType = arguments['codeType'];
                               if (codeType == VerifyState.signUp) {
-                                APPPlugin.logger.d({
-                                  ...arguments as Map,
-                                  "password": logic.password
-                                });
                                 HttpUtils.diorequst("/register",
                                     method: "post",
                                     params: {
                                       ...arguments as Map,
                                       "password": logic.password
                                     }).then((value) {
-                                  APPPlugin.logger.d(value);
-                                }, onError: (err) {
-                                      APPPlugin.logger.d(err);
-                                }).whenComplete(() {});
+                                  HttpUtils.diorequst('/login',
+                                      method: 'post',
+                                      params: {
+                                        "email": arguments["email"],
+                                        "password": logic.password
+                                      }).then((response) {
+                                    var userInfoMap =
+                                        response["data"]["userInfo"];
+
+                                    /// 存储全局信息
+                                    Application.token =
+                                        response["data"]["token"];
+                                    Application.userInfo = userInfoMap;
+                                    Get.offAllNamed('/menu');
+                                  }).catchError((error) {
+                                    Loading.error(error);
+                                  });
+                                }, onError: (err) {}).whenComplete(() {});
                               } else if (codeType == VerifyState.forgot) {
-                                Get.toNamed(typeMap[arguments['codeType']]
-                                    ?['nextPage'] as String);
+                                HttpUtils.diorequst("/forgetPassword",
+                                    method: "post",
+                                    params: {
+                                      ...arguments as Map,
+                                      "password": controller.password,
+                                      "newPassword": controller.password,
+                                    }).then((value) {
+                                  Get.toNamed(typeMap[arguments['codeType']]
+                                      ?['nextPage'] as String);
+                                }, onError: (err) {}).whenComplete(() => {});
                               }
                             },
                       color: const Color.fromRGBO(255, 128, 0, 1),
