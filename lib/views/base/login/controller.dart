@@ -10,7 +10,10 @@ import 'package:get/get.dart';
 import 'package:soulmate/models/user.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
+
+import '../../../utils/tool/utils.dart';
 
 class LoginController extends GetxController {
   var email = "";
@@ -62,19 +65,10 @@ class LoginController extends GetxController {
     update();
   }
 
-  void login(){
-    Map<String, dynamic> params = {
-      'email': "keykong167@163.com",
-      'password': "123456",
-    };
-    HttpUtils.diorequst('/login', method: 'post', params: params).then((response){
-      var userInfoMap = response["data"]["userInfo"];
-      /// 存储全局信息
-      Application.token = response["data"]["token"];
-      Application.userInfo = userInfoMap;
+  void login() {
+    requestLogin(email, password).then((value) {
+      APPPlugin.logger.d(value);
       Get.offAllNamed('/menu');
-    }).catchError((error){
-      Loading.error(error);
-    });
+    }).whenComplete(() => null);
   }
 }

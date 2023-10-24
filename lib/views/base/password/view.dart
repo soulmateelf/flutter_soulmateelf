@@ -14,9 +14,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
+import '../../../utils/core/application.dart';
 import '../../../utils/plugin/plugin.dart';
+import '../../../utils/tool/utils.dart';
 import 'controller.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -27,7 +30,7 @@ class PasswordPage extends StatelessWidget {
 
   final arguments = Get.arguments;
 
-  final _emialController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   final _passwordController = TextEditingController();
 
@@ -36,11 +39,11 @@ class PasswordPage extends StatelessWidget {
   FocusNode _passwordFocusNode = FocusNode();
 
   final typeMap = {
-    "signUp": {
+    VerifyState.signUp: {
       "title": 'Create your password',
       "nextPage": "/menu",
     },
-    "forgotPassword": {
+    VerifyState.forgot: {
       "title": "Choose a new password",
       "nextPage": "/successfully"
     },
@@ -58,7 +61,7 @@ class PasswordPage extends StatelessWidget {
               children: [
                 SizedBox(height: 97.w),
                 Text(
-                  "${typeMap[arguments['type']]?['title']}",
+                  "${typeMap[arguments['codeType']]?['title']}",
                   style: TextStyle(fontSize: 27.sp, color: textColor),
                 ),
                 SizedBox(height: 126.w),
@@ -72,7 +75,7 @@ class PasswordPage extends StatelessWidget {
                         controller.validateConfirmPassword(
                             controller.confirmPassword);
                       },
-                      obscureText: controller.passwordVisible,
+                      obscureText: !controller.passwordVisible,
                       focusNode: _passwordFocusNode,
                       textInputAction: TextInputAction.done,
                       onEditingComplete: () {
@@ -83,7 +86,7 @@ class PasswordPage extends StatelessWidget {
                           controller.togglePasswordVisible();
                         },
                         child: Icon(
-                          controller.passwordVisible
+                          !controller.passwordVisible
                               ? CupertinoIcons.eye_slash
                               : CupertinoIcons.eye,
                         ),
@@ -106,8 +109,8 @@ class PasswordPage extends StatelessWidget {
                 GetBuilder<PasswordController>(
                   builder: (controller) {
                     return MakeInput(
-                      controller: _emialController,
-                      obscureText: controller.confirmPasswordVisible,
+                      controller: _confirmPasswordController,
+                      obscureText: !controller.confirmPasswordVisible,
                       onChanged: (v) {
                         controller.confirmPassword = v;
                         controller.validatePassword(controller.password);
@@ -118,7 +121,7 @@ class PasswordPage extends StatelessWidget {
                           controller.toggleConfirmPasswordVisible();
                         },
                         child: Icon(
-                          controller.confirmPasswordVisible
+                          !controller.confirmPasswordVisible
                               ? CupertinoIcons.eye_slash
                               : CupertinoIcons.eye,
                         ),
@@ -126,7 +129,7 @@ class PasswordPage extends StatelessWidget {
                       focusNode: _confirmPasswordFocusNode,
                       textInputAction: TextInputAction.next,
                       onEditingComplete: () {
-                        _passwordFocusNode.requestFocus();
+                        _confirmPasswordFocusNode.unfocus();
                       },
                       error: controller.confirmPasswordErrorText != null,
                       errorText: controller.confirmPasswordErrorText,
@@ -135,7 +138,7 @@ class PasswordPage extends StatelessWidget {
                       allowClear: true,
                       keyboardType: TextInputType.visiblePassword,
                       onClear: () {
-                        _emialController.text = "";
+                        _confirmPasswordController.text = "";
                       },
                     );
                   },
@@ -143,20 +146,29 @@ class PasswordPage extends StatelessWidget {
                 SizedBox(
                   height: 161.w,
                 ),
-                MaterialButton(
-                  onPressed: () {
-                    Get.toNamed(
-                        typeMap[arguments['type']]?['nextPage'] as String);
+                GetBuilder<PasswordController>(
+                  builder: (controller) {
+                    return MaterialButton(
+                      minWidth: double.infinity,
+                      height: 64.w,
+                      enableFeedback: true,
+                      disabledColor: disableColor,
+                      textColor: controller.nextDisable
+                          ? const Color.fromRGBO(0, 0, 0, 0.24)
+                          : Colors.white,
+                      onPressed: controller.nextDisable
+                          ? null
+                          : () {
+                             controller.next();
+                            },
+                      color: const Color.fromRGBO(255, 128, 0, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.w),
+                      ),
+                      child: Text('Next', style: TextStyle(fontSize: 18.sp)),
+                    );
+
                   },
-                  color: primaryColor,
-                  child: Text(
-                    'Next',
-                    style: TextStyle(color: Colors.white, fontSize: 18.sp),
-                  ),
-                  minWidth: double.infinity,
-                  height: 64.w,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(borderRadius)),
                 ),
               ],
             ),

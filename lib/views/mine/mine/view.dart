@@ -10,9 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
+import '../../../models/user.dart';
 import 'controller.dart';
 
 class MinePage extends StatefulWidget {
@@ -54,6 +56,7 @@ class _MinePage extends State<MinePage> {
     /// 在三个主模块入口ScreenUtil初始化，真机调试刷新就没问题了
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
 
+    User? user = Application.userInfo;
     return basePage('Chat',
         backGroundImage: BackGroundImageType.gray,
         showAppbar: false,
@@ -85,7 +88,7 @@ class _MinePage extends State<MinePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Sally",
+                          "${user?.nickName}",
                           style: TextStyle(color: textColor, fontSize: 24.sp),
                         ),
                         Offstage(
@@ -93,7 +96,7 @@ class _MinePage extends State<MinePage> {
                           child: Container(
                             margin: EdgeInsets.only(top: 4.w),
                             child: Text(
-                              "Sally@gmail.com",
+                              "${user?.email}",
                               style: TextStyle(
                                   color: Color.fromRGBO(0, 0, 0, 0.48),
                                   fontSize: 18.sp),

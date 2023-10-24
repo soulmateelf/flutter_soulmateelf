@@ -119,9 +119,9 @@ class HttpUtils {
             errMessage = dioError.response?.data?['message'];
             Loading.toast(errMessage,
                 toastPosition: EasyLoadingToastPosition.top);
-            Application.clearStorage().then((val) {
-              Get.offAllNamed('login');
-            });
+            // Application.clearStorage().then((val) {
+            //   Get.offAllNamed('login');
+            // });
             return Future.error(errMessage);
           }
         } else {
