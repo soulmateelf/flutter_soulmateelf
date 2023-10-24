@@ -125,8 +125,9 @@ class SignUpPage extends StatelessWidget {
                               ? null
                               : () {
                                   Get.toNamed('/authCode', arguments: {
-                                    "type": "signUp",
+                                    "codeType": VerifyState.signUp,
                                     "email": controller.email,
+                                    "nickName": controller.nickname,
                                   });
                                 },
                           color: const Color.fromRGBO(255, 128, 0, 1),

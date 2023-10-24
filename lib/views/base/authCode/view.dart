@@ -11,6 +11,8 @@
 /// LastEditTime: 2023-10-20 17:18:14
 /// Description: 登录
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -22,8 +24,6 @@ import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class AuthCodePage extends StatelessWidget {
   final logic = Get.put(AuthCodeController());
-
-  final arguments = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -43,56 +43,79 @@ class AuthCodePage extends StatelessWidget {
                     SizedBox(
                       height: 72.w,
                     ),
-                    Text(
-                      'We sent you a code',
-                      style: TextStyle(fontSize: 27.sp),
+                    GetBuilder<AuthCodeController>(
+                      builder: (controller) {
+                        return Text(
+                          controller.loading
+                              ? "Sending verification code"
+                              : 'We sent you a code',
+                          style: TextStyle(fontSize: 27.sp),
+                        );
+                      },
                     ),
                     SizedBox(
                       height: 186.w,
                     ),
-                    PinCodeTextField(
-                      pinTheme: PinTheme(
-                          shape: PinCodeFieldShape.box,
-                          borderRadius: BorderRadius.circular(borderRadius),
-                          borderWidth: borderWidth,
-                          inactiveColor: borderColor,
-                          activeColor: primaryColor,
-                          selectedColor: primaryColor,
-                          errorBorderColor: Colors.red,
-                          errorBorderWidth: borderWidth,
-                          selectedBorderWidth: 4),
-                      autoFocus: true,
-                      autoUnfocus: true,
-                      cursorColor: Colors.transparent,
-                      animationDuration: const Duration(milliseconds: 300),
-                      onEditingComplete: () {
-                        APPPlugin.logger.d(logic.code);
+                    GetBuilder<AuthCodeController>(
+                      builder: (controller) {
+                        return PinCodeTextField(
+                          pinTheme: PinTheme(
+                              shape: PinCodeFieldShape.box,
+                              borderRadius: BorderRadius.circular(borderRadius),
+                              borderWidth: borderWidth,
+                              inactiveColor: borderColor,
+                              activeColor: primaryColor,
+                              selectedColor: primaryColor,
+                              errorBorderColor: errorBorderColor,
+                              selectedFillColor: Colors.white,
+                              errorBorderWidth: borderWidth,
+                              selectedBorderWidth: 4,
+                              activeFillColor: controller.hasError
+                                  ? errorBackgroundColor
+                                  : Colors.white,
+                              inactiveFillColor: Colors.white),
+                          autoFocus: true,
+                          autoUnfocus: true,
+                          useHapticFeedback: true,
+                          hapticFeedbackTypes: HapticFeedbackTypes.heavy,
+                          animationType: AnimationType.fade,
+                          enableActiveFill: true,
+                          cursorColor: Colors.transparent,
+                          animationDuration: const Duration(milliseconds: 300),
+                          errorAnimationDuration: 300,
+                          errorAnimationController:
+                              controller.errorAnimationController,
+                          onChanged: (v) {
+                            controller.code = v;
+                            controller.handleVerify();
+                          },
+                          appContext: context,
+                          length: 6,
+                          keyboardType: TextInputType.number,
+                        );
                       },
-                      onChanged: (v) {
-                        APPPlugin.logger.d(v);
-                        logic.code = v;
-                        if (v != null && v.length == 6) {
-                          if (v != "123456") {
-                            APPPlugin.logger.d(
-                                "The code you entered is incorrect.Please try again.");
-                          } else {
-                            Get.toNamed("/password", arguments: {
-                              ...arguments as Map,
-                              "authCode": logic.code,
-                            });
-                          }
-                        }
+                    ),
+                    GetBuilder<AuthCodeController>(
+                      builder: (controller) {
+                        return Offstage(
+                          offstage: !controller.hasError,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 12.w),
+                            child: Text(
+                              'The code you entered is incorrect.Please try again.',
+                              style: TextStyle(
+                                  color: errorTextColor, fontSize: 14.sp),
+                            ),
+                          ),
+                        );
                       },
-                      appContext: context,
-                      length: 6,
-                      keyboardType: TextInputType.number,
                     ),
                     SizedBox(
                       height: 12.w,
                     ),
                     TextButton(
                         onPressed: () {
-                          Get.toNamed('/setPassword');
+                          logic.sendCode();
                         },
                         child: Text(
                           'Resend code',

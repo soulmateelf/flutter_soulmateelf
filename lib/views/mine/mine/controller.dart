@@ -8,6 +8,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
@@ -67,6 +68,7 @@ class MineController extends GetxController {
                   width: double.maxFinite,
                   child: TextButton(
                       onPressed: () {
+                        Application.pres?.clear();
                         Get.offAllNamed("/welcome");
                       },
                       style: ButtonStyle(
