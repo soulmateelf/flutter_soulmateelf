@@ -7,6 +7,10 @@
 import 'package:get/get.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 
+import '../../../utils/core/constants.dart';
+import '../../../utils/core/httputil.dart';
+import '../../../utils/tool/utils.dart';
+
 class PasswordController extends GetxController {
   var confirmPassword = "";
   var password = "";
@@ -66,5 +70,28 @@ class PasswordController extends GetxController {
   toggleConfirmPasswordVisible() {
     confirmPasswordVisible = !confirmPasswordVisible;
     update();
+  }
+
+  void next() {
+    final arguments = Get.arguments;
+    final codeType = arguments['codeType'];
+    if (codeType == VerifyState.signUp) {
+      HttpUtils.diorequst("/register",
+              method: "post",
+              params: {...arguments as Map, "password": password})
+          .then((value) {
+        requestLogin(arguments["email"], password).then((value) {
+          Get.offAllNamed('/menu');
+        }).whenComplete(() => null);
+      }, onError: (err) {}).whenComplete(() {});
+    } else if (codeType == VerifyState.forgot) {
+      HttpUtils.diorequst("/forgetPassword", method: "post", params: {
+        ...arguments as Map,
+        "password": password,
+        "newPassword": password,
+      }).then((value) {
+        Get.toNamed("/successfully");
+      }, onError: (err) {}).whenComplete(() => {});
+    }
   }
 }

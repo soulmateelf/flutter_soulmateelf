@@ -19,6 +19,7 @@ import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 import '../../../utils/core/application.dart';
 import '../../../utils/plugin/plugin.dart';
+import '../../../utils/tool/utils.dart';
 import 'controller.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -158,44 +159,7 @@ class PasswordPage extends StatelessWidget {
                       onPressed: controller.nextDisable
                           ? null
                           : () {
-                              final codeType = arguments['codeType'];
-                              if (codeType == VerifyState.signUp) {
-                                HttpUtils.diorequst("/register",
-                                    method: "post",
-                                    params: {
-                                      ...arguments as Map,
-                                      "password": logic.password
-                                    }).then((value) {
-                                  HttpUtils.diorequst('/login',
-                                      method: 'post',
-                                      params: {
-                                        "email": arguments["email"],
-                                        "password": logic.password
-                                      }).then((response) {
-                                    var userInfoMap =
-                                        response["data"]["userInfo"];
-
-                                    /// 存储全局信息
-                                    Application.token =
-                                        response["data"]["token"];
-                                    Application.userInfo = userInfoMap;
-                                    Get.offAllNamed('/menu');
-                                  }).catchError((error) {
-                                    Loading.error(error);
-                                  });
-                                }, onError: (err) {}).whenComplete(() {});
-                              } else if (codeType == VerifyState.forgot) {
-                                HttpUtils.diorequst("/forgetPassword",
-                                    method: "post",
-                                    params: {
-                                      ...arguments as Map,
-                                      "password": controller.password,
-                                      "newPassword": controller.password,
-                                    }).then((value) {
-                                  Get.toNamed(typeMap[arguments['codeType']]
-                                      ?['nextPage'] as String);
-                                }, onError: (err) {}).whenComplete(() => {});
-                              }
+                             controller.next();
                             },
                       color: const Color.fromRGBO(255, 128, 0, 1),
                       shape: RoundedRectangleBorder(
@@ -203,21 +167,7 @@ class PasswordPage extends StatelessWidget {
                       ),
                       child: Text('Next', style: TextStyle(fontSize: 18.sp)),
                     );
-                    return MaterialButton(
-                      onPressed: () {
-                        Get.toNamed(
-                            typeMap[arguments['type']]?['nextPage'] as String);
-                      },
-                      color: primaryColor,
-                      child: Text(
-                        'Next',
-                        style: TextStyle(color: Colors.white, fontSize: 18.sp),
-                      ),
-                      minWidth: double.infinity,
-                      height: 64.w,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(borderRadius)),
-                    );
+
                   },
                 ),
               ],

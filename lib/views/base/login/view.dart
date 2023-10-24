@@ -89,12 +89,13 @@ class LoginPage extends StatelessWidget {
                       onEditingComplete: () {
                         _passwordFocusNode.unfocus();
                       },
+                      obscureText: !controller.passwordVisible,
                       suffix: GestureDetector(
                         onTap: () {
                           controller.togglePasswordVisible();
                         },
                         child: Icon(
-                          controller.passwordVisible
+                          !controller.passwordVisible
                               ? CupertinoIcons.eye_slash
                               : CupertinoIcons.eye,
                         ),

@@ -23,29 +23,18 @@ class AuthCodeController extends GetxController {
     update();
   }
 
-  StreamController<ErrorAnimationType>? errorAnimationController =
-      StreamController();
+  StreamController<ErrorAnimationType>? errorAnimationController;
+  void setErrorController (StreamController<ErrorAnimationType> controller) {
+      errorAnimationController = controller;
+      update();
+  }
 
   var code = "";
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    sendCode();
-    super.onInit();
-  }
-
-  @override
-  void onClose() {
-    // TODO: implement onClose
-    errorAnimationController?.close();
-    super.onClose();
-  }
 
   void sendCode() {
     if (!loading) {
       var arguments = Get.arguments;
-
       setLoading(true);
       HttpUtils.diorequst("/sendEmail", method: "post", params: {
         "type": arguments['codeType'],

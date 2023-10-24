@@ -22,8 +22,31 @@ import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/views/base/authCode/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
-class AuthCodePage extends StatelessWidget {
+class AuthCodePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _AuthCodePageState();
+  }
+}
+
+class _AuthCodePageState extends State<AuthCodePage> {
   final logic = Get.put(AuthCodeController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    logic.setErrorController(StreamController());
+    logic.sendCode();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    logic.errorAnimationController?.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

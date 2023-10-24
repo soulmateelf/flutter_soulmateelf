@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:moment_dart/moment_dart.dart';
+import 'package:soulmate/models/user.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
@@ -24,6 +25,7 @@ class Utils {
       return false;
     }
   }
+
   ///时间显示逻辑
   static String messageTimeFormat(int time) {
     /// 消息的时间和当前时间比较
@@ -31,7 +33,7 @@ class Utils {
     /// 昨天的显示 yesterday HH:mm
     /// 一周内的显示 Monday HH:mm
     /// 其余显示 May 24 2023
-    if(time == null) return "--";
+    if (time == null) return "--";
     DateTime date = DateTime.fromMillisecondsSinceEpoch(time);
     DateTime computeDate = DateTime(date.year, date.month, date.day);
     DateTime now = DateTime.now();
@@ -46,6 +48,7 @@ class Utils {
     }
     return result;
   }
+
   ///页面空值默认显示方式
   static String defaultValue(dynamic value, {omit = '--'}) {
     if (isEmpty(value)) {
@@ -297,4 +300,26 @@ enum GetImageActionType {
 
   /// 相册
   photo,
+}
+
+/// 统一的登陆接口
+Future requestLogin(String email, String password) async {
+  try {
+    Map<String, dynamic> params = {
+      'email': email.length != 0 ? email : "keykong167@163.com",
+      'password': password.length != 0 ? password : "123456",
+    };
+    Map<String, dynamic> response =
+        await HttpUtils.diorequst('/login', method: 'post', params: params);
+    var userInfoMap = response["data"]["userInfo"];
+     User user = User.fromJson(userInfoMap);
+    /// 存储全局信息
+    Application.token = response["data"]["token"];
+    Application.userInfo = user;
+
+    return response;
+  } catch (err) {
+    Loading.error(err.toString());
+    return err;
+  }
 }

@@ -8,12 +8,14 @@ import 'dart:convert';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../models/user.dart';
+
 class Application {
   /// 全局存储
   static SharedPreferences? pres;
 
   /// 用户信息
-  static String? _userInfo; //用户信息
+  static User? _userInfo; //用户信息
 
   /// token
   static String? _token;
@@ -25,22 +27,23 @@ class Application {
 
     ///初始化个人信息
     String? userInfo = Application.pres?.getString("userInfo");
-    _userInfo = userInfo;
+    if (userInfo != null) {
+      _userInfo = User.fromJson(jsonDecode(userInfo));
+    }
 
     ///初始化token
     String? token = Application.pres?.getString("token");
     _token = token;
   }
 
-  static Map? get userInfo {
-    return _userInfo != null ? jsonDecode(_userInfo!) : null;
+  static User? get userInfo {
+    return _userInfo != null ? _userInfo : null;
   }
 
-  static void set userInfo(Map? info) {
+  static void set userInfo(User? info) {
     if (info != null) {
-      String infoString = jsonEncode(info);
-      _userInfo = infoString;
-      Application.pres?.setString("userInfo", infoString);
+      _userInfo = info;
+      Application.pres?.setString("userInfo", jsonEncode(info.toJson()));
     } else {
       _userInfo = null;
       Application.pres?.remove("userInfo");
