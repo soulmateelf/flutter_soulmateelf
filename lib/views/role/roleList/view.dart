@@ -177,15 +177,18 @@ class RoleListPage extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  ClipRRect(
-                      borderRadius: BorderRadius.circular(10.w), // 圆角半径
-                      child: roleData.avatar != null
-                          ? Image.network(
-                              roleData.avatar!,
-                              width: double.infinity,
-                            )
-                          : Image.asset("assets/images/icons/avatar.png",
-                              fit: BoxFit.cover)),
+                  Container(
+                    constraints: BoxConstraints(minHeight: 192.w),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.w), // 圆角半径
+                        child: roleData.avatar != null
+                            ? Image.network(
+                                roleData.avatar!,
+                                width: double.infinity,
+                              )
+                            : Image.asset("assets/images/icons/avatar.png",
+                                fit: BoxFit.cover)),
+                  ),
                   Container(
                     padding: EdgeInsets.only(
                         top: 8.w, left: 12.w, right: 12.w, bottom: 4.w),
