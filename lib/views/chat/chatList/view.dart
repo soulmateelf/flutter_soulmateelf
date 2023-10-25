@@ -125,6 +125,7 @@ class ChatListPage extends StatelessWidget {
                 child: Container(
               padding: EdgeInsets.fromLTRB(12.w, 12.w, 0, 12.w),
               child: Column(
+                // mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Row(
                     children: [
@@ -149,7 +150,7 @@ class ChatListPage extends StatelessWidget {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 10.w, bottom: 1.w),
+                    padding: EdgeInsets.only(top: 0.w, bottom: 1.w),
                     child: Container(
                       alignment: Alignment.topLeft,
                       child: Text(
