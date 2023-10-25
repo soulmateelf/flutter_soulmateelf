@@ -150,12 +150,23 @@ class SignUpPage extends StatelessWidget {
                           style: TextStyle(fontSize: 14.sp),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed("/termsOfService");
+                          },
                           child: Text(
-                            'Terms,Privacy Policy',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                color: Color.fromRGBO(255, 128, 0, 1)),
+                            'Terms,',
+                            style:
+                                TextStyle(fontSize: 14.sp, color: primaryColor),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed("/privacyPolicy");
+                          },
+                          child: Text(
+                            'Privacy Policy',
+                            style:
+                                TextStyle(fontSize: 14.sp, color: primaryColor),
                           ),
                         ),
                         Text(

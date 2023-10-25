@@ -41,8 +41,7 @@ class WelcomePage extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 27.sp,
                       fontFamily: "SFProRounded-Blod",
-                      fontWeight: FontWeight.w700
-                  ),
+                      fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
                   height: 70.w,
@@ -148,10 +147,19 @@ class WelcomePage extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        print(1);
+                        Get.toNamed("/termsOfService");
                       },
                       child: Text(
-                        'Terms,Privacy Policy',
+                        'Terms,',
+                        style: TextStyle(fontSize: 14.sp, color: primaryColor),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed("/privacyPolicy");
+                      },
+                      child: Text(
+                        'Privacy Policy',
                         style: TextStyle(fontSize: 14.sp, color: primaryColor),
                       ),
                     ),

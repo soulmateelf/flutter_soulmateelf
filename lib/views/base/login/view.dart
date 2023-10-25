@@ -167,7 +167,11 @@ class LoginPage extends StatelessWidget {
                         decoration: BoxDecoration(
                             border: Border.all(width: 3.w, color: Colors.grey),
                             borderRadius: BorderRadius.circular(borderRadius)),
-                        child: Icon(Icons.developer_board),
+                        child: Image.asset(
+                          "assets/images/icons/google.png",
+                          width: 34.w,
+                          height: 34.w,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -180,7 +184,11 @@ class LoginPage extends StatelessWidget {
                         decoration: BoxDecoration(
                             border: Border.all(width: 3.w, color: Colors.grey),
                             borderRadius: BorderRadius.circular(borderRadius)),
-                        child: Icon(Icons.developer_board),
+                        child: Image.asset(
+                          "assets/images/icons/facebook.png",
+                          width: 34.w,
+                          height: 34.w,
+                        ),
                       ),
                     ),
                   ],

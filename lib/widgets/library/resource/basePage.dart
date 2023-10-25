@@ -56,6 +56,7 @@ Widget basePage(
                   AppBar(
                       leadingWidth: leadingWidth??64.w,
                       elevation: 0,
+                      toolbarHeight: 72.w,
                       shadowColor: backGroundImage != null?Colors.transparent:mainColor,
                       centerTitle: true,
                       title: Text(

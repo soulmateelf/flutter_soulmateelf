@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:soulmate/views/base/PrivacyPolicy/view.dart';
+import 'package:soulmate/views/base/TermsofService/view.dart';
 import 'package:soulmate/views/base/authCode/view.dart';
 import 'package:soulmate/views/base/findAccount/view.dart';
 import 'package:soulmate/views/base/password/view.dart';
@@ -57,6 +59,12 @@ class AppRoute {
 
     /// 修改密码成功
     GetPage(name: '/successfully', page: () => SuccessfullyPage()),
+
+    /// 隐私策略
+    GetPage(name: "/privacyPolicy", page:()=> PrivacyPolicyPage() ),
+
+    /// 服务条款
+    GetPage(name: "/termsOfService", page:()=> TermsOfServicePage()),
 
     /// chat模块
     /// 聊天列表
