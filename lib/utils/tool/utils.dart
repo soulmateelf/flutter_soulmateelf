@@ -306,9 +306,13 @@ enum GetImageActionType {
 /// 统一的登陆接口
 Future requestLogin(String email, String password) async {
   try {
+    // Map<String, dynamic> params = {
+    //   'email': email.length != 0 ? email : "keykong167@163.com",
+    //   'password': password.length != 0 ? password : "123456",
+    // };
     Map<String, dynamic> params = {
-      'email': email.length != 0 ? email : "keykong167@163.com",
-      'password': password.length != 0 ? password : "123456",
+      'email': email,
+      'password': password,
     };
     Map<String, dynamic> response =
         await HttpUtils.diorequst('/login', method: 'post', params: params);
