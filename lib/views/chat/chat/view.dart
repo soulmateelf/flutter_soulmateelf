@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:soulmate/models/chat.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
@@ -126,7 +127,7 @@ class ChatPage extends StatelessWidget {
           itemBuilder: (context, index) {
             return GestureDetector(
                 onTap: () {},
-                child: _messageItem(index, logic.messageList[index]));
+                child: _messageItem(index));
           }));
 
   /// 底部用户输入区域
@@ -196,14 +197,15 @@ class ChatPage extends StatelessWidget {
         )));
   }
   /// 聊天信息展示组件
-  Widget _messageItem(index, itemData) {
+  Widget _messageItem(index) {
+    ChatHistory chatData = logic.messageList[index];
     return Container(
       margin: EdgeInsets.only(bottom: 12.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Offstage(
-            offstage: !logic.showTime(itemData, index),
+            offstage: !logic.showTime(chatData, index),
             child: Container(
               alignment: Alignment.center,
               child: Container(
@@ -213,7 +215,7 @@ class ChatPage extends StatelessWidget {
                 ),
                 padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 30.w),
                 child: Text(
-                  Utils.messageTimeFormat(itemData["createTime"]),
+                  Utils.messageTimeFormat(chatData.createTime),
                   style: TextStyle(
                       fontFamily: "SFProRounded",
                       fontSize: 16.sp,fontWeight: FontWeight.w400, color: const Color.fromRGBO(0, 0, 0, 0.48)),
@@ -223,23 +225,23 @@ class ChatPage extends StatelessWidget {
             ),
           ),
           Container(
-              alignment: itemData['role'] == 'user'
+              alignment: chatData.role == 'user'
                   ? Alignment.centerRight
                   : Alignment.centerLeft,
               margin: EdgeInsets.only(top: 12.w),
               child: Container(
                 decoration: BoxDecoration(
-                  color: itemData['role'] == 'user'
+                  color: chatData.role == 'user'
                       ? primaryColor
                       : const Color.fromRGBO(239, 239, 239, 1),
-                  borderRadius: itemData['role'] == 'user'
+                  borderRadius: chatData.role == 'user'
                       ?BorderRadius.only(topLeft: Radius.circular(20.w),topRight: Radius.circular(20.w),bottomLeft: Radius.circular(20.w)):BorderRadius.only(topLeft: Radius.circular(20.w),topRight: Radius.circular(20.w),bottomRight: Radius.circular(20.w)),
                 ),
                 padding: EdgeInsets.symmetric(vertical: 12.w, horizontal: 20.w),
                 child: Text(
-                  itemData['content'],
+                  chatData.content,
                   style: TextStyle(
-                    fontSize: 16.sp,fontWeight: FontWeight.w400,height: 1.3, color: itemData['role'] == 'user'
+                    fontSize: 16.sp,fontWeight: FontWeight.w400,height: 1.3, color: chatData.role == 'user'
                     ? Colors.white:const Color.fromRGBO(0, 0, 0, 0.8)),
                 ),
               )),

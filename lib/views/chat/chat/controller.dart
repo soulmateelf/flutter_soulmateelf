@@ -11,9 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:soulmate/models/chat.dart';
 import 'package:soulmate/models/role.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/tool/utils.dart';
+import 'package:soulmate/views/chat/chatList/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class ChatController extends GetxController {
@@ -24,30 +26,7 @@ class ChatController extends GetxController {
   Role? roleDetail;
 
   /// 聊天记录
-  List messageList = [
-    {
-      "role": "user",
-      "content":
-          "ok记录得到了打开都觉得多劳多得顶顶顶顶夸德拉多ok记录得到了打开都觉得多劳多得顶顶顶顶夸德拉多ok记录得到了打开都觉得多劳多得多",
-      "createTime": 1684597262000,
-    },
-    {
-      "role": "system",
-      "content": "555",
-      "createTime": 1698062170000,
-    },
-    {
-      "role": "user",
-      "content": "好多快递寄快递",
-      "createTime": 1698062170000,
-    },
-    {
-      "role": "system",
-      "content":
-          "好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递好多快递寄快递",
-      "createTime": 1698062170000,
-    },
-  ];
+  List<ChatHistory> messageList = [];
 
   ///刷新控制器
   RefreshController refreshController =
@@ -75,16 +54,27 @@ class ChatController extends GetxController {
   /// 防抖，用户停止输入2秒调用接口，使用gpt回答
   Timer? _debounce;
 
+  /// 延迟时间
+  Duration duration = const Duration(seconds: 2);
+
+  /// 是否聊过天，然后更新首页的聊天历史
+  bool hasChat = false;
+
   @override
   void onReady() {
     super.onReady();
     roleId = Get.arguments?["roleId"];
     getRoleDetail();
-    // getMessageList('init');
+    getMessageList('init');
   }
 
   @override
   void onClose() {
+    if(hasChat == true){
+      /// 聊过天，更新首页聊天列表
+      final chatController = Get.find<ChatListController>();
+      chatController.getDataList();
+    }
     refreshController.dispose();
     scrollController.dispose();
     focusNode.dispose();
@@ -109,12 +99,42 @@ class ChatController extends GetxController {
   void getMessageList(String from) {
     Map<String, dynamic> query = {
       'page': from == 'newMessage' ? 1 : (page + 1),
-      'size': from == 'newMessage' ? 2 : 10,
+      'size': from == 'newMessage' ? 1 : 10,
       'roleId': roleId
     };
     HttpUtils.diorequst('/chat/getMessageList', query: query).then((response) {
-      print(response);
+      page++;
       refreshController.refreshCompleted();
+      List chatListMap = response["data"];
+      List<ChatHistory> newList = chatListMap.map((json) => ChatHistory.fromJson(json)).toList();
+      if (from == 'newMessage') {
+        ///新消息，往下加
+        messageList.addAll(newList);
+        /// 记录聊过天的状态
+        hasChat = true;
+      } else {
+        ///历史消息,往上插入
+        messageList.insertAll(0, newList);
+      }
+
+      if (chatListMap == null || chatListMap.isEmpty) {
+        ///没有更多数据了
+        canRefresh = false;
+      } else {
+        canRefresh = true;
+      }
+      update();
+      if (from != 'refresh') {
+        ///新消息或者第一页，滚动到底部
+        Future.delayed(const Duration(milliseconds: 300), () {
+          scrollController.animateTo(
+            scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        });
+      }
+      update();
     }).catchError((error) {
       refreshController.refreshCompleted();
       exSnackBar(error, type: ExSnackBarType.error);
@@ -130,31 +150,41 @@ class ChatController extends GetxController {
     Map<String, dynamic> params = {'message': message, 'roleId': roleId};
     HttpUtils.diorequst('/chat/sendMessage', method: 'post', params: params)
         .then((response) {
-      print(response);
-      // //清空当前消息
-      // inputContent = '';
-      // speechResult = '';
-      // focusNode.unfocus();
-      // update();
-      // //获取最新消息列表
-      // getMessageList('newMessage');
+      //清空当前消息
+      inputContent = '';
+      update();
+      //获取最新消息列表
+      getMessageList('newMessage');
+      //启动定时器，如果已存在，删掉，搞个新的
+      if (_debounce?.isActive ?? false) _debounce?.cancel();
+      _debounce = Timer(duration, startGptTask);
+    }).catchError((error) {
+      exSnackBar(error, type: ExSnackBarType.error);
+    });
+  }
+
+  ///发送信号给后台，可以调用gpt接口了
+  void startGptTask() {
+    Map<String, dynamic> params = {'roleId': roleId};
+    HttpUtils.diorequst('/chat/chatRollBack', method: 'post', params: params)
+        .then((response) {
+      getMessageList('newMessage');
     }).catchError((error) {
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }
 
   ///是否展示时间模块
-  bool showTime(dynamic itemData, int index) {
+  bool showTime(ChatHistory chatData, int index) {
     if (index == 0) {
       ///第一条消息就展示时间
       return true;
     }
-
     ///与上一条消息的时间差在5分钟内不展示
     var lastMessgeDate = DateTime.fromMillisecondsSinceEpoch(
-        messageList[index - 1]['createTime']);
+        messageList[index - 1].createTime);
     var currentMessgeDate =
-        DateTime.fromMillisecondsSinceEpoch(itemData['createTime']);
+        DateTime.fromMillisecondsSinceEpoch(chatData.createTime);
     var diffMinutes = currentMessgeDate.difference(lastMessgeDate).inMinutes;
     if (diffMinutes < 5) {
       return false;
@@ -162,14 +192,14 @@ class ChatController extends GetxController {
       return true;
     }
   }
+  /// 监听用户输入事件
   void textInputChange(String value){
     inputContent = value;
     update();
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(seconds: 2), () {
-        // 在用户停止输入2秒后触发事件
-        print('用户已经停止输入了！');
-        // 在这里执行你想要触发的事件
-    });
+    /// 存在才能删除建新的，不存在说明是刚进页面第一次输入
+    if (_debounce?.isActive == true){
+      _debounce?.cancel();
+      _debounce = Timer(duration, startGptTask);
+    }
   }
 }

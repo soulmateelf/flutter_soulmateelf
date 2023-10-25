@@ -23,7 +23,7 @@ class Role {
   String? roleUser;
   int? intimacy;
   /// 最后一次聊天时间
-  int? lastChatTime;
+  int? endSendTime;
   /// 最后一次聊天内容
   String? content;
 
@@ -40,7 +40,7 @@ class Role {
     this.remark,
     this.roleUser,
     this.intimacy,
-    this.lastChatTime,
+    this.endSendTime,
     this.content
   });
 
@@ -57,7 +57,7 @@ class Role {
         remark: json["remark"],
         roleUser: json["roleUser"],
         intimacy: json["intimacy"],
-        lastChatTime: json["lastChatTime"],
+        endSendTime: json["endSendTime"],
         content: json["content"],
       );
 
@@ -74,7 +74,7 @@ class Role {
         "remark": remark,
         "roleUser": roleUser,
         "intimacy": intimacy,
-        "lastChatTime": lastChatTime,
+        "endSendTime": endSendTime,
         "content": content,
       };
 }

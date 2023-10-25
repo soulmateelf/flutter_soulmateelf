@@ -50,7 +50,12 @@ class ChatListController extends GetxController {
   }
 
   void deleteChatItem(index) {
-    dataList.removeAt(index);
-    update();
+    HttpUtils.diorequst('/role/deleteUserRole',method: 'post', params: {"roleId": dataList[index].roleId})
+        .then((response) {
+      dataList.removeAt(index);
+      update();
+    }).catchError((error) {
+      exSnackBar(error, type: ExSnackBarType.error);
+    });
   }
 }

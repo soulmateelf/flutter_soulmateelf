@@ -139,7 +139,7 @@ class ChatListPage extends StatelessWidget {
                                 color: const Color.fromRGBO(0, 0, 0, 0.8))),
                       ),
                       Text(
-                        Utils.messageTimeFormat(roleData.lastChatTime),
+                        Utils.messageTimeFormat(roleData.endSendTime),
                         style: TextStyle(
                             fontSize: 12.sp,
                             fontFamily: 'PingFangRegular',
