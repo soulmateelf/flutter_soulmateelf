@@ -127,19 +127,30 @@ class LoginPage extends StatelessWidget {
                 SizedBox(
                   height: 24.w,
                 ),
-                MaterialButton(
-                  onPressed: () {
-                    logic.login();
+                GetBuilder<LoginController>(
+                  builder: (controller) {
+                    return MaterialButton(
+                      color: primaryColor,
+                      enableFeedback: true,
+                      disabledColor: disableColor,
+                      textColor: controller.nextBtnDisabled
+                          ? const Color.fromRGBO(0, 0, 0, 0.24)
+                          : Colors.white,
+                      onPressed: controller.nextBtnDisabled
+                          ? null
+                          : () {
+                              logic.login();
+                            },
+                      child: Text(
+                        'Login',
+                        style: TextStyle( fontSize: 18.sp),
+                      ),
+                      minWidth: double.infinity,
+                      height: 64.w,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(borderRadius)),
+                    );
                   },
-                  color: primaryColor,
-                  child: Text(
-                    'Login',
-                    style: TextStyle(color: Colors.white, fontSize: 18.sp),
-                  ),
-                  minWidth: double.infinity,
-                  height: 64.w,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(borderRadius)),
                 ),
                 SizedBox(
                   height: 48.w,

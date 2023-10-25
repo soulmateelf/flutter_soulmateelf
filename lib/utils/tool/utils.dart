@@ -7,6 +7,7 @@ import 'package:moment_dart/moment_dart.dart';
 import 'package:soulmate/models/user.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -312,14 +313,32 @@ Future requestLogin(String email, String password) async {
     Map<String, dynamic> response =
         await HttpUtils.diorequst('/login', method: 'post', params: params);
     var userInfoMap = response["data"]["userInfo"];
-     User user = User.fromJson(userInfoMap);
+    User user = User.fromJson(userInfoMap);
+
     /// 存储全局信息
     Application.token = response["data"]["token"];
     Application.userInfo = user;
-
     return response;
   } catch (err) {
-    Loading.error(err.toString());
-    return err;
+    exSnackBar(err.toString(), type: ExSnackBarType.error);
+    return Future.error(err.toString());
   }
+}
+
+bool checkPassword(String s) {
+  bool isP = true;
+  if (s.contains(" ") || s.isEmpty) {
+    isP = false;
+  }
+
+  if (s.length < 8 || s.length > 16) {
+    isP = false;
+  }
+
+  if (!(s.contains(new RegExp(r'[0-9]')) &&
+      s.contains(new RegExp('[a-zA-Z]+')))) {
+    isP = false;
+  }
+
+  return isP;
 }

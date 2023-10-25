@@ -153,21 +153,16 @@ class PasswordPage extends StatelessWidget {
                       height: 64.w,
                       enableFeedback: true,
                       disabledColor: disableColor,
-                      textColor: controller.nextDisable
-                          ? const Color.fromRGBO(0, 0, 0, 0.24)
-                          : Colors.white,
-                      onPressed: controller.nextDisable
-                          ? null
-                          : () {
-                             controller.next();
-                            },
+                      textColor: Colors.white,
+                      onPressed: () {
+                        controller.next();
+                      },
                       color: const Color.fromRGBO(255, 128, 0, 1),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.w),
                       ),
                       child: Text('Next', style: TextStyle(fontSize: 18.sp)),
                     );
-
                   },
                 ),
               ],

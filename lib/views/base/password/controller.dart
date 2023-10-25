@@ -6,6 +6,7 @@
  */
 import 'package:get/get.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 import '../../../utils/core/constants.dart';
 import '../../../utils/core/httputil.dart';
@@ -29,7 +30,6 @@ class PasswordController extends GetxController {
       confirmPasswordErrorText = "Please enter a valid confirmPassword.";
     }
     if (prevErrorText != confirmPasswordErrorText) {
-      validateNext();
       update();
     }
   }
@@ -43,22 +43,7 @@ class PasswordController extends GetxController {
       passwordErrorText = "Please enter a valid password.";
     }
     if (prevErrorText != passwordErrorText) {
-      validateNext();
       update();
-    }
-  }
-
-  bool nextDisable = false;
-
-  /// 判断是否可以进行下一步 对按钮控制的状态做禁用
-  validateNext() {
-    if (confirmPassword.length > 0 &&
-        password.length > 0 &&
-        confirmPasswordErrorText == null &&
-        passwordErrorText == null) {
-      nextDisable = false;
-    } else {
-      nextDisable = true;
     }
   }
 
@@ -73,17 +58,24 @@ class PasswordController extends GetxController {
   }
 
   void next() {
+    if (!checkPassword(password)) {
+      exSnackBar(
+          "assword format: The password consists of a 8-16 character string, which must contain at least two elements of numbers, letters and symbols.",
+          type: ExSnackBarType.warning);
+      return;
+    }
     final arguments = Get.arguments;
     final codeType = arguments['codeType'];
     if (codeType == VerifyState.signUp) {
       HttpUtils.diorequst("/register",
-              method: "post",
-              params: {...arguments as Map, "password": password})
-          .then((value) {
+          method: "post",
+          params: {...arguments as Map, "password": password}).then((value) {
         requestLogin(arguments["email"], password).then((value) {
           Get.offAllNamed('/menu');
         }).whenComplete(() => null);
-      }, onError: (err) {}).whenComplete(() {});
+      }, onError: (err) {
+        exSnackBar(err.toString());
+      }).whenComplete(() {});
     } else if (codeType == VerifyState.forgot) {
       HttpUtils.diorequst("/forgetPassword", method: "post", params: {
         ...arguments as Map,
@@ -91,7 +83,9 @@ class PasswordController extends GetxController {
         "newPassword": password,
       }).then((value) {
         Get.toNamed("/successfully");
-      }, onError: (err) {}).whenComplete(() => {});
+      }, onError: (err) {
+        exSnackBar(err.toString());
+      }).whenComplete(() => {});
     }
   }
 }

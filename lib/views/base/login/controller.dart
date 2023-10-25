@@ -38,7 +38,7 @@ class LoginController extends GetxController {
   }
 
   void validatePassword(String password) {
-    final isPassword = password.length > 8;
+    final isPassword = password.length >= 8;
     final prevErrorText = passwordErrorText;
     if (isPassword) {
       passwordErrorText = null;
@@ -51,13 +51,18 @@ class LoginController extends GetxController {
     }
   }
 
+  bool nextBtnDisabled = true;
+
   /// 判断是否可以进行下一步 对按钮控制的状态做禁用
   validateNext() {
     if (email.length > 0 &&
         password.length > 0 &&
         emailErrorText == null &&
         passwordErrorText == null) {
-    } else {}
+      nextBtnDisabled = false;
+    } else {
+      nextBtnDisabled = true;
+    }
   }
 
   togglePasswordVisible() {
@@ -67,8 +72,9 @@ class LoginController extends GetxController {
 
   void login() {
     requestLogin(email, password).then((value) {
-      APPPlugin.logger.d(value);
-      Get.offAllNamed('/menu');
+      if (value['code'] == 200) {
+        Get.offAllNamed('/menu');
+      }
     }).whenComplete(() => null);
   }
 }

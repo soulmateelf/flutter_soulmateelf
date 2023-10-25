@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class TermsOfServicePage extends StatelessWidget {
@@ -76,6 +77,7 @@ By using our app, you acknowledge that you have read, understood, and agree to t
       """,
                 style: TextStyle(
                   fontSize: 18.sp,
+                  fontFamily: FontFamily.SFProRoundedLight
                 ),
               ),
             ),

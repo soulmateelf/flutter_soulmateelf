@@ -105,7 +105,7 @@ class RoleListPage extends StatelessWidget {
                   Text('Add your ELF',
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                          fontSize: 20.sp,
+                          fontSize: 18.sp,
                           fontFamily: 'SFProRounded-Semibold',
                           fontWeight: FontWeight.w600,
                           color: const Color.fromRGBO(0, 0, 0, 0.8))),

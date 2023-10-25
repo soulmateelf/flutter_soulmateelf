@@ -22,3 +22,13 @@ class VerifyState {
   static const signUp = 2;
   static const forgot = 3;
 }
+
+/// 字体库枚举类
+class FontFamily {
+  static const SFProRounded = "SFProRounded";
+  static const SFProRoundedBlod = "SFProRounded-Blod";
+  static const SFProRoundedMedium = "SFProRounded-Medium";
+  static const SFProRoundedSemibold = "SFProRounded-Semibold";
+  static const SFProRoundedLight = "SFProRounded-Light";
+  static const PingFangRegular = "PingFangRegular";
+}

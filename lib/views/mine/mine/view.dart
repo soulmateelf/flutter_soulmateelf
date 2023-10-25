@@ -89,7 +89,10 @@ class _MinePage extends State<MinePage> {
                       children: [
                         Text(
                           "${user?.nickName}",
-                          style: TextStyle(color: textColor, fontSize: 24.sp),
+                          style: TextStyle(
+                              color: textColor,
+                              fontSize: 24.sp,
+                              fontFamily: FontFamily.SFProRoundedSemibold),
                         ),
                         Offstage(
                           offstage: logic.size < appBarMaxHeight - gap / 2,
@@ -98,8 +101,9 @@ class _MinePage extends State<MinePage> {
                             child: Text(
                               "${user?.email}",
                               style: TextStyle(
-                                  color: Color.fromRGBO(0, 0, 0, 0.48),
-                                  fontSize: 18.sp),
+                                color: Color.fromRGBO(0, 0, 0, 0.48),
+                                fontSize: 18.sp,
+                              ),
                             ),
                           ),
                         )
@@ -164,7 +168,9 @@ class _MinePage extends State<MinePage> {
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 24.sp,
-                                        fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily:
+                                            FontFamily.SFProRoundedBlod),
                                   ),
                                   SizedBox(
                                     height: 13.w,
@@ -181,7 +187,9 @@ class _MinePage extends State<MinePage> {
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 40.sp),
+                                              fontSize: 40.sp,
+                                              fontFamily:
+                                                  FontFamily.SFProRoundedBlod),
                                         ),
                                         WidgetSpan(
                                             child: SizedBox(
@@ -217,6 +225,8 @@ class _MinePage extends State<MinePage> {
                                             color: primaryColor,
                                             fontSize: 24.sp,
                                             fontWeight: FontWeight.bold,
+                                            fontFamily:
+                                                FontFamily.SFProRoundedBlod,
                                           ),
                                         ),
                                       )
@@ -269,8 +279,11 @@ class _MinePage extends State<MinePage> {
                                                   child: Text(
                                                     "Share",
                                                     style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 18.sp),
+                                                      color: Colors.white,
+                                                      fontSize: 18.sp,
+                                                      fontFamily: FontFamily
+                                                          .SFProRoundedSemibold,
+                                                    ),
                                                   ),
                                                 ))
                                               ],
@@ -339,8 +352,11 @@ class _MinePage extends State<MinePage> {
                                                   child: Text(
                                                     "Watch AD",
                                                     style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 18.sp),
+                                                      color: Colors.white,
+                                                      fontSize: 18.sp,
+                                                      fontFamily: FontFamily
+                                                          .SFProRoundedSemibold,
+                                                    ),
                                                   ),
                                                 ))
                                               ],
@@ -582,9 +598,11 @@ class _MinePage extends State<MinePage> {
                           child: Text(
                             'Log out',
                             style: TextStyle(
-                                color: primaryColor,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.bold),
+                              color: primaryColor,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: FontFamily.SFProRoundedBlod,
+                            ),
                           )),
                     ),
                     SizedBox(
