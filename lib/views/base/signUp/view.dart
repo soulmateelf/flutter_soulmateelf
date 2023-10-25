@@ -35,149 +35,147 @@ class SignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     /// ScreenUtil初始化
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
-    return WillPopScope(
-        onWillPop: logic.dealBack,
-        child: basePage('',
-            child: SingleChildScrollView(
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(vertical: 40.w, horizontal: 24.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return basePage('',
+        child: SingleChildScrollView(
+          child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(vertical: 40.w, horizontal: 24.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  height: 72.w,
+                ),
+                Text(
+                  'Create your account',
+                  style: TextStyle(fontSize: 27.sp),
+                ),
+                SizedBox(
+                  height: 186.w,
+                ),
+                GetBuilder<SignUpController>(
+                  builder: (controller) {
+                    return MakeInput(
+                      controller: _emialController,
+                      onChanged: (v) {
+                        controller.email = v;
+                        controller.validateEmail(v);
+                      },
+                      focusNode: _emailFocusNode,
+                      textInputAction: TextInputAction.next,
+                      onEditingComplete: () {
+                        _nicknameFocusNode.requestFocus();
+                      },
+                      error: controller.emailErrorText != null,
+                      errorText: controller.emailErrorText,
+                      textAlign: TextAlign.center,
+                      hintText: "Email",
+                      allowClear: true,
+                      keyboardType: TextInputType.emailAddress,
+                      onClear: () {
+                        _emialController.text = "";
+                      },
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 12.w,
+                ),
+                GetBuilder<SignUpController>(
+                  builder: (controller) {
+                    return MakeInput(
+                      controller: _nicknameController,
+                      onChanged: (v) {
+                        controller.nickname = v;
+                        controller.validateNickname(v);
+                      },
+                      focusNode: _nicknameFocusNode,
+                      textInputAction: TextInputAction.done,
+                      onEditingComplete: () {
+                        _nicknameFocusNode.unfocus();
+                      },
+                      error: controller.nicknameErrorText != null,
+                      errorText: controller.nicknameErrorText,
+                      textAlign: TextAlign.center,
+                      hintText: "Nickname",
+                      allowClear: true,
+                      keyboardType: TextInputType.name,
+                      onClear: () {
+                        _nicknameController.text = "";
+                      },
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 161.w,
+                ),
+                GetBuilder<SignUpController>(
+                  builder: (controller) {
+                    return MaterialButton(
+                      minWidth: double.infinity,
+                      height: 64.w,
+                      enableFeedback: true,
+                      disabledColor: disableColor,
+                      textColor: controller.nextBtnDisabled
+                          ? const Color.fromRGBO(0, 0, 0, 0.24)
+                          : Colors.white,
+                      onPressed: controller.nextBtnDisabled
+                          ? null
+                          : () {
+                        Get.toNamed('/authCode', arguments: {
+                          "codeType": VerifyState.signUp,
+                          "email": controller.email,
+                          "nickName": controller.nickname,
+                        });
+                      },
+                      color: const Color.fromRGBO(255, 128, 0, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.w),
+                      ),
+                      child:
+                      Text('Next', style: TextStyle(fontSize: 18.sp)),
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 40.w,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 72.w,
+                    Text(
+                      'By signing up, you agree to our ',
+                      style: TextStyle(fontSize: 14.sp),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed("/termsOfService");
+                      },
+                      child: Text(
+                        'Terms,',
+                        style:
+                        TextStyle(fontSize: 14.sp, color: primaryColor),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed("/privacyPolicy");
+                      },
+                      child: Text(
+                        'Privacy Policy',
+                        style:
+                        TextStyle(fontSize: 14.sp, color: primaryColor),
+                      ),
                     ),
                     Text(
-                      'Create your account',
-                      style: TextStyle(fontSize: 27.sp),
-                    ),
-                    SizedBox(
-                      height: 186.w,
-                    ),
-                    GetBuilder<SignUpController>(
-                      builder: (controller) {
-                        return MakeInput(
-                          controller: _emialController,
-                          onChanged: (v) {
-                            controller.email = v;
-                            controller.validateEmail(v);
-                          },
-                          focusNode: _emailFocusNode,
-                          textInputAction: TextInputAction.next,
-                          onEditingComplete: () {
-                            _nicknameFocusNode.requestFocus();
-                          },
-                          error: controller.emailErrorText != null,
-                          errorText: controller.emailErrorText,
-                          textAlign: TextAlign.center,
-                          hintText: "Email",
-                          allowClear: true,
-                          keyboardType: TextInputType.emailAddress,
-                          onClear: () {
-                            _emialController.text = "";
-                          },
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: 12.w,
-                    ),
-                    GetBuilder<SignUpController>(
-                      builder: (controller) {
-                        return MakeInput(
-                          controller: _nicknameController,
-                          onChanged: (v) {
-                            controller.nickname = v;
-                            controller.validateNickname(v);
-                          },
-                          focusNode: _nicknameFocusNode,
-                          textInputAction: TextInputAction.done,
-                          onEditingComplete: () {
-                            _nicknameFocusNode.unfocus();
-                          },
-                          error: controller.nicknameErrorText != null,
-                          errorText: controller.nicknameErrorText,
-                          textAlign: TextAlign.center,
-                          hintText: "Nickname",
-                          allowClear: true,
-                          keyboardType: TextInputType.name,
-                          onClear: () {
-                            _nicknameController.text = "";
-                          },
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: 161.w,
-                    ),
-                    GetBuilder<SignUpController>(
-                      builder: (controller) {
-                        return MaterialButton(
-                          minWidth: double.infinity,
-                          height: 64.w,
-                          enableFeedback: true,
-                          disabledColor: disableColor,
-                          textColor: controller.nextBtnDisabled
-                              ? const Color.fromRGBO(0, 0, 0, 0.24)
-                              : Colors.white,
-                          onPressed: controller.nextBtnDisabled
-                              ? null
-                              : () {
-                                  Get.toNamed('/authCode', arguments: {
-                                    "codeType": VerifyState.signUp,
-                                    "email": controller.email,
-                                    "nickName": controller.nickname,
-                                  });
-                                },
-                          color: const Color.fromRGBO(255, 128, 0, 1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16.w),
-                          ),
-                          child:
-                              Text('Next', style: TextStyle(fontSize: 18.sp)),
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: 40.w,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'By signing up, you agree to our ',
-                          style: TextStyle(fontSize: 14.sp),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed("/termsOfService");
-                          },
-                          child: Text(
-                            'Terms,',
-                            style:
-                                TextStyle(fontSize: 14.sp, color: primaryColor),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed("/privacyPolicy");
-                          },
-                          child: Text(
-                            'Privacy Policy',
-                            style:
-                                TextStyle(fontSize: 14.sp, color: primaryColor),
-                          ),
-                        ),
-                        Text(
-                          '.',
-                          style: TextStyle(fontSize: 14.sp),
-                        )
-                      ],
-                    ),
+                      '.',
+                      style: TextStyle(fontSize: 14.sp),
+                    )
                   ],
                 ),
-              ),
-            )));
+              ],
+            ),
+          ),
+        ));
   }
 }

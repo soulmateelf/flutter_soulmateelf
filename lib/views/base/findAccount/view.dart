@@ -31,85 +31,83 @@ class FindAccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     /// ScreenUtil初始化
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
-    return WillPopScope(
-        onWillPop: logic.dealBack,
-        child: basePage('',
-            child: SingleChildScrollView(
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(vertical: 40.w, horizontal: 24.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      height: 72.w,
-                    ),
-                    Text(
-                      "Find your account",
-                      style: TextStyle(fontSize: 27.sp),
-                    ),
-                    SizedBox(
-                      height: 186.w,
-                    ),
-                    GetBuilder<FindAccountController>(
-                      builder: (controller) {
-                        return MakeInput(
-                          controller: _emialController,
-                          onChanged: (v) {
-                            controller.email = v;
-                            controller.validateEmail(v);
-                          },
-                          autofocus: true,
-                          focusNode: _emailFocusNode,
-                          textInputAction: TextInputAction.next,
-                          onEditingComplete: () {
-                            _emailFocusNode.unfocus();
-                          },
-                          error: controller.emailErrorText != null,
-                          errorText: controller.emailErrorText,
-                          textAlign: TextAlign.center,
-                          hintText: "Email",
-                          allowClear: true,
-                          keyboardType: TextInputType.emailAddress,
-                          onClear: () {
-                            _emialController.text = "";
-                          },
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: 237.w,
-                    ),
-                    GetBuilder<FindAccountController>(
-                      builder: (controller) {
-                        return MaterialButton(
-                          minWidth: double.infinity,
-                          height: 64.w,
-                          enableFeedback: true,
-                          disabledColor: disableColor,
-                          textColor: controller.nextBtnDisabled
-                              ? const Color.fromRGBO(0, 0, 0, 0.24)
-                              : Colors.white,
-                          onPressed: controller.nextBtnDisabled
-                              ? null
-                              : () {
-                                  Get.toNamed('/authCode', arguments: {
-                                    "codeType": VerifyState.forgot,
-                                    "email": controller.email,
-                                  });
-                                },
-                          color: const Color.fromRGBO(255, 128, 0, 1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16.w),
-                          ),
-                          child:
-                              Text('Next', style: TextStyle(fontSize: 18.sp)),
-                        );
-                      },
-                    ),
-                  ],
+    return basePage('',
+        child: SingleChildScrollView(
+          child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(vertical: 40.w, horizontal: 24.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  height: 72.w,
                 ),
-              ),
-            )));
+                Text(
+                  "Find your account",
+                  style: TextStyle(fontSize: 27.sp),
+                ),
+                SizedBox(
+                  height: 186.w,
+                ),
+                GetBuilder<FindAccountController>(
+                  builder: (controller) {
+                    return MakeInput(
+                      controller: _emialController,
+                      onChanged: (v) {
+                        controller.email = v;
+                        controller.validateEmail(v);
+                      },
+                      autofocus: true,
+                      focusNode: _emailFocusNode,
+                      textInputAction: TextInputAction.next,
+                      onEditingComplete: () {
+                        _emailFocusNode.unfocus();
+                      },
+                      error: controller.emailErrorText != null,
+                      errorText: controller.emailErrorText,
+                      textAlign: TextAlign.center,
+                      hintText: "Email",
+                      allowClear: true,
+                      keyboardType: TextInputType.emailAddress,
+                      onClear: () {
+                        _emialController.text = "";
+                      },
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 237.w,
+                ),
+                GetBuilder<FindAccountController>(
+                  builder: (controller) {
+                    return MaterialButton(
+                      minWidth: double.infinity,
+                      height: 64.w,
+                      enableFeedback: true,
+                      disabledColor: disableColor,
+                      textColor: controller.nextBtnDisabled
+                          ? const Color.fromRGBO(0, 0, 0, 0.24)
+                          : Colors.white,
+                      onPressed: controller.nextBtnDisabled
+                          ? null
+                          : () {
+                              Get.toNamed('/authCode', arguments: {
+                                "codeType": VerifyState.forgot,
+                                "email": controller.email,
+                              });
+                            },
+                      color: const Color.fromRGBO(255, 128, 0, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.w),
+                      ),
+                      child:
+                          Text('Next', style: TextStyle(fontSize: 18.sp)),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 }

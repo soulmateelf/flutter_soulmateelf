@@ -46,10 +46,9 @@ class MineController extends GetxController {
                 Text(
                   "Log out",
                   style: TextStyle(
-                    color: textColor,
-                    fontSize: 32.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      color: textColor,
+                      fontSize: 32.sp,
+                      fontFamily: FontFamily.SFProRoundedSemibold),
                 ),
                 SizedBox(
                   height: 8.w,
@@ -58,7 +57,10 @@ class MineController extends GetxController {
                   "Are you sure you want to \nlog out?",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Color.fromRGBO(0, 0, 0, 0.48), fontSize: 24.sp),
+                    color: Color.fromRGBO(0, 0, 0, 0.48),
+                    fontSize: 24.sp,
+                    fontFamily: FontFamily.SFProRoundedMedium,
+                  ),
                 ),
                 SizedBox(
                   height: 30.w,
@@ -85,24 +87,32 @@ class MineController extends GetxController {
                       child: Text(
                         "yes，log out",
                         style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.w),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.w,
+                          fontFamily: FontFamily.SFProRoundedBlod,
+                        ),
                       )),
                 ),
                 SizedBox(
-                  height: 20.w,
+                  height: 10.w,
                 ),
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      _globalKey.currentState?.close();
-                    },
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    _globalKey.currentState?.close();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 10.w),
                     child: Text(
                       "Cancel",
                       style: TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 0.32),
-                          fontSize: 20.sp),
+                        color: Color.fromRGBO(0, 0, 0, 0.32),
+                        fontSize: 20.sp,
+                        fontFamily: FontFamily.SFProRoundedMedium,
+                      ),
                     ),
                   ),
                 ),
