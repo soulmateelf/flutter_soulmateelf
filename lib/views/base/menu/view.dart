@@ -22,11 +22,10 @@ class MenuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: logic.dealBack,
-        child: Scaffold(
-          backgroundColor:const Color.fromRGBO(242, 242, 242, 1),
-          bottomNavigationBar: GetBuilder<SoulMateMenuController>(builder: (logic) {
-            return _buildBottomNavigationBar();
-          }),
+        child: GetBuilder<SoulMateMenuController>(builder: (logic) {
+          return Scaffold(
+          backgroundColor: logic.currentIndex == 0 ? Colors.white:const Color.fromRGBO(242, 242, 242, 1),
+          bottomNavigationBar: _buildBottomNavigationBar(),
           body: PageView(
             physics: const NeverScrollableScrollPhysics(),
             controller: logic.controller,
@@ -36,7 +35,7 @@ class MenuPage extends StatelessWidget {
               KeepAliveBox(contentWidget: MinePage())
             ],
           ),
-        ));
+        );}));
   }
   /// 图标列表
   final normalIconList = <String>[
@@ -122,9 +121,10 @@ class MenuPage extends StatelessWidget {
       },
       // hideAnimationController: _hideBottomBarAnimationController,
       shadow: const BoxShadow(
-          offset: Offset(0, 1),
-          blurRadius: 1,
-          color: Color.fromRGBO(0, 0, 0, 0.08)),
+          offset: Offset(0, 2),
+          blurRadius: 10,
+          color: Color.fromRGBO(0, 0, 0, 0.08),
+      ),
     );
   }
 }

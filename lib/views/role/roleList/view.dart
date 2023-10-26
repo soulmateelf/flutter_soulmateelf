@@ -4,7 +4,9 @@
 /// LastEditTime: 2022-03-07 16:27:08
 /// Description:
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -181,13 +183,12 @@ class RoleListPage extends StatelessWidget {
                     constraints: BoxConstraints(minHeight: 192.w),
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.w), // 圆角半径
-                        child: roleData.avatar != null
-                            ? Image.network(
-                                roleData.avatar!,
-                                width: double.infinity,
-                              )
-                            : Image.asset("assets/images/icons/avatar.png",
-                                fit: BoxFit.cover)),
+                        child: CachedNetworkImage(
+                          imageUrl: roleData.avatar??"",
+                          placeholder: (context, url) => const CupertinoActivityIndicator(),
+                          errorWidget: (context, url, error) => Container(),
+                        ),
+                    ),
                   ),
                   Container(
                     padding: EdgeInsets.only(

@@ -60,7 +60,7 @@ Widget basePage(
             ? null
             : appBar ??
                 AppBar(
-                    leadingWidth: leadingWidth ?? 64.w,
+                    leadingWidth: leadingWidth ?? 54.w,
                     elevation: 0,
                     toolbarHeight: 72.w,
                     shadowColor: backGroundImage != null

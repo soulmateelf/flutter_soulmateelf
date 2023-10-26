@@ -4,8 +4,10 @@
 /// LastEditTime: 2022-03-07 16:27:08
 /// Description:
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -42,7 +44,7 @@ class ChatListPage extends StatelessWidget {
                 "assets/images/icons/email.png",
                 height: 44.w,
                 width: 44.w,
-              ))
+              )),
         ], child: GetBuilder<ChatListController>(builder: (logic) {
       return Container(
         width: double.infinity,
@@ -110,15 +112,12 @@ class ChatListPage extends StatelessWidget {
             Container(
               width: 64.w,
               height: 64.w,
-              child: CircleAvatar(
-                backgroundImage: roleData.avatar != null
-                    ? Image.network(
-                        "${roleData.avatar}",
-                        fit: BoxFit.cover,
-                      ).image
-                    : Image.asset("assets/images/icons/avatar.png",
-                            fit: BoxFit.cover)
-                        .image,
+              child: ClipOval(
+                child:  CachedNetworkImage(
+                  imageUrl: roleData.avatar??"",
+                  placeholder: (context, url) => const CupertinoActivityIndicator(),
+                  errorWidget: (context, url, error) => Container(),
+                ), // 图像的来源，可以是网络图像或本地图像
               ),
             ),
             Expanded(

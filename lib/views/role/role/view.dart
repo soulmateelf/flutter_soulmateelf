@@ -4,7 +4,9 @@
 /// LastEditTime: 2022-03-07 16:27:08
 /// Description:
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/utils/core/constants.dart';
@@ -46,9 +48,12 @@ class RolePage extends StatelessWidget {
           decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: Colors.white, width: 2.w)),
-          child: CircleAvatar(
-            backgroundImage: logic.roleDetail?.avatar != null
-                ? Image.network(logic.roleDetail!.avatar!,fit: BoxFit.cover,).image: Image.asset("assets/images/icons/avatar.png",fit: BoxFit.cover).image,
+          child: ClipOval(
+            child:  CachedNetworkImage(
+               imageUrl: logic.roleDetail?.avatar??"",
+               placeholder: (context, url) => const CupertinoActivityIndicator(),
+               errorWidget: (context, url, error) => Container(),
+             ), // 图像的来源，可以是网络图像或本地图像
           ),
         ),
         Expanded(
