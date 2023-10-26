@@ -122,6 +122,7 @@ class ChatPage extends StatelessWidget {
         logic.getMessageList('refresh');
       },
       child: ListView.builder(
+          cacheExtent: double.infinity,
           itemCount: logic.messageList.length,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           itemBuilder: (context, index) {
@@ -190,7 +191,9 @@ class ChatPage extends StatelessWidget {
               Container(
                 width: 48.w,
                 padding: EdgeInsets.only(top:10.w,bottom: 5.w),
-                child: Image.asset('assets/images/icons/microphone.png',width: 22.w,height: 23.w,),
+                child: GestureDetector(
+                    onTap: () {},
+                    child: Image.asset('assets/images/icons/microphone.png',width: 22.w,height: 23.w,)),
               )
             ],
           )

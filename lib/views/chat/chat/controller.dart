@@ -134,7 +134,6 @@ class ChatController extends GetxController {
           );
         });
       }
-      update();
     }).catchError((error) {
       refreshController.refreshCompleted();
       exSnackBar(error, type: ExSnackBarType.error);
@@ -195,7 +194,6 @@ class ChatController extends GetxController {
   /// 监听用户输入事件
   void textInputChange(String value){
     inputContent = value;
-    update();
     /// 存在才能删除建新的，不存在说明是刚进页面第一次输入
     if (_debounce?.isActive == true){
       _debounce?.cancel();
