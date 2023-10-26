@@ -27,24 +27,19 @@ class ChatListPage extends StatelessWidget {
     return basePage('Chat',
         backGroundImage: BackGroundImageType.gray,
         leading: IconButton(
+            iconSize: 44.w,
             onPressed: () {
               Get.toNamed('/message');
             },
             icon: Image.asset(
-              "assets/images/icons/message.png",
-              height: 44.w,
-              width: 44.w,
-            )),
+              "assets/images/icons/message.png",)),
         actions: [
           IconButton(
+              iconSize: 44.w,
               onPressed: () {
                 Get.toNamed('/feedback');
               },
-              icon: Image.asset(
-                "assets/images/icons/email.png",
-                height: 44.w,
-                width: 44.w,
-              )),
+              icon: Image.asset("assets/images/icons/email.png",)),
         ], child: GetBuilder<ChatListController>(builder: (logic) {
       return Container(
         width: double.infinity,

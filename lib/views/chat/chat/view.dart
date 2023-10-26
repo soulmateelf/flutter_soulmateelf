@@ -25,7 +25,7 @@ class ChatPage extends StatelessWidget {
     return GetBuilder<ChatController>(builder: (logic) {
       return basePage('chat',
           appBar: AppBar(
-            leadingWidth: 54.w,
+            leadingWidth: 64.w,
             elevation: 0,
             toolbarHeight: 100.w,
             centerTitle: true,
@@ -35,8 +35,8 @@ class ChatPage extends StatelessWidget {
               children: [
                 SizedBox(height: 28.w,),
                 Container(
-                  width: 44.w,
-                  height: 44.w,
+                  width: 46.w,
+                  height: 46.w,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -61,25 +61,19 @@ class ChatPage extends StatelessWidget {
               ],
             ),
             leading: IconButton(
+                iconSize: 44.w,
                 onPressed: () {
                   Get.back();
                 },
-                icon: Image.asset(
-                  "assets/images/icons/backIcon.png",
-                  height: 44.w,
-                  width: 44.w,
-                )),
+                icon: Image.asset("assets/images/icons/backIcon.png",)),
             actions: [
               IconButton(
+                  iconSize: 44.w,
                   onPressed: () {
                     Loading.toast("别点");
                     // Get.toNamed('/feedback');
                   },
-                  icon: Image.asset(
-                    "assets/images/icons/more.png",
-                    height: 44.w,
-                    width: 44.w,
-                  ))
+                  icon: Image.asset("assets/images/icons/more.png",))
             ],
             actionsIconTheme: const IconThemeData(color: Colors.black),
             backgroundColor: Colors.transparent,
@@ -91,7 +85,7 @@ class ChatPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.only(top: 20.w),
+                    padding: EdgeInsets.only(top: 14.w),
                     child: Container(
                       decoration: BoxDecoration(
                           border: Border.symmetric( horizontal: BorderSide(color: const Color.fromRGBO(0, 0, 0, 0.1), width: 1.w)),

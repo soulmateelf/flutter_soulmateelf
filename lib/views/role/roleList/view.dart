@@ -25,24 +25,20 @@ class RoleListPage extends StatelessWidget {
     return basePage('Friend',
         backGroundImage: BackGroundImageType.gray,
         leading: IconButton(
+            iconSize: 44.w,
             onPressed: () {
               Get.toNamed('/message');
             },
             icon: Image.asset(
-              "assets/images/icons/message.png",
-              height: 44.w,
-              width: 44.w,
-            )),
+              "assets/images/icons/message.png",)),
         actions: [
           IconButton(
+              iconSize: 44.w,
               onPressed: () {
                 Get.toNamed('/feedback');
               },
               icon: Image.asset(
-                "assets/images/icons/email.png",
-                height: 44.w,
-                width: 44.w,
-              ))
+                "assets/images/icons/email.png",))
         ], child: GetBuilder<RoleListController>(builder: (logic) {
       return Container(
         width: double.infinity,
