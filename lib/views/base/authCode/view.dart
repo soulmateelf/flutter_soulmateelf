@@ -103,6 +103,7 @@ class _AuthCodePageState extends State<AuthCodePage> {
                         fieldWidth: 52.w,
                         fieldOuterPadding: EdgeInsets.all(0.w),
                       ),
+                      controller: controller.controller,
                       autoFocus: true,
                       autoUnfocus: true,
                       useHapticFeedback: true,
@@ -110,8 +111,9 @@ class _AuthCodePageState extends State<AuthCodePage> {
                       animationType: AnimationType.fade,
                       enableActiveFill: true,
                       cursorColor: Colors.transparent,
-                      animationDuration: const Duration(milliseconds: 300),
+                      animationDuration: controller.animateDurantion,
                       errorAnimationDuration: 300,
+                      focusNode: controller.focusNode,
                       errorAnimationController:
                           controller.errorAnimationController,
                       onChanged: (v) {
@@ -148,21 +150,37 @@ class _AuthCodePageState extends State<AuthCodePage> {
                   },
                 ),
                 SizedBox(
-                  height: 12.w,
+                  height: 18.w,
                 ),
-                TextButton(
-                    onPressed: () {
-                      logic.sendCode();
-                    },
-                    child: Text(
-                      'Resend code',
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontSize: 17.sp,
-                        fontFamily: FontFamily.SFProRoundedBlod,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ))
+                GetBuilder<AuthCodeController>(
+                  builder: (controller) {
+                    return controller.intervalTime <= 0
+                        ? TextButton(
+                            onPressed: () {
+                              logic.sendCode();
+                            },
+                            child: Text(
+                              'Resend code',
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 17.sp,
+                                fontFamily: FontFamily.SFProRoundedBlod,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ))
+                        : TextButton(
+                            onPressed: null,
+                            child: Text(
+                              "Resend code (${controller.intervalTime}s)",
+                              style: TextStyle(
+                                color: const Color.fromRGBO(0, 0, 0, 0.24),
+                                fontSize: 17.sp,
+                                fontFamily: FontFamily.SFProRoundedBlod,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ));
+                  },
+                )
               ],
             ),
           ),

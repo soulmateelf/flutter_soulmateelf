@@ -99,6 +99,8 @@ class FindAccountState extends State<FindAccountPage> {
                       keyboardType: TextInputType.emailAddress,
                       onClear: () {
                         _emialController.text = "";
+                        controller.email = "";
+                        controller.validateEmail("");
                       },
                     );
                   },
@@ -116,14 +118,8 @@ class FindAccountState extends State<FindAccountPage> {
                       textColor: controller.nextBtnDisabled
                           ? const Color.fromRGBO(0, 0, 0, 0.24)
                           : Colors.white,
-                      onPressed: controller.nextBtnDisabled
-                          ? null
-                          : () {
-                              Get.toNamed('/authCode', arguments: {
-                                "codeType": VerifyState.forgot,
-                                "email": controller.email,
-                              });
-                            },
+                      onPressed:
+                          controller.nextBtnDisabled ? null : controller.next,
                       color: const Color.fromRGBO(255, 128, 0, 1),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.w),

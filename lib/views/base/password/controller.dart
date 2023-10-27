@@ -23,28 +23,25 @@ class PasswordController extends GetxController {
 
   void validateConfirmPassword(String confirmPassword) {
     final isConfirmPassword = password == confirmPassword;
-    final prevErrorText = confirmPasswordErrorText;
     if (isConfirmPassword) {
       confirmPasswordErrorText = null;
     } else {
       confirmPasswordErrorText = "Please enter a valid confirmPassword.";
     }
-    if (prevErrorText != confirmPasswordErrorText) {
-      update();
-    }
+    validateNext();
+    update();
   }
 
   void validatePassword(String password) {
-    final isPassword = password.length > 8;
-    final prevErrorText = passwordErrorText;
+    final isPassword = checkPassword(password);
     if (isPassword) {
       passwordErrorText = null;
     } else {
-      passwordErrorText = "Please enter a valid password.";
+      passwordErrorText =
+          "The password consists of a 8-16 character string, which must contain at least two elements of numbers, letters and symbols.";
     }
-    if (prevErrorText != passwordErrorText) {
-      update();
-    }
+    validateNext();
+    update();
   }
 
   togglePasswordVisible() {
@@ -57,13 +54,24 @@ class PasswordController extends GetxController {
     update();
   }
 
+  bool nextBtnDisabled = true;
+
+  void validateNext() {
+    if (!checkPassword(password) || !checkPassword(confirmPassword)) {
+      nextBtnDisabled = true;
+    } else {
+      nextBtnDisabled = false;
+    }
+  }
+
   void next() {
-    if (!checkPassword(password)) {
+    if (!checkPassword(password) || !checkPassword(confirmPassword)) {
       exSnackBar(
           "assword format: The password consists of a 8-16 character string, which must contain at least two elements of numbers, letters and symbols.",
           type: ExSnackBarType.warning);
       return;
     }
+
     final arguments = Get.arguments;
     final codeType = arguments['codeType'];
     if (codeType == VerifyState.signUp) {
@@ -74,7 +82,7 @@ class PasswordController extends GetxController {
           Get.offAllNamed('/menu');
         }).whenComplete(() => null);
       }, onError: (err) {
-        exSnackBar(err.toString());
+        exSnackBar(err.toString(), type: ExSnackBarType.warning);
       }).whenComplete(() {});
     } else if (codeType == VerifyState.forgot) {
       HttpUtils.diorequst("/forgetPassword", method: "post", params: {
@@ -84,7 +92,7 @@ class PasswordController extends GetxController {
       }).then((value) {
         Get.toNamed("/successfully");
       }, onError: (err) {
-        exSnackBar(err.toString());
+        exSnackBar(err.toString(), type: ExSnackBarType.warning);
       }).whenComplete(() => {});
     }
   }

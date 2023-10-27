@@ -127,13 +127,27 @@ class PasswordState extends State<PasswordPage> {
                         ),
                       ),
                       error: controller.passwordErrorText != null,
-                      errorText: controller.passwordErrorText,
+                      // errorText: controller.passwordErrorText,
+                      errorWidget: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.only(top: 8.w),
+                        child: Text(
+                          controller.passwordErrorText ?? "",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: errorTextColor,
+                          ),
+                        ),
+                      ),
                       textAlign: TextAlign.center,
                       hintText: "Password",
                       allowClear: true,
                       keyboardType: TextInputType.visiblePassword,
                       onClear: () {
                         _passwordController.text = "";
+                        controller.password = "";
+                        controller.validatePassword("");
                       },
                     );
                   },
@@ -172,6 +186,8 @@ class PasswordState extends State<PasswordPage> {
                       keyboardType: TextInputType.visiblePassword,
                       onClear: () {
                         _confirmPasswordController.text = "";
+                        controller.confirmPassword = "";
+                        controller.validateConfirmPassword("");
                       },
                     );
                   },
@@ -186,11 +202,15 @@ class PasswordState extends State<PasswordPage> {
                       height: 64.w,
                       enableFeedback: true,
                       disabledColor: disableColor,
-                      textColor: Colors.white,
-                      onPressed: () {
-                        controller.next();
-                      },
+                      onPressed: controller.nextBtnDisabled
+                          ? null
+                          : () {
+                              controller.next();
+                            },
                       color: const Color.fromRGBO(255, 128, 0, 1),
+                      textColor: controller.nextBtnDisabled
+                          ? const Color.fromRGBO(0, 0, 0, 0.24)
+                          : Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.w),
                       ),

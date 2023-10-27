@@ -113,6 +113,8 @@ class LoginState extends State<SignUpPage> {
                       keyboardType: TextInputType.emailAddress,
                       onClear: () {
                         _emialController.text = "";
+                        controller.email = "";
+                        controller.validateEmail("");
                       },
                     );
                   },
@@ -140,6 +142,8 @@ class LoginState extends State<SignUpPage> {
                       keyboardType: TextInputType.name,
                       onClear: () {
                         _nicknameController.text = "";
+                        controller.nickname = "";
+                        controller.validateNickname("");
                       },
                     );
                   },
