@@ -129,7 +129,6 @@ class _MinePage extends State<MinePage> {
             Expanded(
                 child: SingleChildScrollView(
               controller: _scrollController,
-              physics: const ClampingScrollPhysics(),
               child: Container(
                 color: Colors.transparent,
                 width: double.infinity,

@@ -51,7 +51,7 @@ class ChatListPage extends StatelessWidget {
               topLeft: Radius.circular(24.sp),
               topRight: Radius.circular(24.sp)),
         ),
-        child: _refreshListView,
+        child: SlidableAutoCloseBehavior(child: _refreshListView,),
       );
     }));
   }
@@ -80,13 +80,14 @@ class ChatListPage extends StatelessWidget {
     var roleData = logic.dataList[index];
     return Slidable(
       key: ValueKey(roleData.roleId),
+      groupTag: "0",
       endActionPane: ActionPane(
         extentRatio: 0.22,
         motion: const ScrollMotion(),
         children: [
           CustomSlidableAction(
             onPressed: (context) {
-              logic.deleteChatItem(index);
+              logic.deleteConfirm(index);
             },
             child: Image.asset('assets/images/icons/slideDelete.png',
                 width: 44.w, height: 44.w),
