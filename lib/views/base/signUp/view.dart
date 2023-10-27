@@ -20,7 +20,17 @@ import 'package:soulmate/views/base/signUp/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:flutter/cupertino.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  SignUpPage({super.key});
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return LoginState();
+  }
+}
+
+class LoginState extends State<SignUpPage> {
   final logic = Get.put(SignUpController());
 
   final _emialController = TextEditingController();
@@ -30,6 +40,31 @@ class SignUpPage extends StatelessWidget {
   FocusNode _emailFocusNode = FocusNode();
 
   FocusNode _nicknameFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _emailFocusNode.addListener(() {
+      if (!_emailFocusNode.hasFocus) {
+        logic.validateEmail(_emialController.text);
+      }
+    });
+    _nicknameFocusNode.addListener(() {
+      if (!_nicknameFocusNode.hasFocus) {
+        logic.validateNickname(_nicknameController.text);
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emialController.dispose();
+    _emailFocusNode.dispose();
+    _nicknameController.dispose();
+    _nicknameFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +83,11 @@ class SignUpPage extends StatelessWidget {
                 ),
                 Text(
                   'Create your account',
-                  style: TextStyle(fontSize: 27.sp),
+                  style: TextStyle(
+                    fontSize: 27.sp,
+                    fontFamily: FontFamily.SFProRoundedBlod,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(
                   height: 186.w,
@@ -59,11 +98,11 @@ class SignUpPage extends StatelessWidget {
                       controller: _emialController,
                       onChanged: (v) {
                         controller.email = v;
-                        controller.validateEmail(v);
                       },
                       focusNode: _emailFocusNode,
                       textInputAction: TextInputAction.next,
                       onEditingComplete: () {
+                        controller.validateNext(refresh: true);
                         _nicknameFocusNode.requestFocus();
                       },
                       error: controller.emailErrorText != null,
@@ -87,7 +126,6 @@ class SignUpPage extends StatelessWidget {
                       controller: _nicknameController,
                       onChanged: (v) {
                         controller.nickname = v;
-                        controller.validateNickname(v);
                       },
                       focusNode: _nicknameFocusNode,
                       textInputAction: TextInputAction.done,
@@ -122,18 +160,24 @@ class SignUpPage extends StatelessWidget {
                       onPressed: controller.nextBtnDisabled
                           ? null
                           : () {
-                        Get.toNamed('/authCode', arguments: {
-                          "codeType": VerifyState.signUp,
-                          "email": controller.email,
-                          "nickName": controller.nickname,
-                        });
-                      },
+                              Get.toNamed('/authCode', arguments: {
+                                "codeType": VerifyState.signUp,
+                                "email": controller.email,
+                                "nickName": controller.nickname,
+                              });
+                            },
                       color: const Color.fromRGBO(255, 128, 0, 1),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.w),
                       ),
-                      child:
-                      Text('Next', style: TextStyle(fontSize: 18.sp)),
+                      child: Text(
+                        'Next',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontFamily: FontFamily.SFProRoundedBlod,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -153,8 +197,7 @@ class SignUpPage extends StatelessWidget {
                       },
                       child: Text(
                         'Terms,',
-                        style:
-                        TextStyle(fontSize: 14.sp, color: primaryColor),
+                        style: TextStyle(fontSize: 14.sp, color: primaryColor),
                       ),
                     ),
                     GestureDetector(
@@ -163,8 +206,7 @@ class SignUpPage extends StatelessWidget {
                       },
                       child: Text(
                         'Privacy Policy',
-                        style:
-                        TextStyle(fontSize: 14.sp, color: primaryColor),
+                        style: TextStyle(fontSize: 14.sp, color: primaryColor),
                       ),
                     ),
                     Text(

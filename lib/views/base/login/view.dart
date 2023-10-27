@@ -19,9 +19,17 @@ import 'package:get/get.dart';
 import 'controller.dart';
 import 'package:flutter/cupertino.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return LoginState();
+  }
+}
+
+class LoginState extends State<LoginPage> {
   final logic = Get.put(LoginController());
 
   final _emialController = TextEditingController();
@@ -31,6 +39,31 @@ class LoginPage extends StatelessWidget {
   FocusNode _emailFocusNode = FocusNode();
 
   FocusNode _passwordFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _emailFocusNode.addListener(() {
+      if (!_emailFocusNode.hasFocus) {
+        logic.validateEmail(_emialController.text);
+      }
+    });
+    _passwordFocusNode.addListener(() {
+      if (!_passwordFocusNode.hasFocus) {
+        logic.validatePassword(_passwordController.text);
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _passwordFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _emialController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +78,12 @@ class LoginPage extends StatelessWidget {
                 SizedBox(height: 97.w),
                 Text(
                   'Enter your phone or email',
-                  style: TextStyle(fontSize: 27.sp, color: textColor),
+                  style: TextStyle(
+                    fontSize: 27.sp,
+                    color: textColor,
+                    fontFamily: FontFamily.SFProRoundedBlod,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(height: 126.w),
                 GetBuilder<LoginController>(
@@ -54,7 +92,6 @@ class LoginPage extends StatelessWidget {
                       controller: _emialController,
                       onChanged: (v) {
                         controller.email = v;
-                        controller.validateEmail(v);
                       },
                       focusNode: _emailFocusNode,
                       textInputAction: TextInputAction.next,
@@ -82,7 +119,6 @@ class LoginPage extends StatelessWidget {
                       controller: _passwordController,
                       onChanged: (v) {
                         controller.password = v;
-                        controller.validatePassword(v);
                       },
                       focusNode: _passwordFocusNode,
                       textInputAction: TextInputAction.done,
@@ -143,7 +179,11 @@ class LoginPage extends StatelessWidget {
                             },
                       child: Text(
                         'Login',
-                        style: TextStyle( fontSize: 18.sp),
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontFamily: FontFamily.SFProRoundedBlod,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       minWidth: double.infinity,
                       height: 64.w,
@@ -160,7 +200,10 @@ class LoginPage extends StatelessWidget {
                     Expanded(child: Divider()),
                     Text(
                       ' or continue with ',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontFamily: FontFamily.SFProRoundedMedium,
+                      ),
                     ),
                     Expanded(child: Divider()),
                   ],

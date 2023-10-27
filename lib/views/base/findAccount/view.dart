@@ -20,12 +20,37 @@ import 'package:flutter/cupertino.dart';
 
 import 'controller.dart';
 
-class FindAccountPage extends StatelessWidget {
+class FindAccountPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return FindAccountState();
+  }
+}
+
+class FindAccountState extends State<FindAccountPage> {
   final logic = Get.put(FindAccountController());
 
   final _emialController = TextEditingController();
 
   FocusNode _emailFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    _emailFocusNode.addListener(() {
+      if (!_emailFocusNode.hasFocus) {
+        logic.validateEmail(_emialController.text);
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailFocusNode.dispose();
+    _emialController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +69,11 @@ class FindAccountPage extends StatelessWidget {
                 ),
                 Text(
                   "Find your account",
-                  style: TextStyle(fontSize: 27.sp),
+                  style: TextStyle(
+                    fontSize: 27.sp,
+                    fontFamily: FontFamily.SFProRoundedBlod,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(
                   height: 186.w,
@@ -55,7 +84,6 @@ class FindAccountPage extends StatelessWidget {
                       controller: _emialController,
                       onChanged: (v) {
                         controller.email = v;
-                        controller.validateEmail(v);
                       },
                       autofocus: true,
                       focusNode: _emailFocusNode,
@@ -100,8 +128,14 @@ class FindAccountPage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.w),
                       ),
-                      child:
-                          Text('Next', style: TextStyle(fontSize: 18.sp)),
+                      child: Text(
+                        'Next',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: FontFamily.SFProRoundedBlod,
+                        ),
+                      ),
                     );
                   },
                 ),

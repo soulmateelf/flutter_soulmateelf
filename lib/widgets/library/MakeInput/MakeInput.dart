@@ -180,7 +180,11 @@ class _MakeInput extends State<MakeInput> {
                   obscureText: widget.obscureText,
                   keyboardType: widget.keyboardType,
                   cursorColor: primaryColor,
-                  style: TextStyle(fontSize: 18.sp, color: textColor),
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    color: textColor,
+                    fontFamily: FontFamily.SFProRoundedMedium,
+                  ),
                   textInputAction: widget.textInputAction,
                   onEditingComplete: widget.onEditingComplete,
                   focusNode: _focusNode,
@@ -188,8 +192,10 @@ class _MakeInput extends State<MakeInput> {
                   autofocus: widget.autofocus,
                   decoration: InputDecoration(
                     hintText: widget.hintText,
-                    hintStyle:
-                        const TextStyle(color: Color.fromRGBO(0, 0, 0, 0.32)),
+                    hintStyle: const TextStyle(
+                      color: Color.fromRGBO(0, 0, 0, 0.32),
+                      fontFamily: FontFamily.SFProRoundedMedium,
+                    ),
                     border: InputBorder.none,
                   ),
                 ),

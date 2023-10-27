@@ -25,30 +25,24 @@ class LoginController extends GetxController {
 
   void validateEmail(String email) {
     final isEmail = GetUtils.isEmail(email);
-    final prevErrorText = emailErrorText;
     if (isEmail) {
       emailErrorText = null;
     } else {
       emailErrorText = "Please enter a valid email.";
     }
-    if (prevErrorText != emailErrorText) {
-      validateNext();
-      update();
-    }
+    validateNext();
+    update();
   }
 
   void validatePassword(String password) {
     final isPassword = password.length >= 8;
-    final prevErrorText = passwordErrorText;
     if (isPassword) {
       passwordErrorText = null;
     } else {
       passwordErrorText = "Please enter a valid password.";
     }
-    if (prevErrorText != passwordErrorText) {
-      validateNext();
-      update();
-    }
+    validateNext();
+    update();
   }
 
   bool nextBtnDisabled = true;

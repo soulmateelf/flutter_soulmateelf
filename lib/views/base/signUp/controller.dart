@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 
 import '../../../widgets/library/projectLibrary.dart';
 
@@ -16,10 +17,8 @@ class SignUpController extends GetxController {
     } else {
       emailErrorText = "Please enter a valid email.";
     }
-    if (prevErrorText != emailErrorText) {
-      validateNext();
-      update();
-    }
+    validateNext();
+    update();
   }
 
   void validateNickname(String nickname) {
@@ -30,14 +29,14 @@ class SignUpController extends GetxController {
     } else {
       nicknameErrorText = "Please enter a valid nickname.";
     }
-    if (prevErrorText != nicknameErrorText) {
-      validateNext();
-      update();
-    }
+    validateNext();
+    update();
   }
 
   /// 判断是否可以进行下一步 对按钮控制的状态做禁用
-  validateNext() {
+  validateNext({
+    bool refresh = false,
+  }) {
     if (email.length > 0 &&
         nickname.length > 0 &&
         emailErrorText == null &&
@@ -45,6 +44,9 @@ class SignUpController extends GetxController {
       nextBtnDisabled = false;
     } else {
       nextBtnDisabled = true;
+    }
+    if(refresh){
+      update();
     }
   }
 
@@ -55,6 +57,4 @@ class SignUpController extends GetxController {
   }
 
   bool nextBtnDisabled = true;
-
-
 }

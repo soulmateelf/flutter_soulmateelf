@@ -17,6 +17,7 @@ class AuthCodeController extends GetxController {
   }
 
   bool hasError = false;
+  String? errorText = null;
 
   void setHasError(bool e) {
     hasError = e;
@@ -24,13 +25,13 @@ class AuthCodeController extends GetxController {
   }
 
   StreamController<ErrorAnimationType>? errorAnimationController;
-  void setErrorController (StreamController<ErrorAnimationType> controller) {
-      errorAnimationController = controller;
-      update();
+
+  void setErrorController(StreamController<ErrorAnimationType> controller) {
+    errorAnimationController = controller;
+    update();
   }
 
   var code = "";
-
 
   void sendCode() {
     if (!loading) {
@@ -60,9 +61,12 @@ class AuthCodeController extends GetxController {
           ...arguments as Map,
           "code": code,
         });
+
+        errorText = null;
         setHasError(false);
       }, onError: (err) {
         errorAnimationController?.add(ErrorAnimationType.shake);
+        errorText = err.toString();
         setHasError(true);
         APPPlugin.logger.d(err);
       });
@@ -72,6 +76,4 @@ class AuthCodeController extends GetxController {
   }
 
   bool nextBtnDisabled = true;
-
-
 }

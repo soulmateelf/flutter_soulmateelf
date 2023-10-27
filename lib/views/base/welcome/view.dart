@@ -65,10 +65,14 @@ class WelcomePage extends StatelessWidget {
                       SizedBox(
                         width: 49.w,
                       ),
-                      Text('Continue with Google',
-                          style: TextStyle(
-                              fontSize: 18.sp,
-                              color: const Color.fromRGBO(0, 0, 0, 0.8)))
+                      Text(
+                        'Continue with Google',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          color: const Color.fromRGBO(0, 0, 0, 0.8),
+                          fontFamily: FontFamily.SFProRoundedSemibold,
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -94,8 +98,14 @@ class WelcomePage extends StatelessWidget {
                       SizedBox(
                         width: 49.w,
                       ),
-                      Text('Continue with Facebook',
-                          style: TextStyle(fontSize: 18.sp, color: textColor))
+                      Text(
+                        'Continue with Facebook',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          color: textColor,
+                          fontFamily: FontFamily.SFProRoundedSemibold,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -112,8 +122,15 @@ class WelcomePage extends StatelessWidget {
                     Get.toNamed('/login');
                   },
                   color: const Color.fromRGBO(255, 128, 0, 1),
-                  child: Text('Log in with password',
-                      style: TextStyle(fontSize: 18.sp, color: Colors.white)),
+                  child: Text(
+                    'Log in with password',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      color: Colors.white,
+                      fontFamily: FontFamily.SFProRoundedBlod,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: 5.w,
@@ -143,7 +160,9 @@ class WelcomePage extends StatelessWidget {
                   children: [
                     Text(
                       'By signing up, you agree to our ',
-                      style: TextStyle(fontSize: 14.sp),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                      ),
                     ),
                     GestureDetector(
                       onTap: () {

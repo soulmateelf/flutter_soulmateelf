@@ -70,7 +70,11 @@ class _AuthCodePageState extends State<AuthCodePage> {
                       controller.loading
                           ? "Sending verification code"
                           : 'We sent you a code',
-                      style: TextStyle(fontSize: 27.sp),
+                      style: TextStyle(
+                        fontSize: 27.sp,
+                        fontFamily: FontFamily.SFProRoundedBlod,
+                        fontWeight: FontWeight.bold,
+                      ),
                     );
                   },
                 ),
@@ -81,20 +85,24 @@ class _AuthCodePageState extends State<AuthCodePage> {
                   builder: (controller) {
                     return PinCodeTextField(
                       pinTheme: PinTheme(
-                          shape: PinCodeFieldShape.box,
-                          borderRadius: BorderRadius.circular(borderRadius),
-                          borderWidth: borderWidth,
-                          inactiveColor: borderColor,
-                          activeColor: primaryColor,
-                          selectedColor: primaryColor,
-                          errorBorderColor: errorBorderColor,
-                          selectedFillColor: Colors.white,
-                          errorBorderWidth: borderWidth,
-                          selectedBorderWidth: 4,
-                          activeFillColor: controller.hasError
-                              ? errorBackgroundColor
-                              : Colors.white,
-                          inactiveFillColor: Colors.white),
+                        shape: PinCodeFieldShape.box,
+                        borderRadius: BorderRadius.circular(borderRadius),
+                        borderWidth: borderWidth,
+                        inactiveColor: borderColor,
+                        activeColor: primaryColor,
+                        selectedColor: primaryColor,
+                        errorBorderColor: errorBorderColor,
+                        selectedFillColor: Colors.white,
+                        errorBorderWidth: borderWidth,
+                        selectedBorderWidth: 4,
+                        activeFillColor: controller.hasError
+                            ? errorBackgroundColor
+                            : Colors.white,
+                        inactiveFillColor: Colors.white,
+                        fieldHeight: 64.w,
+                        fieldWidth: 52.w,
+                        fieldOuterPadding: EdgeInsets.all(0.w),
+                      ),
                       autoFocus: true,
                       autoUnfocus: true,
                       useHapticFeedback: true,
@@ -112,6 +120,10 @@ class _AuthCodePageState extends State<AuthCodePage> {
                       },
                       appContext: context,
                       length: 6,
+                      textStyle: TextStyle(
+                        fontSize: 28.sp,
+                        fontFamily: FontFamily.SFProRoundedMedium,
+                      ),
                       keyboardType: TextInputType.number,
                     );
                   },
@@ -123,9 +135,13 @@ class _AuthCodePageState extends State<AuthCodePage> {
                       child: Padding(
                         padding: EdgeInsets.only(top: 12.w),
                         child: Text(
-                          'The code you entered is incorrect.Please try again.',
+                          controller.errorText ??
+                              'The code you entered is incorrect.Please try again.',
                           style: TextStyle(
-                              color: errorTextColor, fontSize: 14.sp),
+                            color: errorTextColor,
+                            fontSize: 14.sp,
+                            fontFamily: FontFamily.SFProRoundedLight,
+                          ),
                         ),
                       ),
                     );
@@ -140,8 +156,12 @@ class _AuthCodePageState extends State<AuthCodePage> {
                     },
                     child: Text(
                       'Resend code',
-                      style:
-                          TextStyle(color: primaryColor, fontSize: 17.sp),
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontSize: 17.sp,
+                        fontFamily: FontFamily.SFProRoundedBlod,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ))
               ],
             ),

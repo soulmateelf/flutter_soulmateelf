@@ -23,9 +23,17 @@ import '../../../utils/tool/utils.dart';
 import 'controller.dart';
 import 'package:flutter/cupertino.dart';
 
-class PasswordPage extends StatelessWidget {
+class PasswordPage extends StatefulWidget {
   PasswordPage({super.key});
 
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return PasswordState();
+  }
+}
+
+class PasswordState extends State<PasswordPage> {
   final logic = Get.put(PasswordController());
 
   final arguments = Get.arguments;
@@ -37,6 +45,31 @@ class PasswordPage extends StatelessWidget {
   FocusNode _confirmPasswordFocusNode = FocusNode();
 
   FocusNode _passwordFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    _confirmPasswordFocusNode.addListener(() {
+      if (!_confirmPasswordFocusNode.hasFocus) {
+        logic.validateConfirmPassword(_confirmPasswordController.text);
+      }
+    });
+    _passwordFocusNode.addListener(() {
+      if (!_passwordFocusNode.hasFocus) {
+        logic.validatePassword(_passwordController.text);
+        logic.validateConfirmPassword(_confirmPasswordController.text);
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _passwordFocusNode.dispose();
+    _confirmPasswordFocusNode.dispose();
+    _confirmPasswordController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   final typeMap = {
     VerifyState.signUp: {
@@ -62,7 +95,12 @@ class PasswordPage extends StatelessWidget {
                 SizedBox(height: 97.w),
                 Text(
                   "${typeMap[arguments['codeType']]?['title']}",
-                  style: TextStyle(fontSize: 27.sp, color: textColor),
+                  style: TextStyle(
+                    fontSize: 27.sp,
+                    color: textColor,
+                    fontFamily: FontFamily.SFProRoundedBlod,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(height: 126.w),
                 GetBuilder<PasswordController>(
@@ -71,9 +109,6 @@ class PasswordPage extends StatelessWidget {
                       controller: _passwordController,
                       onChanged: (v) {
                         controller.password = v;
-                        controller.validatePassword(v);
-                        controller.validateConfirmPassword(
-                            controller.confirmPassword);
                       },
                       obscureText: !controller.passwordVisible,
                       focusNode: _passwordFocusNode,
@@ -113,8 +148,6 @@ class PasswordPage extends StatelessWidget {
                       obscureText: !controller.confirmPasswordVisible,
                       onChanged: (v) {
                         controller.confirmPassword = v;
-                        controller.validatePassword(controller.password);
-                        controller.validateConfirmPassword(v);
                       },
                       suffix: GestureDetector(
                         onTap: () {
@@ -161,7 +194,14 @@ class PasswordPage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.w),
                       ),
-                      child: Text('Next', style: TextStyle(fontSize: 18.sp)),
+                      child: Text(
+                        'Next',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: FontFamily.SFProRoundedBlod,
+                        ),
+                      ),
                     );
                   },
                 ),

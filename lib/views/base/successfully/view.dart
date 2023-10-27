@@ -27,7 +27,12 @@ class SuccessfullyPage extends StatelessWidget {
               Text(
                 """Your’ve successfully\nchanged your password.""",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: textColor, fontSize: 27.sp),
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 27.sp,
+                  fontFamily: FontFamily.SFProRoundedBlod,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(
                 height: 259.w,
@@ -46,8 +51,15 @@ class SuccessfullyPage extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.w),
                   ),
-                  child: Text('Continue to ELF',
-                      style: TextStyle(fontSize: 18.sp, color: Colors.white)),
+                  child: Text(
+                    'Continue to ELF',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: FontFamily.SFProRoundedBlod,
+                    ),
+                  ),
                 ),
               )
             ],
