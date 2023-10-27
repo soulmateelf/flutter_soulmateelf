@@ -163,13 +163,7 @@ class LoginState extends State<SignUpPage> {
                           : Colors.white,
                       onPressed: controller.nextBtnDisabled
                           ? null
-                          : () {
-                              Get.toNamed('/authCode', arguments: {
-                                "codeType": VerifyState.signUp,
-                                "email": controller.email,
-                                "nickName": controller.nickname,
-                              });
-                            },
+                          : controller.next,
                       color: const Color.fromRGBO(255, 128, 0, 1),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.w),

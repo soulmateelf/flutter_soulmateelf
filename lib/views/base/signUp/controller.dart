@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 
+import '../../../utils/core/constants.dart';
+import '../../../utils/core/httputil.dart';
 import '../../../widgets/library/projectLibrary.dart';
 
 class SignUpController extends GetxController {
@@ -45,9 +47,23 @@ class SignUpController extends GetxController {
     } else {
       nextBtnDisabled = true;
     }
-    if(refresh){
+    if (refresh) {
       update();
     }
+  }
+
+  void next() {
+    HttpUtils.diorequst("/emailExist", query: {"email": email}).then((value) {
+      if (value['code'] == 200) {
+        Get.toNamed('/authCode', arguments: {
+          "codeType": VerifyState.signUp,
+          "email": email,
+          "nickName": nickname,
+        });
+      }
+    }, onError: (err) {
+      exSnackBar(err.toString(), type: ExSnackBarType.error);
+    });
   }
 
   @override
