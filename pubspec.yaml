@@ -92,7 +92,7 @@ dependencies:
   speech_to_text: ^6.3.0
   #google登录
   #https://github.com/flutter/packages/tree/main/packages/google_sign_in/google_sign_in
-  google_sign_in: ^6.1.4
+  google_sign_in: ^6.1.5
   #facebook登录
   #https://github.com/Innim/flutter_login_facebook
   # flutter_login_facebook: ^1.8.0

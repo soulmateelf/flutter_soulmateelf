@@ -7,11 +7,37 @@
 
 
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class WelcomeController extends GetxController {
   // 上次点击返回键时间
   int lastClickTime = 0;
+  // google登录
+  GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
+
+  // google登录
+  void googleLogin() async {
+    print(555555);
+    googleSignIn.isSignedIn().then((value) async{
+      print(value);
+      // 如果不退出，那已登录状态会保持一段时间，就不能达到切换账号的目的了
+      if(value == true){
+        await googleSignIn.signOut();
+      }
+      GoogleSignInAccount? googleResult = await googleSignIn.signIn();
+      print(googleResult);
+    });
+    // Get.toNamed("/signUp");
+    ///{displayName: kele zxw, email: kelezxw@gmail.com, id: 1069*******, photoUrl: https://lh3.googleusercontent.com/a/AGNmyxbsax2bXt55bBGEUSHb7Ghsaxjsm14OmqvIVuf2=s1337,}
+    // thirdLogin({
+    //   'type': 1, //1:google 2:facebook
+    //   'loginId': googleResult!.id?.toString(),
+    //   'nickName': googleResult?.displayName,
+    //   'image': googleResult?.photoUrl,
+    //   'email': googleResult?.email,
+    // });
+  }
 
   /// Author: kele
   /// Date: 2022-03-08 15:12:36
