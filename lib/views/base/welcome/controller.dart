@@ -18,9 +18,7 @@ class WelcomeController extends GetxController {
 
   // google登录
   void googleLogin() async {
-    print(555555);
     googleSignIn.isSignedIn().then((value) async{
-      print(value);
       // 如果不退出，那已登录状态会保持一段时间，就不能达到切换账号的目的了
       if(value == true){
         await googleSignIn.signOut();

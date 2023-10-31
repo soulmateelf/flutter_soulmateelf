@@ -17,7 +17,7 @@ class FadeAnimation extends StatelessWidget {
         duration: const Duration(milliseconds: 500),
       ).thenTween(
         "translateY",
-        Tween(begin: -30.0, end: 0.0),
+        Tween(begin: 20.0, end: 0.0),
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInSine,
       );
@@ -27,14 +27,12 @@ class FadeAnimation extends StatelessWidget {
       delay: Duration(milliseconds: (500 * delay).round()),
       child: child,
       builder: (_, movie, child) {
-        APPPlugin.logger.d(movie.get("translateY"));
-        APPPlugin.logger..d(child);
         return Opacity(
           opacity: movie.get("opacity"),
           child: Transform.translate(
             offset: Offset(
-              0.0,
-              movie.get("translateY"),
+
+              movie.get("translateY"),0.0,
             ),
             child: child,
           ),

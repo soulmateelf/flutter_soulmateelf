@@ -85,7 +85,7 @@ class _MakeInput extends State<MakeInput> {
   @override
   void dispose() {
     // TODO: implement dispose
-    _focusNode.dispose();
+    _focusNode?.dispose();
     super.dispose();
   }
 

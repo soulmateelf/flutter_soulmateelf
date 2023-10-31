@@ -76,127 +76,138 @@ class LoginState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                FadeAnimation(0.5, Text("123")),
                 SizedBox(height: 97.w),
-                Text(
-                  'Enter your phone or email',
-                  style: TextStyle(
-                    fontSize: 27.sp,
-                    color: textColor,
-                    fontFamily: FontFamily.SFProRoundedBlod,
-                    fontWeight: FontWeight.bold,
+                FadeAnimation(
+                  1,
+                  Text(
+                    'Enter your phone or email',
+                    style: TextStyle(
+                      fontSize: 27.sp,
+                      color: textColor,
+                      fontFamily: FontFamily.SFProRoundedBlod,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 SizedBox(height: 126.w),
-                GetBuilder<LoginController>(
-                  builder: (controller) {
-                    return MakeInput(
-                      controller: _emialController,
-                      onChanged: (v) {
-                        controller.email = v;
-                      },
-                      focusNode: _emailFocusNode,
-                      textInputAction: TextInputAction.next,
-                      onEditingComplete: () {
-                        _passwordFocusNode.requestFocus();
-                      },
-                      error: controller.emailErrorText != null,
-                      errorText: controller.emailErrorText,
-                      textAlign: TextAlign.center,
-                      hintText: "Email",
-                      allowClear: true,
-                      keyboardType: TextInputType.emailAddress,
-                      onClear: () {
-                        _emialController.text = "";
-                        controller.email = "";
-                        controller.validateEmail("");
-                      },
-                    );
-                  },
-                ),
-                SizedBox(
-                  height: 12.w,
-                ),
-                GetBuilder<LoginController>(
-                  builder: (controller) {
-                    return MakeInput(
-                      controller: _passwordController,
-                      onChanged: (v) {
-                        controller.password = v;
-                      },
-                      focusNode: _passwordFocusNode,
-                      textInputAction: TextInputAction.done,
-                      onEditingComplete: () {
-                        _passwordFocusNode.unfocus();
-                      },
-                      obscureText: !controller.passwordVisible,
-                      suffix: GestureDetector(
-                        onTap: () {
-                          controller.togglePasswordVisible();
+                FadeAnimation(
+                  1.1,
+                  GetBuilder<LoginController>(
+                    builder: (controller) {
+                      return MakeInput(
+                        controller: _emialController,
+                        onChanged: (v) {
+                          controller.email = v;
                         },
-                        child: Icon(
-                          !controller.passwordVisible
-                              ? CupertinoIcons.eye_slash
-                              : CupertinoIcons.eye,
-                        ),
-                      ),
-                      error: controller.passwordErrorText != null,
-                      errorText: controller.passwordErrorText,
-                      textAlign: TextAlign.center,
-                      hintText: "Password",
-                      allowClear: true,
-                      keyboardType: TextInputType.visiblePassword,
-                      onClear: () {
-                        _passwordController.text = "";
-                        controller.password = "";
-                        controller.validatePassword("");
-                      },
-                    );
-                  },
+                        focusNode: _emailFocusNode,
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () {
+                          _passwordFocusNode.requestFocus();
+                        },
+                        error: controller.emailErrorText != null,
+                        errorText: controller.emailErrorText,
+                        textAlign: TextAlign.center,
+                        hintText: "Email",
+                        allowClear: true,
+                        keyboardType: TextInputType.emailAddress,
+                        onClear: () {
+                          _emialController.text = "";
+                          controller.email = "";
+                          controller.validateEmail("");
+                        },
+                      );
+                    },
+                  ),
                 ),
                 SizedBox(
                   height: 12.w,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Get.toNamed("/findAccount");
-                  },
-                  child: const Text(
-                    'Forgot password',
-                    style: TextStyle(color: primaryColor),
+                FadeAnimation(
+                  1.3, GetBuilder<LoginController>(
+                    builder: (controller) {
+                      return MakeInput(
+                        controller: _passwordController,
+                        onChanged: (v) {
+                          controller.password = v;
+                        },
+                        focusNode: _passwordFocusNode,
+                        textInputAction: TextInputAction.done,
+                        onEditingComplete: () {
+                          _passwordFocusNode.unfocus();
+                        },
+                        obscureText: !controller.passwordVisible,
+                        suffix: GestureDetector(
+                          onTap: () {
+                            controller.togglePasswordVisible();
+                          },
+                          child: Icon(
+                            !controller.passwordVisible
+                                ? CupertinoIcons.eye_slash
+                                : CupertinoIcons.eye,
+                          ),
+                        ),
+                        error: controller.passwordErrorText != null,
+                        errorText: controller.passwordErrorText,
+                        textAlign: TextAlign.center,
+                        hintText: "Password",
+                        allowClear: true,
+                        keyboardType: TextInputType.visiblePassword,
+                        onClear: () {
+                          _passwordController.text = "";
+                          controller.password = "";
+                          controller.validatePassword("");
+                        },
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 12.w,
+                ),
+                FadeAnimation(
+                  1.5, GestureDetector(
+                    onTap: () {
+                      Get.toNamed("/findAccount");
+                    },
+                    child: const Text(
+                      'Forgot password',
+                      style: TextStyle(color: primaryColor),
+                    ),
                   ),
                 ),
                 SizedBox(
                   height: 24.w,
                 ),
-                GetBuilder<LoginController>(
-                  builder: (controller) {
-                    return MaterialButton(
-                      color: primaryColor,
-                      enableFeedback: true,
-                      disabledColor: disableColor,
-                      textColor: controller.nextBtnDisabled
-                          ? const Color.fromRGBO(0, 0, 0, 0.24)
-                          : Colors.white,
-                      onPressed: controller.nextBtnDisabled
-                          ? null
-                          : () {
-                              logic.login();
-                            },
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontFamily: FontFamily.SFProRoundedBlod,
-                          fontWeight: FontWeight.bold,
+                FadeAnimation(
+                  1.7, GetBuilder<LoginController>(
+                    builder: (controller) {
+                      return MaterialButton(
+                        color: primaryColor,
+                        enableFeedback: true,
+                        disabledColor: disableColor,
+                        textColor: controller.nextBtnDisabled
+                            ? const Color.fromRGBO(0, 0, 0, 0.24)
+                            : Colors.white,
+                        onPressed: controller.nextBtnDisabled
+                            ? null
+                            : () {
+                                logic.login();
+                              },
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontFamily: FontFamily.SFProRoundedBlod,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      minWidth: double.infinity,
-                      height: 64.w,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(borderRadius)),
-                    );
-                  },
+                        minWidth: double.infinity,
+                        height: 64.w,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(borderRadius)),
+                      );
+                    },
+                  ),
                 ),
                 SizedBox(
                   height: 48.w,
