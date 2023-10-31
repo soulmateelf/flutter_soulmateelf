@@ -16,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
+import '../../../widgets/FadeAnimation.dart';
 import 'controller.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -58,10 +59,10 @@ class LoginState extends State<LoginPage> {
 
   @override
   void dispose() {
-    _passwordFocusNode.dispose();
-    _emailFocusNode.dispose();
     _emialController.dispose();
     _passwordController.dispose();
+    _passwordFocusNode.dispose();
+    _emailFocusNode.dispose();
     super.dispose();
   }
 
@@ -75,6 +76,7 @@ class LoginState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                FadeAnimation(0.5, Text("123")),
                 SizedBox(height: 97.w),
                 Text(
                   'Enter your phone or email',

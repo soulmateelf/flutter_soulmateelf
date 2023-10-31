@@ -16,6 +16,7 @@ import 'package:soulmate/utils/core/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:soulmate/views/base/welcome/controller.dart';
 import 'package:get/get.dart';
+import 'package:soulmate/widgets/FadeAnimation.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class WelcomePage extends StatelessWidget {
