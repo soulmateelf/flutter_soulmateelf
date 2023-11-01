@@ -9,12 +9,15 @@
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class WelcomeController extends GetxController {
   // 上次点击返回键时间
   int lastClickTime = 0;
-  // google登录
+  // google实例
   GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
+  // facebook实例
+  final facebookSignIn = FacebookAuth.instance;
 
   // google登录
   void googleLogin() async {
@@ -28,6 +31,34 @@ class WelcomeController extends GetxController {
     });
     // Get.toNamed("/signUp");
     ///{displayName: kele zxw, email: kelezxw@gmail.com, id: 1069*******, photoUrl: https://lh3.googleusercontent.com/a/AGNmyxbsax2bXt55bBGEUSHb7Ghsaxjsm14OmqvIVuf2=s1337,}
+    // thirdLogin({
+    //   'type': 1, //1:google 2:facebook
+    //   'loginId': googleResult!.id?.toString(),
+    //   'nickName': googleResult?.displayName,
+    //   'image': googleResult?.photoUrl,
+    //   'email': googleResult?.email,
+    // });
+  }
+  // facebook登录
+  void facebookLogin() async {
+    facebookSignIn.login(permissions: ['public_profile']);
+    return;
+    print(FacebookAuth.instance.accessToken.then((value){
+      print(value);
+    }));
+    // return;
+    // by default we request the email and the public profile
+    final LoginResult result = await FacebookAuth.instance.login();
+    if (result.status == LoginStatus.success) {
+      // you are logged
+      final AccessToken accessToken = result.accessToken!;
+      print(accessToken);
+      print(result);
+    } else {
+      print(22222);
+      print(result.status);
+      print(result.message);
+    }
     // thirdLogin({
     //   'type': 1, //1:google 2:facebook
     //   'loginId': googleResult!.id?.toString(),

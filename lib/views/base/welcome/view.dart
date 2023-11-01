@@ -83,7 +83,7 @@ class WelcomePage extends StatelessWidget {
                 MaterialButton(
                   minWidth: double.infinity,
                   height: 64.w,
-                  onPressed: () {},
+                  onPressed: () {logic.facebookLogin();},
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
                       side: BorderSide(width: borderWidth, color: borderColor),
