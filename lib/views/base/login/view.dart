@@ -14,6 +14,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/plugin/GoogleAds.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 import '../../../widgets/FadeAnimation.dart';
@@ -232,7 +233,9 @@ class LoginState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        GoogleAds.googleAdsLoad();
+                      },
                       child: Container(
                         padding: EdgeInsets.all(15.w),
                         decoration: BoxDecoration(
@@ -249,7 +252,9 @@ class LoginState extends State<LoginPage> {
                       width: 40.w,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        GoogleAds.showAds();
+                      },
                       child: Container(
                         padding: EdgeInsets.all(15.w),
                         decoration: BoxDecoration(
