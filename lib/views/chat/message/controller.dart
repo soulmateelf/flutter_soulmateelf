@@ -4,17 +4,22 @@
  * @LastEditTime: 2023-04-25 19:51:12
  * @FilePath: \soulmate\lib\views\main\home\controller.dart
  */
-import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:soulmate/utils/core/httputil.dart';
-import 'package:soulmate/utils/plugin/plugin.dart';
-import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
-class MessageController extends GetxController {
+enum MessageTabKey {
+  system,
+  normal,
+}
 
+class MessageController extends GetxController {
+  MessageTabKey _tabKey = MessageTabKey.normal;
+
+  MessageTabKey get tabKey => _tabKey;
+
+  set tabKey(MessageTabKey value) {
+    _tabKey = value;
+    update();
+  }
 
   @override
   void onInit() {

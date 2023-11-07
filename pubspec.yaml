@@ -63,9 +63,9 @@ dependencies:
   # 弹框
   # https://github.com/mono0926/adaptive_dialog
   adaptive_dialog: ^1.9.0
-  # 日志
+  # 日志  和 声音录制播放插件有冲突 锁定到1.4
   # https://github.com/leisim/logger
-  logger: ^2.0.1
+  logger: 1.4.0
   # 时间处理
   # https://github.com/sadespresso/moment_dart
   moment_dart: ^1.1.0
@@ -115,6 +115,14 @@ dependencies:
   # 添加原生启动屏幕
   # https://pub.dev/packages/flutter_native_splash
   flutter_native_splash: ^2.3.2
+  # 支持音频的播放和录制
+  # https://pub-web.flutter-io.cn/packages/flutter_sound
+  flutter_sound: ^9.2.13
+  # 提供操作文件系统的API
+  # https://pub.dev/packages/path_provider
+  path_provider: ^2.1.1
+
+
 
 dev_dependencies:
   flutter_test:
@@ -131,6 +139,7 @@ flutter:
     - assets/images/image/
     - assets/images/icons/
     - assets/images/menuIcon/
+    - assets/mp3/
 
   fonts:
     - family: SFProRounded
