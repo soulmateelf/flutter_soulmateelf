@@ -6,6 +6,7 @@
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:get/get.dart';
@@ -41,5 +42,8 @@ class APPPlugin {
     if (GetPlatform.isIOS) {
       IOSAppPurchase.initApplePayConfig();
     }
+
+    /// 初始化广告插件
+    MobileAds.instance.initialize();
   }
 }

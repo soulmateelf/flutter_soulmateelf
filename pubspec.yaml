@@ -102,6 +102,9 @@ dependencies:
   # 支付内购，flutter官方插件
   # https://github.com/flutter/packages/tree/main/packages/in_app_purchase/in_app_purchase
   in_app_purchase: ^3.1.8
+  # google app广告
+  # https://developers.google.com/admob/flutter/quick-start?hl=zh-cn
+  google_mobile_ads: ^3.1.0
   # 动画
   # https://github.com/felixblaschke/simple_animations
   simple_animations: ^5.0.2

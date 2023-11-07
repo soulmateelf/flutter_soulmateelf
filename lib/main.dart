@@ -18,7 +18,7 @@ void main() async {
 
   //启动图延时移除方法  一定要放在这句代码下面
   // WidgetsFlutterBinding.ensureInitialized();
-  initialization(null);
+  // initialization(null);
 
 
 
