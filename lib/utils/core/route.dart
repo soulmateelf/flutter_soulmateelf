@@ -17,12 +17,18 @@ import 'package:soulmate/views/chat/chat/view.dart';
 
 /// chat
 import 'package:soulmate/views/chat/chatList/view.dart';
+import 'package:soulmate/views/chat/giftBackpack/view.dart';
 import 'package:soulmate/views/chat/message/view.dart';
+import 'package:soulmate/views/mine/account/view.dart';
+import 'package:soulmate/views/mine/confirmDeactivate/view.dart';
+import 'package:soulmate/views/mine/deactivate/view.dart';
 import 'package:soulmate/views/mine/energy/view.dart';
 import 'package:soulmate/views/mine/feedback/view.dart';
 
 /// mine
 import 'package:soulmate/views/mine/mine/view.dart';
+import 'package:soulmate/views/mine/nickName/view.dart';
+import 'package:soulmate/views/mine/updatePassword/view.dart';
 import 'package:soulmate/views/role/role/view.dart';
 
 /// role
@@ -91,10 +97,31 @@ class AppRoute {
     /// 我的
     GetPage(name: '/mine', page: () => MinePage()),
 
+    /// 充值
     GetPage(name: "/energy", page: () => EnergyPage()),
+
+    /// 充值卡
+    GetPage(name: "/giftBackpack", page: () => GiftBackpackPage()),
 
     /// 反馈
     GetPage(name: '/feedback', page: () => FeedbackPage()),
+
+    /// 我的账户
+    GetPage(name: '/mineAccount', page: () => MineAccountPage()),
+
+    /// 我的昵称
+    GetPage(name: '/mineNickname', page: () => MineNickNamePage()),
+
+    /// 修改密码
+    GetPage(name: '/mineUpdatePassword', page: () => MineUpdatePasswordPage()),
+
+    /// 注销账户
+    GetPage(name: '/mineDeactivate', page: () => MineDeactivatePage()),
+
+    /// 确认注销
+    GetPage(
+        name: '/mineConfirmDeactivate',
+        page: () => MineConfirmDeactivatePage()),
 
     GetPage(name: '/testPage', page: () => TestPage()),
   ];
