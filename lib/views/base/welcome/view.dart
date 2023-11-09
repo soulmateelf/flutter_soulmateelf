@@ -39,7 +39,7 @@ class WelcomePage extends StatelessWidget {
                 TextButton(
                     onPressed: () {
                       // Get.toNamed("/testPage");
-                      Get.toNamed('/mineConfirmDeactivate');
+                      Get.toNamed('/minePurchaseHistory');
                     },
                     child: Text("go Text Page")),
                 Text(

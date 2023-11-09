@@ -21,6 +21,7 @@ import 'package:soulmate/views/chat/giftBackpack/view.dart';
 import 'package:soulmate/views/chat/message/view.dart';
 import 'package:soulmate/views/mine/account/view.dart';
 import 'package:soulmate/views/mine/confirmDeactivate/view.dart';
+import 'package:soulmate/views/mine/contactEmail/view.dart';
 import 'package:soulmate/views/mine/deactivate/view.dart';
 import 'package:soulmate/views/mine/energy/view.dart';
 import 'package:soulmate/views/mine/feedback/view.dart';
@@ -28,6 +29,7 @@ import 'package:soulmate/views/mine/feedback/view.dart';
 /// mine
 import 'package:soulmate/views/mine/mine/view.dart';
 import 'package:soulmate/views/mine/nickName/view.dart';
+import 'package:soulmate/views/mine/purchaseHistory/view.dart';
 import 'package:soulmate/views/mine/updatePassword/view.dart';
 import 'package:soulmate/views/role/role/view.dart';
 
@@ -122,6 +124,12 @@ class AppRoute {
     GetPage(
         name: '/mineConfirmDeactivate',
         page: () => MineConfirmDeactivatePage()),
+
+    /// 联系邮箱
+    GetPage(name: '/mineContactEmail', page: () => MineContactEmailPage()),
+
+    /// 充值历史
+    GetPage(name: '/minePurchaseHistory', page: () => MinePurchaseHistoryPage()),
 
     GetPage(name: '/testPage', page: () => TestPage()),
   ];
