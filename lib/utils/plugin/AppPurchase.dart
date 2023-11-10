@@ -4,15 +4,15 @@ import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
-class IOSAppPurchase {
-  ///ios订单信息订阅
+class AppPurchase {
+  ///订单信息订阅
   static late StreamSubscription<dynamic> _subscription;
 
   ///订单业务回调
   static Function? orderCallback;
 
-  ///初始化ios支付订单状态订阅
-  static initApplePayConfig() async {
+  ///初始化支付订单状态订阅
+  static initAppPayConfig() async {
     final Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
     _subscription = purchaseUpdated.listen((purchaseDetailsList) {
       _listenToPurchaseUpdated(purchaseDetailsList);
@@ -23,7 +23,7 @@ class IOSAppPurchase {
     });
   }
 
-  ///applePay支付状态逻辑处理
+  ///支付状态逻辑处理
   static void _listenToPurchaseUpdated(
       List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
@@ -43,6 +43,9 @@ class IOSAppPurchase {
           // print(purchaseDetails.status);
           // print('purchaseID：${purchaseDetails.purchaseID}');
           // print('productID：${purchaseDetails.productID}');
+        } else if (purchaseDetails.status == PurchaseStatus.restored) {
+          ///恢复购买
+          // print(purchaseDetails);
         }
         if (purchaseDetails.pendingCompletePurchase) {
           ///这个方法是为了应对购买成功后，app崩溃了，重新打开app，此时需要通知IAP平台，已经完成了购买流程
@@ -57,10 +60,10 @@ class IOSAppPurchase {
     });
   }
 
-  ///获取ios云端的商品列表
-  static Future<List<ProductDetails>> getIOSServerProducts(
+  ///获取ios和android商店里面配置的商品列表
+  static Future<List<ProductDetails>> getServerProducts(
       Set<String> pIds) async {
-    ///根据商品id获取ios云端商品列表
+    ///根据商品id获取云端商品列表
     final ProductDetailsResponse response =
         await InAppPurchase.instance.queryProductDetails(pIds);
     if (response.notFoundIDs.isNotEmpty) {
@@ -71,14 +74,28 @@ class IOSAppPurchase {
   }
 
   ///购买商品
-  static payProductNow(ProductDetails appleProductDetails) {
-    if (appleProductDetails == null) {
+  static payProductNow(ProductDetails productDetails) {
+    if (productDetails == null) {
       exSnackBar("something wrong", type: ExSnackBarType.error);
       return;
     }
     final PurchaseParam purchaseParam =
-        PurchaseParam(productDetails: appleProductDetails);
+        PurchaseParam(productDetails: productDetails);
+    // 消耗型商品(一次性购买)和非消耗型商品(月度订阅，年度订阅)的购买是不一样的
+    // if (_isConsumable(productDetails)) {
+    //   InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
+    // } else {
+    //   InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
+    // }
     InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
+  }
+
+  ///恢复购买
+  ///消耗型项目，非消耗型，自动续期订阅，非续期订阅
+  ///恢复购买是恢复非消耗型的商品或者自动续期订阅这两种类型
+  ///这个需要提供一个手动按钮恢复，不然上架不给过哦
+  static restorePuchases() async {
+    await InAppPurchase.instance.restorePurchases();
   }
 
   ///取消支付订阅

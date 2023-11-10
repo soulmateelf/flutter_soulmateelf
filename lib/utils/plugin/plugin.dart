@@ -11,7 +11,7 @@ import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:get/get.dart';
 
-import 'IOSAppPurchase.dart';
+import 'AppPurchase.dart';
 
 class APPPlugin {
   /// 日志
@@ -38,10 +38,8 @@ class APPPlugin {
       APPPlugin.appInfo = packageInfo;
     });
 
-    /// 初始化ios内购
-    if (GetPlatform.isIOS) {
-      IOSAppPurchase.initApplePayConfig();
-    }
+    /// 初始化内购
+    AppPurchase.initAppPayConfig();
 
     /// 初始化广告插件
     MobileAds.instance.initialize();
