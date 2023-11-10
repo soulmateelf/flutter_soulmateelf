@@ -12,11 +12,10 @@
 /// Description: 登录
 
 import 'package:flutter/material.dart';
-import 'package:soulmate/utils/core/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:soulmate/views/base/welcome/controller.dart';
 import 'package:get/get.dart';
-import 'package:soulmate/widgets/FadeAnimation.dart';
+import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/views/base/welcome/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -37,6 +36,12 @@ class WelcomePage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                TextButton(
+                    onPressed: () {
+                      // Get.toNamed("/testPage");
+                      Get.toNamed('/minePurchaseHistory');
+                    },
+                    child: Text("go Text Page")),
                 Text(
                   'Let’s you in',
                   style: TextStyle(
@@ -50,7 +55,9 @@ class WelcomePage extends StatelessWidget {
                 MaterialButton(
                   minWidth: double.infinity,
                   height: 64.w,
-                  onPressed: () {logic.googleLogin();},
+                  onPressed: () {
+                    logic.googleLogin();
+                  },
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
                       side: BorderSide(width: borderWidth, color: borderColor),
@@ -83,7 +90,9 @@ class WelcomePage extends StatelessWidget {
                 MaterialButton(
                   minWidth: double.infinity,
                   height: 64.w,
-                  onPressed: () {logic.facebookLogin();},
+                  onPressed: () {
+                    logic.facebookLogin();
+                  },
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
                       side: BorderSide(width: borderWidth, color: borderColor),

@@ -124,7 +124,7 @@ class LoginState extends State<LoginPage> {
                   height: 12.w,
                 ),
                 FadeAnimation(
-                  1.3, GetBuilder<LoginController>(
+                  1.2, GetBuilder<LoginController>(
                     builder: (controller) {
                       return MakeInput(
                         controller: _passwordController,
@@ -166,7 +166,7 @@ class LoginState extends State<LoginPage> {
                   height: 12.w,
                 ),
                 FadeAnimation(
-                  1.5, GestureDetector(
+                  1.3, GestureDetector(
                     onTap: () {
                       Get.toNamed("/findAccount");
                     },
@@ -180,7 +180,7 @@ class LoginState extends State<LoginPage> {
                   height: 24.w,
                 ),
                 FadeAnimation(
-                  1.7, GetBuilder<LoginController>(
+                  1.4, GetBuilder<LoginController>(
                     builder: (controller) {
                       return MaterialButton(
                         color: primaryColor,

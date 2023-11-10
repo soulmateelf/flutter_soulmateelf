@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:get/get.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
@@ -11,16 +13,13 @@ class FindAccountController extends GetxController {
 
   void validateEmail(String email) {
     final isEmail = GetUtils.isEmail(email);
-    final prevErrorText = emailErrorText;
     if (isEmail) {
       emailErrorText = null;
     } else {
       emailErrorText = "Please enter a valid email.";
     }
-    if (prevErrorText != emailErrorText) {
-      validateNext();
-      update();
-    }
+    validateNext();
+    update();
   }
 
   /// 判断是否可以进行下一步 对按钮控制的状态做禁用
@@ -43,6 +42,7 @@ class FindAccountController extends GetxController {
   void next() {
     if (email.length > 0 && emailErrorText == null) {
       HttpUtils.diorequst("/emailExist", query: {"email": email}).then((value) {
+        APPPlugin.logger.d("success ${value}");
         if (value['code'] == 200) {
           Get.toNamed('/authCode', arguments: {
             "codeType": VerifyState.forgot,
@@ -50,6 +50,7 @@ class FindAccountController extends GetxController {
           });
         }
       }, onError: (err) {
+        /// 账号存在说明可以继续下一步
         exSnackBar(err.toString(), type: ExSnackBarType.error);
       });
     }
