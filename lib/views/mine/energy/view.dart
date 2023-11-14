@@ -219,7 +219,7 @@ class EnergyState extends State<EnergyPage>
                               shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.circular(borderRadius)),
-                              onPressed: () {},
+                              onPressed: () {logic.ttttt();},
                               child: const Text(
                                 "\$ 56.99 / Month",
                                 style: TextStyle(

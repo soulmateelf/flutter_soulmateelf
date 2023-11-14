@@ -63,14 +63,22 @@ class AppPurchase {
   ///获取ios和android商店里面配置的商品列表
   static Future<List<ProductDetails>> getServerProducts(
       Set<String> pIds) async {
+    print("5555555");
     ///根据商品id获取云端商品列表
-    final ProductDetailsResponse response =
-        await InAppPurchase.instance.queryProductDetails(pIds);
-    if (response.notFoundIDs.isNotEmpty) {
-      exSnackBar("something wrong", type: ExSnackBarType.error);
-      return [];
+    try{
+      final ProductDetailsResponse response =
+      await InAppPurchase.instance.queryProductDetails(pIds);
+      print("6666");
+      if (response.notFoundIDs.isNotEmpty) {
+        exSnackBar("something wrong", type: ExSnackBarType.error);
+        return [];
+      }
+      print("777");
+      return response.productDetails;
+    }catch(err){
+      print(err);
     }
-    return response.productDetails;
+    return [];
   }
 
   ///购买商品

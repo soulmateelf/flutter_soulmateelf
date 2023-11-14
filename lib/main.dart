@@ -13,12 +13,10 @@ void main() async {
   ///这句代码是确保使用ios/android原生代码的这些插件有与flutter层交互的能力；
   ///如果app功能全部是flutter的，不依赖于其他插件，是不是就不需要呢？？
   ///参考链接:https://stackoverflow.com/questions/63873338/what-does-widgetsflutterbinding-ensureinitialized-do
-  WidgetsFlutterBinding.ensureInitialized();
-
-
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   //启动图延时移除方法  一定要放在这句代码下面
-  // WidgetsFlutterBinding.ensureInitialized();
-  // initialization(null);
+  initialization(null);
 
 
 
@@ -36,7 +34,7 @@ void initialization (BuildContext? context) async {
   // 这里可以在闪屏界面显示时初始化应用所需的资源。
   // 该函数完成后，闪屏界面会被移除。
   // 延时3秒
-  await Future.delayed(const Duration(seconds: 3));
+  await Future.delayed(const Duration(seconds: 1));
 
   FlutterNativeSplash.remove();
 }

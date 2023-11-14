@@ -233,9 +233,7 @@ class LoginState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        GoogleAds.googleAdsLoad();
-                      },
+                      onTap: () {},
                       child: Container(
                         padding: EdgeInsets.all(15.w),
                         decoration: BoxDecoration(
@@ -252,9 +250,7 @@ class LoginState extends State<LoginPage> {
                       width: 40.w,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        GoogleAds.showAds();
-                      },
+                      onTap: () {},
                       child: Container(
                         padding: EdgeInsets.all(15.w),
                         decoration: BoxDecoration(

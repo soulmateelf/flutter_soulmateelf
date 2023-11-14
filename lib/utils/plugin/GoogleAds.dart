@@ -1,4 +1,4 @@
-
+/*
 import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -58,3 +58,4 @@ class GoogleAds {
     _rewardedAd?.dispose();
   }
 }
+*/

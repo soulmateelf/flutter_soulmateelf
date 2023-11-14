@@ -73,13 +73,13 @@
 		<string>Soulmate</string>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
-            <string>fbapi</string>
-            <string>fb-messenger-share-api</string>
+			<string>fbapi</string>
+			<string>fb-messenger-share-api</string>
 		</array>
 		<!-- End of the facebook Sign-in Section -->
 		<!-- googleAds Section -->
-        <key>GADApplicationIdentifier</key>
-        <string>ca-app-pub-4885363376807063~9897904888</string>
-        <!-- End of the googleAds Section -->
+		<!-- <key>GADApplicationIdentifier</key>-->
+		<!-- <string>ca-app-pub-4885363376807063~9897904888</string>-->
+		<!-- End of the googleAds Section -->
 	</dict>
 </plist>

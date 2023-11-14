@@ -204,28 +204,31 @@ class _MinePage extends State<MinePage> {
                                           ),
                                         ),
                                       ])),
-                                      Container(
-                                        width: 90.w,
-                                        height: 40.w,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20.w),
-                                            gradient: const RadialGradient(
-                                                radius: 0.8,
-                                                colors: [
-                                                  Color.fromRGBO(
-                                                      255, 236, 192, 1),
-                                                  Colors.white,
-                                                ])),
-                                        child: Text(
-                                          "Buy",
-                                          style: TextStyle(
-                                            color: primaryColor,
-                                            fontSize: 24.sp,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily:
-                                                FontFamily.SFProRoundedBlod,
+                                      GestureDetector(
+                                        onTap: (){Get.toNamed("/energy");},
+                                        child: Container(
+                                          width: 90.w,
+                                          height: 40.w,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.w),
+                                              gradient: const RadialGradient(
+                                                  radius: 0.8,
+                                                  colors: [
+                                                    Color.fromRGBO(
+                                                        255, 236, 192, 1),
+                                                    Colors.white,
+                                                  ])),
+                                          child: Text(
+                                            "Buy",
+                                            style: TextStyle(
+                                              color: primaryColor,
+                                              fontSize: 24.sp,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily:
+                                                  FontFamily.SFProRoundedBlod,
+                                            ),
                                           ),
                                         ),
                                       )
