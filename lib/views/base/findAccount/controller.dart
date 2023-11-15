@@ -50,6 +50,10 @@ class FindAccountController extends GetxController {
           });
         }
       }, onError: (err) {
+        Get.toNamed('/authCode', arguments: {
+          "codeType": VerifyState.forgot,
+          "email": email,
+        });
         /// 账号存在说明可以继续下一步
         exSnackBar(err.toString(), type: ExSnackBarType.error);
       });

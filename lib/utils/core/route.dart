@@ -19,6 +19,7 @@ import 'package:soulmate/views/chat/chat/view.dart';
 import 'package:soulmate/views/chat/chatList/view.dart';
 import 'package:soulmate/views/chat/giftBackpack/view.dart';
 import 'package:soulmate/views/chat/message/view.dart';
+import 'package:soulmate/views/chat/settings/view.dart';
 import 'package:soulmate/views/mine/account/view.dart';
 import 'package:soulmate/views/mine/confirmDeactivate/view.dart';
 import 'package:soulmate/views/mine/contactEmail/view.dart';
@@ -88,6 +89,9 @@ class AppRoute {
     /// chat
     GetPage(name: '/chat', page: () => ChatPage()),
 
+    /// 聊天设置
+    GetPage(name: '/chatSettings', page: () => ChatSettingsPage()),
+
     /// role模块
     /// 角色列表
     GetPage(name: '/roleList', page: () => RoleListPage()),
@@ -129,7 +133,8 @@ class AppRoute {
     GetPage(name: '/mineContactEmail', page: () => MineContactEmailPage()),
 
     /// 充值历史
-    GetPage(name: '/minePurchaseHistory', page: () => MinePurchaseHistoryPage()),
+    GetPage(
+        name: '/minePurchaseHistory', page: () => MinePurchaseHistoryPage()),
 
     GetPage(name: '/testPage', page: () => TestPage()),
   ];
