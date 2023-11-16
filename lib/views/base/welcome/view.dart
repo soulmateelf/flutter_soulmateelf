@@ -38,8 +38,7 @@ class WelcomePage extends StatelessWidget {
               children: [
                 TextButton(
                     onPressed: () {
-                      // Get.toNamed("/testPage");
-                      Get.toNamed('/chatSettings');
+                      Get.toNamed("/testPage");
                     },
                     child: Text("go Text Page")),
                 Text(
