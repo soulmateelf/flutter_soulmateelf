@@ -124,7 +124,9 @@ dependencies:
   # 提供操作文件系统的API
   # https://pub.dev/packages/path_provider
   path_provider: ^2.1.1
-
+  # 录音的动画效果
+  # https://pub.dev/packages/awesome_ripple_animation
+  awesome_ripple_animation: ^2.0.0
 
 
 dev_dependencies:

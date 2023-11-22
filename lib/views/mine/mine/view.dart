@@ -446,7 +446,7 @@ class _MinePage extends State<MinePage> {
                           MineCardItem(
                               onTap: () {},
                               text: "Please give us a 5 star rating",
-                              iconSrc: "assets/images/icons/like.png"),
+                              iconSrc: "assets/images/icons/mineLike.png"),
                           Container(
                             height: 1,
                             color: Color.fromRGBO(0, 0, 0, 0.06),

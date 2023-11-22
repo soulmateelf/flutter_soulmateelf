@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:soulmate/utils/core/application.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/route.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:get/get.dart';
@@ -97,6 +98,8 @@ class MyApp extends StatelessWidget {
   Widget configWidget({required Widget childWidget}) {
     return RefreshConfiguration(
         headerBuilder: () => WaterDropHeader(
+          waterDropColor: primaryColor,
+              // refresh: CircularProgressIndicator(),
               complete: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

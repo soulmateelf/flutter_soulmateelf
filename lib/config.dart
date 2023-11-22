@@ -17,7 +17,7 @@ class ProjectConfig {
   };
 
   Map debugConfig = {
-    'BaseUrl': 'http://54.177.82.194/api', //测试环境,
+    'BaseUrl': 'http://54.177.205.15/api', //测试环境,
     // 'BaseUrl': 'http://dev.icyberelf.com', //测试环境,
   };
   Map releaseConfig = {

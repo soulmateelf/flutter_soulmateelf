@@ -10,6 +10,9 @@ class BackGroundImageType {
 Widget basePage(
   /// 标题
   String title, {
+  /// 标题样式
+  TextStyle? titleStyle,
+
   /// 显示背景图
   AssetImage? backGroundImage = BackGroundImageType.white,
 
@@ -69,7 +72,7 @@ Widget basePage(
                     centerTitle: true,
                     title: Text(
                       title,
-                      style: TextStyle(
+                      style: titleStyle ?? TextStyle(
                           color: const Color.fromRGBO(0, 0, 0, 0.8),
                           fontSize: 22.sp,
                           fontWeight: FontWeight.bold,

@@ -19,12 +19,15 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
+import 'package:awesome_ripple_animation/awesome_ripple_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 /*
  * This is an example showing how to record to a Dart Stream.
  * It writes all the recorded data from a Stream to a File, which is completely stupid:
@@ -34,6 +37,9 @@ import 'package:permission_handler/permission_handler.dart';
  * Speech-to-Text engine, or for processing the Live data in Dart in real time.
  *
  */
+
+import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 
 ///
 const int tSampleRate = 44000;
@@ -46,7 +52,8 @@ class TestPage extends StatefulWidget {
   _TestPageState createState() => _TestPageState();
 }
 
-class _TestPageState extends State<TestPage> {
+class _TestPageState extends State<TestPage>
+    with SingleTickerProviderStateMixin {
   FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool _mPlayerIsInited = false;
@@ -55,21 +62,21 @@ class _TestPageState extends State<TestPage> {
   String? _mPath;
   StreamSubscription? _mRecordingDataSubscription;
 
-  Future<void> _openRecorder() async {
-    var status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw RecordingPermissionException('Microphone permission not granted');
-    }
-    await _mRecorder!.openRecorder();
+  bool isPressed = false;
 
-    setState(() {
-      _mRecorderIsInited = true;
-    });
-  }
+  int startTime = 0;
+
+  double amplitude = 20;
+
+  late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat();
     // Be careful : openAudioSession return a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
     _mPlayer!.openPlayer().then((value) {
@@ -82,6 +89,7 @@ class _TestPageState extends State<TestPage> {
 
   @override
   void dispose() {
+    _controller.dispose();
     stopPlayer();
     _mPlayer!.closePlayer();
     _mPlayer = null;
@@ -92,9 +100,23 @@ class _TestPageState extends State<TestPage> {
     super.dispose();
   }
 
+  Future<void> _openRecorder() async {
+    var status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw RecordingPermissionException('Microphone permission not granted');
+    }
+    await _mRecorder!.openRecorder();
+
+    await _mRecorder!
+        .setSubscriptionDuration(const Duration(milliseconds: 300));
+    setState(() {
+      _mRecorderIsInited = true;
+    });
+  }
+
   Future<IOSink> createFile() async {
     var tempDir = await getTemporaryDirectory();
-    _mPath = '${tempDir.path}/flutter_sound_example111.pcm';
+    _mPath = '${tempDir.path}/flutter_sound_example111.wav';
     var outputFile = File(_mPath!);
     if (outputFile.existsSync()) {
       await outputFile.delete();
@@ -106,20 +128,37 @@ class _TestPageState extends State<TestPage> {
 
   Future<void> record() async {
     assert(_mRecorderIsInited && _mPlayer!.isStopped);
-    var sink = await createFile();
-    var recordingDataController = StreamController<Food>();
-    _mRecordingDataSubscription =
-        recordingDataController.stream.listen((buffer) {
-      if (buffer is FoodData) {
-        sink.add(buffer.data!);
-      }
-    });
+    // var sink = await createFile();
+    // var recordingDataController = StreamController<Food>();
+    // _mRecordingDataSubscription =
+    //     recordingDataController.stream.listen((buffer) {
+    //   if (buffer is FoodData) {
+    //     sink.add(buffer.data!);
+    //   }
+    // });
+
+    // await _mRecorder!.startRecorder(
+    //   toStream: recordingDataController.sink,
+    //   codec: Codec.pcm16,
+    //   numChannels: 1,
+    //   sampleRate: tSampleRate,
+    // );
+    var tempDir = await getTemporaryDirectory();
+    print("tempDir:${tempDir}");
+    _mPath = "${tempDir.path}/a.wav";
     await _mRecorder!.startRecorder(
-      toStream: recordingDataController.sink,
-      codec: Codec.pcm16,
+      toFile: _mPath,
+      codec: Codec.pcm16WAV,
       numChannels: 1,
       sampleRate: tSampleRate,
     );
+    final _mRecordSubscription = _mRecorder!.onProgress!.listen((event) {
+      if (event.decibels != null && event.decibels! > 0) {
+        setState(() {
+          amplitude = event.decibels!;
+        });
+      }
+    });
     setState(() {});
   }
 
@@ -178,84 +217,148 @@ class _TestPageState extends State<TestPage> {
 
   // ----------------------------------------------------------------------------------------------------------------------
 
+  Future<void> startRecord() async {
+    if (_mRecorderIsInited && _mPlayer!.isStopped) {
+      isPressed = true;
+      var tempDir = await getTemporaryDirectory();
+      print("tempDir:${tempDir}");
+      _mPath = "${tempDir.path}/a.wav";
+      await _mRecorder!.startRecorder(
+        toFile: _mPath,
+        codec: Codec.pcm16WAV,
+        numChannels: 1,
+        sampleRate: tSampleRate,
+      );
+      _mRecorder!.onProgress!.listen((event) {
+        if (event.decibels != null && event.decibels! > 0) {
+          setState(() {
+            if (event.decibels! > 60) {
+              amplitude = 60;
+            } else if (event.decibels! < 20) {
+              amplitude = 20;
+            } else {
+              amplitude = event.decibels!;
+            }
+          });
+        }
+      });
+      setState(() {});
+    }
+  }
+
+  Future<void> stopRecord() async {
+    await _mRecorder!.stopRecorder();
+    if (_mRecordingDataSubscription != null) {
+      await _mRecordingDataSubscription!.cancel();
+      _mRecordingDataSubscription = null;
+    }
+    _mplaybackReady = true;
+    setState(() {
+      isPressed = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget makeBody() {
-      return Container(
-        color: Colors.blue,
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(3),
-                  padding: const EdgeInsets.all(3),
-                  height: 80,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFAF0E6),
-                    border: Border.all(
-                      color: Colors.indigo,
-                      width: 3,
-                    ),
-                  ),
-                  child: Row(children: [
-                    ElevatedButton(
-                      onPressed: getRecorderFn(),
-                      //color: Colors.white,
-                      //disabledColor: Colors.grey,
-                      child: Text(_mRecorder!.isRecording ? 'Stop' : 'Record'),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Text(_mRecorder!.isRecording
-                        ? 'Recording in progress'
-                        : 'Recorder is stopped'),
-                  ]),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(3),
-                  padding: const EdgeInsets.all(3),
-                  height: 80,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFAF0E6),
-                    border: Border.all(
-                      color: Colors.indigo,
-                      width: 3,
-                    ),
-                  ),
-                  child: Row(children: [
-                    ElevatedButton(
-                      onPressed: getPlaybackFn(),
-                      //color: Colors.white,
-                      //disabledColor: Colors.grey,
-                      child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Text(_mPlayer!.isPlaying
-                        ? 'Playback in progress'
-                        : 'Player is stopped'),
-                  ]),
-                ),
-              ],
-            )
-          ],
-        ),
-      );
-    }
-
+    final animated = Tween(begin: 0.3, end: 0.9)
+        .chain(CurveTween(curve: Curves.easeInOut))
+        .animate(_controller);
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
         title: const Text('Record to Stream ex.'),
       ),
-      body: makeBody(),
+      body: Container(
+        color: Colors.blue,
+        child: Column(children: [
+          Container(
+            margin: const EdgeInsets.all(3),
+            padding: const EdgeInsets.all(3),
+            height: 80,
+            width: double.infinity,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Color(0xFFFAF0E6),
+              border: Border.all(
+                color: Colors.indigo,
+                width: 3,
+              ),
+            ),
+            child: Row(children: [
+              ElevatedButton(
+                onPressed: getRecorderFn(),
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
+                child: Text(_mRecorder!.isRecording ? 'Stop' : 'Record'),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(_mRecorder!.isRecording
+                  ? 'Recording in progress'
+                  : 'Recorder is stopped'),
+            ]),
+          ),
+          Container(
+            margin: const EdgeInsets.all(3),
+            padding: const EdgeInsets.all(3),
+            height: 80,
+            width: double.infinity,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Color(0xFFFAF0E6),
+              border: Border.all(
+                color: Colors.indigo,
+                width: 3,
+              ),
+            ),
+            child: Row(children: [
+              ElevatedButton(
+                onPressed: getPlaybackFn(),
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
+                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(_mPlayer!.isPlaying
+                  ? 'Playback in progress'
+                  : 'Player is stopped'),
+            ]),
+          ),
+          SizedBox(
+            height: 100,
+          ),
+          GestureDetector(
+            onTapDown: (e) {
+              startRecord();
+            },
+            onLongPressEnd: (e) {
+              stopRecord();
+            },
+            child: isPressed
+                ? RippleAnimation(
+                    repeat: true,
+                    color: primaryColor,
+                    minRadius: amplitude,
+                    ripplesCount: 6,
+                    size: Size(86, 86),
+                    delay: const Duration(milliseconds: 0),
+                    duration: const Duration(milliseconds: 1500),
+                    child:  CircleAvatar(
+                      child: Image.asset("assets/images/icons/avatar.png"),
+                    ))
+                : Container(
+                    width: 86,
+                    height: 86,
+                    child: CircleAvatar(
+                      child: Image.asset("assets/images/icons/avatar.png"),
+                    ),
+                  ),
+          ),
+        ]),
+      ),
     );
   }
 }

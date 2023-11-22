@@ -20,6 +20,8 @@ import 'package:soulmate/views/chat/chatList/view.dart';
 import 'package:soulmate/views/chat/giftBackpack/view.dart';
 import 'package:soulmate/views/chat/message/view.dart';
 import 'package:soulmate/views/chat/settings/view.dart';
+import 'package:soulmate/views/customRole/step1/view.dart';
+import 'package:soulmate/views/customRole/step2/view.dart';
 import 'package:soulmate/views/mine/account/view.dart';
 import 'package:soulmate/views/mine/confirmDeactivate/view.dart';
 import 'package:soulmate/views/mine/contactEmail/view.dart';
@@ -135,6 +137,13 @@ class AppRoute {
     /// 充值历史
     GetPage(
         name: '/minePurchaseHistory', page: () => MinePurchaseHistoryPage()),
+
+
+    /// 自定义角色
+    GetPage(name: "/customRoleStep1", page:()=> Step1Page()),
+
+    GetPage(name: "/customRoleStep2", page:()=> Step2Page()),
+
 
     GetPage(name: '/testPage', page: () => TestPage()),
   ];
