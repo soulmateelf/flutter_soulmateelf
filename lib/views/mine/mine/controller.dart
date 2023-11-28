@@ -8,6 +8,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:soulmate/models/user.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
@@ -141,5 +142,10 @@ class MineController extends GetxController {
   void onClose() {
     super.onClose();
     return;
+  }
+
+  void init() {
+    User? user = Application.userInfo;
+    setContact(user?.emergencyContact == 1);
   }
 }

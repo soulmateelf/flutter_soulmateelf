@@ -19,8 +19,6 @@ void main() async {
   //启动图延时移除方法  一定要放在这句代码下面
   initialization(null);
 
-
-
   /// 全局变量初始化
   await Application.initGlobe();
 
@@ -30,8 +28,7 @@ void main() async {
 }
 
 //启动图延时移除方法
-void initialization (BuildContext? context) async {
-
+void initialization(BuildContext? context) async {
   // 这里可以在闪屏界面显示时初始化应用所需的资源。
   // 该函数完成后，闪屏界面会被移除。
   // 延时3秒
@@ -42,6 +39,7 @@ void initialization (BuildContext? context) async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return configWidget(
@@ -52,12 +50,12 @@ class MyApp extends StatelessWidget {
 
               /// 主题
               theme: ThemeData(
+                  fontFamily: "SFProRounded",
 
-                fontFamily: "SFProRounded",
-                /// 设置自定义文本颜色
-                textTheme: const TextTheme(
-                  bodyMedium: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8))
-                ),
+                  /// 设置自定义文本颜色
+                  textTheme: const TextTheme(
+                      bodyMedium:
+                          TextStyle(color: Color.fromRGBO(0, 0, 0, 0.8))),
 
                   /// 设置默认ios风格主题
                   platform: TargetPlatform.iOS,
@@ -98,8 +96,15 @@ class MyApp extends StatelessWidget {
   Widget configWidget({required Widget childWidget}) {
     return RefreshConfiguration(
         headerBuilder: () => WaterDropHeader(
-          waterDropColor: primaryColor,
-              // refresh: CircularProgressIndicator(),
+              waterDropColor: primaryColor,
+              refresh: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  color: primaryColor,
+                  strokeWidth: 2,
+                ),
+              ),
               complete: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -114,6 +119,7 @@ class MyApp extends StatelessWidget {
                     const Text('refresh success',
                         style: TextStyle(color: Colors.grey))
                   ]),
+
               failed: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -128,15 +134,22 @@ class MyApp extends StatelessWidget {
                     const Text('something wrong',
                         style: TextStyle(color: Colors.grey))
                   ]),
-            ), // 配置默认头部指示器,假如你每个页面的头部指示器都一样的话,你需要设置这个// 自定义底部指示器
-        headerTriggerDistance: 60.0, // 头部触发刷新的越界距离
-        maxOverScrollExtent: 80, //头部最大可以拖动的范围,如果发生冲出视图范围区域,请设置这个属性
-        maxUnderScrollExtent: 0, // 底部最大可以拖动的范围
-        enableScrollWhenRefreshCompleted:
-            true, //这个属性不兼容PageView和TabBarView,如果你特别需要TabBarView左右滑动,你需要把它设置为true
-        enableLoadingWhenFailed: true, //在加载失败的状态下,用户仍然可以通过手势上拉来触发加载更多
-        hideFooterWhenNotFull: false, // Viewport不满一屏时,禁用上拉加载更多功能
-        enableBallisticLoad: true, // 可以通过惯性滑动触发加载更多
+            ),
+        // 配置默认头部指示器,假如你每个页面的头部指示器都一样的话,你需要设置这个// 自定义底部指示器
+        headerTriggerDistance: 60.0,
+        // 头部触发刷新的越界距离
+        maxOverScrollExtent: 80,
+        //头部最大可以拖动的范围,如果发生冲出视图范围区域,请设置这个属性
+        maxUnderScrollExtent: 0,
+        // 底部最大可以拖动的范围
+        enableScrollWhenRefreshCompleted: true,
+        //这个属性不兼容PageView和TabBarView,如果你特别需要TabBarView左右滑动,你需要把它设置为true
+        enableLoadingWhenFailed: true,
+        //在加载失败的状态下,用户仍然可以通过手势上拉来触发加载更多
+        hideFooterWhenNotFull: false,
+        // Viewport不满一屏时,禁用上拉加载更多功能
+        enableBallisticLoad: true,
+        // 可以通过惯性滑动触发加载更多
         child: childWidget);
   }
 }

@@ -7,13 +7,15 @@
 
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/models/chat.dart';
 import 'package:soulmate/models/role.dart';
 import 'package:soulmate/utils/core/httputil.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/views/chat/chatList/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
@@ -60,6 +62,14 @@ class ChatController extends GetxController {
   /// 是否聊过天，然后更新首页的聊天历史
   bool hasChat = false;
 
+  /// 是否显示底部与语音模块
+  bool showVoiceWidget = false;
+
+  void toggleShowVoiceWidget() {
+    showVoiceWidget = !showVoiceWidget;
+    update();
+  }
+
   @override
   void onReady() {
     super.onReady();
@@ -70,7 +80,7 @@ class ChatController extends GetxController {
 
   @override
   void onClose() {
-    if(hasChat == true){
+    if (hasChat == true) {
       /// 聊过天，更新首页聊天列表
       final chatController = Get.find<ChatListController>();
       chatController.getDataList();
@@ -81,7 +91,6 @@ class ChatController extends GetxController {
     _debounce?.cancel();
     super.onClose();
   }
-
 
   /// 获取角色详情
   void getRoleDetail() {
@@ -106,10 +115,12 @@ class ChatController extends GetxController {
       page++;
       refreshController.refreshCompleted();
       List chatListMap = response["data"];
-      List<ChatHistory> newList = chatListMap.map((json) => ChatHistory.fromJson(json)).toList();
+      List<ChatHistory> newList =
+          chatListMap.map((json) => ChatHistory.fromJson(json)).toList();
       if (from == 'newMessage') {
         ///新消息，往下加
         messageList.addAll(newList);
+
         /// 记录聊过天的状态
         hasChat = true;
       } else {
@@ -141,23 +152,40 @@ class ChatController extends GetxController {
   }
 
   ///发送消息
-  void sendMessage(String message) {
-    if (Utils.isEmpty(message)) {
+  void sendMessage(
+      {String? message, required String message_type, dynamic? message_file}) {
+    APPPlugin.logger.d(message_file);
+    if (message_type == "0" && Utils.isEmpty(message)) {
+      return;
+    } else if (message_type == "1" && message_file == null) {
       return;
     }
-    focusNode.unfocus();
-    Map<String, dynamic> params = {'message': message, 'roleId': roleId};
+    FormData params = FormData();
+
+    params.fields.add(MapEntry("roleId", roleId));
+    params.fields.add(MapEntry("message_type", message_type));
+
+    if (message_type == "0" && !Utils.isEmpty(message)) {
+      focusNode.unfocus();
+      params.fields.add(MapEntry("messages", message!));
+    } else if (message_type == "1" && message_file != null) {
+      params.files.add(MapEntry("file", message_file));
+    }
+
+    // {'message': message, 'roleId': roleId,'message_type' : 0}
     HttpUtils.diorequst('/chat/sendMessage', method: 'post', params: params)
-        .then((response) {
-      //清空当前消息
-      inputContent = '';
-      update();
-      //获取最新消息列表
-      getMessageList('newMessage');
-      //启动定时器，如果已存在，删掉，搞个新的
-      if (_debounce?.isActive ?? false) _debounce?.cancel();
-      _debounce = Timer(duration, startGptTask);
-    }).catchError((error) {
+        .then(
+      (response) {
+        //清空当前消息
+        inputContent = '';
+        update();
+        //获取最新消息列表
+        getMessageList('newMessage');
+        //启动定时器，如果已存在，删掉，搞个新的
+        if (_debounce?.isActive ?? false) _debounce?.cancel();
+        _debounce = Timer(duration, startGptTask);
+      },
+    ).catchError((error) {
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }
@@ -179,9 +207,10 @@ class ChatController extends GetxController {
       ///第一条消息就展示时间
       return true;
     }
+
     ///与上一条消息的时间差在5分钟内不展示
-    var lastMessgeDate = DateTime.fromMillisecondsSinceEpoch(
-        messageList[index - 1].createTime);
+    var lastMessgeDate =
+        DateTime.fromMillisecondsSinceEpoch(messageList[index - 1].createTime);
     var currentMessgeDate =
         DateTime.fromMillisecondsSinceEpoch(chatData.createTime);
     var diffMinutes = currentMessgeDate.difference(lastMessgeDate).inMinutes;
@@ -191,11 +220,13 @@ class ChatController extends GetxController {
       return true;
     }
   }
+
   /// 监听用户输入事件
-  void textInputChange(String value){
+  void textInputChange(String value) {
     inputContent = value;
+
     /// 存在才能删除建新的，不存在说明是刚进页面第一次输入
-    if (_debounce?.isActive == true){
+    if (_debounce?.isActive == true) {
       _debounce?.cancel();
       _debounce = Timer(duration, startGptTask);
     }

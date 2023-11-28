@@ -127,7 +127,12 @@ dependencies:
   # 录音的动画效果
   # https://pub.dev/packages/awesome_ripple_animation
   awesome_ripple_animation: ^2.0.0
-
+  # 音频播放的UI组件
+  # https://pub.dev/packages/audio_waveforms
+  audio_waveforms: ^1.0.4
+  # 音频播放所需的文件系统插件
+  # https://pub.dev/packages/file_picker
+  file_picker: ^6.1.1
 
 dev_dependencies:
   flutter_test:

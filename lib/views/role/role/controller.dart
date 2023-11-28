@@ -23,12 +23,15 @@ class RoleController extends GetxController {
   /// 角色详情信息
   Role? roleDetail;
 
+  /// 角色朋友圈列表
+  final roleRecordList = [];
 
   @override
   void onReady() {
     super.onReady();
     roleId = Get.arguments?["roleId"];
     getRoleDetail();
+    getRoleRecordList();
   }
 
   /// 获取角色详情
@@ -40,6 +43,12 @@ class RoleController extends GetxController {
       update();
     }).catchError((error) {
       exSnackBar(error, type: ExSnackBarType.error);
+    });
+  }
+  /// 获取朋友圈列表
+  void getRoleRecordList(){
+    HttpUtils.diorequst('/role/roleEventList',query: {"roleId":roleId}).then((res){
+      APPPlugin.logger.d(res);
     });
   }
 }

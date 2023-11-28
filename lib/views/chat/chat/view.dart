@@ -5,25 +5,77 @@
 /// Description:
 
 import 'dart:async';
-import 'dart:ffi';
+import 'dart:ffi' hide Size;
+import 'dart:io';
+import 'dart:ui';
 import 'dart:typed_data';
 
+import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide MultipartFile;
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/models/chat.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
+import 'package:soulmate/views/chat/chat/chat_blubble.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 import 'controller.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return ChatState();
+  }
+}
+
+class ChatState extends State<ChatPage> {
   final logic = Get.put(ChatController());
+  late final RecorderController recorderController;
+
+
+  String? path;
+  bool isRecording = false;
+  bool isRecordingCompleted = false;
+  bool isLoading = true;
+  bool isPause = false;
+  late Directory appDirectory;
+
+  @override
+  void initState() {
+    super.initState();
+    _getDir();
+    _initialiseControllers();
+
+  }
+
+  void _getDir() async {
+    appDirectory = await getApplicationDocumentsDirectory();
+    path = "${appDirectory.path}/recording.m4a";
+    isLoading = false;
+    setState(() {});
+  }
+
+  void _initialiseControllers()  async {
+    recorderController = RecorderController()
+      ..androidEncoder = AndroidEncoder.aac
+      ..androidOutputFormat = AndroidOutputFormat.mpeg4
+      ..iosEncoder = IosEncoder.kAudioFormatMPEG4AAC
+      ..sampleRate = 44100;
+
+    final result =  await recorderController.checkPermission();
+    APPPlugin.logger.d(result);
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -145,12 +197,105 @@ class ChatPage extends StatelessWidget {
           minHeight: 90.w, // 设置最小高度为100.0像素
         ),
         child: Container(
-            color: Colors.white,
-            padding: EdgeInsets.all(
-              16.w,
-            ),
-            alignment: Alignment.center,
-            child: Container(
+          color: Colors.white,
+          padding: EdgeInsets.all(
+            16.w,
+          ),
+          alignment: Alignment.center,
+          child: GetBuilder<ChatController>(builder: (logic) {
+            if (logic.showVoiceWidget) {
+              return Container(
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        await _stopRecording();
+                        logic.toggleShowVoiceWidget();
+                      },
+                      child: Image.asset(
+                        "assets/images/icons/activeRemove.png",
+                        width: 21.w,
+                        height: 21.w,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16.w,
+                    ),
+                    Expanded(
+                      child: Container(
+                        height: 56.w,
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                        ),
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                _pauseOrContinueRecording();
+                              },
+                              child: Icon(
+                                isPause
+                                    ? Icons.play_circle
+                                    : Icons.pause_circle,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Expanded(
+                                child: Center(
+                              child: AudioWaveforms(
+                                enableGesture: true,
+                                size: Size(264.w, 56.w),
+                                recorderController: recorderController,
+                                waveStyle: const WaveStyle(
+                                  waveColor: Colors.white,
+                                  extendWaveform: true,
+                                  showMiddleLine: false,
+                                ),
+                              ),
+                            )),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Text(
+                              "18:51",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10.sp,
+                                fontFamily: FontFamily.SFProRoundedMedium,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16.w,
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        await _stopRecording();
+                        logic.toggleShowVoiceWidget();
+                        final messageFile = await MultipartFile.fromFile(path!,
+                            filename: "voice.m4a");
+                        logic.sendMessage(
+                            message_type: "1", message_file: messageFile);
+                      },
+                      child: Image.asset(
+                        "assets/images/icons/activeSend.png",
+                        width: 21.w,
+                        height: 21.w,
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }
+            return Container(
                 constraints: BoxConstraints(
                   minHeight: 56.w, // 设置最小高度为100.0像素
                 ),
@@ -190,7 +335,9 @@ class ChatPage extends StatelessWidget {
                             onChanged: logic.textInputChange,
                             onSubmitted: (String str) {
                               logic.inputContent = str;
-                              logic.sendMessage(logic.inputContent);
+                              logic.sendMessage(
+                                  message: logic.inputContent,
+                                  message_type: "0");
                             },
                             decoration: InputDecoration(
                                 hintText:
@@ -205,81 +352,161 @@ class ChatPage extends StatelessWidget {
                       width: 48.w,
                       padding: EdgeInsets.only(top: 10.w, bottom: 5.w),
                       child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            logic.toggleShowVoiceWidget();
+                            _startRecording();
+                          },
                           child: Image.asset(
-                            'assets/images/icons/microphone.png',
+                            'assets/images/icons/activeMicrophone.png',
                             width: 22.w,
                             height: 23.w,
                           )),
                     )
                   ],
-                ))));
+                ));
+          }),
+        ));
   }
 
   /// 聊天信息展示组件
   Widget _messageItem(index) {
     ChatHistory chatData = logic.messageList[index];
-    return Container(
-      margin: EdgeInsets.only(bottom: 12.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Offstage(
-            offstage: !logic.showTime(chatData, index),
-            child: Container(
-              alignment: Alignment.center,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(255, 255, 255, 0.7),
-                  borderRadius: BorderRadius.circular(40),
+    return chatData.inputType == 0
+        ? Container(
+            margin: EdgeInsets.only(bottom: 12.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Offstage(
+                  offstage: !logic.showTime(chatData, index),
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromRGBO(255, 255, 255, 0.7),
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5.w, horizontal: 30.w),
+                      child: SelectableText(
+                        Utils.messageTimeFormat(chatData.createTime),
+                        style: TextStyle(
+                            fontFamily: "SFProRounded",
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                            color: const Color.fromRGBO(0, 0, 0, 0.48)),
+                      ),
+                      // ),
+                    ),
+                  ),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 30.w),
-                child: Text(
-                  Utils.messageTimeFormat(chatData.createTime),
-                  style: TextStyle(
-                      fontFamily: "SFProRounded",
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                      color: const Color.fromRGBO(0, 0, 0, 0.48)),
-                ),
-                // ),
-              ),
+                Container(
+                    alignment: chatData.role == 'user'
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
+                    margin: EdgeInsets.only(top: 12.w),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: chatData.role == 'user'
+                            ? primaryColor
+                            : const Color.fromRGBO(239, 239, 239, 1),
+                        borderRadius: chatData.role == 'user'
+                            ? BorderRadius.only(
+                                topLeft: Radius.circular(20.w),
+                                topRight: Radius.circular(20.w),
+                                bottomLeft: Radius.circular(20.w))
+                            : BorderRadius.only(
+                                topLeft: Radius.circular(20.w),
+                                topRight: Radius.circular(20.w),
+                                bottomRight: Radius.circular(20.w)),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 12.w, horizontal: 20.w),
+                      child: Text(
+                        chatData.content,
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                            height: 1.3,
+                            color: chatData.role == 'user'
+                                ? Colors.white
+                                : const Color.fromRGBO(0, 0, 0, 0.8)),
+                      ),
+                    )),
+              ],
             ),
-          ),
-          Container(
-              alignment: chatData.role == 'user'
-                  ? Alignment.centerRight
-                  : Alignment.centerLeft,
-              margin: EdgeInsets.only(top: 12.w),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: chatData.role == 'user'
-                      ? primaryColor
-                      : const Color.fromRGBO(239, 239, 239, 1),
-                  borderRadius: chatData.role == 'user'
-                      ? BorderRadius.only(
-                          topLeft: Radius.circular(20.w),
-                          topRight: Radius.circular(20.w),
-                          bottomLeft: Radius.circular(20.w))
-                      : BorderRadius.only(
-                          topLeft: Radius.circular(20.w),
-                          topRight: Radius.circular(20.w),
-                          bottomRight: Radius.circular(20.w)),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 12.w, horizontal: 20.w),
-                child: Text(
-                  chatData.content,
-                  style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                      height: 1.3,
-                      color: chatData.role == 'user'
-                          ? Colors.white
-                          : const Color.fromRGBO(0, 0, 0, 0.8)),
-                ),
-              )),
-        ],
-      ),
-    );
+          )
+        : ChatBlubble(
+            chatData: chatData,
+          );
+  }
+
+  /// 开始录音
+  void _startRecording() async {
+    try {
+      await recorderController.record(path: path);
+
+      setState(() {
+        isRecordingCompleted = false;
+        isRecording = !isRecording;
+      });
+      APPPlugin.logger.d("startRecord");
+    } catch (e) {
+      debugPrint("debug:${e.toString()}");
+    }
+  }
+
+  /// 暂停录制
+  void _pauseOrContinueRecording() async {
+    try {
+      if (isRecording) {
+        if (isPause) {
+          await recorderController.record();
+        } else {
+          await recorderController.pause();
+        }
+
+        setState(() {
+          isPause = !isPause;
+        });
+
+        // recorderController.reset();
+        // final path = await recorderController.stop(false);
+        //
+        // if (path != null) {
+        //   isRecordingCompleted = true;
+        //   debugPrint(path);
+        //   debugPrint("Recorded file size: ${File(path).lengthSync()}");
+        // }
+        // setState(() {
+        //   isRecording = !isRecording;
+        // });
+        // APPPlugin.logger.d("stopRecord");
+      }
+    } catch (e) {
+      debugPrint("debug:${e.toString()}");
+    }
+  }
+
+  /// 停止录制
+  Future<void> _stopRecording() async {
+    try {
+      if (isRecording) {
+        recorderController.reset();
+        final path = await recorderController.stop(false);
+
+        if (path != null) {
+          isRecordingCompleted = true;
+          debugPrint(path);
+          debugPrint("Recorded file size: ${File(path).lengthSync()}");
+        }
+        setState(() {
+          isRecording = !isRecording;
+        });
+        APPPlugin.logger.d("stopRecord");
+      }
+    } catch (e) {
+      debugPrint("debug:${e.toString()}");
+    }
   }
 }
