@@ -81,5 +81,7 @@
 		<!-- <key>GADApplicationIdentifier</key>-->
 		<!-- <string>ca-app-pub-4885363376807063~9897904888</string>-->
 		<!-- End of the googleAds Section -->
+		<key>NSMicrophoneUsageDescription</key>
+        <string>This app requires Mic permission.</string>
 	</dict>
 </plist>

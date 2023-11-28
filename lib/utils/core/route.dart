@@ -22,6 +22,7 @@ import 'package:soulmate/views/chat/message/view.dart';
 import 'package:soulmate/views/chat/settings/view.dart';
 import 'package:soulmate/views/customRole/step1/view.dart';
 import 'package:soulmate/views/customRole/step2/view.dart';
+import 'package:soulmate/views/mine/about/view.dart';
 import 'package:soulmate/views/mine/account/view.dart';
 import 'package:soulmate/views/mine/confirmDeactivate/view.dart';
 import 'package:soulmate/views/mine/contactEmail/view.dart';
@@ -137,6 +138,10 @@ class AppRoute {
     /// 充值历史
     GetPage(
         name: '/minePurchaseHistory', page: () => MinePurchaseHistoryPage()),
+
+
+    /// 关于
+    GetPage(name: '/about', page: () => AboutPage()),
 
 
     /// 自定义角色

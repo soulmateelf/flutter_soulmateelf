@@ -57,6 +57,7 @@ class _MinePage extends State<MinePage> {
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
 
     User? user = Application.userInfo;
+    APPPlugin.logger.d(user?.toJson());
     return basePage('Chat',
         backGroundImage: BackGroundImageType.gray,
         showAppbar: false,
@@ -68,15 +69,20 @@ class _MinePage extends State<MinePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(width: 3.w, color: Colors.white)),
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed("/mineAccount");
+                    },
                     child: Container(
-                      height: 80.w,
-                      width: 80.w,
-                      child: Image.asset("assets/images/icons/avatar.png"),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(width: 3.w, color: Colors.white)),
+                      child: Container(
+                        height: 80.w,
+                        width: 80.w,
+                        child: Image.asset("assets/images/icons/avatar.png"),
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -205,7 +211,9 @@ class _MinePage extends State<MinePage> {
                                         ),
                                       ])),
                                       GestureDetector(
-                                        onTap: (){Get.toNamed("/energy");},
+                                        onTap: () {
+                                          Get.toNamed("/energy");
+                                        },
                                         child: Container(
                                           width: 90.w,
                                           height: 40.w,
@@ -394,24 +402,27 @@ class _MinePage extends State<MinePage> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 18.w),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Your gift backpack",
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(148, 74, 0, 1),
-                                      fontSize: 16.sp),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Image.asset(
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.toNamed("/giftBackpack");
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Your gift backpack",
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(148, 74, 0, 1),
+                                        fontSize: 16.sp),
+                                  ),
+                                  Image.asset(
                                     "assets/images/icons/right_arrow_orange.png",
                                     width: 20.w,
                                     height: 20.w,
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           )
                         ],
@@ -428,7 +439,9 @@ class _MinePage extends State<MinePage> {
                       child: Column(
                         children: [
                           MineCardItem(
-                              onTap: () {},
+                              onTap: () {
+                                Get.toNamed("/chatSettings");
+                              },
                               text: "Chat settings",
                               iconSrc: "assets/images/icons/settings.png"),
                           Container(
@@ -436,7 +449,9 @@ class _MinePage extends State<MinePage> {
                             color: Color.fromRGBO(0, 0, 0, 0.06),
                           ),
                           MineCardItem(
-                              onTap: () {},
+                              onTap: () {
+                                Get.toNamed("/minePurchaseHistory");
+                              },
                               text: "Purchase history",
                               iconSrc: "assets/images/icons/bag.png"),
                           Container(
@@ -452,7 +467,9 @@ class _MinePage extends State<MinePage> {
                             color: Color.fromRGBO(0, 0, 0, 0.06),
                           ),
                           MineCardItem(
-                              onTap: () {},
+                              onTap: () {
+                                Get.toNamed("/about");
+                              },
                               text: "About",
                               iconSrc: "assets/images/icons/small.png"),
                           Container(
@@ -554,13 +571,26 @@ class _MinePage extends State<MinePage> {
                                               width: 19.w,
                                             ),
                                             Expanded(
-                                              child: Text(
-                                                "Sally02@gmail.com",
-                                                style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        0, 0, 0, 0.48),
-                                                    fontSize: 18.sp),
-                                              ),
+                                              child: Container(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: user?.emergencyEmail !=
+                                                          null
+                                                      ? Text(
+                                                          "${user?.emergencyEmail}",
+                                                          style: TextStyle(
+                                                              color: Color.fromRGBO(
+                                                                  0, 0, 0, 0.48),
+                                                              fontSize: 18.sp))
+                                                      : Text("To be perfected",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Color.fromRGBO(
+                                                                      255,
+                                                                      90,
+                                                                      90,
+                                                                      1),
+                                                              fontSize: 18.sp))),
                                             ),
                                             SizedBox(
                                               width: 19.w,
