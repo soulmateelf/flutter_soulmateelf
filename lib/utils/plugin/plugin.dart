@@ -10,6 +10,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:get/get.dart';
+import 'package:soulmate/utils/plugin/Message.dart';
 
 import 'AppPurchase.dart';
 
@@ -43,5 +44,8 @@ class APPPlugin {
 
     /// 初始化广告插件
     // MobileAds.instance.initialize();
+
+    /// 初始化消息推送
+    GoogleMessage.initMessage();
   }
 }

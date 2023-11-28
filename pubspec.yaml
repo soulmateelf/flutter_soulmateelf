@@ -105,6 +105,12 @@ dependencies:
   # google app广告
   # https://developers.google.com/admob/flutter/quick-start?hl=zh-cn
 #  google_mobile_ads: ^3.1.0
+  # 消息推送
+  # https://firebase.flutter.dev/docs/messaging/overview/
+  firebase_messaging: ^14.7.5
+  # 展示推送
+  # https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications
+  flutter_local_notifications: ^16.2.0
   # 动画
   # https://github.com/felixblaschke/simple_animations
   simple_animations: ^5.0.2
