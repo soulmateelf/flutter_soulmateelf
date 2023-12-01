@@ -63,8 +63,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '925869433707',
     projectId: 'soulmate-5cb6e',
     storageBucket: 'soulmate-5cb6e.appspot.com',
-    androidClientId: '925869433707-519irmsaobi7jrns25t0vgr8nni3bb71.apps.googleusercontent.com',
-    iosClientId: '925869433707-h1qnkgftfojh2o1ao73fta4al97m4c8j.apps.googleusercontent.com',
-    iosBundleId: 'com.soulmate.elf',
+    androidClientId:
+        '925869433707-519irmsaobi7jrns25t0vgr8nni3bb71.apps.googleusercontent.com',
+    iosClientId:
+        '925869433707-h1qnkgftfojh2o1ao73fta4al97m4c8j.apps.googleusercontent.com',
+    iosBundleId: 'cn.soulmate.elf',
   );
 }

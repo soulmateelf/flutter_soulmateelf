@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.soulmate.elf</string>
+	<string>cn.soulmate.elf</string>
 	<key>PROJECT_ID</key>
 	<string>soulmate-5cb6e</string>
 	<key>STORAGE_BUCKET</key>

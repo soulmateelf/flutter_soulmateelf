@@ -1,4 +1,4 @@
-# soulmate
+# SoulmateELF
 
 A new Flutter project.
 

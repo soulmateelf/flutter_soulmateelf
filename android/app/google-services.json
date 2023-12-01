@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:925869433707:android:eaa8e084c2b8d27d26a22e",
         "android_client_info": {
-          "package_name": "com.soulmate.elf"
+          "package_name": "cn.soulmate.elf"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "925869433707-519irmsaobi7jrns25t0vgr8nni3bb71.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.soulmate.elf",
+            "package_name": "cn.soulmate.elf",
             "certificate_hash": "d00c5994c0aa8105d95acae1898c13204fe7a623"
           }
         },
@@ -25,7 +25,7 @@
           "client_id": "925869433707-l984gd57bk6g0ojp0g8p75v8t2pl70bc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.soulmate.elf",
+            "package_name": "cn.soulmate.elf",
             "certificate_hash": "ff4d745df2113c8bca4774cda85de94188b2b146"
           }
         },
@@ -33,7 +33,7 @@
           "client_id": "925869433707-m7b12b8ve2mfp2opf636cae1qgjea5s1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.soulmate.elf",
+            "package_name": "cn.soulmate.elf",
             "certificate_hash": "0541a112b73677cda32e510a62e85685f88dbafc"
           }
         },
@@ -58,7 +58,7 @@
               "client_id": "925869433707-h1qnkgftfojh2o1ao73fta4al97m4c8j.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.soulmate.elf"
+                "bundle_id": "cn.soulmate.elf"
               }
             }
           ]

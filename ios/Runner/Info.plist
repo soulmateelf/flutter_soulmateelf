@@ -7,7 +7,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Soulmate</string>
+		<string>Soulmate ELF</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
-		<string>soulmate</string>
+		<string>Soulmate ELF</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
@@ -47,6 +47,10 @@
 		</array>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>GIDClientID</key>
+		<!-- TODO Replace this value: -->
+		<!-- Copied from GoogleService-Info.plist key CLIENT_ID -->
+		<string>925869433707-kqfb4f2qub296438gnib32l6n2vqqqv3.apps.googleusercontent.com</string>
 		<!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
 		<!-- Google Sign-in Section -->
 		<key>CFBundleURLTypes</key>
@@ -58,7 +62,7 @@
 				<array>
 					<!-- TODO Replace this value: -->
 					<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-					<string>com.googleusercontent.apps.925869433707-h1qnkgftfojh2o1ao73fta4al97m4c8j</string>
+					<string>com.googleusercontent.apps.925869433707-kqfb4f2qub296438gnib32l6n2vqqqv3</string>
 					<string>fb1544126486398803</string>
 				</array>
 			</dict>
@@ -70,7 +74,7 @@
 		<key>FacebookClientToken</key>
 		<string>de4271bdf9dd3ac6a882185c1adbb623</string>
 		<key>FacebookDisplayName</key>
-		<string>Soulmate</string>
+		<string>Soulmate ELF</string>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>fbapi</string>
