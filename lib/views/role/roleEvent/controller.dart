@@ -31,6 +31,7 @@ class RoleEventController extends GetxController {
         comments.add(element);
       }
     });
+    roleLogic.updateOneEvent(value);
     update();
   }
 
@@ -64,7 +65,6 @@ class RoleEventController extends GetxController {
     HttpUtils.diorequst('/role/roleEventById', query: {"memoryId": memoryId})
         .then((res) {
       setRoleEvent(RoleEvent.fromJson(res['data']));
-      APPPlugin.logger.d(res['data']);
     }).catchError((err) {
       APPPlugin.logger.e(err.toString());
     });
@@ -81,6 +81,8 @@ class RoleEventController extends GetxController {
       "roleId": roleLogic.roleDetail?.roleId,
       "comment": controller.text,
       "memoryId": roleEvent?.memoryId,
+      "isAdd": true,
+      "activityId": ""
     }).then((res) {
       controller.clear();
       focusNode.unfocus();

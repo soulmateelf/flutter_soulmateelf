@@ -8,7 +8,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:moment_dart/moment_dart.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:soulmate/models/message.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 import 'controller.dart';
@@ -76,15 +80,33 @@ class MessagePage extends StatelessWidget {
                 height: 16.w,
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: GetBuilder<MessageController>(
-                      builder: (controller) {
-                        return Column(
-                          children: renderCardList(controller.tabKey),
-                        );
-                      },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                  child: SmartRefresher(
+                    controller: logic.controller,
+                    onRefresh: () {
+                      logic.getMessages(
+                          logic.tabKey == MessageTabKey.normal ? 0 : 1);
+                    },
+                    onLoading: () {
+                      logic.getMessages(
+                          logic.tabKey == MessageTabKey.normal ? 0 : 1,
+                          action: "add");
+                    },
+                    enablePullUp: true,
+                    
+                    child: SingleChildScrollView(
+                      child: GetBuilder<MessageController>(
+                        builder: (controller) {
+                          return Column(
+                            children: renderCardList(
+                              controller.tabKey == MessageTabKey.normal
+                                  ? controller.normalMessages
+                                  : controller.systemMessages,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -94,9 +116,9 @@ class MessagePage extends StatelessWidget {
         ));
   }
 
-  List<Widget> renderCardList(MessageTabKey tabKey) {
+  List<Widget> renderCardList(List<Message> messages) {
     List<Widget> list = [];
-    for (int i = 0; i < 10; i++) {
+    messages.forEach((element) {
       list.add(Container(
         height: 149.w,
         margin: EdgeInsets.only(bottom: 8.w),
@@ -110,7 +132,7 @@ class MessagePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Top up successful ${tabKey == MessageTabKey.system ? "System" : "Normal"}",
+              "${element.title}",
               style: TextStyle(
                 fontSize: 20.sp,
                 color: textColor,
@@ -122,7 +144,7 @@ class MessagePage extends StatelessWidget {
               height: 8.w,
             ),
             Text(
-              "Your account was successfully topped up with 20 USD on August 10, 2023.",
+              "${element.content}",
               style: TextStyle(
                 fontSize: 16.sp,
                 color: Color.fromRGBO(0, 0, 0, 0.48),
@@ -134,7 +156,7 @@ class MessagePage extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: Text(
-                '2023-08-10 23:59 ',
+                '${DateTime.fromMillisecondsSinceEpoch(element.createTime).format(payload: "YYYY-MM-DD HH:mm")}',
                 style: TextStyle(
                   fontSize: 13.sp,
                   color: Color.fromRGBO(0, 0, 0, 0.48),
@@ -144,7 +166,7 @@ class MessagePage extends StatelessWidget {
           ],
         ),
       ));
-    }
+    });
     return list;
   }
 }

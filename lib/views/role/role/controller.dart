@@ -70,6 +70,7 @@ class RoleController extends GetxController {
     });
   }
 
+  /// 点赞
   Future<bool> sendLike(RoleEvent roleEvent) async {
     try {
       if (roleDetail != null) {
@@ -99,9 +100,24 @@ class RoleController extends GetxController {
     return false;
   }
 
+  /// 更新某一条事件
+  void updateOneEvent(RoleEvent event) {
+    roleEventList = roleEventList.map((e) {
+      if (e.memoryId == event.memoryId) {
+        return event;
+      }
+      return e;
+    }).toList();
+    update();
+  }
+
   void toEventDetail(RoleEvent roleEvent) {
     Get.toNamed('/roleEvent', arguments: {
       "memoryId": roleEvent.memoryId,
     });
+  }
+
+  void toChat() {
+    Get.toNamed('/chat', arguments: {"roleId": roleDetail?.roleId});
   }
 }
