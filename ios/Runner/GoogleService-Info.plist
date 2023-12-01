@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>925869433707-h1qnkgftfojh2o1ao73fta4al97m4c8j.apps.googleusercontent.com</string>
+	<string>133755992024-3cmb7g6mjglgm8rl0v8ar8gtgmn9b0gf.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.925869433707-h1qnkgftfojh2o1ao73fta4al97m4c8j</string>
+	<string>com.googleusercontent.apps.133755992024-3cmb7g6mjglgm8rl0v8ar8gtgmn9b0gf</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>133755992024-3n3ovva9c40e9mec28v21nk34df82ce4.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyD7QdgfRdCMJkOUg9LNGHpRZYyC-6lS_PQ</string>
+	<string>AIzaSyAqxdENsVjDN7RPZkJ4qFz87eSwLzZuZ-g</string>
 	<key>GCM_SENDER_ID</key>
-	<string>925869433707</string>
+	<string>133755992024</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>cn.soulmate.elf</string>
 	<key>PROJECT_ID</key>
-	<string>soulmate-5cb6e</string>
+	<string>soulmatesg-95589</string>
 	<key>STORAGE_BUCKET</key>
-	<string>soulmate-5cb6e.appspot.com</string>
+	<string>soulmatesg-95589.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:925869433707:ios:0b117bb42bdec59f26a22e</string>
+	<string>1:133755992024:ios:bc0f5a7ae27cffba5be4ad</string>
 </dict>
 </plist>

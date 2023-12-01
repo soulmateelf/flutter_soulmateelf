@@ -1,61 +1,53 @@
 {
   "project_info": {
-    "project_number": "925869433707",
-    "project_id": "soulmate-5cb6e",
-    "storage_bucket": "soulmate-5cb6e.appspot.com"
+    "project_number": "133755992024",
+    "project_id": "soulmatesg-95589",
+    "storage_bucket": "soulmatesg-95589.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:925869433707:android:eaa8e084c2b8d27d26a22e",
+        "mobilesdk_app_id": "1:133755992024:android:e2994f580ecb3caf5be4ad",
         "android_client_info": {
           "package_name": "cn.soulmate.elf"
         }
       },
       "oauth_client": [
         {
-          "client_id": "925869433707-519irmsaobi7jrns25t0vgr8nni3bb71.apps.googleusercontent.com",
+          "client_id": "133755992024-3n3ovva9c40e9mec28v21nk34df82ce4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "cn.soulmate.elf",
-            "certificate_hash": "d00c5994c0aa8105d95acae1898c13204fe7a623"
+            "certificate_hash": "e2f609f4316afdca51bdc2150192d6cd8ae22b52"
           }
         },
         {
-          "client_id": "925869433707-l984gd57bk6g0ojp0g8p75v8t2pl70bc.apps.googleusercontent.com",
+          "client_id": "133755992024-mevue11habsch20seom1c15ohi8o7d0g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "cn.soulmate.elf",
-            "certificate_hash": "ff4d745df2113c8bca4774cda85de94188b2b146"
+            "certificate_hash": "4a459932056a2cdbfb5cb840601c152904e5d46b"
           }
         },
         {
-          "client_id": "925869433707-m7b12b8ve2mfp2opf636cae1qgjea5s1.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "cn.soulmate.elf",
-            "certificate_hash": "0541a112b73677cda32e510a62e85685f88dbafc"
-          }
-        },
-        {
-          "client_id": "925869433707-299157vs0vk3idu977g6vf8sj1f075ht.apps.googleusercontent.com",
+          "client_id": "133755992024-rv9tqe22pi6r6tj8v01nbdk0cqup899g.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAv8jkZlhGfvJ6NF5lOL4OQZRoQBK33C9A"
+          "current_key": "AIzaSyB6I2uhV0znDIlYkpJ1MRhe1qHTVoFlM7I"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "925869433707-299157vs0vk3idu977g6vf8sj1f075ht.apps.googleusercontent.com",
+              "client_id": "133755992024-rv9tqe22pi6r6tj8v01nbdk0cqup899g.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "925869433707-h1qnkgftfojh2o1ao73fta4al97m4c8j.apps.googleusercontent.com",
+              "client_id": "133755992024-3cmb7g6mjglgm8rl0v8ar8gtgmn9b0gf.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "cn.soulmate.elf"

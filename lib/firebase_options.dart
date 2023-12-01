@@ -50,23 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAv8jkZlhGfvJ6NF5lOL4OQZRoQBK33C9A',
-    appId: '1:925869433707:android:eaa8e084c2b8d27d26a22e',
-    messagingSenderId: '925869433707',
-    projectId: 'soulmate-5cb6e',
-    storageBucket: 'soulmate-5cb6e.appspot.com',
+    apiKey: 'AIzaSyB6I2uhV0znDIlYkpJ1MRhe1qHTVoFlM7I',
+    appId: '1:133755992024:android:e2994f580ecb3caf5be4ad',
+    messagingSenderId: '133755992024',
+    projectId: 'soulmatesg-95589',
+    storageBucket: 'soulmatesg-95589.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD7QdgfRdCMJkOUg9LNGHpRZYyC-6lS_PQ',
-    appId: '1:925869433707:ios:0b117bb42bdec59f26a22e',
-    messagingSenderId: '925869433707',
-    projectId: 'soulmate-5cb6e',
-    storageBucket: 'soulmate-5cb6e.appspot.com',
-    androidClientId:
-        '925869433707-519irmsaobi7jrns25t0vgr8nni3bb71.apps.googleusercontent.com',
-    iosClientId:
-        '925869433707-h1qnkgftfojh2o1ao73fta4al97m4c8j.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAqxdENsVjDN7RPZkJ4qFz87eSwLzZuZ-g',
+    appId: '1:133755992024:ios:bc0f5a7ae27cffba5be4ad',
+    messagingSenderId: '133755992024',
+    projectId: 'soulmatesg-95589',
+    storageBucket: 'soulmatesg-95589.appspot.com',
+    androidClientId: '133755992024-3n3ovva9c40e9mec28v21nk34df82ce4.apps.googleusercontent.com',
+    iosClientId: '133755992024-3cmb7g6mjglgm8rl0v8ar8gtgmn9b0gf.apps.googleusercontent.com',
     iosBundleId: 'cn.soulmate.elf',
   );
 }

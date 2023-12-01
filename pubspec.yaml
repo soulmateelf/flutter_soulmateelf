@@ -95,7 +95,7 @@ dependencies:
   google_sign_in: ^6.1.5
   #facebook登录
   #https://github.com/darwin-morocho/flutter-facebook-auth
-  flutter_facebook_auth: ^6.0.2
+  # flutter_facebook_auth: ^6.0.2
   # 图片上传
   # https://pub.flutter-io.cn/packages/image_picker
   image_picker: ^1.0.2

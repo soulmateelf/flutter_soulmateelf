@@ -64,7 +64,7 @@ class GoogleMessage {
 
   }
   static Future<void> setupFlutterNotifications() async {
-    print(22222);
+    print("setupFlutterNotifications22");
     if (isFlutterLocalNotificationsInitialized) {
       return;
     }
