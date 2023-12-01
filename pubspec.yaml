@@ -139,6 +139,9 @@ dependencies:
   # 音频播放所需的文件系统插件
   # https://pub.dev/packages/file_picker
   file_picker: ^6.1.1
+  # 点赞动效
+  # https://pub.dev/packages/like_button
+  like_button: ^2.0.5
 
 dev_dependencies:
   flutter_test:

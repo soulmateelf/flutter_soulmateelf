@@ -36,6 +36,7 @@ import 'package:soulmate/views/mine/nickName/view.dart';
 import 'package:soulmate/views/mine/purchaseHistory/view.dart';
 import 'package:soulmate/views/mine/updatePassword/view.dart';
 import 'package:soulmate/views/role/role/view.dart';
+import 'package:soulmate/views/role/roleEvent/view.dart';
 
 /// role
 import 'package:soulmate/views/role/roleList/view.dart';
@@ -102,6 +103,9 @@ class AppRoute {
     /// 角色详情-朋友圈
     GetPage(name: '/role', page: () => RolePage()),
 
+    /// 角色详情-朋友圈记录详情
+    GetPage(name: '/roleEvent', page: () => RoleEventPage()),
+
     /// mine模块
     /// 我的
     GetPage(name: '/mine', page: () => MinePage()),
@@ -139,16 +143,13 @@ class AppRoute {
     GetPage(
         name: '/minePurchaseHistory', page: () => MinePurchaseHistoryPage()),
 
-
     /// 关于
     GetPage(name: '/about', page: () => AboutPage()),
 
-
     /// 自定义角色
-    GetPage(name: "/customRoleStep1", page:()=> Step1Page()),
+    GetPage(name: "/customRoleStep1", page: () => Step1Page()),
 
-    GetPage(name: "/customRoleStep2", page:()=> Step2Page()),
-
+    GetPage(name: "/customRoleStep2", page: () => Step2Page()),
 
     GetPage(name: '/testPage', page: () => TestPage()),
   ];

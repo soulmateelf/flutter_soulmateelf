@@ -5,6 +5,7 @@
 /// Description: 全局变量
 
 import 'dart:convert';
+import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -71,5 +72,15 @@ class Application {
 
     /// 保留：主题
     // Application.pres?.setInt('themeIndex', Application.themeIndex);
+  }
+
+  static regainUserInfo() {
+    if (userInfo?.userId != null) {
+      HttpUtils.diorequst('/user/userInfo', query: {
+        "userId": userInfo?.userId!,
+      }).then((value) {
+        APPPlugin.logger.e(value);
+      }).catchError(() {});
+    }
   }
 }

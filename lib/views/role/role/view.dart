@@ -11,10 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:like_button/like_button.dart';
+import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
+import '../../../models/roleEvent.dart';
 import 'controller.dart';
 
 class RolePage extends StatelessWidget {
@@ -41,30 +45,38 @@ class RolePage extends StatelessWidget {
                       children: [
                         SingleChildScrollView(
                           child: Container(
-                            child: Column(
-                              children: [
-                                ...renderRecordList(),
-                              ],
+                            child: GetBuilder<RoleController>(
+                              builder: (controller) {
+                                return Column(
+                                  children: renderRecordList(
+                                      controller.roleEventList),
+                                );
+                              },
                             ),
                           ),
                         ),
-                        // ClipRect(
-                        //   child: BackdropFilter(
-                        //     filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-                        //     child: Container(
-                        //       color: Colors.transparent,
-                        //       width: double.infinity,
-                        //       height: double.infinity,
-                        //       child: Center(
-                        //         child: Container(
-                        //           width: 100,
-                        //           height: 100,
-                        //           color: Colors.red,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
+                        Offstage(
+                          offstage: logic.roleDetail?.intimacy != null &&
+                              logic.roleDetail!.intimacy! >= 20,
+                          child: ClipRect(
+                            child: BackdropFilter(
+                              filter:
+                                  ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+                              child: Container(
+                                color: Colors.transparent,
+                                width: double.infinity,
+                                height: double.infinity,
+                                child: Center(
+                                  child: Container(
+                                    width: 100,
+                                    height: 100,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     )),
                   ],
@@ -157,29 +169,32 @@ class RolePage extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         height: 1.3,
                         color: const Color.fromRGBO(0, 0, 0, 0.56)))),
-            GestureDetector(
-              onTap: () {
-                Get.toNamed('/chat',
-                    arguments: {"roleId": logic.roleDetail?.roleId});
-              },
-              child: Container(
-                width: double.infinity,
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(top: 16.w),
-                padding: EdgeInsets.symmetric(vertical: 10.w),
-                decoration: BoxDecoration(
-                    color: primaryColor,
-                    borderRadius: BorderRadius.all(Radius.circular(12.w))),
-                child: Text(
-                  "Chat now",
-                  style: TextStyle(
-                      fontSize: 20.sp,
-                      fontFamily: 'SFProRounded-Bold',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-              ),
-            )
+            Offstage(
+                offstage: logic.roleDetail?.intimacy != null &&
+                    logic.roleDetail!.intimacy! >= 20,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.toNamed('/chat',
+                        arguments: {"roleId": logic.roleDetail?.roleId});
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: 16.w),
+                    padding: EdgeInsets.symmetric(vertical: 10.w),
+                    decoration: BoxDecoration(
+                        color: primaryColor,
+                        borderRadius: BorderRadius.all(Radius.circular(12.w))),
+                    child: Text(
+                      "Chat now",
+                      style: TextStyle(
+                          fontSize: 20.sp,
+                          fontFamily: 'SFProRounded-Bold',
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                )),
           ],
         ))
       ],
@@ -194,10 +209,23 @@ class RolePage extends StatelessWidget {
   }
 
   /// 朋友圈列表
-  List<Widget> renderRecordList() {
+  List<Widget> renderRecordList(List<RoleEvent> events) {
     List<Widget> list = [];
 
-    for (int i = 0; i < 4; i++) {
+    events.forEach((event) {
+      var likeCount = 0;
+      var commentCount = 0;
+      bool hasLike = false;
+      event.activities.forEach((element) {
+        if (element.type == 0) {
+          likeCount++;
+          if (!hasLike && element.userId == logic.user?.userId) {
+            hasLike = true;
+          }
+        } else if (element.type == 1) {
+          commentCount++;
+        }
+      });
       list.add(Container(
         padding: EdgeInsets.fromLTRB(26.w, 20.w, 20.w, 20.w),
         child: Row(
@@ -206,8 +234,7 @@ class RolePage extends StatelessWidget {
             Container(
               width: 63.w,
               height: 24.w,
-              child: Text(Utils.messageTimeFormat(
-                  DateTime.now().millisecondsSinceEpoch)),
+              child: Text(Utils.messageTimeFormat(event.startTime)),
             ),
             SizedBox(
               width: 31.w,
@@ -216,27 +243,37 @@ class RolePage extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    clipBehavior: Clip.hardEdge,
                     width: 288.w,
                     height: 234.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.w),
-                      image: DecorationImage(
-                          image: AssetImage(
-                            "assets/images/image/chatBg.png",
-                          ),
-                          fit: BoxFit.cover),
+                    ),
+                    child: CachedNetworkImage(
+                      width: 288.w,
+                      height: 234.w,
+                      fit: BoxFit.cover,
+                      imageUrl: event.image ?? "",
+                      placeholder: (context, url) =>
+                          const CupertinoActivityIndicator(),
+                      errorWidget: (context, url, error) => Container(),
                     ),
                   ),
                   SizedBox(
                     height: 8.w,
                   ),
-                  Text(
-                    "Today, while in the park, I saw a little girl hiding during a game of hide-and-seek. A butterfly landed on her… ",
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                    style: TextStyle(
-                      color: Color.fromRGBO(0, 0, 0, 0.64),
-                      fontSize: 15.sp,
+                  GestureDetector(
+                    onTap: () {
+                      logic.toEventDetail(event);
+                    },
+                    child: Text(
+                      event.content,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                      style: TextStyle(
+                        color: Color.fromRGBO(0, 0, 0, 0.64),
+                        fontSize: 15.sp,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -245,7 +282,9 @@ class RolePage extends StatelessWidget {
                   Row(
                     children: [
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          logic.toEventDetail(event);
+                        },
                         child: Row(
                           children: [
                             Image.asset(
@@ -257,7 +296,7 @@ class RolePage extends StatelessWidget {
                               width: 2.w,
                             ),
                             Text(
-                              "15",
+                              "${commentCount}",
                               style: TextStyle(
                                 color: Color.fromRGBO(0, 0, 0, 0.64),
                                 fontSize: 15.sp,
@@ -269,27 +308,40 @@ class RolePage extends StatelessWidget {
                       SizedBox(
                         width: 32.w,
                       ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "assets/images/icons/like.png",
-                              width: 18.w,
-                              height: 18.w,
+                      Row(
+                        children: [
+                          LikeButton(
+                            size: 18.sp,
+                            isLiked: hasLike,
+                            circleColor: CircleColor(
+                                start: Colors.grey, end: primaryColor),
+                            bubblesColor: BubblesColor(
+                              dotPrimaryColor: primaryColor,
+                              dotSecondaryColor: primaryColor,
                             ),
-                            SizedBox(
-                              width: 2.w,
-                            ),
-                            Text(
-                              "26",
-                              style: TextStyle(
-                                color: Color.fromRGBO(0, 0, 0, 0.64),
-                                fontSize: 15.sp,
-                              ),
-                            ),
-                          ],
-                        ),
+                            likeCount: likeCount,
+                            countBuilder: (c, _, __) {
+                              return Text(
+                                "${c}",
+                                style: TextStyle(
+                                  color: Color.fromRGBO(0, 0, 0, 0.64),
+                                  fontSize: 15.sp,
+                                ),
+                              );
+                            },
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
+                                Icons.thumb_up_alt_outlined,
+                                color: isLiked ? primaryColor : Colors.black87,
+                                size: 18.sp,
+                              );
+                            },
+                            onTap: (liked) async {
+                              final like = logic.sendLike(event);
+                              return like;
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   )
@@ -299,7 +351,7 @@ class RolePage extends StatelessWidget {
           ],
         ),
       ));
-    }
+    });
 
     return list;
   }

@@ -14,7 +14,7 @@ class MineContactEmailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return basePage("Nick name",
+    return basePage("Emergency contact email",
         backGroundImage: null,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 12.w),
@@ -29,16 +29,38 @@ class MineContactEmailPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(borderRadius),
                       ),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.w),
-                      child: TextField(
-                        cursorColor: primaryColor,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Contact email",
-                          hintStyle: TextStyle(
-                              color: Color.fromRGBO(0, 0, 0, 0.32),
-                              fontSize: 18.sp),
-                        ),
+                          EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextField(
+                            cursorColor: primaryColor,
+                            controller: logic.controller,
+                            onChanged: (v) {
+                              logic.email = v;
+                            },
+                            focusNode: logic.focusNode,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Contact email",
+                              hintStyle: TextStyle(
+                                  color: Color.fromRGBO(0, 0, 0, 0.32),
+                                  fontSize: 18.sp),
+                            ),
+                          ),
+                          GetBuilder<MineContactEmailController>(
+                            builder: (logic) {
+                              return logic.errorText != null
+                                  ? Text("${logic.errorText!}",
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(255, 90, 90, 1),
+                                        fontSize: 14.sp,
+                                      ))
+                                  : Container();
+                            },
+                          )
+                        ],
                       ),
                     ),
                   ],
@@ -55,7 +77,9 @@ class MineContactEmailPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(borderRadius),
                   ),
                   color: primaryColor,
-                  onPressed: () {},
+                  onPressed: () {
+                    logic.done();
+                  },
                   child: Text(
                     "Done",
                     style: TextStyle(

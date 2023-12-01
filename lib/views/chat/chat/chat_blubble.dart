@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,7 @@ class _ChatBlubbleState extends State<ChatBlubble> {
 
     final appDirectory = await getApplicationDocumentsDirectory();
     String path = "${appDirectory.path}/${widget.chatData.chatId}.wav";
-    await HttpUtils.dio.download("${widget.chatData.voiceUrl}",path);
+    await HttpUtils.dio.download("${widget.chatData.voiceUrl}", path);
 
     controller.preparePlayer(
       path: path!,
@@ -129,7 +130,7 @@ class _ChatBlubbleState extends State<ChatBlubble> {
               width: 10,
             ),
             Text(
-              "${controller.maxDuration}",
+              "${(controller.maxDuration / 1000).toStringAsFixed(1)}",
               style: TextStyle(
                 color: color,
                 fontSize: 14.sp,

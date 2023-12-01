@@ -57,7 +57,6 @@ class _MinePage extends State<MinePage> {
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
 
     User? user = Application.userInfo;
-    APPPlugin.logger.d(user?.toJson());
     return basePage('Chat',
         backGroundImage: BackGroundImageType.gray,
         showAppbar: false,
@@ -545,7 +544,9 @@ class _MinePage extends State<MinePage> {
                                       color: Color.fromRGBO(0, 0, 0, 0.06),
                                     ),
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Get.toNamed("/mineContactEmail");
+                                      },
                                       child: Container(
                                         height: 64.w,
                                         padding: EdgeInsets.symmetric(

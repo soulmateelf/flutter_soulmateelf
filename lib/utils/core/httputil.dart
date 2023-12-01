@@ -27,7 +27,7 @@ class HttpUtils {
     /// 判断网络状态
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      String errMessage = "please check you network!";
+      String errMessage = "please check your network!";
       Loading.toast(errMessage, toastPosition: EasyLoadingToastPosition.top);
       return _error(message: errMessage);
     }
@@ -69,7 +69,7 @@ class HttpUtils {
 
       /// 正式请求
       response = await dio.request(
-        url,
+        "${url}?random=${DateTime.now().millisecondsSinceEpoch}",
         queryParameters: query,
         data: params,
         options: Options(
