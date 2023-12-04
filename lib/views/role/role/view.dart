@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
+import 'package:moment_dart/moment_dart.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
@@ -61,16 +62,88 @@ class RolePage extends StatelessWidget {
                           child: ClipRect(
                             child: BackdropFilter(
                               filter:
-                                  ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+                                  ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                               child: Container(
                                 color: Colors.transparent,
                                 width: double.infinity,
                                 height: double.infinity,
-                                child: Center(
-                                  child: Container(
-                                    width: 100,
-                                    height: 100,
-                                    color: Colors.red,
+                                child: Container(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      Container(
+                                        clipBehavior: Clip.none,
+                                        width: double.infinity,
+                                        height: 308.w,
+                                        padding: EdgeInsets.only(top: 75.w),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(40.w),
+                                            topRight: Radius.circular(40.w),
+                                          ),
+                                        ),
+                                        child: Container(
+                                          padding: EdgeInsets.all(12.w),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                "Intimacy greater than 20 to view.Come chat with me!",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 24.sp,
+                                                  color: textColor,
+                                                  fontFamily: FontFamily
+                                                      .SFProRoundedMedium,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 24.w,
+                                              ),
+                                              Container(
+                                                height: 64.w,
+                                                width: double.infinity,
+                                                child: MaterialButton(
+                                                  color: primaryColor,
+                                                  onPressed: () {
+                                                    logic.toChat();
+                                                  },
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            borderRadius),
+                                                  ),
+                                                  child: Text(
+                                                    "Chat now",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 20.sp,
+                                                      fontFamily: FontFamily
+                                                          .SFProRoundedBlod,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: -65.w,
+                                        left: 0,
+                                        right: 0,
+                                        child: Container(
+                                          width: 130.w,
+                                          height: 130.w,
+                                          alignment: Alignment.center,
+                                          child: Image.asset(
+                                              "assets/images/image/successfully.png"),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
                               ),
@@ -162,20 +235,24 @@ class RolePage extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                         color: const Color.fromRGBO(0, 0, 0, 0.64)))),
             Container(
-                margin: EdgeInsets.only(top: 16.w),
-                child: Text(logic.roleDetail?.description ?? '--',
-                    style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w400,
-                        height: 1.3,
-                        color: const Color.fromRGBO(0, 0, 0, 0.56)))),
+              height: 160.w,
+              child: SingleChildScrollView(
+                child: Container(
+                    margin: EdgeInsets.only(top: 16.w),
+                    child: Text(logic.roleDetail?.description ?? '--',
+                        style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w400,
+                            height: 1.3,
+                            color: const Color.fromRGBO(0, 0, 0, 0.56)))),
+              ),
+            ),
             Offstage(
                 offstage: logic.roleDetail?.intimacy != null &&
                     logic.roleDetail!.intimacy! >= 20,
                 child: GestureDetector(
                   onTap: () {
-                    Get.toNamed('/chat',
-                        arguments: {"roleId": logic.roleDetail?.roleId});
+                    logic.toChat();
                   },
                   child: Container(
                     width: double.infinity,
@@ -234,7 +311,30 @@ class RolePage extends StatelessWidget {
             Container(
               width: 63.w,
               height: 24.w,
-              child: Text(Utils.messageTimeFormat(event.startTime)),
+              child: RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                      text: DateTime.fromMillisecondsSinceEpoch(
+                              event.publishTime!)
+                          .format(payload: "DD"),
+                      style: TextStyle(
+                          fontSize: 24.sp,
+                          fontFamily: FontFamily.SFProRoundedMedium,
+                          color: textColor)),
+                  WidgetSpan(
+                      child: SizedBox(
+                    width: 4.w,
+                  )),
+                  TextSpan(
+                      text: DateTime.fromMillisecondsSinceEpoch(
+                              event.publishTime!)
+                          .format(payload: "MMM"),
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        color: textColor,
+                      )),
+                ]),
+              ),
             ),
             SizedBox(
               width: 31.w,

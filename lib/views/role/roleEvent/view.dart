@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
+import 'package:moment_dart/moment_dart.dart';
 import 'package:soulmate/models/activety.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
@@ -22,7 +23,8 @@ class RoleEventPage extends StatelessWidget {
       builder: (controller) {
         final roleEvent = controller.roleEvent;
 
-        return basePage("${Utils.messageTimeFormat(roleEvent?.publishTime)}",
+        return basePage(
+            "${roleEvent?.publishTime != null ? DateTime.fromMillisecondsSinceEpoch(roleEvent!.publishTime).format(payload: "DD MMM") : ""}",
             backGroundImage: null,
             child: Column(
               children: [
@@ -56,7 +58,7 @@ class RoleEventPage extends StatelessWidget {
                             height: 12.w,
                           ),
                           Text(
-                            "${roleEvent?.content}",
+                            "${roleEvent?.content ?? ""}",
                             style: TextStyle(
                               color: Color.fromRGBO(0, 0, 0, 0.64),
                               fontSize: 16.sp,
