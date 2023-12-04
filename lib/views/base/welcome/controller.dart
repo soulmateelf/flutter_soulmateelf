@@ -7,6 +7,7 @@
 
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class WelcomeController extends GetxController {
@@ -37,7 +38,21 @@ class WelcomeController extends GetxController {
   }
 
   // facebook登录
-  void facebookLogin() async {}
+  void appleIdLogin() async {
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+    // thirdLogin({
+    //   'type': 3, //1:google 2:facebook 3 appleId
+    //   'loginId': credential.userIdentifier,
+    //   'nickName': "${credential.givenName??''} ${credential.familyName??''}",
+    //   'image': '',
+    //   'email': credential?.email,
+    // });
+  }
 
   /// Author: kele
   /// Date: 2022-03-08 15:12:36

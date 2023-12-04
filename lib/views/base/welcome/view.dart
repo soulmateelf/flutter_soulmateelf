@@ -91,7 +91,7 @@ class WelcomePage extends StatelessWidget {
                   minWidth: double.infinity,
                   height: 64.w,
                   onPressed: () {
-                    logic.facebookLogin();
+                    logic.appleIdLogin();
                   },
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -109,7 +109,7 @@ class WelcomePage extends StatelessWidget {
                         width: 49.w,
                       ),
                       Text(
-                        'Continue with Facebook',
+                        'Continue with Apple',
                         style: TextStyle(
                           fontSize: 18.sp,
                           color: textColor,

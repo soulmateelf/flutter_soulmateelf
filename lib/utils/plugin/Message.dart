@@ -4,14 +4,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:soulmate/firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-// @pragma('vm:entry-point')
-// Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   print(444);
-//   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-//   await GoogleMessage.setupFlutterNotifications();
-//   GoogleMessage.showFlutterNotification(message);
-//   print('Handling a background message ${message.messageId}');
-// }
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await GoogleMessage.setupFlutterNotifications();
+  // GoogleMessage.showFlutterNotification(message);
+  // print('Handling a background message ${message.messageId}');
+  // 不需要手动显示通知，因为系统会自动弹出默认的通知，如果你需要处理通知或者Data格式的消息，可以在这里写逻辑
+}
 class GoogleMessage {
   /// android 通知渠道 展示推送
   static late AndroidNotificationChannel channel;
@@ -27,7 +28,7 @@ class GoogleMessage {
     /// 启用自动初始化，自动初始化会在应用程序启动时获取令牌并且自动注册到 FCM
     FirebaseMessaging.instance.setAutoInitEnabled(true);
     /// 初始化本地通知配置
-    setupFlutterNotifications();
+    await setupFlutterNotifications();
     /// 请求权限
     NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
       alert: true,
@@ -53,7 +54,7 @@ class GoogleMessage {
 
 
     /// 后台状态监听
-    // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   }
   static void onDidReceiveNotificationResponse(NotificationResponse notificationResponse) async {
     print("onDidReceiveNotificationResponse");
@@ -76,7 +77,7 @@ class GoogleMessage {
       'high_importance_channel', // id
       'High Importance Notifications', // title
       description: 'This channel is used for important notifications.', // description
-      importance: Importance.high,
+      importance: Importance.max,
     );
 
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();

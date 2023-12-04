@@ -93,6 +93,9 @@ dependencies:
   #google登录
   #https://github.com/flutter/packages/tree/main/packages/google_sign_in/google_sign_in
   google_sign_in: ^6.1.5
+  # apple登录
+  # https://pub-web.flutter-io.cn/packages/sign_in_with_apple
+  sign_in_with_apple: ^5.0.0
   #facebook登录
   #https://github.com/darwin-morocho/flutter-facebook-auth
   # flutter_facebook_auth: ^6.0.2
