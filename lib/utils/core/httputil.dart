@@ -86,7 +86,7 @@ class HttpUtils {
       String realUrl = dio.options.baseUrl + url;
       if (ProjectConfig.getInstance()?.isDebug == true) {
         APPPlugin.logger.d('$realUrl接口错误,请求方式$method');
-        APPPlugin.logger.d('请求参数${query?.toString()}${params?.toString()}');
+        APPPlugin.logger.d('请求参数,query:${query?.toString()} params:${params?.toString()}');
       }
       return _dealDioError(dioError, url);
     } catch (exception) {
@@ -119,9 +119,9 @@ class HttpUtils {
             errMessage = dioError.response?.data?['message'];
             Loading.toast(errMessage,
                 toastPosition: EasyLoadingToastPosition.top);
-            // Application.clearStorage().then((val) {
-            //   Get.offAllNamed('login');
-            // });
+            Application.clearStorage().then((val) {
+              Get.offAllNamed('login');
+            });
             return Future.error(errMessage);
           }
         } else {

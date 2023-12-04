@@ -233,7 +233,9 @@ class LoginState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        logic.googleLogin();
+                      },
                       child: Container(
                         padding: EdgeInsets.all(15.w),
                         decoration: BoxDecoration(
@@ -246,20 +248,28 @@ class LoginState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: 40.w,
+                    Offstage(
+                      offstage: !GetPlatform.isIOS,
+                      child: SizedBox(
+                        width: 40.w,
+                      ),
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        padding: EdgeInsets.all(15.w),
-                        decoration: BoxDecoration(
-                            border: Border.all(width: 3.w, color: Colors.grey),
-                            borderRadius: BorderRadius.circular(borderRadius)),
-                        child: Image.asset(
-                          "assets/images/icons/facebook.png",
-                          width: 34.w,
-                          height: 34.w,
+                    Offstage(
+                      offstage: !GetPlatform.isIOS,
+                      child: GestureDetector(
+                        onTap: () {
+                          logic.appleIdLogin();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(15.w),
+                          decoration: BoxDecoration(
+                              border: Border.all(width: 3.w, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(borderRadius)),
+                          child: Image.asset(
+                            "assets/images/icons/facebook.png",
+                            width: 34.w,
+                            height: 34.w,
+                          ),
                         ),
                       ),
                     ),

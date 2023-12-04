@@ -36,12 +36,6 @@ class WelcomePage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(
-                    onPressed: () {
-                      Get.toNamed("/testPage");
-                      // Get.toNamed("/customRoleStep1");
-                    },
-                    child: Text("go Text Page")),
                 Text(
                   'Let’s you in',
                   style: TextStyle(
@@ -87,36 +81,39 @@ class WelcomePage extends StatelessWidget {
                 SizedBox(
                   height: 12.w,
                 ),
-                MaterialButton(
-                  minWidth: double.infinity,
-                  height: 64.w,
-                  onPressed: () {
-                    logic.appleIdLogin();
-                  },
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(width: borderWidth, color: borderColor),
-                      borderRadius: BorderRadius.circular(borderRadius)),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/icons/facebook.png",
-                        width: 34.w,
-                        height: 34.w,
-                      ),
-                      SizedBox(
-                        width: 49.w,
-                      ),
-                      Text(
-                        'Continue with Apple',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          color: textColor,
-                          fontFamily: FontFamily.SFProRoundedSemibold,
+                Offstage(
+                  offstage: !GetPlatform.isIOS,
+                  child: MaterialButton(
+                    minWidth: double.infinity,
+                    height: 64.w,
+                    onPressed: () {
+                      logic.appleIdLogin();
+                    },
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(width: borderWidth, color: borderColor),
+                        borderRadius: BorderRadius.circular(borderRadius)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/images/icons/facebook.png",
+                          width: 34.w,
+                          height: 34.w,
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 49.w,
+                        ),
+                        Text(
+                          'Continue with Apple',
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            color: textColor,
+                            fontFamily: FontFamily.SFProRoundedSemibold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(

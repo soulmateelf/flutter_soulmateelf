@@ -8,6 +8,9 @@
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:soulmate/models/user.dart';
+import 'package:soulmate/utils/core/application.dart';
+import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class WelcomeController extends GetxController {
@@ -24,20 +27,30 @@ class WelcomeController extends GetxController {
         await googleSignIn.signOut();
       }
       GoogleSignInAccount? googleResult = await googleSignIn.signIn();
-      print(googleResult);
-    });
-    // Get.toNamed("/signUp");
-    ///{displayName: kele zxw, email: kelezxw@gmail.com, id: 1069*******, photoUrl: https://lh3.googleusercontent.com/a/AGNmyxbsax2bXt55bBGEUSHb7Ghsaxjsm14OmqvIVuf2=s1337,}
-    // thirdLogin({
-    //   'type': 1, //1:google 2:facebook
-    //   'loginId': googleResult!.id?.toString(),
-    //   'nickName': googleResult?.displayName,
-    //   'image': googleResult?.photoUrl,
-    //   'email': googleResult?.email,
-    // });
+      if(googleResult == null){
+        return;
+      }
+      var params = {
+        "threePartId": googleResult.id,
+        "nickName": googleResult.displayName,
+        "email": googleResult.email,
+        "avatar": googleResult.photoUrl,
+      };
+      HttpUtils.diorequst('/googleLogin',method: 'post', params: params)
+         .then((response) {
+            var userInfoMap = response["data"];
+            User user = User.fromJson(userInfoMap);
+            /// 存储全局信息
+            Application.token = response["token"];
+            Application.userInfo = user;
+            Get.offAllNamed('/menu');
+         }).catchError((error) {
+           exSnackBar(error, type: ExSnackBarType.error);
+         });
+      });
   }
 
-  // facebook登录
+  // apple登录
   void appleIdLogin() async {
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [
@@ -45,13 +58,25 @@ class WelcomeController extends GetxController {
         AppleIDAuthorizationScopes.fullName,
       ],
     );
-    // thirdLogin({
-    //   'type': 3, //1:google 2:facebook 3 appleId
-    //   'loginId': credential.userIdentifier,
-    //   'nickName': "${credential.givenName??''} ${credential.familyName??''}",
-    //   'image': '',
-    //   'email': credential?.email,
-    // });
+    if(credential == null){
+      return;
+    }
+    var params = {
+      "appleLoginId": credential.userIdentifier,
+      "nickName": "${credential.givenName??''} ${credential.familyName??''}",
+      "email": credential.email,
+    };
+    HttpUtils.diorequst('/appleLogin',method: 'post', params: params)
+        .then((response) {
+      var userInfoMap = response["data"];
+      User user = User.fromJson(userInfoMap);
+      /// 存储全局信息
+      Application.token = response["token"];
+      Application.userInfo = user;
+      Get.offAllNamed('/menu');
+    }).catchError((error) {
+      exSnackBar(error, type: ExSnackBarType.error);
+    });
   }
 
   /// Author: kele
