@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
@@ -347,3 +348,26 @@ bool checkPassword(String s) {
   return isP;
 }
 
+
+Map<String, Timer> _funcDebounce = {};
+
+/// 函数防抖
+///
+/// [func]: 要执行的方法
+/// [milliseconds]: 要迟延的毫秒时间
+Function makeDebounce(Function func, [int milliseconds = 2000]) {
+  Function target = () {
+    String key = func.hashCode.toString();
+    Timer? _timer = _funcDebounce[key];
+    if (_timer == null) {
+      func?.call();
+      _timer = Timer(Duration(milliseconds: milliseconds), () {
+        Timer? t = _funcDebounce.remove(key);
+        t?.cancel();
+        t = null;
+      });
+      _funcDebounce[key] = _timer;
+    }
+  };
+  return target;
+}

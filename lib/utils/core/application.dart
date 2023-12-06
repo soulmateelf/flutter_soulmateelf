@@ -74,13 +74,14 @@ class Application {
     // Application.pres?.setInt('themeIndex', Application.themeIndex);
   }
 
-  static regainUserInfo() {
-    if (userInfo?.userId != null) {
-      HttpUtils.diorequst('/user/userInfo', query: {
-        "userId": userInfo?.userId!,
-      }).then((value) {
-        APPPlugin.logger.e(value);
-      }).catchError(() {});
-    }
+  static Future<void> regainUserInfo() async {
+    try {
+      if (userInfo?.userId != null) {
+        final res = await HttpUtils.diorequst('/user/userInfo', query: {
+          "userId": userInfo?.userId!,
+        });
+        Application.userInfo = User.fromJson(res['data']);
+      }
+    } catch (err) {}
   }
 }

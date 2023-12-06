@@ -97,6 +97,7 @@ class ChatController extends GetxController {
     HttpUtils.diorequst('/role/roleInfo', query: {"roleId": roleId})
         .then((response) {
       var roleDetailMap = response["data"];
+      APPPlugin.logger.d(roleDetailMap);
       roleDetail = Role.fromJson(roleDetailMap);
       update();
     }).catchError((error) {

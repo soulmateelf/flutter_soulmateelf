@@ -30,6 +30,9 @@ class MineController extends GetxController {
 
   setContact(bool c) {
     contact = c;
+    HttpUtils.diorequst("/user/updateEemergency",query: {"status":c ? 1 :0}).then((res){
+      APPPlugin.logger.d(res);
+    }).catchError((err){});
     update();
   }
 

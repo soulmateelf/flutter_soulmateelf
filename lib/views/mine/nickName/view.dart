@@ -30,6 +30,7 @@ class MineNickNamePage extends StatelessWidget {
                           EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.w),
                       child: TextField(
                         cursorColor: primaryColor,
+                        controller: logic.controller,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Nick name",
@@ -53,7 +54,9 @@ class MineNickNamePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(borderRadius),
                   ),
                   color: primaryColor,
-                  onPressed: () {},
+                  onPressed: () {
+                    logic.updateNickname();
+                  },
                   child: Text(
                     "Done",
                     style: TextStyle(

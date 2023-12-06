@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:moment_dart/moment_dart.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
@@ -77,18 +79,17 @@ class GiftBackpackPage extends StatelessWidget {
                 height: 16.w,
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: GetBuilder<GiftBackpackController>(
-                      builder: (controller) {
-                        return Column(
-                          children: controller.tabKey == GiftTabKey.energy
-                              ? renderEnergyCardList(controller.tabKey)
-                              : renderRechargeCardList(controller.tabKey),
-                        );
-                      },
-                    ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                  child: GetBuilder<GiftBackpackController>(
+                    builder: (controller) {
+                      return SmartRefresher(
+                          controller: RefreshController(),
+                          child: Column(
+                              children: controller.tabKey == GiftTabKey.energy
+                                  ? renderEnergyCardList(controller.tabKey)
+                                  : renderRechargeCardList(controller.tabKey)));
+                    },
                   ),
                 ),
               )
@@ -99,7 +100,7 @@ class GiftBackpackPage extends StatelessWidget {
 
   List<Widget> renderEnergyCardList(GiftTabKey tabKey) {
     List<Widget> list = [];
-    for (int i = 0; i < 10; i++) {
+    logic.energyCardList.forEach((energy) {
       list.add(Container(
         margin: EdgeInsets.only(bottom: 8.w),
         padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 16.w),
@@ -112,7 +113,7 @@ class GiftBackpackPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "2023-06-08 23:59 Obtained",
+              "${DateTime.fromMillisecondsSinceEpoch(energy.createTime).format(payload: "YYYY-MM-DD HH:mm [Obtained]")}",
               style: TextStyle(
                 fontSize: 13.sp,
                 color: Color.fromRGBO(0, 0, 0, 0.48),
@@ -146,7 +147,7 @@ class GiftBackpackPage extends StatelessWidget {
                   width: 7.w,
                 ),
                 Text(
-                  "+ 20",
+                  "+ ${energy.value}",
                   style: TextStyle(
                     color: textColor,
                     fontSize: 20.sp,
@@ -159,7 +160,7 @@ class GiftBackpackPage extends StatelessWidget {
           ],
         ),
       ));
-    }
+    });
     return list;
   }
 
@@ -176,7 +177,7 @@ class GiftBackpackPage extends StatelessWidget {
         ),
       ),
     ));
-    for (int i = 0; i < 10; i++) {
+    logic.rechargeableCardList.forEach((gc) {
       list.add(Container(
         margin: EdgeInsets.only(bottom: 8.w),
         padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 16.w),
@@ -189,7 +190,7 @@ class GiftBackpackPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "2023-06-08 23:59 expire",
+              "${DateTime.fromMillisecondsSinceEpoch(gc.expiredTime).format(payload: "YYYY-MM-DD HH:mm")} expire",
               style: TextStyle(
                 fontSize: 13.sp,
                 color: Color.fromRGBO(0, 0, 0, 0.48),
@@ -212,7 +213,7 @@ class GiftBackpackPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "Doubling of energy",
+                    "${gc.title}",
                     style: TextStyle(
                       color: textColor,
                       fontSize: 20.sp,
@@ -224,42 +225,43 @@ class GiftBackpackPage extends StatelessWidget {
                 SizedBox(
                   width: 7.w,
                 ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(borderRadius),
-                      border: Border.all(width: 2.w, color: primaryColor),
-                      color: Color.fromRGBO(255, 128, 0, 0.16),
-                    ),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 11.w, vertical: 4.w),
-                    child: Text(
-                      "To use",
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontSize: 16.sp,
-                        fontFamily: FontFamily.SFProRoundedBlod,
-                        fontWeight: FontWeight.bold,
+                gc.couponStatus == 0
+                    ? GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(borderRadius),
+                            border: Border.all(width: 2.w, color: primaryColor),
+                            color: Color.fromRGBO(255, 128, 0, 0.16),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 11.w, vertical: 4.w),
+                          child: Text(
+                            "To use",
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontSize: 16.sp,
+                              fontFamily: FontFamily.SFProRoundedBlod,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Text(
+                        gc.couponStatus == 1 ? "Used" : "Expired",
+                        style: TextStyle(
+                          color: Color.fromRGBO(0, 0, 0, 0.48),
+                          fontSize: 16.sp,
+                          fontFamily: FontFamily.SFProRoundedBlod,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                // Text(
-                //   "Used",
-                //   style: TextStyle(
-                //     color: Color.fromRGBO(0, 0, 0, 0.48),
-                //     fontSize: 16.sp,
-                //     fontFamily: FontFamily.SFProRoundedBlod,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                // ),
               ],
             )
           ],
         ),
       ));
-    }
+    });
     return list;
   }
 }

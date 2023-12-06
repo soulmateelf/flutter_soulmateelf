@@ -2,30 +2,42 @@
 class Role {
   /// 角色id
   String roleId;
+
   /// 名称
   String? name;
+
   /// 年龄
   int? age;
+
   /// 性别
   String? gender;
+
   /// 头像
   String? avatar;
+
   /// 爱好
   String? hobby;
+
   /// 角色介绍
   String? description;
+
   /// 角色设定
   String? setting;
+
   /// 来源,0系统创建,1客户定制
   int? origin;
+
   /// 备注
   String? remark;
   String? roleUser;
   int? intimacy;
+
   /// 最后一次聊天时间
   int? endSendTime;
+
   /// 最后一次聊天内容
   String? content;
+  String? backgroundImageUrl;
 
   Role({
     required this.roleId,
@@ -41,7 +53,8 @@ class Role {
     this.roleUser,
     this.intimacy,
     this.endSendTime,
-    this.content
+    this.content,
+    this.backgroundImageUrl,
   });
 
   factory Role.fromJson(Map<String, dynamic> json) => Role(
@@ -59,6 +72,7 @@ class Role {
         intimacy: json["intimacy"],
         endSendTime: json["endSendTime"],
         content: json["content"],
+        backgroundImageUrl: json['backgroundImageUrl'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -76,5 +90,6 @@ class Role {
         "intimacy": intimacy,
         "endSendTime": endSendTime,
         "content": content,
+        "backgroundImageUrl": backgroundImageUrl,
       };
 }

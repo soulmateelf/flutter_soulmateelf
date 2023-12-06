@@ -63,7 +63,9 @@ class MineUpdatePasswordPage extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(left: 12.w),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Get.toNamed("/findAccount");
+                      },
                       child: Text(
                         "Forgot password",
                         style: TextStyle(color: primaryColor, fontSize: 18.sp),
@@ -208,7 +210,9 @@ class MineUpdatePasswordPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(borderRadius),
                   ),
                   color: primaryColor,
-                  onPressed: () {},
+                  onPressed: () {
+                    logic.updatePassword();
+                  },
                   child: Text(
                     "Done",
                     style: TextStyle(
