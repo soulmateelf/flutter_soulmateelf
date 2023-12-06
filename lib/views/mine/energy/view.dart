@@ -28,19 +28,12 @@ class EnergyState extends State<EnergyPage>
     super.initState();
   }
 
-  List<dynamic> starEnergyList = [
-    {"energy": 20, "count": 2, "price": 2.99, "id": 1},
-    {"energy": 50, "count": 2, "price": 6.99, "id": 1},
-    {"energy": 100, "count": 2, "price": 16.99, "id": 1},
-    {"energy": 150, "count": 2, "price": 26.99, "id": 1}
-  ];
-
   @override
   Widget build(BuildContext context) {
     return basePage("Buy energy",
         backGroundImage:
             const AssetImage("assets/images/image/backgroundGray.png"),
-        child: Column(
+        child: GetBuilder<EnergyController>(builder: (logic) { return Column(
           children: [
             SizedBox(
               height: 9.w,
@@ -49,63 +42,60 @@ class EnergyState extends State<EnergyPage>
                 padding: EdgeInsets.symmetric(horizontal: 48.w),
                 child: Container(
                   width: double.infinity,
-                  child: GetBuilder<EnergyController>(
-                    builder: (controller) {
-                      return CupertinoSlidingSegmentedControl<EnergyTabKey>(
-                        padding: EdgeInsets.all(4),
-                        thumbColor: primaryColor,
-                        backgroundColor: CupertinoColors.white,
-                        groupValue: controller.tabKey,
-                        onValueChanged: (EnergyTabKey? value) {
-                          controller.tabKey = value!;
-                          _tabController
-                              ?.animateTo(value == EnergyTabKey?.vip ? 0 : 1);
-                        },
-                        children: {
-                          EnergyTabKey.vip: Container(
-                            height: 44.w,
-                            alignment: Alignment.center,
-                            child: Text(
-                              energyTabMap[EnergyTabKey.vip]!,
-                              style: controller.tabKey == EnergyTabKey.vip
-                                  ? TextStyle(
-                                      fontFamily: FontFamily.SFProRoundedBlod,
-                                      fontWeight: FontWeight.bold,
-                                      color: CupertinoColors.white,
-                                      fontSize: 18.sp,
-                                    )
-                                  : TextStyle(
-                                      fontFamily: FontFamily.SFProRoundedMedium,
-                                      color:
-                                          const Color.fromRGBO(0, 0, 0, 0.48),
-                                      fontSize: 18.sp,
-                                    ),
-                            ),
-                          ),
-                          EnergyTabKey.star: Container(
-                            height: 44.w,
-                            alignment: Alignment.center,
-                            child: Text(
-                              energyTabMap[EnergyTabKey.star]!,
-                              style: controller.tabKey == EnergyTabKey.star
-                                  ? TextStyle(
-                                      fontFamily: FontFamily.SFProRoundedBlod,
-                                      fontWeight: FontWeight.bold,
-                                      color: CupertinoColors.white,
-                                      fontSize: 18.sp,
-                                    )
-                                  : TextStyle(
-                                      fontFamily: FontFamily.SFProRoundedMedium,
-                                      color:
-                                          const Color.fromRGBO(0, 0, 0, 0.48),
-                                      fontSize: 18.sp,
-                                    ),
-                            ),
-                          ),
-                        },
-                      );
+                  child: CupertinoSlidingSegmentedControl<EnergyTabKey>(
+                    padding: EdgeInsets.all(4),
+                    thumbColor: primaryColor,
+                    backgroundColor: CupertinoColors.white,
+                    groupValue: logic.tabKey,
+                    onValueChanged: (EnergyTabKey? value) {
+                      logic.tabKey = value!;
+                      _tabController
+                          ?.animateTo(value == EnergyTabKey?.vip ? 0 : 1);
+                      logic.update();
                     },
-                  ),
+                    children: {
+                      EnergyTabKey.vip: Container(
+                        height: 44.w,
+                        alignment: Alignment.center,
+                        child: Text(
+                          energyTabMap[EnergyTabKey.vip]!,
+                          style: logic.tabKey == EnergyTabKey.vip
+                              ? TextStyle(
+                            fontFamily: FontFamily.SFProRoundedBlod,
+                            fontWeight: FontWeight.bold,
+                            color: CupertinoColors.white,
+                            fontSize: 18.sp,
+                          )
+                              : TextStyle(
+                            fontFamily: FontFamily.SFProRoundedMedium,
+                            color:
+                            const Color.fromRGBO(0, 0, 0, 0.48),
+                            fontSize: 18.sp,
+                          ),
+                        ),
+                      ),
+                      EnergyTabKey.star: Container(
+                        height: 44.w,
+                        alignment: Alignment.center,
+                        child: Text(
+                          energyTabMap[EnergyTabKey.star]!,
+                          style: logic.tabKey == EnergyTabKey.star
+                              ? TextStyle(
+                            fontFamily: FontFamily.SFProRoundedBlod,
+                            fontWeight: FontWeight.bold,
+                            color: CupertinoColors.white,
+                            fontSize: 18.sp,
+                          )
+                              : TextStyle(
+                            fontFamily: FontFamily.SFProRoundedMedium,
+                            color:
+                            const Color.fromRGBO(0, 0, 0, 0.48),
+                            fontSize: 18.sp,
+                          ),
+                        ),
+                      ),
+                    },
+                  )
                 )),
             SizedBox(
               height: 24.w,
@@ -114,7 +104,6 @@ class EnergyState extends State<EnergyPage>
               child: Container(
                 child: TabBarView(
                     controller: _tabController,
-                    physics: NeverScrollableScrollPhysics(),
                     children: [
                       Column(
                         children: [
@@ -219,7 +208,7 @@ class EnergyState extends State<EnergyPage>
                               shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.circular(borderRadius)),
-                              onPressed: () {logic.ttttt();},
+                              onPressed: () {logic.payNow();},
                               child: const Text(
                                 "\$ 56.99 / Month",
                                 style: TextStyle(
@@ -251,27 +240,20 @@ class EnergyState extends State<EnergyPage>
                               padding: EdgeInsets.symmetric(
                                 horizontal: 12.w,
                               ),
-                              child: GetBuilder<EnergyController>(
-                                builder: (controller) {
-                                  return ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (_, index) {
-                                      return cardItem(
-                                          energy: starEnergyList[index]
-                                              ["energy"],
-                                          count: starEnergyList[index]["count"],
-                                          price: starEnergyList[index]["price"],
-                                          active: index ==
-                                              controller.starEnergyCardIndex,
-                                          onPressed: () {
-                                            controller.starEnergyCardIndex =
-                                                index;
-                                          });
-                                    },
-                                    itemCount: starEnergyList.length,
-                                  );
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemBuilder: (_, index) {
+                                  return cardItem(
+                                      energy: logic.serverProductList[index].energy,
+                                      count: 2,
+                                      price: logic.serverProductList[index].amount,
+                                      active: logic.serverProductList[index].productId == logic.currentProduct?.productId,
+                                      onPressed: () {
+                                        logic.currentProduct = logic.serverProductList[index];
+                                        logic.update();
+                                      });
                                 },
+                                itemCount: logic.serverProductList.length,
                               )),
                           SizedBox(
                             height: 16.w,
@@ -300,10 +282,10 @@ class EnergyState extends State<EnergyPage>
                               shape: RoundedRectangleBorder(
                                   borderRadius:
                                   BorderRadius.circular(borderRadius)),
-                              onPressed: () {},
-                              child: const Text(
-                                "Pay \$ 16.99",
-                                style: TextStyle(
+                              onPressed: () {logic.payNow();},
+                              child: Text(
+                                "Pay ${logic.currentProduct?.amount??'--'}",
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontFamily: FontFamily.SFProRoundedBlod,
                                   fontSize: 20,
@@ -318,7 +300,7 @@ class EnergyState extends State<EnergyPage>
               ),
             )
           ],
-        ));
+        );}));
   }
 
   Widget cardItem({

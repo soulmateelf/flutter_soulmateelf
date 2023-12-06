@@ -11,6 +11,7 @@ class AppPurchase {
   ///订单业务回调
   static Function? orderCallback;
 
+
   ///初始化支付订单状态订阅
   static initAppPayConfig() async {
     final Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
@@ -63,17 +64,17 @@ class AppPurchase {
   ///获取ios和android商店里面配置的商品列表
   static Future<List<ProductDetails>> getServerProducts(
       Set<String> pIds) async {
-    print("5555555");
     ///根据商品id获取云端商品列表
     try{
-      final ProductDetailsResponse response =
-      await InAppPurchase.instance.queryProductDetails(pIds);
-      print("6666");
-      if (response.notFoundIDs.isNotEmpty) {
-        exSnackBar("something wrong", type: ExSnackBarType.error);
+      final bool isAvailable = await InAppPurchase.instance.isAvailable();
+      if (!isAvailable) {
         return [];
       }
-      print("777");
+      final ProductDetailsResponse response =
+      await InAppPurchase.instance.queryProductDetails(pIds);
+      if (response.notFoundIDs.isNotEmpty) {
+        return [];
+      }
       return response.productDetails;
     }catch(err){
       print(err);
@@ -84,7 +85,7 @@ class AppPurchase {
   ///购买商品
   static payProductNow(ProductDetails productDetails) {
     if (productDetails == null) {
-      exSnackBar("something wrong", type: ExSnackBarType.error);
+      exSnackBar("please check you product", type: ExSnackBarType.warning);
       return;
     }
     final PurchaseParam purchaseParam =
