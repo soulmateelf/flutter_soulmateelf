@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
 import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:flutter/src/widgets/focus_manager.dart';
+import 'package:soulmate/utils/core/httputil.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
+import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class MineUpdatePasswordController extends GetxController {
   TextEditingController currentPasswordController = TextEditingController();
@@ -105,5 +108,35 @@ class MineUpdatePasswordController extends GetxController {
   set confirmPasswordErrorText(String value) {
     _confirmPasswordErrorText = value;
     update();
+  }
+
+  void updatePassword() {
+    if (currentPasswordController.text.isEmpty ||
+        !currentPasswordErrorText.isEmpty) {
+      return;
+    }
+
+    if (passwordController.text.isEmpty || !passwordErrorText.isEmpty) {
+      return;
+    }
+    if (confirmPasswordController.text.isEmpty ||
+        !confirmPasswordErrorText.isEmpty) {
+      return;
+    }
+
+    if (currentPasswordController.text == confirmPasswordController.text) {
+      return;
+    }
+
+    HttpUtils.diorequst('/updatePasswordByOld', method: 'post', params: {
+      "oldPassword": currentPasswordController.text,
+      "newPassword": confirmPasswordController.text,
+    }).then((res) {
+      Get.back();
+
+      exSnackBar("success", type: ExSnackBarType.success);
+    }).catchError((err) {
+      exSnackBar(err, type: ExSnackBarType.error);
+    });
   }
 }

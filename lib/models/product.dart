@@ -1,56 +1,59 @@
-//商品
 class Product {
-  int id;
-  String productId;
   double amount;
+  String productName;
+  String productId;
+  int id;
+  int status;
+  String iosId;
+  int? createTime;
   int energy;
   int type;
-  String androidId;
-  String iosId;
-  int status;
   String? remark;
-  int? createTime;
+  String androidId;
   int? updateTime;
 
   Product({
-    required this.id,
-    required this.productId,
     required this.amount,
+    required this.productName,
+    required this.productId,
+    required this.id,
+    required this.status,
+    required this.iosId,
+    this.createTime,
     required this.energy,
     required this.type,
-    required this.androidId,
-    required this.iosId,
-    required this.status,
     this.remark,
-    this.createTime,
+    required this.androidId,
     this.updateTime,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-    id: json["id"],
-    productId: json["productId"],
     amount: json["amount"]?.toDouble(),
+    productName: json["productName"],
+    productId: json["productId"],
+    id: json["id"],
+    status: json["status"],
+    iosId: json["iosId"],
+    createTime: json["createTime"],
     energy: json["energy"],
     type: json["type"],
-    androidId: json["androidId"],
-    iosId: json["iosId"],
-    status: json["status"],
     remark: json["remark"],
-    createTime: json["createTime"],
+    androidId: json["androidId"],
     updateTime: json["updateTime"],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "productId": productId,
     "amount": amount,
+    "productName": productName,
+    "productId": productId,
+    "id": id,
+    "status": status,
+    "iosId": iosId,
+    "createTime": createTime,
     "energy": energy,
     "type": type,
-    "androidId": androidId,
-    "iosId": iosId,
-    "status": status,
     "remark": remark,
-    "createTime": createTime,
+    "androidId": androidId,
     "updateTime": updateTime,
   };
 }

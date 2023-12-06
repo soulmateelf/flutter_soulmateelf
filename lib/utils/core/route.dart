@@ -13,10 +13,12 @@ import 'package:soulmate/views/base/splash/view.dart';
 import 'package:soulmate/views/base/successfully/view.dart';
 import 'package:soulmate/views/base/webview/view.dart';
 import 'package:soulmate/views/base/welcome/view.dart';
+import 'package:soulmate/views/chat/background/view.dart';
 import 'package:soulmate/views/chat/chat/view.dart';
 
 /// chat
 import 'package:soulmate/views/chat/chatList/view.dart';
+import 'package:soulmate/views/chat/details/view.dart';
 import 'package:soulmate/views/chat/giftBackpack/view.dart';
 import 'package:soulmate/views/chat/message/view.dart';
 import 'package:soulmate/views/chat/settings/view.dart';
@@ -95,6 +97,12 @@ class AppRoute {
 
     /// 聊天设置
     GetPage(name: '/chatSettings', page: () => ChatSettingsPage()),
+
+    /// 聊天详情页
+    GetPage(name: '/chatDetails', page: () => ChatDetailsPage()),
+
+    /// 聊天背景
+    GetPage(name: '/chatBackground', page: () => ChatBackgroundPage()),
 
     /// role模块
     /// 角色列表

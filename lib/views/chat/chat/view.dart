@@ -41,7 +41,6 @@ class ChatState extends State<ChatPage> {
   final logic = Get.put(ChatController());
   late final RecorderController recorderController;
 
-
   String? path;
   bool isRecording = false;
   bool isRecordingCompleted = false;
@@ -54,7 +53,6 @@ class ChatState extends State<ChatPage> {
     super.initState();
     _getDir();
     _initialiseControllers();
-
   }
 
   void _getDir() async {
@@ -64,18 +62,16 @@ class ChatState extends State<ChatPage> {
     setState(() {});
   }
 
-  void _initialiseControllers()  async {
+  void _initialiseControllers() async {
     recorderController = RecorderController()
       ..androidEncoder = AndroidEncoder.aac
       ..androidOutputFormat = AndroidOutputFormat.mpeg4
       ..iosEncoder = IosEncoder.kAudioFormatMPEG4AAC
       ..sampleRate = 44100;
 
-    final result =  await recorderController.checkPermission();
+    final result = await recorderController.checkPermission();
     APPPlugin.logger.d(result);
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -131,8 +127,7 @@ class ChatState extends State<ChatPage> {
               IconButton(
                   iconSize: 44.w,
                   onPressed: () {
-                    Loading.toast("别点");
-                    // Get.toNamed('/feedback');
+                    Get.toNamed('/chatDetails');
                   },
                   icon: Image.asset(
                     "assets/images/icons/more.png",
@@ -151,6 +146,13 @@ class ChatState extends State<ChatPage> {
                     padding: EdgeInsets.only(top: 14.w),
                     child: Container(
                       decoration: BoxDecoration(
+                        image: logic.roleDetail?.backgroundImageUrl != null
+                            ? DecorationImage(
+                                image: NetworkImage(
+                                    logic.roleDetail!.backgroundImageUrl!),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
                         border: Border.symmetric(
                             horizontal: BorderSide(
                                 color: const Color.fromRGBO(0, 0, 0, 0.1),
