@@ -48,7 +48,7 @@ class MineAccountPage extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(56.w),
-                            child: controller.user?.avatar?.isEmpty != false
+                            child: controller.user?.avatar != null
                                 ? CachedNetworkImage(
                                     imageUrl: controller.user!.avatar!,
                                     errorWidget: (_, __, ___) {

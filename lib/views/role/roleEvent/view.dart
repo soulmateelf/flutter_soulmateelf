@@ -14,7 +14,6 @@ import 'package:flutter/cupertino.dart';
 
 class RoleEventPage extends StatelessWidget {
   RoleEventPage({super.key});
-
   final logic = Get.put(RoleEventController());
 
   @override
@@ -22,7 +21,6 @@ class RoleEventPage extends StatelessWidget {
     return GetBuilder<RoleEventController>(
       builder: (controller) {
         final roleEvent = controller.roleEvent;
-
         return basePage(
             "${roleEvent?.publishTime != null ? DateTime.fromMillisecondsSinceEpoch(roleEvent!.publishTime).format(payload: "DD MMM") : ""}",
             backGroundImage: null,
@@ -203,7 +201,7 @@ class RoleEventPage extends StatelessWidget {
                 width: 40.w,
                 height: 40.w,
                 imageUrl: element.avatar,
-                placeholder: (_, __) => CupertinoActivityIndicator(),
+                placeholder: (_, __) => const CupertinoActivityIndicator(),
                 errorWidget: (_, __, ___) => Image.asset(
                   "assets/images/icons/avatar.png",
                   width: 40.w,
@@ -220,7 +218,7 @@ class RoleEventPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "User name",
+                  "${element.userId}",
                   style: TextStyle(
                     color: textColor,
                     fontSize: 16.sp,
