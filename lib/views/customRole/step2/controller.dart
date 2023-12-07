@@ -65,10 +65,6 @@ class Step2Controller extends GetxController {
     if (avatar != null) {
       fd.files.add(MapEntry("file", MultipartFile.fromFileSync(avatar!.path)));
     }
-
-
-
-    return;
     showDialog(
         context: Get.context!,
         builder: (_) {
