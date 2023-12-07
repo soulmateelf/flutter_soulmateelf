@@ -248,8 +248,8 @@ class RolePage extends StatelessWidget {
               ),
             ),
             Offstage(
-                offstage: logic.roleDetail?.intimacy != null &&
-                    logic.roleDetail!.intimacy! >= 20,
+                offstage: !(logic.roleDetail?.intimacy != null &&
+                    logic.roleDetail!.intimacy! >= 20),
                 child: GestureDetector(
                   onTap: () {
                     logic.toChat();

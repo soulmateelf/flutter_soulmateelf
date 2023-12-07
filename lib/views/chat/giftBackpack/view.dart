@@ -83,12 +83,32 @@ class GiftBackpackPage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 12.w),
                   child: GetBuilder<GiftBackpackController>(
                     builder: (controller) {
+                      if (controller.tabKey == GiftTabKey.energy) {
+                        return SmartRefresher(
+                            key: ObjectKey(GiftTabKey.energy),
+                            controller: logic.energyRefreshController,
+                            onRefresh: () {
+                              logic.getEnergyHistoryList(LoadDataType.refresh);
+                            },
+                            onLoading: () {
+                              logic.getEnergyHistoryList(LoadDataType.loadMore);
+                            },
+                            child: Column(
+                                children:
+                                    renderEnergyCardList(controller.tabKey)));
+                      }
                       return SmartRefresher(
-                          controller: RefreshController(),
+                          key: ObjectKey(GiftTabKey.rechargeable),
+                          onRefresh: () {
+                            logic.getCardList(LoadDataType.refresh);
+                          },
+                          onLoading: () {
+                            logic.getCardList(LoadDataType.loadMore);
+                          },
+                          controller: logic.rechargeRefreshController,
                           child: Column(
-                              children: controller.tabKey == GiftTabKey.energy
-                                  ? renderEnergyCardList(controller.tabKey)
-                                  : renderRechargeCardList(controller.tabKey)));
+                              children:
+                                  renderRechargeCardList(controller.tabKey)));
                     },
                   ),
                 ),

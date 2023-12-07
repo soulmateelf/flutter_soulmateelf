@@ -54,71 +54,76 @@ class RoleListPage extends StatelessWidget {
 
   /// 定制按钮区域
   Widget _customContainer() {
-    return Container(
-        width: double.infinity,
-        height: 64.w,
-        margin: EdgeInsets.only(bottom: 10.w),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [
-              Color.fromRGBO(0, 252, 255, 1),
-              Color.fromRGBO(133, 232, 233, 1),
-              Color.fromRGBO(0, 159, 255, 1),
-              Color.fromRGBO(31, 255, 0, 1),
-              Color.fromRGBO(0, 110, 255, 1),
-              Color.fromRGBO(255, 0, 246, 1),
-              Color.fromRGBO(128, 16, 255, 1),
-              Color.fromRGBO(255, 51, 0, 1),
-              Color.fromRGBO(255, 232, 0, 1),
-              Color.fromRGBO(255, 150, 0, 1),
-            ],
-            begin: Alignment.bottomRight,
-            end: Alignment.topLeft,
-          ),
-          borderRadius:
-              BorderRadius.circular(10.w), // Optional: for rounded corners
-        ),
-        child: Container(
-          margin: EdgeInsets.all(2.w),
-          padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 16.w),
-          alignment: Alignment.centerLeft,
+    return GestureDetector(
+      onTap: (){
+        Get.toNamed('/customRoleStep1');
+      },
+      child: Container(
+          width: double.infinity,
+          height: 64.w,
+          margin: EdgeInsets.only(bottom: 10.w),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10.w),
+            gradient: const LinearGradient(
+              colors: [
+                Color.fromRGBO(0, 252, 255, 1),
+                Color.fromRGBO(133, 232, 233, 1),
+                Color.fromRGBO(0, 159, 255, 1),
+                Color.fromRGBO(31, 255, 0, 1),
+                Color.fromRGBO(0, 110, 255, 1),
+                Color.fromRGBO(255, 0, 246, 1),
+                Color.fromRGBO(128, 16, 255, 1),
+                Color.fromRGBO(255, 51, 0, 1),
+                Color.fromRGBO(255, 232, 0, 1),
+                Color.fromRGBO(255, 150, 0, 1),
+              ],
+              begin: Alignment.bottomRight,
+              end: Alignment.topLeft,
+            ),
+            borderRadius:
+                BorderRadius.circular(10.w), // Optional: for rounded corners
           ),
-          child: Row(
-            children: [
-              Container(
-                margin: EdgeInsets.only(right: 20.w),
-                child: Image.asset(
-                  'assets/images/icons/customRole.png',
-                  width: 32.w,
-                  height: 28.w,
-                  fit: BoxFit.cover,
+          child: Container(
+            margin: EdgeInsets.all(2.w),
+            padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 16.w),
+            alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.w),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 20.w),
+                  child: Image.asset(
+                    'assets/images/icons/customRole.png',
+                    width: 32.w,
+                    height: 28.w,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Add your ELF',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          fontSize: 18.sp,
-                          fontFamily: 'SFProRounded-Semibold',
-                          fontWeight: FontWeight.w600,
-                          color: const Color.fromRGBO(0, 0, 0, 0.8))),
-                  Text('Customize your own',
-                      style: TextStyle(
-                          fontSize: 13.sp,
-                          fontFamily: 'SFProRounded-Medium',
-                          height: 1.3,
-                          fontWeight: FontWeight.w500,
-                          color: const Color.fromRGBO(0, 0, 0, 0.48)))
-                ],
-              )
-            ],
-          ),
-        ));
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Add your ELF',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontSize: 18.sp,
+                            fontFamily: 'SFProRounded-Semibold',
+                            fontWeight: FontWeight.w600,
+                            color: const Color.fromRGBO(0, 0, 0, 0.8))),
+                    Text('Customize your own',
+                        style: TextStyle(
+                            fontSize: 13.sp,
+                            fontFamily: 'SFProRounded-Medium',
+                            height: 1.3,
+                            fontWeight: FontWeight.w500,
+                            color: const Color.fromRGBO(0, 0, 0, 0.48)))
+                  ],
+                )
+              ],
+            ),
+          )),
+    );
   }
 
   /// 下拉列表
