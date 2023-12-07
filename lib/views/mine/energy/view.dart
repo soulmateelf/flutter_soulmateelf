@@ -104,6 +104,7 @@ class EnergyState extends State<EnergyPage>
               child: Container(
                 child: TabBarView(
                     controller: _tabController,
+                    physics: const NeverScrollableScrollPhysics(),
                     children: [
                       Column(
                         children: [
@@ -371,7 +372,7 @@ class EnergyState extends State<EnergyPage>
                   padding: EdgeInsets.symmetric(horizontal: 8.w),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.w),
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
@@ -456,14 +457,18 @@ class EnergyState extends State<EnergyPage>
         ],
       ),
     );
-    return Padding(
+    return Container(
+      height: 70.w,
       padding: EdgeInsets.only(left: 8.w),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            item,item,item,item
-          ],
+        child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (_, index) {
+            return item;
+          },
+          itemCount: logic.serverProductList.length,
         ),
       ),
     );

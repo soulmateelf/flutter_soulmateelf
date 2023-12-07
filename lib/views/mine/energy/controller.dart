@@ -5,6 +5,7 @@ import 'package:soulmate/utils/plugin/AppPurchase.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:soulmate/models/product.dart';
+import 'package:soulmate/models/energyCard.dart';
 
 enum EnergyTabKey {
   vip,
@@ -21,10 +22,14 @@ class EnergyController extends GetxController {
   List<ProductDetails> storeProductList = [];
   ///服务端商品列表
   List<Product> serverProductList = [];
+  ///卡券列表
+  List<EnergyCard> energyCardList = [];
   ///当前选中的商品类型
   EnergyTabKey tabKey = EnergyTabKey.vip;
-  ///当前选中的商品id
+  ///当前选中的商品
   Product? currentProduct;
+  ///当前选中的卡券
+  EnergyCard? currentEnergyCard;
 
 
   // 获取商品列表
@@ -39,6 +44,14 @@ class EnergyController extends GetxController {
     }).catchError((error) {
       exSnackBar(error, type: ExSnackBarType.error);
     });
+  }
+  // 获取充值双倍卡
+  void getEnergyHistoryList() {
+    HttpUtils.diorequst('/coupon/couponList',
+        query: {"page": 1, "size": 10}).then((res) {
+      List<dynamic> data = res['data'] ?? [];
+      energyCardList = data.map((e) => EnergyCard.fromJson(e)).toList();
+    }).catchError((err) {});
   }
   ///获取商店配置的商品列表
   getStoreProducts(serverData) async {
