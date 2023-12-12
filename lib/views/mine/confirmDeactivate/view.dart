@@ -47,6 +47,8 @@ class MineConfirmDeactivatePage extends StatelessWidget {
                         EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.w),
                     child: TextField(
                       cursorColor: primaryColor,
+                      controller: logic.controller,
+                      obscureText: true,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "Password",
@@ -62,7 +64,9 @@ class MineConfirmDeactivatePage extends StatelessWidget {
                 width: double.infinity,
                 height: 64.w,
                 child: MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    logic.deactivate();
+                  },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(borderRadius),
                   ),

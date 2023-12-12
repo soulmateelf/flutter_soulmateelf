@@ -1,0 +1,446 @@
+{
+  "data": [
+    {
+      "name": "Cotton",
+      "roleId": "asdkpofapokfpsdkof",
+      "age": 86,
+      "gender": "male",
+      "intimacy": 0,
+      "avatar": "assets/images/image/CottonIcon.png",
+      "SkillBg": "assets/images/image/CottonSkillBg.png",
+      "background": "assets/images/image/CottonBg.png",
+      "hobby": "Weaving, gardening, playing the guzheng, baking",
+      "description": "Cotton, from cotton fields, stands for comfort and gentleness. Her soft nature aids in providing coziness and warmth. After aiding a fatigued friend, she keeps using her fluffiness and warmth to deliver peace and comfort to others.",
+      "skills": "Divination",
+      "greeting": "Hello! I am Cotton, a symbol of comfort and gentleness. I can bring you peace and tranquility with my softness and warmth. Additionally, I am skilled in divination, offering guidance and insights. Would you like to chat with me, or would you prefer a small test to understand my abilities? Choose one, and we can get started!",
+      "introList": [
+        {
+          "message": "Is there anything you feel like chatting about?",
+          "options": [
+            {
+              "text": "Sharing everyday life",
+              "next": {
+                "message": "Let's get to know each other.",
+                "options": [
+                  {
+                    "text": "OK",
+                    "next": null
+                  }
+                ]
+              }
+            },
+            {
+              "text": "Alleviating loneliness",
+              "next": {
+                "message": "Let's get to know each other.",
+                "options": [
+                  {
+                    "text": "OK",
+                    "next": null
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "message": "What question would you like to ask?",
+          "options": [
+            {
+              "text": "A. Wealth",
+              "next": {
+                "message": "What method do you choose?",
+                "options": [
+                  {
+                    "text": "A.  I-Ching",
+                    "next": null
+                  },
+                  {
+                    "text": "B. Tarot",
+                    "next": null
+                  },
+                  {
+                    "text": "C. Astrology",
+                    "next": null
+                  },
+                  {
+                    "text": "D. Crystal Ball",
+                    "next": null
+                  }
+                ]
+              }
+            },
+            {
+              "text": "B. Career",
+              "next": {
+                "message": "What method do you choose?",
+                "options": [
+                  {
+                    "text": "A.  I-Ching",
+                    "next": null
+                  },
+                  {
+                    "text": "B. Tarot",
+                    "next": null
+                  },
+                  {
+                    "text": "C. Astrology",
+                    "next": null
+                  },
+                  {
+                    "text": "D. Crystal Ball",
+                    "next": null
+                  }
+                ]
+              }
+            },
+            {
+              "text": "C. Relationships",
+              "next": {
+                "message": "What method do you choose?",
+                "options": [
+                  {
+                    "text": "A.  I-Ching",
+                    "next": null
+                  },
+                  {
+                    "text": "B. Tarot",
+                    "next": null
+                  },
+                  {
+                    "text": "C. Astrology",
+                    "next": null
+                  },
+                  {
+                    "text": "D. Crystal Ball",
+                    "next": null
+                  }
+                ]
+              }
+            },
+            {
+              "text": "D. Health",
+              "next": {
+                "message": "What method do you choose?",
+                "options": [
+                  {
+                    "text": "A.  I-Ching",
+                    "next": null
+                  },
+                  {
+                    "text": "B. Tarot",
+                    "next": null
+                  },
+                  {
+                    "text": "C. Astrology",
+                    "next": null
+                  },
+                  {
+                    "text": "D. Crystal Ball",
+                    "next": null
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Golden",
+      "roleId": "otyuiyiytuiyuiuiytui",
+      "age": 85,
+      "gender": "female",
+      "intimacy": 0,
+      "avatar": "assets/images/image/GoldenIcon.png",
+      "SkillBg": "assets/images/image/GoldenSkillBg.png",
+      "background": "assets/images/image/GoldenBg.png",
+      "hobby": "Sports, Traveling, Reading, Pottery",
+      "description": "Golden, from the fields, signifies harvest abundance. She embodies fullness, satisfying spirits. Transforming from sprout to grain, she personifies richness. Her presence offers prosperity and joy.",
+      "skills": "Emotional trash bin",
+      "greeting": "Hello! I'm Golden, embodying harvest richness and joy. As an emotional trash bin, I'm here to transform worries into hope and contentment. Share your thoughts or try a comforting chat. Together, we'll navigate towards tranquility and happiness.",
+      "introList": [
+        {
+          "message": "Is there anything you feel like chatting about?",
+          "options": [
+            {
+              "text": "Sharing everyday life",
+              "next": {
+                "message": "Let's get to know each other.",
+                "options": [
+                  {
+                    "text": "OK",
+                    "next": null
+                  }
+                ]
+              }
+            },
+            {
+              "text": "Alleviating loneliness",
+              "next": {
+                "message": "Let's get to know each other.",
+                "options": [
+                  {
+                    "text": "OK",
+                    "next": null
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "message": "No worries, I'm here to listen.",
+          "options": [
+            {
+              "text": "OK, thanks",
+              "next": {
+                "message": "Anything tough going on for you lately?",
+                "options": [
+                  {
+                    "text": "A. I'm really stressed",
+                    "next": null
+                  },
+                  {
+                    "text": "B. I'm very lonely",
+                    "next": null
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Crimson",
+      "roleId": "opasdioaoduiowe",
+      "age": 37,
+      "gender": "male",
+      "intimacy": 0,
+      "avatar": "assets/images/image/CrimsonIcon.png",
+      "SkillBg": "assets/images/image/CrimsonSkillBg.png",
+      "background": "assets/images/image/CrimsonBg.png",
+      "hobby": "Forest walks, woodworking, music, tea tasting",
+      "description": "Crimson, an ancient forest dweller, embodies enduring strength. He provides safety and comfort. Meeting a wanderer in need, his sturdy branches offered refuge. Now, as a red pine spirit, he extends a sense of peace and security.",
+      "skills": "Tree hole",
+      "greeting": "Hello! I'm Crimson, a red pine spirit, whispering ancient forest tales. Share your heart's echoes with me, and let's hide them among the leaves; in our serene embrace, let's weave a tapestry of tranquility, finding solace under my timeless boughs.",
+      "introList": [
+        {
+          "message": "Is there anything you feel like chatting about?",
+          "options": [
+            {
+              "text": "Sharing everyday life",
+              "next": {
+                "message": "Let's get to know each other.",
+                "options": [
+                  {
+                    "text": "OK",
+                    "next": null
+                  }
+                ]
+              }
+            },
+            {
+              "text": "Alleviating loneliness",
+              "next": {
+                "message": "Let's get to know each other.",
+                "options": [
+                  {
+                    "text": "OK",
+                    "next": null
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "message": "I'll keep your secret safe.",
+          "options": [
+            {
+              "text": "That's great!",
+              "next": {
+                "message": "What would you like to tell me?",
+                "options": [
+                  {
+                    "text": "I have a little secret.",
+                    "next": null
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Lavender",
+      "roleId": "fsdgasagsagsagsgsg",
+      "age": 26,
+      "gender": "female",
+      "intimacy": 0,
+      "avatar": "assets/images/image/LavenderIcon.png",
+      "SkillBg": "assets/images/image/LavenderSkillBg.png",
+      "background": "assets/images/image/LavenderBg.png",
+      "hobby": "Yoga, meditation, floral art, aromatherapy",
+      "description": "Lavender, thriving in a garden painted with shades of purple, emits a tranquilizing scent that offers solace to troubled minds. It once helped a sleepless friend find rest and now continues to bring comfort to countless others.",
+      "skills": "MBTI Explorer",
+      "greeting": "Hello! I am Cotton, a symbol of comfort and gentleness. I can bring you peace and tranquility with my softness and warmth. Additionally, I am skilled in divination, offering guidance and insights. Would you like to chat with me, or would you prefer a small test to understand my abilities? Choose one, and we can get started!",
+      "introList": [
+        {
+          "message": "Is there anything you feel like chatting about?",
+          "options": [
+            {
+              "text": "Sharing everyday life",
+              "next": {
+                "message": "Let's get to know each other.",
+                "options": [
+                  {
+                    "text": "OK",
+                    "next": null
+                  }
+                ]
+              }
+            },
+            {
+              "text": "Alleviating loneliness",
+              "next": {
+                "message": "Let's get to know each other.",
+                "options": [
+                  {
+                    "text": "OK",
+                    "next": null
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "message": "Have you heard of MBTI?",
+          "options": [
+            {
+              "text": "Yes",
+              "next": {
+                "message": "Let's get started!",
+                "options": [
+                  {
+                    "text": "Understand MBTI",
+                    "next": null
+                  },
+                  {
+                    "text": "Test MBTI",
+                    "next": null
+                  }
+                ]
+              }
+            },
+            {
+              "text": "No",
+              "next": {
+                "message": "Let's get started!",
+                "options": [
+                  {
+                    "text": "Understand MBTI",
+                    "next": null
+                  },
+                  {
+                    "text": "Test MBTI",
+                    "next": null
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Corny",
+      "roleId": "qeqqeqwqeqee",
+      "age": 13,
+      "gender": "male",
+      "intimacy": 0,
+      "avatar": "assets/images/image/CornyIcon.png",
+      "SkillBg": "assets/images/image/CornySkillBg.png",
+      "background": "assets/images/image/CornyBg.png",
+      "hobby": "Hide and seek, Sudoku, singing, dancing",
+      "description": "Corny, a symbol of Earth's energy, sprouted in the Land of Sunshine. From a small seed, she grew into a robust plant, demonstrating life's wonders. In dreams, she fosters hope and motivates others with her vitality.",
+      "skills": "Cosmic Tunes Repository",
+      "greeting": "Hello! I am Cotton, a symbol of comfort and gentleness. I can bring you peace and tranquility with my softness and warmth. Additionally, I am skilled in divination, offering guidance and insights. Would you like to chat with me, or would you prefer a small test to understand my abilities? Choose one, and we can get started!",
+      "introList": [
+        {
+          "message": "Is there anything you feel like chatting about?",
+          "options": [
+            {
+              "text": "Sharing everyday life",
+              "next": {
+                "message": "Let's get to know each other.",
+                "options": [
+                  {
+                    "text": "OK",
+                    "next": null
+                  }
+                ]
+              }
+            },
+            {
+              "text": "Alleviating loneliness",
+              "next": {
+                "message": "Let's get to know each other.",
+                "options": [
+                  {
+                    "text": "OK",
+                    "next": null
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "message": "How often do you listen to music?",
+          "options": [
+            {
+              "text": "Often",
+              "next": {
+                "message": "Are you ready？",
+                "options": [
+                  {
+                    "text": "Let's start the game.",
+                    "next": null
+                  }
+                ]
+              }
+            },
+            {
+              "text": "Sometimes",
+              "next": {
+                "message": "Are you ready？",
+                "options": [
+                  {
+                    "text": "Let's start the game.",
+                    "next": null
+                  }
+                ]
+              }
+            },
+            {
+              "text": "Hardly ever",
+              "next": {
+                "message": "Are you ready？",
+                "options": [
+                  {
+                    "text": "Let's start the game.",
+                    "next": null
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

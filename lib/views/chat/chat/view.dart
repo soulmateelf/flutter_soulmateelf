@@ -70,7 +70,6 @@ class ChatState extends State<ChatPage> {
       ..sampleRate = 44100;
 
     final result = await recorderController.checkPermission();
-    APPPlugin.logger.d(result);
   }
 
   @override

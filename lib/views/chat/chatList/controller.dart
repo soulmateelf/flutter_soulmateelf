@@ -5,7 +5,6 @@
  * @FilePath: \soulmate\lib\views\main\home\controller.dart
  */
 
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/models/role.dart';
@@ -24,11 +23,13 @@ class ChatListController extends GetxController {
       RefreshController(initialRefresh: false);
   List<Role> dataList = [];
   final menuLogic = Get.find<SoulMateMenuController>();
+
   @override
   void onReady() {
     super.onReady();
     getDataList();
   }
+
   @override
   void onClose() {
     refreshController.dispose();
@@ -53,95 +54,93 @@ class ChatListController extends GetxController {
   ///点击聊天列表项
   void chatItemClick(index) {
     Role itemData = dataList[index];
-    Get.toNamed("/chat",arguments: {"roleId":itemData.roleId});
+    Get.toNamed("/chat", arguments: {"roleId": itemData.roleId});
   }
 
   void deleteConfirm(index) {
-    final GlobalKey<MakeDialogContentState> _globalKey = GlobalKey();
-    showDialog(
-        context: Get.context!,
-        builder: (BuildContext context) {
-          return MakeDialog(
-            stateKey: _globalKey,
-            iconWidget: Image.asset("assets/images/icons/deleteChat.png"),
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 8.w,
-                ),
-                Text(
-                  "Intimacy and chat history will be cleared.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: FontFamily.SFProRoundedMedium,
-                  ),
-                ),
-                SizedBox(
-                  height: 70.w,
-                ),
-                Container(
-                  height: 64.w,
-                  width: double.maxFinite,
-                  child: TextButton(
-                      onPressed: () {
-                        _globalKey.currentState?.close();
-                        deleteChatItem(index);
-                      },
-                      style: ButtonStyle(
-                          textStyle: MaterialStateProperty.all(
-                              TextStyle(color: Colors.white)),
-                          backgroundColor:
-                          MaterialStateProperty.all(primaryColor),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.w)))),
-                      child: Text(
-                        "Yes",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.w,
-                          fontFamily: FontFamily.SFProRoundedBlod,
-                        ),
-                      )),
-                ),
-                SizedBox(
-                  height: 10.w,
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    _globalKey.currentState?.close();
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(vertical: 10.w),
-                    child: Text(
-                      "Cancel",
-                      style: TextStyle(
-                        color: Color.fromRGBO(0, 0, 0, 0.32),
-                        fontSize: 20.sp,
-                        fontFamily: FontFamily.SFProRoundedMedium,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 12.w,
-                ),
-              ],
+    final makeDialogController = MakeDialogController();
+
+    makeDialogController.show(
+      context: Get.context!,
+      controller: makeDialogController,
+      iconWidget: Image.asset("assets/images/icons/deleteChat.png"),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 8.w,
+          ),
+          Text(
+            "Intimacy and chat history will be cleared.",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: textColor,
+              fontSize: 24.sp,
+              fontWeight: FontWeight.w500,
+              fontFamily: FontFamily.SFProRoundedMedium,
             ),
-          );
-        });
+          ),
+          SizedBox(
+            height: 70.w,
+          ),
+          Container(
+            height: 64.w,
+            width: double.maxFinite,
+            child: TextButton(
+                onPressed: () {
+                  makeDialogController.close();
+                  deleteChatItem(index);
+                },
+                style: ButtonStyle(
+                    textStyle: MaterialStateProperty.all(
+                        TextStyle(color: Colors.white)),
+                    backgroundColor: MaterialStateProperty.all(primaryColor),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.w)))),
+                child: Text(
+                  "Yes",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.w,
+                    fontFamily: FontFamily.SFProRoundedBlod,
+                  ),
+                )),
+          ),
+          SizedBox(
+            height: 10.w,
+          ),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              makeDialogController.close();
+            },
+            child: Container(
+              width: double.infinity,
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(vertical: 10.w),
+              child: Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Color.fromRGBO(0, 0, 0, 0.32),
+                  fontSize: 20.sp,
+                  fontFamily: FontFamily.SFProRoundedMedium,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 12.w,
+          ),
+        ],
+      ),
+    );
   }
+
   void deleteChatItem(index) {
-    HttpUtils.diorequst('/role/deleteUserRole',method: 'post', params: {"roleId": dataList[index].roleId})
-        .then((response) {
+    HttpUtils.diorequst('/role/deleteUserRole',
+        method: 'post',
+        params: {"roleId": dataList[index].roleId}).then((response) {
       dataList.removeAt(index);
       update();
     }).catchError((error) {

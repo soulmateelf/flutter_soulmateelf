@@ -51,6 +51,7 @@ class MineAccountPage extends StatelessWidget {
                             child: controller.user?.avatar != null
                                 ? CachedNetworkImage(
                                     imageUrl: controller.user!.avatar!,
+                                    fit: BoxFit.cover,
                                     errorWidget: (_, __, ___) {
                                       return Image.asset(
                                           "assets/images/icons/avatar.png");
@@ -264,10 +265,14 @@ class MineAccountPage extends StatelessWidget {
                                   fontSize: 18.sp,
                                 ),
                               ),
-                              Image.asset(
-                                "assets/images/icons/right_arrow.png",
-                                width: 20.w,
-                                height: 20.w,
+                              GestureDetector(onTap: (){
+                                Get.toNamed('/mineDeactivate');
+                              },
+                                child: Image.asset(
+                                  "assets/images/icons/right_arrow.png",
+                                  width: 20.w,
+                                  height: 20.w,
+                                ),
                               )
                             ],
                           ),

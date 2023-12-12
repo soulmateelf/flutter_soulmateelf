@@ -6,19 +6,24 @@
  */
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/models/chat.dart';
 import 'package:soulmate/models/role.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/views/chat/chatList/controller.dart';
+import 'package:soulmate/views/intro/index.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
+import 'package:flutter/services.dart';
 
 class ChatController extends GetxController {
   /// 角色id
@@ -65,6 +70,15 @@ class ChatController extends GetxController {
   /// 是否显示底部与语音模块
   bool showVoiceWidget = false;
 
+  /// 是否是需要引导功能
+  bool isIntro = false;
+
+  /// 引导数据
+  dynamic introData;
+
+  /// 遮罩层
+  OverlayEntry? overlayEntry;
+
   void toggleShowVoiceWidget() {
     showVoiceWidget = !showVoiceWidget;
     update();
@@ -74,8 +88,21 @@ class ChatController extends GetxController {
   void onReady() {
     super.onReady();
     roleId = Get.arguments?["roleId"];
+    isIntro = Get.arguments['intro'] ?? false;
     getRoleDetail();
     getMessageList('init');
+    if (isIntro) {
+      getIntroData().then((res) {
+        showIntro();
+      });
+    }
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+
+    super.onInit();
   }
 
   @override
@@ -97,7 +124,6 @@ class ChatController extends GetxController {
     HttpUtils.diorequst('/role/roleInfo', query: {"roleId": roleId})
         .then((response) {
       var roleDetailMap = response["data"];
-      APPPlugin.logger.d(roleDetailMap);
       roleDetail = Role.fromJson(roleDetailMap);
       update();
     }).catchError((error) {
@@ -231,5 +257,237 @@ class ChatController extends GetxController {
       _debounce?.cancel();
       _debounce = Timer(duration, startGptTask);
     }
+  }
+
+  Future<void> getIntroData() async {
+    Map<String, dynamic> json =
+        jsonDecode(await rootBundle.loadString("assets/introList.json"));
+    final List<dynamic> data = json['data'];
+
+    introData = data.firstWhereOrNull((role) => role['roleId'] == roleId);
+  }
+
+  /// 引导步骤数据
+  dynamic currentIntro = null;
+  List<String> introHistoryList = [];
+
+  void endIntro() {
+    APPPlugin.logger.d(introHistoryList);
+    if (introHistoryList.length == 0) {
+      return;
+    }
+    final firstStep = introHistoryList[0];
+    if (firstStep == "chatNow") {
+      /// 请后后端打招呼
+    } else if (firstStep == "test") {
+      /// 帮助用户发送一条消息
+      ///
+      // sendMessage(message_type: "0",message: "");
+    }
+  }
+
+  void nextIntro(String option) {
+    introHistoryList.add(option);
+    List<dynamic> options = currentIntro?['options'] ?? [];
+    final next =
+        options.firstWhereOrNull((opt) => opt?['text'] == option)?['next'];
+    currentIntro = next;
+    if (currentIntro != null) {
+      overlayEntry?.markNeedsBuild();
+    } else {
+      overlayEntry?.remove();
+      endIntro();
+    }
+  }
+
+  void fristIntroStep(String type) {
+    if (overlayEntry != null) {
+      overlayEntry!.remove();
+    }
+    introHistoryList.add(type);
+    final inrolList = introData?['introList'];
+    if (type == "chatNow") {
+      currentIntro = inrolList[0];
+    } else if (type == "test") {
+      currentIntro = inrolList[1];
+    }
+
+    List<Widget> renderOptions(List<dynamic> options) {
+      List<Widget> list = [];
+      for (var i = 0; i < options.length; i++) {
+        final opt = options[i];
+        list.add(
+          GestureDetector(
+            onTap: () {
+              nextIntro(opt?['text']);
+            },
+            child: Container(
+              height: 34.w,
+              width: 213.w,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                image:
+                    AssetImage('assets/images/image/introOptionButtonBg.png'),
+                fit: BoxFit.cover,
+              )),
+              child: Text(
+                "${opt?['text']}",
+                style: TextStyle(
+                  fontSize: 15.sp,
+                  color: primaryColor,
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+      return list;
+    }
+
+    overlayEntry = OverlayEntry(builder: (_) {
+      return GestureDetector(
+        onTap: () {
+          // overlayEntry?.remove();
+        },
+        child: Container(
+          padding: EdgeInsets.all(20.w),
+          color: Color.fromRGBO(0, 0, 0, 0.74),
+          alignment: Alignment.center,
+          child: Container(
+            width: 388.w,
+            height: 352.w,
+            padding: EdgeInsets.all(18.w),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(introData?['SkillBg']),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Container(
+              width: 213.w,
+              constraints: BoxConstraints(maxWidth: 213.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 170.w,
+                    height: 119.w,
+                    padding: EdgeInsets.only(
+                      left: 17.w,
+                      right: 33.w,
+                      top: 17.w,
+                    ),
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image:
+                            AssetImage("assets/images/image/introBubble.png"),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: Text(
+                      "${currentIntro?['message']}",
+                      key: UniqueKey(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: FontFamily.SFProRoundedMedium,
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40.w,
+                  ),
+                  Expanded(
+                    child: Column(
+                      key: UniqueKey(),
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: renderOptions(currentIntro?['options'] ?? []),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    });
+    Overlay.of(Get.context!).insert(overlayEntry!);
+  }
+
+  void showIntro() {
+    overlayEntry = OverlayEntry(builder: (_) {
+      return GestureDetector(
+        onTap: () {
+          // overlayEntry?.remove();
+        },
+        child: Container(
+          color: Color.fromRGBO(0, 0, 0, 0.74),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                "${introData?['avatar']}",
+                width: 86.w,
+                height: 86.w,
+              ),
+              SizedBox(
+                height: 34.w,
+              ),
+              Container(
+                width: 388.w,
+                height: 352.w,
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 32.w),
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/images/image/greetingBg.png")),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${introData?["greeting"]}",
+                      style: TextStyle(
+                          color: textColor, fontSize: 15.sp, height: 1.25),
+                    ),
+                    SizedBox(
+                      height: 29.w,
+                    ),
+                    IntroChatButton(
+                        backgroundImage:
+                            "assets/images/image/introOptionButtonBg.png",
+                        onTap: () {
+                          fristIntroStep("chatNow");
+                        },
+                        child: Text(
+                          "Chat now",
+                          style:
+                              TextStyle(color: primaryColor, fontSize: 15.sp),
+                        )),
+                    SizedBox(
+                      height: 29.w,
+                    ),
+                    IntroChatButton(
+                        backgroundImage:
+                            "assets/images/image/introOptionButtonBg.png",
+                        onTap: () {
+                          fristIntroStep("test");
+                        },
+                        child: Text(
+                          "Test",
+                          style:
+                              TextStyle(color: primaryColor, fontSize: 15.sp),
+                        )),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    });
+
+    Overlay.of(Get.context!).insert(overlayEntry!);
   }
 }

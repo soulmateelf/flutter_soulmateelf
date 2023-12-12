@@ -119,7 +119,6 @@ class MyApp extends StatelessWidget {
                     const Text('refresh success',
                         style: TextStyle(color: Colors.grey))
                   ]),
-
               failed: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

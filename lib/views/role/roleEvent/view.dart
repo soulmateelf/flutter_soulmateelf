@@ -14,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 
 class RoleEventPage extends StatelessWidget {
   RoleEventPage({super.key});
+
   final logic = Get.put(RoleEventController());
 
   @override
@@ -90,7 +91,8 @@ class RoleEventPage extends StatelessWidget {
                                   );
                                 },
                                 onTap: (liked) async {
-                                  return !liked;
+                                  final like = controller.sendLike(liked);
+                                  return like;
                                 },
                               ),
                               ...renderLikes(controller.likes),
@@ -164,22 +166,24 @@ class RoleEventPage extends StatelessWidget {
 
     activities.forEach((element) {
       list.add(Container(
-        margin: EdgeInsets.symmetric(horizontal: 2.w),
-        child: CircleAvatar(
-          radius: 15.w,
+          clipBehavior: Clip.hardEdge,
+          margin: EdgeInsets.symmetric(horizontal: 2.w),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15.w),
+          ),
           child: CachedNetworkImage(
             width: 30.w,
             height: 30.w,
             imageUrl: element.avatar,
+            fit: BoxFit.cover,
             placeholder: (_, __) => CupertinoActivityIndicator(),
             errorWidget: (_, __, ___) => Image.asset(
               "assets/images/icons/avatar.png",
               width: 30.w,
               height: 30.w,
+              fit: BoxFit.cover,
             ),
-          ),
-        ),
-      ));
+          )));
     });
 
     return list;
@@ -195,17 +199,24 @@ class RoleEventPage extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 20.w,
+            Container(
+              width: 40.w,
+              clipBehavior: Clip.hardEdge,
+              height: 40.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.w),
+              ),
               child: CachedNetworkImage(
                 width: 40.w,
                 height: 40.w,
+                fit: BoxFit.cover,
                 imageUrl: element.avatar,
                 placeholder: (_, __) => const CupertinoActivityIndicator(),
                 errorWidget: (_, __, ___) => Image.asset(
                   "assets/images/icons/avatar.png",
                   width: 40.w,
                   height: 40.w,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -218,7 +229,7 @@ class RoleEventPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "${element.userId}",
+                  "${element.userName}",
                   style: TextStyle(
                     color: textColor,
                     fontSize: 16.sp,

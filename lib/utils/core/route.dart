@@ -24,6 +24,8 @@ import 'package:soulmate/views/chat/message/view.dart';
 import 'package:soulmate/views/chat/settings/view.dart';
 import 'package:soulmate/views/customRole/step1/view.dart';
 import 'package:soulmate/views/customRole/step2/view.dart';
+import 'package:soulmate/views/intro/recommend/view.dart';
+import 'package:soulmate/views/intro/welcome/view.dart';
 import 'package:soulmate/views/mine/about/view.dart';
 import 'package:soulmate/views/mine/account/view.dart';
 import 'package:soulmate/views/mine/confirmDeactivate/view.dart';
@@ -156,8 +158,11 @@ class AppRoute {
 
     /// 自定义角色
     GetPage(name: "/customRoleStep1", page: () => Step1Page()),
-
     GetPage(name: "/customRoleStep2", page: () => Step2Page()),
+
+    /// 角色引导
+    GetPage(name: "/introWelcome", page: () => IntroWelcomePage()),
+    GetPage(name: "/introRecommend", page: () => IntroRecommendPage()),
 
     GetPage(name: '/testPage', page: () => TestPage()),
   ];

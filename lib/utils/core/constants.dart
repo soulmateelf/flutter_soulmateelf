@@ -21,6 +21,7 @@ class VerifyState {
   static const login = 1;
   static const signUp = 2;
   static const forgot = 3;
+  static const deactivate = 4;
 }
 
 /// 字体库枚举类

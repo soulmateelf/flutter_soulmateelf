@@ -136,4 +136,10 @@ class LoginController extends GetxController {
       }
     }).whenComplete(() => null);
   }
+
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+  }
 }

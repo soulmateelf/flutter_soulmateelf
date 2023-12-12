@@ -15,8 +15,9 @@ import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
 class RoleListController extends GetxController {
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
 
-  RefreshController refreshController = RefreshController(initialRefresh: false);
   /// 原始角色列表
   List<Role> roleList = [];
 
@@ -25,6 +26,7 @@ class RoleListController extends GetxController {
     super.onReady();
     getDataList();
   }
+
   @override
   void onClose() {
     refreshController.dispose();
@@ -33,21 +35,21 @@ class RoleListController extends GetxController {
 
   /// 获取角色列表数据
   void getDataList() {
-    HttpUtils.diorequst('/role/roleList',query: {'page':1,'limit':999}).then((response){
+    HttpUtils.diorequst('/role/roleList', query: {'page': 1, 'limit': 999})
+        .then((response) {
       List roleListMap = response["data"];
       roleList = roleListMap.map((json) => Role.fromJson(json)).toList();
       refreshController.refreshCompleted();
       update();
-    }).catchError((error){
+    }).catchError((error) {
       refreshController.refreshCompleted();
-      exSnackBar(error,type: ExSnackBarType.error);
+      exSnackBar(error, type: ExSnackBarType.error);
     });
   }
 
   ///点击角色列表项
   void roleItemClick(index) {
     Role roleData = roleList[index];
-    Get.toNamed('/role',arguments:{"roleId":roleData.roleId});
+    Get.toNamed('/role', arguments: {"roleId": roleData.roleId});
   }
-
 }
