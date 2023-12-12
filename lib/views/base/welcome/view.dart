@@ -15,11 +15,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/views/base/welcome/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class WelcomePage extends StatelessWidget {
   final logic = Get.put(WelcomeController());
+  final globalKey = GlobalKey();
+  var overlayEntry;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +39,10 @@ class WelcomePage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+
                 Text(
                   'Let’s you in',
+                  key: globalKey,
                   style: TextStyle(
                       fontSize: 27.sp,
                       fontFamily: "SFProRounded-Blod",
@@ -91,7 +96,8 @@ class WelcomePage extends StatelessWidget {
                     },
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
-                        side: BorderSide(width: borderWidth, color: borderColor),
+                        side:
+                            BorderSide(width: borderWidth, color: borderColor),
                         borderRadius: BorderRadius.circular(borderRadius)),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,12 +1,16 @@
 import 'dart:async';
 
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:soulmate/utils/core/application.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:flutter/src/widgets/focus_manager.dart';
+import 'package:soulmate/widgets/library/projectLibrary.dart';
+import 'package:flutter/material.dart';
 
 class AuthCodeController extends GetxController {
   Duration animateDurantion = const Duration(milliseconds: 300);
@@ -39,9 +43,9 @@ class AuthCodeController extends GetxController {
   int time = 180;
   int intervalTime = 0;
 
-  void recursionTime (){
-    Future.delayed(const Duration(seconds: 1),(){
-      if(intervalTime > 0){
+  void recursionTime() {
+    Future.delayed(const Duration(seconds: 1), () {
+      if (intervalTime > 0) {
         intervalTime--;
         update();
         recursionTime();
@@ -68,9 +72,8 @@ class AuthCodeController extends GetxController {
   }
 
   void handleVerify() {
-    if (code.length == 6) {
-      var arguments = Get.arguments;
-
+    var arguments = Get.arguments;
+    if (code.length == 6 && arguments['codeType'] != VerifyState.deactivate) {
       HttpUtils.diorequst("/verify", method: "post", params: {
         "code": code,
         "codeType": arguments['codeType'],
@@ -105,4 +108,104 @@ class AuthCodeController extends GetxController {
   }
 
   bool nextBtnDisabled = true;
+
+  void deactivateAccount() {
+    if (code.length != 6) {
+      return;
+    }
+    final makeDialogController = MakeDialogController();
+
+    var arguments = Get.arguments;
+    makeDialogController.show(
+      context: Get.context!,
+      controller: makeDialogController,
+      iconWidget: Image.asset("assets/images/icons/logOut.png"),
+      content: Column(
+        children: [
+          Text(
+            "Deactivate",
+            style: TextStyle(
+              color: textColor,
+              fontSize: 32.sp,
+              fontFamily: FontFamily.SFProRoundedSemibold,
+            ),
+          ),
+          SizedBox(
+            height: 8.w,
+          ),
+          Text(
+            "Are you sure you want to deactivate?",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color.fromRGBO(0, 0, 0, 0.48),
+              fontFamily: FontFamily.SFProRoundedMedium,
+              fontSize: 24.sp,
+            ),
+          ),
+          SizedBox(
+            height: 30.w,
+          ),
+          Container(
+            height: 64.w,
+            width: double.maxFinite,
+            child: TextButton(
+                onPressed: () {
+                  HttpUtils.diorequst('/cancelAccount',
+                      method: "post",
+                      params: {
+                        "email": arguments['email'],
+                        "code": code,
+                        "codeType": arguments["codeType"]
+                      }).then((res) async {
+                    await Application.logout();
+                    exSnackBar(res['message']);
+                  }).catchError((err) {
+                    APPPlugin.logger.e(err);
+                  });
+                },
+                style: ButtonStyle(
+                    textStyle: MaterialStateProperty.all(
+                        TextStyle(color: Colors.white)),
+                    backgroundColor: MaterialStateProperty.all(primaryColor),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.w)))),
+                child: Text(
+                  "yes,log out",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.w,
+                    fontFamily: FontFamily.SFProRoundedBlod,
+                  ),
+                )),
+          ),
+          SizedBox(
+            height: 10.w,
+          ),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              makeDialogController.close();
+            },
+            child: Container(
+              width: double.infinity,
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(vertical: 10.w),
+              child: Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Color.fromRGBO(0, 0, 0, 0.32),
+                  fontSize: 20.sp,
+                  fontFamily: FontFamily.SFProRoundedMedium,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 12.w,
+          ),
+        ],
+      ),
+    );
+  }
 }

@@ -11,8 +11,8 @@ environment:
 
 flutter_icons:
   image_path: "assets/images/image/icon.png"
-  android: true 
-  ios: true 
+  android: true
+  ios: true
 
 dependencies:
   flutter_test:
@@ -80,7 +80,7 @@ dependencies:
   flutter_keyboard_visibility: ^5.4.1
   #系统分享
   #https://github.com/fluttercommunity/plus_plugins/tree/main/packages/share_plus/share_plus
-  share_plus: ^7.1.0
+  share_plus: ^7.0.0
   #支持异步校验的表单
   #https://github.com/GiancarloCode/form_bloc
   flutter_form_bloc: ^0.31.0
@@ -107,7 +107,7 @@ dependencies:
   in_app_purchase: ^3.1.11
   # google app广告
   # https://developers.google.com/admob/flutter/quick-start?hl=zh-cn
-#  google_mobile_ads: ^3.1.0
+  #  google_mobile_ads: ^3.1.0
   # 消息推送
   # https://firebase.flutter.dev/docs/messaging/overview/
   firebase_messaging: ^14.7.5
@@ -145,6 +145,12 @@ dependencies:
   # 点赞动效
   # https://pub.dev/packages/like_button
   like_button: ^2.0.5
+  # 跳转外部链接插件
+  # https://pub.dev/packages/launch_review
+  launch_review: ^3.0.1
+  # mqtt 消息订阅
+  # https://pub.dev/packages/mqtt_client
+  mqtt_client: ^10.0.0
 
 dev_dependencies:
   flutter_test:

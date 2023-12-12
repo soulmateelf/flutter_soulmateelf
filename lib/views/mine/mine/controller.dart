@@ -30,103 +30,99 @@ class MineController extends GetxController {
 
   setContact(bool c) {
     contact = c;
-    HttpUtils.diorequst("/user/updateEemergency",query: {"status":c ? 1 :0}).then((res){
+    HttpUtils.diorequst("/user/updateEemergency", query: {"status": c ? 1 : 0})
+        .then((res) {
       APPPlugin.logger.d(res);
-    }).catchError((err){});
+    }).catchError((err) {});
     update();
   }
 
   void logout() {
-    final GlobalKey<MakeDialogContentState> _globalKey = GlobalKey();
-    showDialog(
-        context: Get.context!,
-        builder: (BuildContext context) {
-          return MakeDialog(
-            stateKey: _globalKey,
-            iconWidget: Image.asset("assets/images/icons/logOut.png"),
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "Log out",
-                  style: TextStyle(
-                      color: textColor,
-                      fontSize: 32.sp,
-                      fontFamily: FontFamily.SFProRoundedSemibold),
-                ),
-                SizedBox(
-                  height: 8.w,
-                ),
-                Text(
-                  "Are you sure you want to \nlog out?",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromRGBO(0, 0, 0, 0.48),
-                    fontSize: 24.sp,
-                    fontFamily: FontFamily.SFProRoundedMedium,
-                  ),
-                ),
-                SizedBox(
-                  height: 30.w,
-                ),
-                Container(
-                  height: 64.w,
-                  width: double.maxFinite,
-                  child: TextButton(
-                      onPressed: () {
-                        HttpUtils.diorequst("/logout", method: "post")
-                            .then((value) {})
-                            .whenComplete(() => null);
-                        Application.pres?.clear();
-                        Get.offAllNamed("/welcome");
-                      },
-                      style: ButtonStyle(
-                          textStyle: MaterialStateProperty.all(
-                              TextStyle(color: Colors.white)),
-                          backgroundColor:
-                              MaterialStateProperty.all(primaryColor),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.w)))),
-                      child: Text(
-                        "yes，log out",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.w,
-                          fontFamily: FontFamily.SFProRoundedBlod,
-                        ),
-                      )),
-                ),
-                SizedBox(
-                  height: 10.w,
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    _globalKey.currentState?.close();
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(vertical: 10.w),
-                    child: Text(
-                      "Cancel",
-                      style: TextStyle(
-                        color: Color.fromRGBO(0, 0, 0, 0.32),
-                        fontSize: 20.sp,
-                        fontFamily: FontFamily.SFProRoundedMedium,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 12.w,
-                ),
-              ],
+    final makeDialogController = MakeDialogController();
+    makeDialogController.show(
+      context: Get.context!,
+      controller: makeDialogController,
+      iconWidget: Image.asset("assets/images/icons/logOut.png"),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "Log out",
+            style: TextStyle(
+                color: textColor,
+                fontSize: 32.sp,
+                fontFamily: FontFamily.SFProRoundedSemibold),
+          ),
+          SizedBox(
+            height: 8.w,
+          ),
+          Text(
+            "Are you sure you want to \nlog out?",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color.fromRGBO(0, 0, 0, 0.48),
+              fontSize: 24.sp,
+              fontFamily: FontFamily.SFProRoundedMedium,
             ),
-          );
-        });
+          ),
+          SizedBox(
+            height: 30.w,
+          ),
+          Container(
+            height: 64.w,
+            width: double.maxFinite,
+            child: TextButton(
+                onPressed: () {
+                  HttpUtils.diorequst("/logout", method: "post")
+                      .then((value) {})
+                      .whenComplete(() => null);
+                  Application.pres?.clear();
+                  Get.offAllNamed("/welcome");
+                },
+                style: ButtonStyle(
+                    textStyle: MaterialStateProperty.all(
+                        TextStyle(color: Colors.white)),
+                    backgroundColor: MaterialStateProperty.all(primaryColor),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.w)))),
+                child: Text(
+                  "yes，log out",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.w,
+                    fontFamily: FontFamily.SFProRoundedBlod,
+                  ),
+                )),
+          ),
+          SizedBox(
+            height: 10.w,
+          ),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              makeDialogController.close();
+            },
+            child: Container(
+              width: double.infinity,
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(vertical: 10.w),
+              child: Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Color.fromRGBO(0, 0, 0, 0.32),
+                  fontSize: 20.sp,
+                  fontFamily: FontFamily.SFProRoundedMedium,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 12.w,
+          ),
+        ],
+      ),
+    );
   }
 
   @override

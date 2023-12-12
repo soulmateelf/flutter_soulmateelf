@@ -60,7 +60,9 @@ If you have completed these steps and are sure you want to deactivate your accou
                 width: double.infinity,
                 height: 64.w,
                 child: MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.toNamed('/mineConfirmDeactivate');
+                  },
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(borderRadius),

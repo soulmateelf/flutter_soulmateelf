@@ -124,7 +124,8 @@ class LoginState extends State<LoginPage> {
                   height: 12.w,
                 ),
                 FadeAnimation(
-                  1.2, GetBuilder<LoginController>(
+                  1.2,
+                  GetBuilder<LoginController>(
                     builder: (controller) {
                       return MakeInput(
                         controller: _passwordController,
@@ -166,7 +167,8 @@ class LoginState extends State<LoginPage> {
                   height: 12.w,
                 ),
                 FadeAnimation(
-                  1.3, GestureDetector(
+                  1.3,
+                  GestureDetector(
                     onTap: () {
                       Get.toNamed("/findAccount");
                     },
@@ -180,7 +182,8 @@ class LoginState extends State<LoginPage> {
                   height: 24.w,
                 ),
                 FadeAnimation(
-                  1.4, GetBuilder<LoginController>(
+                  1.4,
+                  GetBuilder<LoginController>(
                     builder: (controller) {
                       return MaterialButton(
                         color: primaryColor,
@@ -263,8 +266,10 @@ class LoginState extends State<LoginPage> {
                         child: Container(
                           padding: EdgeInsets.all(15.w),
                           decoration: BoxDecoration(
-                              border: Border.all(width: 3.w, color: Colors.grey),
-                              borderRadius: BorderRadius.circular(borderRadius)),
+                              border:
+                                  Border.all(width: 3.w, color: Colors.grey),
+                              borderRadius:
+                                  BorderRadius.circular(borderRadius)),
                           child: Image.asset(
                             "assets/images/icons/facebook.png",
                             width: 34.w,

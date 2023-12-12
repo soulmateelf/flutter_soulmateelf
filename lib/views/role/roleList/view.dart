@@ -17,9 +17,11 @@ import 'controller.dart';
 
 class RoleListPage extends StatelessWidget {
   final logic = Get.put(RoleListController());
+
   @override
   Widget build(BuildContext context) {
     logic.refreshController = RefreshController(initialRefresh: false);
+
     /// 在三个主模块入口ScreenUtil初始化，真机调试刷新就没问题了
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
     return basePage('Friend',
@@ -30,7 +32,8 @@ class RoleListPage extends StatelessWidget {
               Get.toNamed('/message');
             },
             icon: Image.asset(
-              "assets/images/icons/message.png",)),
+              "assets/images/icons/message.png",
+            )),
         actions: [
           IconButton(
               iconSize: 44.w,
@@ -38,12 +41,13 @@ class RoleListPage extends StatelessWidget {
                 Get.toNamed('/feedback');
               },
               icon: Image.asset(
-                "assets/images/icons/email.png",))
+                "assets/images/icons/email.png",
+              ))
         ], child: GetBuilder<RoleListController>(builder: (logic) {
       return Container(
         width: double.infinity,
         height: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 10.w,horizontal: 14.w),
+        padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 14.w),
         color: Colors.transparent,
         child: Column(
           children: [_customContainer(), Expanded(child: _refreshListView)],
@@ -55,7 +59,7 @@ class RoleListPage extends StatelessWidget {
   /// 定制按钮区域
   Widget _customContainer() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Get.toNamed('/customRoleStep1');
       },
       child: Container(
@@ -155,7 +159,7 @@ class RoleListPage extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         /// todo-这里是有朋友圈事件展示边框，第二版做
-        gradient: roleData.intimacy == -1
+        gradient: (roleData.readCount !=null && roleData.readCount! > 0)
             ? const LinearGradient(
                 colors: [
                   Color.fromRGBO(217, 78, 255, 1),
@@ -183,19 +187,20 @@ class RoleListPage extends StatelessWidget {
                   Container(
                     constraints: BoxConstraints(minHeight: 192.w),
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.w), // 圆角半径
-                        child: CachedNetworkImage(
-                          imageUrl: roleData.avatar??"",
-                          placeholder: (context, url) => const CupertinoActivityIndicator(),
-                          errorWidget: (context, url, error) => Container(),
-                        ),
+                      borderRadius: BorderRadius.circular(10.w), // 圆角半径
+                      child: CachedNetworkImage(
+                        imageUrl: roleData.avatar ?? "",
+                        placeholder: (context, url) =>
+                            const CupertinoActivityIndicator(),
+                        errorWidget: (context, url, error) => Container(),
+                      ),
                     ),
                   ),
                   Container(
                     padding: EdgeInsets.only(
                         top: 8.w, left: 12.w, right: 12.w, bottom: 4.w),
                     alignment: Alignment.centerLeft,
-                    child: Text(roleData.name??"--",
+                    child: Text(roleData.name ?? "--",
                         style: TextStyle(
                             fontSize: 18.sp,
                             fontFamily: 'SFProRounded-Medium',
@@ -206,7 +211,7 @@ class RoleListPage extends StatelessWidget {
                       padding: EdgeInsets.only(
                           left: 12.w, right: 12.w, bottom: 12.w),
                       alignment: Alignment.centerLeft,
-                      child: Text(roleData.hobby??'--',
+                      child: Text(roleData.hobby ?? '--',
                           style: TextStyle(
                               fontSize: 12.sp,
                               fontFamily: 'SFProRounded',
@@ -235,7 +240,10 @@ class RoleListPage extends StatelessWidget {
                         height: 16.w,
                         fit: BoxFit.cover,
                       ),
-                      Text(roleData.intimacy != null?roleData.intimacy.toString():'0',
+                      Text(
+                          roleData.intimacy != null
+                              ? roleData.intimacy.toString()
+                              : '0',
                           style: TextStyle(
                               fontSize: 13.sp,
                               fontFamily: 'SFProRounded-Medium',
