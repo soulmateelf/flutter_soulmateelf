@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:soulmate/models/recharge.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/views/mine/energy/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
@@ -31,8 +32,7 @@ class EnergyState extends State<EnergyPage>
   @override
   Widget build(BuildContext context) {
     return basePage("Buy energy",
-        backGroundImage:
-            const AssetImage("assets/images/image/backgroundGray.png"),
+        backGroundImage: BackGroundImageType.gray,
         child: GetBuilder<EnergyController>(builder: (logic) { return Column(
           children: [
             SizedBox(
@@ -170,7 +170,7 @@ class EnergyState extends State<EnergyPage>
                                         width: 20.w,
                                       )),
                                       TextSpan(
-                                        text: "+500",
+                                        text: "+${logic.monthProduct?.energy??'--'}",
                                         style: TextStyle(
                                           color: primaryColor,
                                           fontSize: 48.sp,
@@ -185,7 +185,7 @@ class EnergyState extends State<EnergyPage>
                                     height: 30.w,
                                   ),
                                   Text(
-                                    "Get 500 star energy every month",
+                                    "Get ${logic.monthProduct?.energy??'--'} star energy every month",
                                     style: TextStyle(
                                       fontSize: 22.sp,
                                       fontFamily: FontFamily.SFProRoundedMedium,
@@ -209,10 +209,10 @@ class EnergyState extends State<EnergyPage>
                               shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.circular(borderRadius)),
-                              onPressed: () {logic.payNow();},
-                              child: const Text(
-                                "\$ 56.99 / Month",
-                                style: TextStyle(
+                              onPressed: () {logic.payMonthly();},
+                              child: Text(
+                                "\$${logic.monthProduct?.amount??'--'} / Month",
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontFamily: FontFamily.SFProRoundedBlod,
                                   fontSize: 20,
@@ -245,34 +245,42 @@ class EnergyState extends State<EnergyPage>
                                 shrinkWrap: true,
                                 itemBuilder: (_, index) {
                                   return cardItem(
-                                      energy: logic.serverProductList[index].energy,
-                                      count: 2,
-                                      price: logic.serverProductList[index].amount,
-                                      active: logic.serverProductList[index].productId == logic.currentProduct?.productId,
+                                      energy: logic.energyProductList[index].energy,
+                                      count: logic.currentCard?.ratio ?? 1,
+                                      price: logic.energyProductList[index].amount,
+                                      active: logic.energyProductList[index].productId == logic.currentProduct?.productId,
                                       onPressed: () {
-                                        logic.currentProduct = logic.serverProductList[index];
+                                        logic.currentProduct = logic.energyProductList[index];
                                         logic.update();
                                       });
                                 },
-                                itemCount: logic.serverProductList.length,
+                                itemCount: logic.energyProductList.length,
                               )),
                           SizedBox(
                             height: 16.w,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 28.w),
-                            child: Text(
-                              "Rechargeable card",
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                color: Color.fromRGBO(0, 0, 0, 0.48),
-                              ),
-                            ),
+                          Offstage(
+                            offstage: logic.cardList.isEmpty,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 28.w),
+                                  child: Text(
+                                    "Rechargeable card",
+                                    style: TextStyle(
+                                      fontSize: 18.sp,
+                                      color: Color.fromRGBO(0, 0, 0, 0.48),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 12.w,
+                                ),
+                                doubleCardList(),
+                              ],
+                            )
                           ),
-                          SizedBox(
-                            height: 12.w,
-                          ),
-                          doubleCardList(),
                           SizedBox(height: 30.w,),
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -285,7 +293,7 @@ class EnergyState extends State<EnergyPage>
                                   BorderRadius.circular(borderRadius)),
                               onPressed: () {logic.payNow();},
                               child: Text(
-                                "Pay ${logic.currentProduct?.amount??'--'}",
+                                "Pay \$${logic.currentProduct?.amount??'--'}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontFamily: FontFamily.SFProRoundedBlod,
@@ -428,49 +436,54 @@ class EnergyState extends State<EnergyPage>
   }
 
   Widget doubleCardList() {
-
-    Widget item = Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(borderRadius),
-        border: Border.all(width: 3.w, color: primaryColor),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.w),
-      margin: EdgeInsets.only(right: 4.w),
-      child: Column(
-        children: [
-          Text(
-            "x2",
-            style: TextStyle(
-              color: Color.fromRGBO(0, 0, 0, 0.48),
-              fontFamily: FontFamily.SFProRoundedBlod,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.sp,
-            ),
+    Widget cardItem(RechargeableCard card) {
+        return Container(
+          width: 150.w,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadius),
+            border: Border.all(width: 3.w, color: logic.currentCard?.id == card.id ? primaryColor:const Color.fromRGBO(0, 0, 0, 0.06))
           ),
-          Text(
-            "Doubling of energy",
-            style: TextStyle(
-              color: Color.fromRGBO(0, 0, 0, 0.48),
-              fontSize: 13.sp,
-            ),
-          )
-        ],
-      ),
-    );
-    return Container(
-      height: 70.w,
-      padding: EdgeInsets.only(left: 8.w),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: ListView.builder(
-          shrinkWrap: true,
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.w),
+          margin: EdgeInsets.only(right: 4.w),
+          child: Column(
+            children: [
+              Text(
+                "x${card.ratio}",
+                style: TextStyle(
+                  color: const Color.fromRGBO(0, 0, 0, 0.48),
+                  fontFamily: FontFamily.SFProRoundedBlod,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.sp,
+                ),
+              ),
+              Text(
+                card.title.toString(),
+                style: TextStyle(
+                  color: Color.fromRGBO(0, 0, 0, 0.48),
+                  fontSize: 13.sp,
+                ),
+              )
+            ],
+          ),
+        );
+      }
+      return Container(
+        height: 70.w,
+        padding: EdgeInsets.only(left: 8.w),
+        child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          itemBuilder: (_, index) {
-            return item;
-          },
-          itemCount: logic.serverProductList.length,
+          child: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (_, index) {
+              return GestureDetector(
+                onTap: () {logic.currentCard= logic.cardList[index];logic.update();},
+                child: cardItem(logic.cardList[index])
+              );
+            },
+            itemCount: logic.cardList.length,
+          ),
         ),
-      ),
-    );
-  }
+      );
+    }
 }
