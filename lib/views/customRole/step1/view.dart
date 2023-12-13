@@ -46,7 +46,7 @@ class Step1Page extends StatelessWidget {
                 height: 62.w,
               ),
               Text(
-                "For ¥199",
+                "For \$${logic.customRoleProduct?.amount ?? '--'}",
                 style: TextStyle(
                   color: Colors.white,
                   fontFamily: FontFamily.SFProRoundedBlod,
@@ -63,7 +63,7 @@ class Step1Page extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 30.w,
+                height: 24.w,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -76,7 +76,7 @@ class Step1Page extends StatelessWidget {
                     ),
                     color: primaryColor,
                     onPressed: () {
-                      Get.toNamed("/customRoleStep2");
+                      logic.goCustomRole();
                     },
                     child: Text(
                       "Next",

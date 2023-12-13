@@ -65,7 +65,7 @@ class EnergyController extends GetxController {
   }
   ///获取商店配置的商品列表
   getStoreProducts(List<Product> serverData) async {
-    ///取出服务端商品列表中的ios商品id
+    ///取出服务端商品列表中的商品id
     Set<String> pIds = <String>{};
     serverData.forEach((Product product) {
       if (!Utils.isEmpty(product.productId)) {
