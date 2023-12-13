@@ -11,6 +11,7 @@ import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/utils/plugin/Message.dart';
+import 'package:soulmate/utils/plugin/mqtt.dart';
 
 import 'AppPurchase.dart';
 
@@ -20,6 +21,8 @@ class APPPlugin {
 
   /// 软件信息
   static PackageInfo? appInfo;
+
+  static XMqttClient? mqttClient;
 
   static initPlugin() async {
     /// 插件初始化
@@ -39,6 +42,10 @@ class APPPlugin {
       APPPlugin.appInfo = packageInfo;
     });
 
+    /// 连接 mqtt服务
+    mqttClient = XMqttClient.instance;
+    mqttClient?.connect("mqtt_cid");
+    mqttClient?.topicSubscribe(["12345"]);
     /// 初始化内购
     AppPurchase.initAppPayConfig();
 

@@ -4,12 +4,18 @@
 /// LastEditTime: 2022-03-07 16:27:08
 /// Description:
 
+import 'dart:io';
 import 'dart:ui';
+import 'package:flutter/src/services/asset_bundle.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:launch_review/launch_review.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
@@ -78,9 +84,21 @@ class _MinePage extends State<MinePage> {
                           shape: BoxShape.circle,
                           border: Border.all(width: 3.w, color: Colors.white)),
                       child: Container(
+                        clipBehavior: Clip.hardEdge,
                         height: 80.w,
                         width: 80.w,
-                        child: Image.asset("assets/images/icons/avatar.png"),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40.w)),
+                        child: user?.avatar != null
+                            ? CachedNetworkImage(
+                                imageUrl: user!.avatar!,
+                                fit: BoxFit.cover,
+                                errorWidget: (_, __, ___) {
+                                  return Image.asset(
+                                      "assets/images/icons/avatar.png");
+                                },
+                              )
+                            : Image.asset("assets/images/icons/avatar.png"),
                       ),
                     ),
                   ),
@@ -209,36 +227,36 @@ class _MinePage extends State<MinePage> {
                                           ),
                                         ),
                                       ])),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.toNamed("/energy");
-                                        },
-                                        child: Container(
-                                          width: 90.w,
-                                          height: 40.w,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.w),
-                                              gradient: const RadialGradient(
-                                                  radius: 0.8,
-                                                  colors: [
-                                                    Color.fromRGBO(
-                                                        255, 236, 192, 1),
-                                                    Colors.white,
-                                                  ])),
-                                          child: Text(
-                                            "Buy",
-                                            style: TextStyle(
-                                              color: primaryColor,
-                                              fontSize: 24.sp,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily:
-                                                  FontFamily.SFProRoundedBlod,
-                                            ),
-                                          ),
-                                        ),
-                                      )
+                                      // GestureDetector(
+                                      //   onTap: () {
+                                      //     Get.toNamed("/energy");
+                                      //   },
+                                      //   child: Container(
+                                      //     width: 90.w,
+                                      //     height: 40.w,
+                                      //     alignment: Alignment.center,
+                                      //     decoration: BoxDecoration(
+                                      //         borderRadius:
+                                      //             BorderRadius.circular(20.w),
+                                      //         gradient: const RadialGradient(
+                                      //             radius: 0.8,
+                                      //             colors: [
+                                      //               Color.fromRGBO(
+                                      //                   255, 236, 192, 1),
+                                      //               Colors.white,
+                                      //             ])),
+                                      //     child: Text(
+                                      //       "Buy",
+                                      //       style: TextStyle(
+                                      //         color: primaryColor,
+                                      //         fontSize: 24.sp,
+                                      //         fontWeight: FontWeight.bold,
+                                      //         fontFamily:
+                                      //             FontFamily.SFProRoundedBlod,
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // )
                                     ],
                                   )
                                 ],
@@ -254,7 +272,7 @@ class _MinePage extends State<MinePage> {
                               Expanded(
                                 child: GestureDetector(
                                   onTap: () {
-                                    APPPlugin.logger.d("plane");
+                                    Get.toNamed('/energy');
                                   },
                                   child: Container(
                                     alignment: Alignment.center,
@@ -279,14 +297,14 @@ class _MinePage extends State<MinePage> {
                                             child: Row(
                                               children: [
                                                 Image.asset(
-                                                  "assets/images/icons/plane.png",
+                                                  "assets/images/icons/shop.png",
                                                   width: 24.w,
                                                   height: 24.w,
                                                 ),
                                                 Expanded(
                                                     child: Center(
                                                   child: Text(
-                                                    "Share",
+                                                    "Buy",
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 18.sp,
@@ -326,8 +344,16 @@ class _MinePage extends State<MinePage> {
                               ),
                               Expanded(
                                 child: GestureDetector(
-                                  onTap: () {
-                                    APPPlugin.logger.d("play");
+                                  onTap: () async {
+                                    final result = await Share.shareWithResult(
+                                        'https://soulmate.health',
+                                        subject: "share soulemate",
+                                    );
+                                    if (result.status ==
+                                        ShareResultStatus.success) {
+                                      exSnackBar(
+                                          "Thank you for sharing my application");
+                                    }
                                   },
                                   child: Container(
                                     alignment: Alignment.center,
@@ -352,14 +378,14 @@ class _MinePage extends State<MinePage> {
                                             child: Row(
                                               children: [
                                                 Image.asset(
-                                                  "assets/images/icons/play_video.png",
+                                                  "assets/images/icons/plane.png",
                                                   width: 24.w,
                                                   height: 24.w,
                                                 ),
                                                 Expanded(
                                                     child: Center(
                                                   child: Text(
-                                                    "Watch AD",
+                                                    "Share",
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 18.sp,
@@ -458,7 +484,9 @@ class _MinePage extends State<MinePage> {
                             color: Color.fromRGBO(0, 0, 0, 0.06),
                           ),
                           MineCardItem(
-                              onTap: () {},
+                              onTap: () {
+                                LaunchReview.launch(androidAppId: "cn.soulmate.elf",iOSAppId: "6473983973");
+                              },
                               text: "Please give us a 5 star rating",
                               iconSrc: "assets/images/icons/mineLike.png"),
                           Container(

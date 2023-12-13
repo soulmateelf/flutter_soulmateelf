@@ -5,6 +5,8 @@
 /// Description: 全局变量
 
 import 'dart:convert';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,6 +76,7 @@ class Application {
     // Application.pres?.setInt('themeIndex', Application.themeIndex);
   }
 
+  ///  重新请求用户信息
   static Future<void> regainUserInfo() async {
     try {
       if (userInfo?.userId != null) {
@@ -84,4 +87,15 @@ class Application {
       }
     } catch (err) {}
   }
+
+
+  /// 退出登录
+  static Future<void> logout() async{
+    if (userInfo?.userId != null) {
+      await HttpUtils.diorequst("/logout", method: "post");
+      Application.pres?.clear();
+      Get.offAllNamed("/welcome");
+    }
+  }
+
 }

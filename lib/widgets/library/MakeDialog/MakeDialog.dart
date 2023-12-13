@@ -1,15 +1,37 @@
 part of projectLibrary;
 
+class MakeDialogController {
+  final GlobalKey<MakeDialogContentState> key = GlobalKey();
+
+  void close() {
+    Get.back();
+  }
+
+  void show({
+    required Widget iconWidget,
+    required Widget content,
+    required MakeDialogController controller,
+    required BuildContext context,
+  }) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return MakeDialog(
+              iconWidget: iconWidget, content: content, controller: controller);
+        });
+  }
+}
+
 class MakeDialog extends Dialog {
   Widget iconWidget;
   Widget content;
-  GlobalKey? stateKey;
+  MakeDialogController controller;
 
   MakeDialog(
       {Key? key,
       required this.iconWidget,
       required this.content,
-      this.stateKey})
+      required this.controller})
       : super(key: key);
 
   @override
@@ -17,7 +39,7 @@ class MakeDialog extends Dialog {
     return MakeDialogContent(
       iconWidget: iconWidget,
       content: content,
-      key: stateKey,
+      key: controller.key,
     );
   }
 }
@@ -40,11 +62,6 @@ class MakeDialogContent extends StatefulWidget {
 }
 
 class MakeDialogContentState extends State<MakeDialogContent> {
-
-  void close() {
-    Get.back();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -58,7 +75,8 @@ class MakeDialogContentState extends State<MakeDialogContent> {
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: 200.w),
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 18.w,horizontal: 32.w),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 18.w, horizontal: 32.w),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(40.w),

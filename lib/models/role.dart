@@ -38,6 +38,7 @@ class Role {
   /// 最后一次聊天内容
   String? content;
   String? backgroundImageUrl;
+  int? readCount;
 
   Role({
     required this.roleId,
@@ -55,6 +56,7 @@ class Role {
     this.endSendTime,
     this.content,
     this.backgroundImageUrl,
+    this.readCount,
   });
 
   factory Role.fromJson(Map<String, dynamic> json) => Role(
@@ -73,6 +75,7 @@ class Role {
         endSendTime: json["endSendTime"],
         content: json["content"],
         backgroundImageUrl: json['backgroundImageUrl'],
+        readCount: json['readCount'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -91,5 +94,6 @@ class Role {
         "endSendTime": endSendTime,
         "content": content,
         "backgroundImageUrl": backgroundImageUrl,
+        "readCount": readCount,
       };
 }

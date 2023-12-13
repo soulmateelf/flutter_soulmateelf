@@ -20,11 +20,12 @@ class RoleEventController extends GetxController {
     roleEvent = value;
     likes.clear();
     comments.clear();
+    isLiked = false;
     value?.activities.forEach((element) {
-      isLiked = false;
       if (element.type == 0) {
         likes.add(element);
         if (element.userId == Application.userInfo?.userId) {
+          APPPlugin.logger.d("adasd");
           isLiked = true;
         }
       } else if (element.type == 1) {
@@ -32,6 +33,7 @@ class RoleEventController extends GetxController {
       }
     });
     roleLogic.updateOneEvent(value);
+    APPPlugin.logger.d(isLiked);
     update();
   }
 
@@ -95,11 +97,18 @@ class RoleEventController extends GetxController {
   Future<bool> sendLike(bool liked) async {
     try {
       if (roleLogic.roleDetail != null && roleEvent != null) {
+        final activity = likes.firstWhereOrNull(
+              (element) =>
+          element.type == 0 &&
+              element.userId == Application.userInfo?.userId,
+        );
         final res = await HttpUtils.diorequst("/role/sendLike",
             method: "post",
             params: {
-              "roleId": roleLogic.roleDetail!.roleId!,
-              "memoryId": roleEvent?.memoryId,
+              "roleId": roleEvent!.roleId!,
+              "memoryId": roleEvent!.memoryId,
+              "activityId": activity != null ? activity.activityId : "",
+              "isAdd": activity == null,
             });
         if (res?['code'] == 200) {
           getEventDetail();
