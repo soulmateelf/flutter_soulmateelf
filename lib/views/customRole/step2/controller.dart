@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' hide MultipartFile, FormData;
@@ -111,10 +113,10 @@ class Step2Controller extends GetxController {
       "status": purchaseDetails.status.toString(), //购买状态
       "purchaseID": purchaseDetails?.purchaseID??'', //购买id
       "appleProductID": purchaseDetails.productID??'', //apple商品id
-      "verificationData": {
+      "verificationData": json.encode({
         "localVerificationData": purchaseDetails?.verificationData?.localVerificationData??'', //local验证数据
         "serverVerificationData": purchaseDetails?.verificationData?.serverVerificationData??'', //server验证数据
-      },
+      }),
       "transactionDate": purchaseDetails?.transactionDate??'', //apple交易时间
     };
     formData?.fields.addAll(params.entries.map((entry) =>
