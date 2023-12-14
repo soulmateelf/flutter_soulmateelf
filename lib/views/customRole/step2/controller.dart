@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:soulmate/models/product.dart';
+import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/AppPurchase.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
@@ -120,7 +121,7 @@ class Step2Controller extends GetxController {
         MapEntry(entry.key, entry.value.toString())));
 
     Loading.show();
-    HttpUtils.diorequst("/order/iosPay",method: 'post', params: {'formData':formData},extra: {'isUrlencoded':true}).then((response) {
+    HttpUtils.diorequst("/order/addCustomization",method: 'post', params: formData,extra: {'formData':true}).then((response) {
       Loading.dismiss();
       if (response['code'] == 200) {
         exSnackBar("purchase success", type: ExSnackBarType.success);

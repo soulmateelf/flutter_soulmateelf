@@ -44,7 +44,6 @@ class HttpUtils {
       Map<String, dynamic>? localHeaders;
       localHeaders = headers ?? {};
       localHeaders["Authorization"] = "Bearer ${Application.token}";
-
       ///拦截器
       HttpUtils.dio.interceptors.add(InterceptorsWrapper(
         onRequest: (RequestOptions options, handler) async {
@@ -52,9 +51,9 @@ class HttpUtils {
           /// header在这里直接赋值会导致其他header属性的丢失
           /// 所以在request函数中处理比较好
           /// 图片类型，在这里特殊处理header
-          if (extra != null && extra?["uploadImage"] == true) {
-            options.data = params?["formdata"];
-          }
+          // if (extra != null && extra?["uploadImage"] == true) {
+          //   options.data = params?["formdata"];
+          // }
           return handler.next(options);
         },
         onResponse: (Response response, handler) async {
@@ -66,7 +65,6 @@ class HttpUtils {
           return handler.next(e);
         },
       ));
-
       /// 正式请求
       response = await dio.request(
         "${url}?random=${DateTime.now().millisecondsSinceEpoch}",
@@ -74,10 +72,7 @@ class HttpUtils {
         data: params,
         options: Options(
             method: method,
-            headers: localHeaders,
-            contentType: extra != null && extra['isUrlencoded'] == true
-                ? Headers.multipartFormDataContentType
-                : "application/json; charset=utf-8"),
+            headers: localHeaders)
       );
 
       ///处理response
@@ -85,10 +80,9 @@ class HttpUtils {
     } on DioException catch (dioError) {
       String realUrl = dio.options.baseUrl + url;
       if (ProjectConfig.getInstance()?.isDebug == true) {
-        print(dioError.toString());
-        print(dioError.response?.toString() ?? "");
         APPPlugin.logger.d('$realUrl接口错误,请求方式$method');
         APPPlugin.logger.d('请求参数,query:${query?.toString()} params:${params?.toString()}');
+        APPPlugin.logger.d('request:${dioError.response.toString()}');
       }
       return _dealDioError(dioError, url);
     } catch (exception) {
