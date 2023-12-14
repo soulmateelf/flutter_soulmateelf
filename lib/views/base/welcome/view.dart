@@ -39,7 +39,12 @@ class WelcomePage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-
+                TextButton(
+                  onPressed: () {
+                    Get.toNamed('/introWelcome');
+                  },
+                  child: Text("go"),
+                ),
                 Text(
                   'Let’s you in',
                   key: globalKey,

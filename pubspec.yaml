@@ -151,6 +151,12 @@ dependencies:
   # mqtt 消息订阅
   # https://pub.dev/packages/mqtt_client
   mqtt_client: ^10.0.0
+  # 文本打字机效果
+  # https://pub-web.flutter-io.cn/packages/animated_text_kit
+  animated_text_kit: ^4.2.2
+  # 轮播图效果
+  # https://pub.dev/packages/card_swiper
+  card_swiper: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -168,6 +174,7 @@ flutter:
     - assets/images/icons/
     - assets/images/menuIcon/
     - assets/mp3/
+    - assets/
 
   fonts:
     - family: SFProRounded
