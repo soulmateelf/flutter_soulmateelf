@@ -22,7 +22,7 @@ class Step2Page extends StatelessWidget {
           backGroundImage: null,
           backgroundColor: Colors.white,
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
             ),
             child: Column(
@@ -40,7 +40,6 @@ class Step2Page extends StatelessWidget {
                             child: Stack(
                               children: [
                                 Container(
-                                  clipBehavior: Clip.hardEdge,
                                   width: 112.w,
                                   height: 112.w,
                                   decoration: BoxDecoration(
@@ -52,18 +51,18 @@ class Step2Page extends StatelessWidget {
                                   ),
                                   child: CircleAvatar(
                                     backgroundColor: Colors.transparent,
-                                    child: controller.avatar != null
+                                    backgroundImage: controller.avatar != null
                                         ? Image.file(
                                             File(controller.avatar!.path),
                                             width: 112.w,
                                             height: 112.w,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Image.asset(
-                                            "assets/images/icons/customRoleUserIcon.png",
-                                            width: 38.w,
-                                            height: 42.w,
-                                          ),
+                                          ).image
+                                        : null,
+                                    child: controller.avatar == null?Image.asset(
+                                      "assets/images/icons/customRoleUserIcon.png",
+                                      width: 38.w,
+                                      height: 42.w,
+                                    ):null,
                                   ),
                                 ),
                                 Positioned(
@@ -94,7 +93,7 @@ class Step2Page extends StatelessWidget {
                           SizedBox(
                             height: 40.w,
                           ),
-                          makeTitle("Personality"),
+                          makeTitle("Name"),
                           Container(
                             height: 64.w,
                             child: TextField(
@@ -110,7 +109,7 @@ class Step2Page extends StatelessWidget {
                                     borderRadius,
                                   ),
                                 ),
-                                hintText: "Name",
+                                hintText: "Enter",
                                 hintStyle: TextStyle(
                                   color: Color.fromRGBO(0, 0, 0, 0.32),
                                   fontSize: 18.sp,
@@ -394,7 +393,7 @@ class Step2Page extends StatelessWidget {
                     ),
                   ),
                 ),
-                Divider(
+                const Divider(
                   height: 1,
                 ),
                 Container(
@@ -405,7 +404,7 @@ class Step2Page extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "\$0.00",
+                        "\$${logic.customRoleProduct?.amount??'--'}",
                         style: TextStyle(
                           color: textColor,
                           fontSize: 24.sp,
@@ -419,16 +418,16 @@ class Step2Page extends StatelessWidget {
                           onPressed: () {
                             controller.submit();
                           },
-                          color: Color.fromRGBO(245, 245, 245, 1),
+                          color: primaryColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
                               borderRadius,
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             "Submit",
                             style: TextStyle(
-                              color: Color.fromRGBO(0, 0, 0, 0.24),
+                              color: Colors.white,
                               fontFamily: FontFamily.SFProRoundedBlod,
                               fontWeight: FontWeight.bold,
                             ),

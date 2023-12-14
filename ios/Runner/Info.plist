@@ -39,10 +39,25 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>GIDClientID</key>
 	<string>133755992024-3cmb7g6mjglgm8rl0v8ar8gtgmn9b0gf.apps.googleusercontent.com</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>itms-beta</string>
+		<string>itms</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>mqtt.tcp</string>
+	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>use your camera take a shoot</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Looking for local tcp Bonjour service</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app requires Mic permission.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>use your photo</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -64,16 +79,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>LSApplicationQueriesSchemes</key>
-    <array>
-            <string>itms-beta</string>
-            <string>itms</string>
-    </array>
-    <key>NSLocalNetworkUsageDescription</key>
-    <string>Looking for local tcp Bonjour service</string>
-    <key>NSBonjourServices</key>
-    <array>
-      <string>mqtt.tcp</string>
-    </array>
 </dict>
 </plist>

@@ -21,10 +21,10 @@ class Step1Controller extends GetxController {
         List dataMap = response["data"];
         List<Product> serverDataList = dataMap.map((json) => Product.fromJson(json)).toList();
         customRoleProduct = serverDataList.firstWhereOrNull((Product product) => product.type == 2);
-        print(customRoleProduct);
         if(customRoleProduct == null){
           exSnackBar("No custom role product", type: ExSnackBarType.error);
         }
+        update();
       }
     }).catchError((error) {
       exSnackBar(error, type: ExSnackBarType.error);

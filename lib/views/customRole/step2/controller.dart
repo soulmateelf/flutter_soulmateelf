@@ -35,6 +35,8 @@ class Step2Controller extends GetxController {
   ProductDetails? storeProduct;
   ///当前订单id
   String? currentOrderId;
+  ///表单数据
+  FormData? formData;
 
   @override
   void onInit() {
@@ -114,8 +116,11 @@ class Step2Controller extends GetxController {
       },
       "transactionDate": purchaseDetails?.transactionDate??'', //apple交易时间
     };
+    formData?.fields.addAll(params.entries.map((entry) =>
+        MapEntry(entry.key, entry.value.toString())));
+
     Loading.show();
-    HttpUtils.diorequst("/order/iosPay",method: 'post', params: params).then((response) {
+    HttpUtils.diorequst("/order/iosPay",method: 'post', params: {'formData':formData},extra: {'isUrlencoded':true}).then((response) {
       Loading.dismiss();
       if (response['code'] == 200) {
         exSnackBar("purchase success", type: ExSnackBarType.success);
@@ -131,7 +136,7 @@ class Step2Controller extends GetxController {
   void uploadAvatar() {
     Utils.pickerImage(Get.context!).then((files) {
       APPPlugin.logger.d(files);
-      if (files.length > 0) {
+      if (files.isNotEmpty) {
         avatar = files[0];
         update();
       }
@@ -141,32 +146,30 @@ class Step2Controller extends GetxController {
   }
 
   void submit() {
-    if (nameController.text.isEmpty ||
-        hobbyController.text.isEmpty ||
-        introductionController.text.isEmpty) {
+    if(nameController.text.isEmpty){
+      exSnackBar("Please enter the name", type: ExSnackBarType.warning);
+      return;
+    }
+    if(hobbyController.text.isEmpty){
+      exSnackBar("Please enter the hobby", type: ExSnackBarType.warning);
+      return;
+    }
+    if(introductionController.text.isEmpty){
+      exSnackBar("Please enter the introduction", type: ExSnackBarType.warning);
       return;
     }
 
-    FormData fd = FormData.fromMap({
-      "orderId": "",
-      "receipt": "",
-      "purchaseID": "",
-      "appleProductID": "",
-      "transactionDate": "",
-      "verificationData": "",
+    formData = FormData.fromMap({
+      "name": nameController.text,
       "age": age,
       "gender": genderType,
-      "name": nameController.text,
       "Hobby": hobbyController.text,
       "characterIntroduction": introductionController.text,
+      "remark": remarkController.text
     });
 
-    if (!remarkController.text.isEmpty) {
-      fd.fields.add(MapEntry("remark", remarkController.text));
-    }
-
     if (avatar != null) {
-      fd.files.add(MapEntry("file", MultipartFile.fromFileSync(avatar!.path)));
+      formData?.files.add(MapEntry("file", MultipartFile.fromFileSync(avatar!.path)));
     }
 
     final makeDialogController = MakeDialogController();
@@ -193,7 +196,7 @@ class Step2Controller extends GetxController {
                 width: double.infinity,
                 child: MaterialButton(
                   color: primaryColor,
-                  onPressed: () {},
+                  onPressed: () {payNow();makeDialogController.close();},
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(borderRadius),
                   ),
@@ -217,7 +220,7 @@ class Step2Controller extends GetxController {
                   child: Text(
                     "Cancel",
                     style: TextStyle(
-                      color: Color.fromRGBO(0, 0, 0, 0.32),
+                      color: const Color.fromRGBO(0, 0, 0, 0.32),
                       fontSize: 20.sp,
                       fontFamily: FontFamily.SFProRoundedBlod,
                       fontWeight: FontWeight.bold,
