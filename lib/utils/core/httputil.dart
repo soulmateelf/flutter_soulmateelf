@@ -85,6 +85,8 @@ class HttpUtils {
     } on DioException catch (dioError) {
       String realUrl = dio.options.baseUrl + url;
       if (ProjectConfig.getInstance()?.isDebug == true) {
+        print(dioError.toString());
+        print(dioError.response?.toString() ?? "");
         APPPlugin.logger.d('$realUrl接口错误,请求方式$method');
         APPPlugin.logger.d('请求参数,query:${query?.toString()} params:${params?.toString()}');
       }
