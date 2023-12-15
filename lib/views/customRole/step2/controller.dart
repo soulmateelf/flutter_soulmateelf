@@ -52,6 +52,7 @@ class Step2Controller extends GetxController {
     super.onReady();
     customRoleProduct = Get.arguments['customRoleProduct'];
     getStoreProducts();
+    update();
   }
 
   ///获取商店配置的商品列表
@@ -96,7 +97,7 @@ class Step2Controller extends GetxController {
       return;
     }
     ///购买商品
-    AppPurchase.payProductNow(storeProduct!,2);
+    AppPurchase.payProductNow(storeProduct!,1);
   }
 
   ///通知服务端商品购买成功或者失败

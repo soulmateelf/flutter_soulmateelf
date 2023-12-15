@@ -45,7 +45,7 @@ class Step1Page extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 62.w,
+                  height: 54.w,
                 ),
                 Text(
                   "For \$${logic.customRoleProduct?.amount ?? '--'}",
