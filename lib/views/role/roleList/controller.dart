@@ -14,9 +14,13 @@ import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
+import '../../base/menu/controller.dart';
+
 class RoleListController extends GetxController {
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
+
+  final menuLogic = Get.find<SoulMateMenuController>();
 
   /// 原始角色列表
   List<Role> roleList = [];
@@ -38,7 +42,15 @@ class RoleListController extends GetxController {
     HttpUtils.diorequst('/role/roleList', query: {'page': 1, 'limit': 999})
         .then((response) {
       List roleListMap = response["data"];
-      roleList = roleListMap.map((json) => Role.fromJson(json)).toList();
+      var unreadCount = 0;
+      roleList = roleListMap.map((json) {
+        final r = Role.fromJson(json);
+        if (r.readCount is int && r.readCount! >= 0) {
+          unreadCount += r.readCount!;
+        }
+        return r;
+      }).toList();
+      menuLogic.updateMessageNum(roleMessageNum: unreadCount);
       refreshController.refreshCompleted();
       update();
     }).catchError((error) {

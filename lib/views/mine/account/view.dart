@@ -144,77 +144,79 @@ class MineAccountPage extends StatelessWidget {
                         Divider(
                           height: 1,
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 20.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Nickname",
-                                style: TextStyle(
-                                  color: textColor,
-                                  fontSize: 18.sp,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  final back =
-                                      await Get.toNamed('/mineNickname');
-                                  controller.getUser();
-                                },
-                                child: RichText(
-                                    text: TextSpan(children: [
-                                  TextSpan(
-                                    text: "${logic.user?.nickName}",
+                        GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () async {
+                              final back = await Get.toNamed('/mineNickname');
+                              controller.getUser();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.w, vertical: 20.w),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Nickname",
                                     style: TextStyle(
-                                      color: Color.fromRGBO(0, 0, 0, 0.48),
+                                      color: textColor,
                                       fontSize: 18.sp,
                                     ),
                                   ),
-                                  WidgetSpan(
-                                      child: Padding(
-                                    padding: EdgeInsets.only(left: 14.w),
-                                    child: Image.asset(
-                                      "assets/images/icons/right_arrow.png",
-                                      width: 20.w,
-                                      height: 20.w,
-                                    ),
-                                  ))
-                                ])),
-                              )
-                            ],
-                          ),
-                        ),
+                                  RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                        text: "${logic.user?.nickName}",
+                                        style: TextStyle(
+                                          color: Color.fromRGBO(0, 0, 0, 0.48),
+                                          fontSize: 18.sp,
+                                        ),
+                                      ),
+                                      WidgetSpan(
+                                          child: Padding(
+                                        padding: EdgeInsets.only(left: 14.w),
+                                        child: Image.asset(
+                                          "assets/images/icons/right_arrow.png",
+                                          width: 20.w,
+                                          height: 20.w,
+                                        ),
+                                      ))
+                                    ]),
+                                  )
+                                ],
+                              ),
+                            )),
                         Divider(
                           height: 1,
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 20.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Password",
-                                style: TextStyle(
-                                  color: textColor,
-                                  fontSize: 18.sp,
-                                ),
+                        GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              Get.toNamed('/mineUpdatePassword');
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.w, vertical: 20.w),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Password",
+                                    style: TextStyle(
+                                      color: textColor,
+                                      fontSize: 18.sp,
+                                    ),
+                                  ),
+                                  Image.asset(
+                                    "assets/images/icons/right_arrow.png",
+                                    width: 20.w,
+                                    height: 20.w,
+                                  ),
+                                ],
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  Get.toNamed('/mineUpdatePassword');
-                                },
-                                child: Image.asset(
-                                  "assets/images/icons/right_arrow.png",
-                                  width: 20.w,
-                                  height: 20.w,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                            )),
                       ],
                     ),
                   ),
@@ -252,31 +254,33 @@ class MineAccountPage extends StatelessWidget {
                         Divider(
                           height: 1,
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 20.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Deactivate vour account",
-                                style: TextStyle(
-                                  color: textColor,
-                                  fontSize: 18.sp,
-                                ),
+                        GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              Get.toNamed('/mineDeactivate');
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.w, vertical: 20.w),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Deactivate vour account",
+                                    style: TextStyle(
+                                      color: textColor,
+                                      fontSize: 18.sp,
+                                    ),
+                                  ),
+                                  Image.asset(
+                                    "assets/images/icons/right_arrow.png",
+                                    width: 20.w,
+                                    height: 20.w,
+                                  ),
+                                ],
                               ),
-                              GestureDetector(onTap: (){
-                                Get.toNamed('/mineDeactivate');
-                              },
-                                child: Image.asset(
-                                  "assets/images/icons/right_arrow.png",
-                                  width: 20.w,
-                                  height: 20.w,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                            )),
                       ],
                     ),
                   )

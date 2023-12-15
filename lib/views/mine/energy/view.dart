@@ -257,7 +257,7 @@ class EnergyState extends State<EnergyPage>
                                 itemCount: logic.energyProductList.length,
                               )),
                           SizedBox(
-                            height: 16.w,
+                            height: 10.w,
                           ),
                           Offstage(
                             offstage: logic.cardList.isEmpty,
@@ -275,13 +275,13 @@ class EnergyState extends State<EnergyPage>
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 12.w,
+                                  height: 10.w,
                                 ),
                                 doubleCardList(),
                               ],
                             )
                           ),
-                          SizedBox(height: 30.w,),
+                          SizedBox(height: 15.w,),
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 12.w),
                             height: 64.w,
@@ -324,7 +324,7 @@ class EnergyState extends State<EnergyPage>
         onPressed();
       },
       child: AnimatedContainer(
-        height: 104.w,
+        height: 90.w,
         padding: EdgeInsets.all(20.w),
         margin: EdgeInsets.only(bottom: 8.w),
         decoration: BoxDecoration(
@@ -364,7 +364,7 @@ class EnergyState extends State<EnergyPage>
                     ).createShader(bounds);
                   },
                   child: Text(
-                    "${energy}",
+                    "$energy",
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: FontFamily.SFProRoundedBlod,
@@ -422,7 +422,7 @@ class EnergyState extends State<EnergyPage>
               width: 8.w,
             ),
             Text(
-              "\$ ${price}",
+              "\$ $price",
               style: TextStyle(
                 color: textColor,
                 fontFamily: FontFamily.SFProRoundedMedium,
@@ -443,7 +443,7 @@ class EnergyState extends State<EnergyPage>
             borderRadius: BorderRadius.circular(borderRadius),
             border: Border.all(width: 3.w, color: logic.currentCard?.id == card.id ? primaryColor:const Color.fromRGBO(0, 0, 0, 0.06))
           ),
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.w),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.w),
           margin: EdgeInsets.only(right: 4.w),
           child: Column(
             children: [
@@ -459,7 +459,7 @@ class EnergyState extends State<EnergyPage>
               Text(
                 card.title.toString(),
                 style: TextStyle(
-                  color: Color.fromRGBO(0, 0, 0, 0.48),
+                  color: const Color.fromRGBO(0, 0, 0, 0.48),
                   fontSize: 13.sp,
                 ),
               )
@@ -468,7 +468,7 @@ class EnergyState extends State<EnergyPage>
         );
       }
       return Container(
-        height: 70.w,
+        height: 60.w,
         padding: EdgeInsets.only(left: 8.w),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,

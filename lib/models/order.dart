@@ -4,85 +4,102 @@
 
 import 'dart:convert';
 
-import 'package:soulmate/models/product.dart';
-
 Order orderFromJson(String str) => Order.fromJson(json.decode(str));
 
 String orderToJson(Order data) => json.encode(data.toJson());
 
 class Order {
+  String productName;
+  int status;
+  int productType;
+  dynamic remark;
   String orderId;
+  String productIosId;
+  int paymentMethodType;
+  int id;
+  String productAndroidId;
+  String moneyType;
   String userId;
   int type;
-  String result;
-  dynamic remark;
-  String moneyType;
-  int createTime;
-  double orderAmount;
-  int id;
-  String productId;
-  String couponId;
-  int status;
-  int paymentMethodType;
   int productNum;
+  double orderAmount;
+  String productId;
+  int createTime;
+  double productAmount;
+  String couponId;
   dynamic updateTime;
-
-  Product productInfo;
+  int productEnergy;
+  String result;
 
   Order({
+    required this.productName,
+    required this.status,
+    required this.productType,
+    required this.remark,
     required this.orderId,
+    required this.productIosId,
+    required this.paymentMethodType,
+    required this.id,
+    required this.productAndroidId,
+    required this.moneyType,
     required this.userId,
     required this.type,
-    required this.result,
-    required this.remark,
-    required this.moneyType,
-    required this.createTime,
-    required this.orderAmount,
-    required this.id,
-    required this.productId,
-    required this.couponId,
-    required this.status,
-    required this.paymentMethodType,
     required this.productNum,
+    required this.orderAmount,
+    required this.productId,
+    required this.createTime,
+    required this.productAmount,
+    required this.couponId,
     required this.updateTime,
-    required this.productInfo,
+    required this.productEnergy,
+    required this.result,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
-        orderId: json["orderId"],
-        userId: json["userId"],
-        type: json["type"],
-        result: json["result"],
-        remark: json["remark"],
-        moneyType: json["moneyType"],
-        createTime: json["createTime"],
-        orderAmount: json["orderAmount"],
-        id: json["id"],
-        productId: json["productId"],
-        couponId: json["couponId"],
-        status: json["status"],
-        paymentMethodType: json["paymentMethodType"],
-        productNum: json["productNum"],
-        updateTime: json["updateTime"],
-        productInfo: Product.fromJson(json['productInfo']),
-      );
+    productName: json["productName"],
+    status: json["status"],
+    productType: json["productType"],
+    remark: json["remark"],
+    orderId: json["orderId"],
+    productIosId: json["productIosId"],
+    paymentMethodType: json["paymentMethodType"],
+    id: json["id"],
+    productAndroidId: json["productAndroidId"],
+    moneyType: json["moneyType"],
+    userId: json["userId"],
+    type: json["type"],
+    productNum: json["productNum"],
+    orderAmount: json["orderAmount"],
+    productId: json["productId"],
+    createTime: json["createTime"],
+    productAmount: json["productAmount"]?.toDouble(),
+    couponId: json["couponId"],
+    updateTime: json["updateTime"],
+    productEnergy: json["productEnergy"],
+    result: json["result"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "orderId": orderId,
-        "userId": userId,
-        "type": type,
-        "result": result,
-        "remark": remark,
-        "moneyType": moneyType,
-        "createTime": createTime,
-        "orderAmount": orderAmount,
-        "id": id,
-        "productId": productId,
-        "couponId": couponId,
-        "status": status,
-        "paymentMethodType": paymentMethodType,
-        "productNum": productNum,
-        "updateTime": updateTime,
-        "productInfo": productInfo.toJson(),
-      };
+    "productName": productName,
+    "status": status,
+    "productType": productType,
+    "remark": remark,
+    "orderId": orderId,
+    "productIosId": productIosId,
+    "paymentMethodType": paymentMethodType,
+    "id": id,
+    "productAndroidId": productAndroidId,
+    "moneyType": moneyType,
+    "userId": userId,
+    "type": type,
+    "productNum": productNum,
+    "orderAmount": orderAmount,
+    "productId": productId,
+    "createTime": createTime,
+    "productAmount": productAmount,
+    "couponId": couponId,
+    "updateTime": updateTime,
+    "productEnergy": productEnergy,
+    "result": result,
+  };
 }

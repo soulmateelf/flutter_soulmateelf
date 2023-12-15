@@ -205,7 +205,7 @@ class _MinePage extends State<MinePage> {
                                       RichText(
                                           text: TextSpan(children: [
                                         TextSpan(
-                                          text: "50",
+                                          text: "${user?.energy ?? 0}",
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
@@ -346,8 +346,8 @@ class _MinePage extends State<MinePage> {
                                 child: GestureDetector(
                                   onTap: () async {
                                     final result = await Share.shareWithResult(
-                                        'https://soulmate.health',
-                                        subject: "share soulemate",
+                                      'https://soulmate.health',
+                                      subject: "share soulemate",
                                     );
                                     if (result.status ==
                                         ShareResultStatus.success) {
@@ -425,12 +425,13 @@ class _MinePage extends State<MinePage> {
                           SizedBox(
                             height: 15.w,
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 18.w),
-                            child: GestureDetector(
-                              onTap: () {
-                                Get.toNamed("/giftBackpack");
-                              },
+                          GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              Get.toNamed("/giftBackpack");
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 18.w),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -485,7 +486,9 @@ class _MinePage extends State<MinePage> {
                           ),
                           MineCardItem(
                               onTap: () {
-                                LaunchReview.launch(androidAppId: "cn.soulmate.elf",iOSAppId: "6473983973");
+                                LaunchReview.launch(
+                                    androidAppId: "cn.soulmate.elf",
+                                    iOSAppId: "6473983973");
                               },
                               text: "Please give us a 5 star rating",
                               iconSrc: "assets/images/icons/mineLike.png"),

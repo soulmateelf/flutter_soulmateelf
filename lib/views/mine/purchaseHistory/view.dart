@@ -99,7 +99,7 @@ class MinePurchaseHistoryPage extends StatelessWidget {
                       width: 8.w,
                     ),
                     Text(
-                      "${order.productInfo.energy}",
+                      "${order.productEnergy}",
                       style: TextStyle(
                         color: textColor,
                         fontSize: 20.sp,
@@ -113,7 +113,7 @@ class MinePurchaseHistoryPage extends StatelessWidget {
                     text: TextSpan(children: [
                   TextSpan(
                     text:
-                        "${order.productInfo.amount != order.orderAmount ? "" : "\$ ${order.productInfo.amount}"}",
+                        "${order.productAmount != order.orderAmount ? "" : "\$ ${order.productAmount}"}",
                     style: TextStyle(
                       fontSize: 14.sp,
                       decoration: TextDecoration.lineThrough,
