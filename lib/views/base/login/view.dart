@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/GoogleAds.dart';
+import 'package:soulmate/utils/plugin/ThirdLogin.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 import '../../../widgets/FadeAnimation.dart';
@@ -237,7 +238,7 @@ class LoginState extends State<LoginPage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        logic.googleLogin();
+                        ThirdLogin.googleLogin();
                       },
                       child: Container(
                         padding: EdgeInsets.all(15.w),
@@ -261,7 +262,7 @@ class LoginState extends State<LoginPage> {
                       offstage: !GetPlatform.isIOS,
                       child: GestureDetector(
                         onTap: () {
-                          logic.appleIdLogin();
+                          ThirdLogin.appleIdLogin();
                         },
                         child: Container(
                           padding: EdgeInsets.all(15.w),
@@ -271,7 +272,7 @@ class LoginState extends State<LoginPage> {
                               borderRadius:
                                   BorderRadius.circular(borderRadius)),
                           child: Image.asset(
-                            "assets/images/icons/facebook.png",
+                            "assets/images/icons/apple.png",
                             width: 34.w,
                             height: 34.w,
                           ),

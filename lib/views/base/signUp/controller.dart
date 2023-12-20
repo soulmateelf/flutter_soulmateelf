@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 
 import '../../../utils/core/constants.dart';
@@ -59,6 +60,10 @@ class SignUpController extends GetxController {
           "codeType": VerifyState.signUp,
           "email": email,
           "nickName": nickname,
+          "pushId": Application.pushId,
+          "platform": GetPlatform.isAndroid ? 'android' : 'ios',
+          "buildNumber": APPPlugin.appInfo?.buildNumber,
+          "sdkVersion": APPPlugin.appInfo?.version
         });
       }
     }, onError: (err) {
