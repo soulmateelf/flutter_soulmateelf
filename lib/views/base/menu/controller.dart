@@ -1,27 +1,65 @@
+import 'dart:convert';
+
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:soulmate/utils/core/application.dart';
+import 'package:soulmate/utils/core/httputil.dart';
+import 'package:soulmate/utils/plugin/mqtt.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/views/chat/chatList/controller.dart';
+import 'package:soulmate/views/chat/message/controller.dart';
+
+import '../../../models/user.dart';
 
 class SoulMateMenuController extends GetxController {
+  late User? user;
 
-  int currentIndex = 0;/// 菜单index
-  int chatMessageNumber = 0;/// 聊天列表未读消息数
-  int roleEventNumber = 0;/// 角色朋友圈未读消息数
-  int lastClickTime = 0;/// 点击安卓返回键时间
+  int currentIndex = 0;
+
+  /// 菜单index
+  int chatMessageNumber = 0;
+
+  /// 聊天列表未读消息数
+  int roleEventNumber = 0;
+
+  /// 角色朋友圈未读消息数
+  int lastClickTime = 0;
+
+  /// 点击安卓返回键时间
   late PageController controller;
+
+  ChatListController? chatListController;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     controller = PageController(initialPage: currentIndex);
+    user = Application.userInfo;
+
+    if (user != null) {
+      APPPlugin.mqttClient?.topicSubscribe([
+        Topic(user!.userId!, (message) {
+          if (message.clear == true) {
+            if (message.messageType == 0) {
+              chatListController?.getUnreadMessage();
+            } else if (message.messageType == 1) {
+              chatListController?.getRoleListUnreadCount();
+            }
+          }
+        })
+      ]);
+    }
   }
+
   /// 切换菜单
-  changeMenu(index){
+  changeMenu(index) {
     currentIndex = index;
     controller.jumpToPage(index);
     update();
   }
+
   /// 处理安卓返回键
   Future<bool> dealBack() {
     int now = DateTime.now().millisecondsSinceEpoch;
@@ -33,11 +71,14 @@ class SoulMateMenuController extends GetxController {
       return Future.value(true);
     }
   }
+
   /// 修改未读消息数
-  void updateMessageNum({int? chatMessageNum,int? roleMessageNum,}){
-    chatMessageNumber = chatMessageNum??chatMessageNumber;
-    roleEventNumber = chatMessageNum??roleEventNumber;
+  void updateMessageNum({
+    int? chatMessageNum,
+    int? roleMessageNum,
+  }) {
+    chatMessageNumber = chatMessageNum ?? chatMessageNumber;
+    roleEventNumber = roleMessageNum ?? roleEventNumber;
     update();
   }
-
 }

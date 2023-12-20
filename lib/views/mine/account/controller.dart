@@ -8,6 +8,7 @@ import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:dio/src/form_data.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class MineAccountController extends GetxController {
   User? user;
@@ -30,6 +31,19 @@ class MineAccountController extends GetxController {
       getUser();
     }).catchError((err) {
       APPPlugin.logger.e(err);
+    });
+  }
+
+  void downloadData() {
+    HttpUtils.diorequst("/user/downloadUserData", query: {
+      "email": user?.email,
+    }).then((res) {
+      APPPlugin.logger.d(res);
+      if (res?['data'] == "true") {
+        exSnackBar(res?['message']);
+      }
+    }).catchError((err) {
+      APPPlugin.logger.d(err);
     });
   }
 

@@ -223,65 +223,71 @@ class MineAccountPage extends StatelessWidget {
                   SizedBox(
                     height: 8.w,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(borderRadius),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 20.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Download an archive of your date",
-                                style: TextStyle(
-                                  color: textColor,
-                                  fontSize: 18.sp,
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      logic.downloadData();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(borderRadius),
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.w, vertical: 20.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Download an archive of your date",
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontSize: 18.sp,
+                                  ),
                                 ),
-                              ),
-                              Image.asset(
-                                "assets/images/icons/right_arrow.png",
-                                width: 20.w,
-                                height: 20.w,
-                              )
-                            ],
+                                Image.asset(
+                                  "assets/images/icons/right_arrow.png",
+                                  width: 20.w,
+                                  height: 20.w,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        Divider(
-                          height: 1,
-                        ),
-                        GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () {
-                              Get.toNamed('/mineDeactivate');
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20.w, vertical: 20.w),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Deactivate vour account",
-                                    style: TextStyle(
-                                      color: textColor,
-                                      fontSize: 18.sp,
+                          Divider(
+                            height: 1,
+                          ),
+                          GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                Get.toNamed('/mineDeactivate');
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20.w, vertical: 20.w),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Deactivate vour account",
+                                      style: TextStyle(
+                                        color: textColor,
+                                        fontSize: 18.sp,
+                                      ),
                                     ),
-                                  ),
-                                  Image.asset(
-                                    "assets/images/icons/right_arrow.png",
-                                    width: 20.w,
-                                    height: 20.w,
-                                  ),
-                                ],
-                              ),
-                            )),
-                      ],
+                                    Image.asset(
+                                      "assets/images/icons/right_arrow.png",
+                                      width: 20.w,
+                                      height: 20.w,
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ],
+                      ),
                     ),
                   )
                 ],

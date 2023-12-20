@@ -24,7 +24,7 @@ class User {
   /// 用户设定
   String? setting;
   /// 用户当前能量
-  int? energy;
+  double? energy;
   /// 是否评价过
   int? evaluate;
   /// 用户是否开启紧急联系人选项,0未开启, 1已开启

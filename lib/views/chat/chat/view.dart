@@ -46,7 +46,11 @@ class ChatState extends State<ChatPage> {
   bool isRecordingCompleted = false;
   bool isLoading = true;
   bool isPause = false;
+  int count = 5;
   late Directory appDirectory;
+  Timer? timer;
+
+  int recordDuration = 0;
 
   @override
   void initState() {
@@ -68,8 +72,14 @@ class ChatState extends State<ChatPage> {
       ..androidOutputFormat = AndroidOutputFormat.mpeg4
       ..iosEncoder = IosEncoder.kAudioFormatMPEG4AAC
       ..sampleRate = 44100;
-
     final result = await recorderController.checkPermission();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    timer?.cancel();
   }
 
   @override
@@ -263,7 +273,7 @@ class ChatState extends State<ChatPage> {
                               width: 10.w,
                             ),
                             Text(
-                              "18:51",
+                              "${recordDuration / 1000}S",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 10.sp,
@@ -442,11 +452,18 @@ class ChatState extends State<ChatPage> {
           );
   }
 
+  void craeteRecordTimer() {
+    timer = Timer.periodic(Duration(milliseconds: 120), (timer) {
+      recordDuration = recorderController.elapsedDuration.inMilliseconds;
+      setState(() {});
+    });
+  }
+
   /// 开始录音
   void _startRecording() async {
     try {
       await recorderController.record(path: path);
-
+      craeteRecordTimer();
       setState(() {
         isRecordingCompleted = false;
         isRecording = !isRecording;
@@ -463,26 +480,15 @@ class ChatState extends State<ChatPage> {
       if (isRecording) {
         if (isPause) {
           await recorderController.record();
+          timer?.cancel();
         } else {
           await recorderController.pause();
+          craeteRecordTimer();
         }
 
         setState(() {
           isPause = !isPause;
         });
-
-        // recorderController.reset();
-        // final path = await recorderController.stop(false);
-        //
-        // if (path != null) {
-        //   isRecordingCompleted = true;
-        //   debugPrint(path);
-        //   debugPrint("Recorded file size: ${File(path).lengthSync()}");
-        // }
-        // setState(() {
-        //   isRecording = !isRecording;
-        // });
-        // APPPlugin.logger.d("stopRecord");
       }
     } catch (e) {
       debugPrint("debug:${e.toString()}");
@@ -494,6 +500,8 @@ class ChatState extends State<ChatPage> {
     try {
       if (isRecording) {
         recorderController.reset();
+        timer?.cancel();
+        recordDuration = 0;
         final path = await recorderController.stop(false);
 
         if (path != null) {

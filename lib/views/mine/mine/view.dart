@@ -205,7 +205,7 @@ class _MinePage extends State<MinePage> {
                                       RichText(
                                           text: TextSpan(children: [
                                         TextSpan(
-                                          text: "${user?.energy ?? 0}",
+                                          text: "${(user?.energy ?? 0).toInt()}",
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,

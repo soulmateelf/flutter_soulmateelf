@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -19,9 +20,11 @@ import 'controller.dart';
 
 class ChatListPage extends StatelessWidget {
   final logic = Get.put(ChatListController());
+
   @override
   Widget build(BuildContext context) {
     logic.refreshController = RefreshController(initialRefresh: false);
+
     /// 在三个主模块入口ScreenUtil初始化，真机调试刷新就没问题了
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
     return basePage('Chat',
@@ -31,15 +34,42 @@ class ChatListPage extends StatelessWidget {
             onPressed: () {
               Get.toNamed('/message');
             },
-            icon: Image.asset(
-              "assets/images/icons/message.png",)),
+            icon: GetBuilder<ChatListController>(
+              builder: (controller) {
+                return Stack(
+                  children: [
+                    Image.asset(
+                      "assets/images/icons/message.png",
+                    ),
+                    Positioned(
+                      top: 10.w,
+                      right: 10.w,
+                      child: AnimatedOpacity(
+                        opacity: controller.unreadMessageCount > 0 ? 1 : 0,
+                        duration: const Duration(milliseconds: 200),
+                        child: Container(
+                          width: 6.w,
+                          height: 6.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6.w),
+                            color: const Color.fromRGBO(255, 90, 90, 1),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
+            )),
         actions: [
           IconButton(
               iconSize: 44.w,
               onPressed: () {
                 Get.toNamed('/feedback');
               },
-              icon: Image.asset("assets/images/icons/email.png",)),
+              icon: Image.asset(
+                "assets/images/icons/email.png",
+              )),
         ], child: GetBuilder<ChatListController>(builder: (logic) {
       return Container(
         width: double.infinity,
@@ -51,7 +81,9 @@ class ChatListPage extends StatelessWidget {
               topLeft: Radius.circular(24.sp),
               topRight: Radius.circular(24.sp)),
         ),
-        child: SlidableAutoCloseBehavior(child: _refreshListView,),
+        child: SlidableAutoCloseBehavior(
+          child: _refreshListView,
+        ),
       );
     }));
   }
@@ -62,7 +94,7 @@ class ChatListPage extends StatelessWidget {
       enablePullUp: true,
       controller: logic.refreshController,
       onRefresh: logic.getDataList,
-      onLoading: (){
+      onLoading: () {
         print("loading");
       },
       child: listViewNoDataPage(
@@ -108,16 +140,54 @@ class ChatListPage extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 20.w),
         child: Row(
           children: [
-            Container(
-              width: 64.w,
-              height: 64.w,
-              child: ClipOval(
-                child:  CachedNetworkImage(
-                  imageUrl: roleData.avatar??"",
-                  placeholder: (context, url) => const CupertinoActivityIndicator(),
-                  errorWidget: (context, url, error) => Container(),
-                ), // 图像的来源，可以是网络图像或本地图像
-              ),
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: 64.w,
+                  height: 64.w,
+                  child: ClipOval(
+                    child: CachedNetworkImage(
+                      imageUrl: roleData.avatar ?? "",
+                      placeholder: (context, url) =>
+                          const CupertinoActivityIndicator(),
+                      errorWidget: (context, url, error) => Container(),
+                    ), // 图像的来源，可以是网络图像或本地图像
+                  ),
+                ),
+                roleData.countSize != null && roleData.countSize! > 0
+                    ? Positioned(
+                        top: -5.w,
+                        right: -10.w,
+                        child: Container(
+                          padding: EdgeInsets.all(3.w),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(
+                                18.sp), // Defines the border radius
+                          ),
+                          child: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 1.w, horizontal: 5.w),
+                              decoration: BoxDecoration(
+                                color: Color.fromRGBO(255, 86, 0, 1),
+                                borderRadius: BorderRadius.circular(
+                                    9.sp), // Defines the border radius
+                              ),
+                              child: Text(
+                                roleData.countSize! > 99
+                                    ? '99+'
+                                    : roleData.countSize.toString(),
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: Colors.white,
+                                ),
+                              )),
+                        ),
+                      )
+                    : Container(),
+              ],
             ),
             Expanded(
                 child: Container(

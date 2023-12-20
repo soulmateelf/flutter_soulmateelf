@@ -1,18 +1,18 @@
 {
   "data": [
     {
-      "name": "Cotton",
-      "roleId": "asdkpofapokfpsdkof",
-      "age": 86,
+      "name": "Wheaty",
+      "roleId": "3333",
+      "age": 73,
       "gender": "male",
       "intimacy": 0,
-      "avatar": "assets/images/image/CottonIcon.png",
-      "SkillBg": "assets/images/image/CottonSkillBg.png",
-      "background": "assets/images/image/CottonBg.png",
-      "hobby": "Weaving, gardening, playing the guzheng, baking",
-      "description": "Cotton, from cotton fields, stands for comfort and gentleness. Her soft nature aids in providing coziness and warmth. After aiding a fatigued friend, she keeps using her fluffiness and warmth to deliver peace and comfort to others.",
+      "avatar": "assets/images/image/WheatyIcon.png",
+      "SkillBg": "assets/images/image/WheatySkillBg.png",
+      "background": "assets/images/image/WheatyBg.png",
+      "hobby": "Reading, Sowing, Kite Flying, Camping",
+      "description": "Wheaty, a symbol of plant life born in Golden Valley, grew up in a wheat field. Motivated by a hardworking fairy, he chose to watch over the fairy's dreamlike harvests. He spread his warmth to fill the fields with hope and richness.",
       "skills": "Divination",
-      "greeting": "Hello! I am Cotton, a symbol of comfort and gentleness. I can bring you peace and tranquility with my softness and warmth. Additionally, I am skilled in divination, offering guidance and insights. Would you like to chat with me, or would you prefer a small test to understand my abilities? Choose one, and we can get started!",
+      "greeting": "Hello! I'm Wheaty, nurtured in Golden Valley's wheat fields, a symbol of hope and richness. Inspired by a fairy's dedication, I spread warmth and oversee bountiful harvests. As a diviner, I offer insights and guidance. Would you like a chat or a divination test to start our journey?",
       "introList": [
         {
           "message": "Is there anything you feel like chatting about?",
@@ -52,19 +52,19 @@
                 "message": "What method do you choose?",
                 "options": [
                   {
-                    "text": "A.  I-Ching",
+                    "text": "I-Ching",
                     "next": null
                   },
                   {
-                    "text": "B. Tarot",
+                    "text": "Tarot",
                     "next": null
                   },
                   {
-                    "text": "C. Astrology",
+                    "text": "Astrology",
                     "next": null
                   },
                   {
-                    "text": "D. Crystal Ball",
+                    "text": "Crystal Ball",
                     "next": null
                   }
                 ]
@@ -76,19 +76,19 @@
                 "message": "What method do you choose?",
                 "options": [
                   {
-                    "text": "A.  I-Ching",
+                    "text": "I-Ching",
                     "next": null
                   },
                   {
-                    "text": "B. Tarot",
+                    "text": "Tarot",
                     "next": null
                   },
                   {
-                    "text": "C. Astrology",
+                    "text": "Astrology",
                     "next": null
                   },
                   {
-                    "text": "D. Crystal Ball",
+                    "text": "Crystal Ball",
                     "next": null
                   }
                 ]
@@ -100,19 +100,19 @@
                 "message": "What method do you choose?",
                 "options": [
                   {
-                    "text": "A.  I-Ching",
+                    "text": "I-Ching",
                     "next": null
                   },
                   {
-                    "text": "B. Tarot",
+                    "text": "Tarot",
                     "next": null
                   },
                   {
-                    "text": "C. Astrology",
+                    "text": "Astrology",
                     "next": null
                   },
                   {
-                    "text": "D. Crystal Ball",
+                    "text": "Crystal Ball",
                     "next": null
                   }
                 ]
@@ -124,19 +124,19 @@
                 "message": "What method do you choose?",
                 "options": [
                   {
-                    "text": "A.  I-Ching",
+                    "text": "I-Ching",
                     "next": null
                   },
                   {
-                    "text": "B. Tarot",
+                    "text": "Tarot",
                     "next": null
                   },
                   {
-                    "text": "C. Astrology",
+                    "text": "Astrology",
                     "next": null
                   },
                   {
-                    "text": "D. Crystal Ball",
+                    "text": "Crystal Ball",
                     "next": null
                   }
                 ]
@@ -198,11 +198,11 @@
                 "message": "Anything tough going on for you lately?",
                 "options": [
                   {
-                    "text": "A. I'm really stressed",
+                    "text": "I'm really stressed",
                     "next": null
                   },
                   {
-                    "text": "B. I'm very lonely",
+                    "text": "I'm very lonely",
                     "next": null
                   }
                 ]

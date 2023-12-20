@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/views/base/menu/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
@@ -24,10 +25,14 @@ class ChatListController extends GetxController {
   List<Role> dataList = [];
   final menuLogic = Get.find<SoulMateMenuController>();
 
+  int unreadMessageCount = 0;
+
   @override
   void onReady() {
     super.onReady();
     getDataList();
+    getUnreadMessage();
+    menuLogic.chatListController = this;
   }
 
   @override
@@ -48,6 +53,23 @@ class ChatListController extends GetxController {
     }).catchError((error) {
       refreshController.refreshCompleted();
       exSnackBar(error, type: ExSnackBarType.error);
+    });
+
+    getRoleListUnreadCount();
+  }
+
+  /// 获取角色消息未读的总数量
+  void getRoleListUnreadCount() {
+    HttpUtils.diorequst('/chat/getNoReadMessageCount').then((res) {
+      menuLogic.updateMessageNum(chatMessageNum: res?['data'] ?? 0);
+    });
+  }
+
+  /// 获取左上角未读消息的数量
+  void getUnreadMessage() {
+    HttpUtils.diorequst("/message/messageNoReadCount").then((res) {
+      unreadMessageCount = res?['data'] ?? 0;
+      update();
     });
   }
 

@@ -27,6 +27,9 @@ class Role {
   /// 来源,0系统创建,1客户定制
   int? origin;
 
+  /// 未读消息
+  int? countSize;
+
   /// 备注
   String? remark;
   String? roleUser;
@@ -57,6 +60,7 @@ class Role {
     this.content,
     this.backgroundImageUrl,
     this.readCount,
+    this.countSize,
   });
 
   factory Role.fromJson(Map<String, dynamic> json) => Role(
@@ -76,6 +80,7 @@ class Role {
         content: json["content"],
         backgroundImageUrl: json['backgroundImageUrl'],
         readCount: json['readCount'],
+        countSize: json["countSize"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -95,5 +100,6 @@ class Role {
         "content": content,
         "backgroundImageUrl": backgroundImageUrl,
         "readCount": readCount,
+        "countSize": countSize,
       };
 }

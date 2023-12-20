@@ -94,19 +94,24 @@ class MessagePage extends StatelessWidget {
                           action: "add");
                     },
                     enablePullUp: true,
-                    
-                    child: SingleChildScrollView(
-                      child: GetBuilder<MessageController>(
-                        builder: (controller) {
-                          return Column(
-                            children: renderCardList(
-                              controller.tabKey == MessageTabKey.normal
-                                  ? controller.normalMessages
-                                  : controller.systemMessages,
-                            ),
-                          );
-                        },
-                      ),
+                    child: GetBuilder<MessageController>(
+                      builder: (controller) {
+                        final messages =
+                            controller.tabKey == MessageTabKey.normal
+                                ? controller.normalMessages
+                                : controller.systemMessages;
+
+                        return messages.isEmpty
+                            ? listViewNoDataPage(
+                                isShowNoData: messages.isEmpty,
+                                omit: 'No data',
+                                child: Container())
+                            : SingleChildScrollView(
+                                child: Column(
+                                  children: renderCardList(messages),
+                                ),
+                              );
+                      },
                     ),
                   ),
                 ),
@@ -119,52 +124,69 @@ class MessagePage extends StatelessWidget {
   List<Widget> renderCardList(List<Message> messages) {
     List<Widget> list = [];
     messages.forEach((element) {
-      list.add(Container(
-        height: 149.w,
-        margin: EdgeInsets.only(bottom: 8.w),
-        padding: EdgeInsets.symmetric(vertical: 12.w, horizontal: 16.w),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(borderRadius),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "${element.title}",
-              style: TextStyle(
-                fontSize: 20.sp,
-                color: textColor,
-                fontFamily: FontFamily.SFProRoundedBlod,
-                fontWeight: FontWeight.bold,
-              ),
+      list.add(Stack(
+        children: [
+          Container(
+            height: 149.w,
+            margin: EdgeInsets.only(bottom: 8.w),
+            padding: EdgeInsets.symmetric(vertical: 12.w, horizontal: 16.w),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(borderRadius),
             ),
-            SizedBox(
-              height: 8.w,
-            ),
-            Text(
-              "${element.content}",
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Color.fromRGBO(0, 0, 0, 0.48),
-              ),
-            ),
-            SizedBox(
-              height: 16.w,
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                '${DateTime.fromMillisecondsSinceEpoch(element.createTime).format(payload: "YYYY-MM-DD HH:mm")}',
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  color: Color.fromRGBO(0, 0, 0, 0.48),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${element.title}",
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    color: textColor,
+                    fontFamily: FontFamily.SFProRoundedBlod,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
+                SizedBox(
+                  height: 8.w,
+                ),
+                Text(
+                  "${element.content}",
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: Color.fromRGBO(0, 0, 0, 0.48),
+                  ),
+                ),
+                SizedBox(
+                  height: 16.w,
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    '${DateTime.fromMillisecondsSinceEpoch(element.createTime).format(payload: "YYYY-MM-DD HH:mm")}',
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: Color.fromRGBO(0, 0, 0, 0.48),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          element.readStatus == 0
+              ? Positioned(
+                  top: 23.w,
+                  right: 15.w,
+                  child: Container(
+                    width: 6.w,
+                    height: 6.w,
+                    decoration: BoxDecoration(
+                        color: Color.fromRGBO(255, 90, 90, 1),
+                        borderRadius: BorderRadius.circular(6.w)),
+                  ),
+                )
+              : Container(),
+        ],
       ));
     });
     return list;

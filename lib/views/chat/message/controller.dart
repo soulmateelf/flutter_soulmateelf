@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:soulmate/models/message.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/views/base/menu/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:pull_to_refresh/src/smart_refresher.dart';
 
@@ -27,6 +28,8 @@ class MessageController extends GetxController {
   List<Message> systemMessages = [];
 
   RefreshController controller = RefreshController();
+
+  SoulMateMenuController menuController = Get.find<SoulMateMenuController>();
 
   set tabKey(MessageTabKey value) {
     _tabKey = value;
@@ -75,6 +78,7 @@ class MessageController extends GetxController {
     HttpUtils.diorequst('/message/messageList',
         query: {"page": page, "limit": 10, "messageType": type}).then((res) {
       List<dynamic> data = res?['data'] ?? [];
+      APPPlugin.logger.d(data);
       List<Message> list = data.map((e) => Message.fromJson(e)).toList();
       if (type == 0) {
         if (isAdd) {
@@ -98,6 +102,12 @@ class MessageController extends GetxController {
       update();
     }).catchError((err) {
       exSnackBar(err.toString(), type: ExSnackBarType.error);
+      if (controller.isRefresh) {
+        controller.refreshCompleted();
+      }
+      if (controller.isLoading) {
+        controller.loadComplete();
+      }
     });
   }
 }

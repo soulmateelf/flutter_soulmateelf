@@ -142,6 +142,7 @@ class ChatController extends GetxController {
       page++;
       refreshController.refreshCompleted();
       List chatListMap = response["data"];
+      APPPlugin.logger.d(chatListMap);
       List<ChatHistory> newList =
           chatListMap.map((json) => ChatHistory.fromJson(json)).toList();
       if (from == 'newMessage') {
@@ -203,14 +204,18 @@ class ChatController extends GetxController {
     HttpUtils.diorequst('/chat/sendMessage', method: 'post', params: params)
         .then(
       (response) {
-        //清空当前消息
-        inputContent = '';
-        update();
-        //获取最新消息列表
-        getMessageList('newMessage');
-        //启动定时器，如果已存在，删掉，搞个新的
-        if (_debounce?.isActive ?? false) _debounce?.cancel();
-        _debounce = Timer(duration, startGptTask);
+        if (response?['data'] == true) {
+          //清空当前消息
+          inputContent = '';
+          update();
+          //获取最新消息列表
+          getMessageList('newMessage');
+          //启动定时器，如果已存在，删掉，搞个新的
+          if (_debounce?.isActive ?? false) _debounce?.cancel();
+          _debounce = Timer(duration, startGptTask);
+        } else {
+          exSnackBar(response?['message'], type: ExSnackBarType.error);
+        }
       },
     ).catchError((error) {
       exSnackBar(error, type: ExSnackBarType.error);
@@ -277,13 +282,38 @@ class ChatController extends GetxController {
       return;
     }
     final firstStep = introHistoryList[0];
-    if (firstStep == "chatNow") {
-      /// 请后后端打招呼
-    } else if (firstStep == "test") {
-      /// 帮助用户发送一条消息
-      ///
-      // sendMessage(message_type: "0",message: "");
-    }
+
+    HttpUtils.diorequst('/guide', method: "post", params: {
+      "chooseRoleId": roleId,
+      "oneChoose": firstStep,
+      "towChoose": introHistoryList[1],
+      "threeChoose": introHistoryList[2],
+      "chooseType": firstStep == "chatNow" ? 0 : 1
+    }).then((res) {
+      if (firstStep == "chatNow") {
+        /// 请后后端打招呼
+        getMessageList("newMessage");
+      } else if (firstStep == "test") {
+        /// 帮助用户发送一条消息
+        late String message = "";
+        if (roleId == "3333") {
+          message =
+              "Begin the divination for ${introHistoryList[1]}(I ${introHistoryList[2]}).";
+        } else if (roleId == "otyuiyiytuiyuiuiytui") {
+          message = introHistoryList[2];
+        } else if (roleId == "opasdioaoduiowe") {
+          message = introHistoryList[2];
+        } else if (roleId == "fsdgasagsagsagsgsg") {
+          message = introHistoryList[2];
+        } else if (roleId == "qeqqeqwqeqee") {
+          message = introHistoryList[2];
+        }
+
+        sendMessage(message_type: "0", message: message);
+      }
+    }).catchError((err) {
+      APPPlugin.logger.d(err);
+    });
   }
 
   void nextIntro(String option) {

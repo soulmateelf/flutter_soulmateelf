@@ -24,31 +24,37 @@ class MenuPage extends StatelessWidget {
         onWillPop: logic.dealBack,
         child: GetBuilder<SoulMateMenuController>(builder: (logic) {
           return Scaffold(
-          backgroundColor: logic.currentIndex == 0 ? Colors.white:const Color.fromRGBO(242, 242, 242, 1),
-          bottomNavigationBar: _buildBottomNavigationBar(),
-          body: PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: logic.controller,
-            children: [
-              KeepAliveBox(contentWidget: ChatListPage()),
-              KeepAliveBox(contentWidget: RoleListPage()),
-              KeepAliveBox(contentWidget: MinePage())
-            ],
-          ),
-        );}));
+            backgroundColor: logic.currentIndex == 0
+                ? Colors.white
+                : const Color.fromRGBO(242, 242, 242, 1),
+            bottomNavigationBar: _buildBottomNavigationBar(),
+            body: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: logic.controller,
+              children: [
+                KeepAliveBox(contentWidget: ChatListPage()),
+                KeepAliveBox(contentWidget: RoleListPage()),
+                KeepAliveBox(contentWidget: MinePage())
+              ],
+            ),
+          );
+        }));
   }
+
   /// 图标列表
   final normalIconList = <String>[
     'assets/images/menuIcon/message.png',
     'assets/images/menuIcon/role.png',
     'assets/images/menuIcon/mine.png',
   ];
+
   /// 选中状态图标列表
   final activeIconList = <String>[
     'assets/images/menuIcon/messageActive.png',
     'assets/images/menuIcon/roleActive.png',
     'assets/images/menuIcon/mineActive.png',
   ];
+
   /// 菜单
   Widget _buildBottomNavigationBar() {
     return AnimatedBottomNavigationBar.builder(
@@ -65,44 +71,66 @@ class MenuPage extends StatelessWidget {
                 child: Stack(
                   children: [
                     Center(
-                      child: Image.asset(logic.currentIndex == index?activeIconList[index]:normalIconList[index],width: 26.w,height: 24.w,),
+                      child: Image.asset(
+                        logic.currentIndex == index
+                            ? activeIconList[index]
+                            : normalIconList[index],
+                        width: 26.w,
+                        height: 24.w,
+                      ),
                     ),
+
                     /// 聊天的未读消息展示组件
-                    (index == 0 && logic.chatMessageNumber > 0) ? Positioned(
-                      top: -1,
-                      right: 0,
-                      child: Container(
-                        padding: EdgeInsets.all(3.w),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(9.sp),  // Defines the border radius
-                        ),
-                        child: Container(
-                            width: 32.w,
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(vertical: 1.w,horizontal: 2.w),
-                            decoration: BoxDecoration(
-                              color: primaryColor,
-                              borderRadius: BorderRadius.circular(9.sp),  // Defines the border radius
+                    (index == 0 && logic.chatMessageNumber > 0)
+                        ? Positioned(
+                            top: -1,
+                            right: 0,
+                            child: Container(
+                              padding: EdgeInsets.all(3.w),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(
+                                    9.sp), // Defines the border radius
+                              ),
+                              child: Container(
+                                  width: 32.w,
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 1.w, horizontal: 2.w),
+                                  decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    borderRadius: BorderRadius.circular(
+                                        9.sp), // Defines the border radius
+                                  ),
+                                  child: Text(
+                                    logic.chatMessageNumber > 99
+                                        ? '99+'
+                                        : logic.chatMessageNumber.toString(),
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: Colors.white,
+                                    ),
+                                  )),
                             ),
-                            child: Text(logic.chatMessageNumber>99?'99+':logic.chatMessageNumber.toString(),
-                              style: TextStyle(fontSize: 14.sp, color: Colors.white),
-                            )),
-                      ),
-                    ):Container(),
+                          )
+                        : Container(),
+
                     /// 角色的朋友圈的未读消息展示组件
-                    (index == 1 && logic.roleEventNumber > 0) ? Positioned(
-                      top: 8,
-                      right: 14,
-                      child: Container(
-                        width: 8.w,
-                        height: 8.w,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(9.sp),  // Defines the border radius
-                        ),
-                      ),
-                    ):Container(),
+                    (index == 1 && logic.roleEventNumber > 0)
+                        ? Positioned(
+                            top: 8,
+                            right: 14,
+                            child: Container(
+                              width: 8.w,
+                              height: 8.w,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(
+                                    9.sp), // Defines the border radius
+                              ),
+                            ),
+                          )
+                        : Container(),
                   ],
                 ))
           ],
@@ -121,9 +149,9 @@ class MenuPage extends StatelessWidget {
       },
       // hideAnimationController: _hideBottomBarAnimationController,
       shadow: const BoxShadow(
-          offset: Offset(0, 2),
-          blurRadius: 10,
-          color: Color.fromRGBO(0, 0, 0, 0.08),
+        offset: Offset(0, 2),
+        blurRadius: 10,
+        color: Color.fromRGBO(0, 0, 0, 0.08),
       ),
     );
   }

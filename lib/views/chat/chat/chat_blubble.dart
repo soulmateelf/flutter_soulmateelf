@@ -130,7 +130,7 @@ class _ChatBlubbleState extends State<ChatBlubble> {
               width: 10,
             ),
             Text(
-              "${(controller.maxDuration / 1000).toStringAsFixed(1)}",
+              "${controller.maxDuration != null ? (controller.maxDuration / 1000).toStringAsFixed(1) : "123"}",
               style: TextStyle(
                 color: color,
                 fontSize: 14.sp,
