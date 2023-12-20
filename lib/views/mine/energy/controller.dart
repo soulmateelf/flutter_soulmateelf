@@ -43,6 +43,7 @@ class EnergyController extends GetxController {
     HttpUtils.diorequst("/product/productList", query:{'page':1,'size':999,'productType':'0,1'}).then((response) {
       if (response['code'] == 200) {
         List dataMap = response["data"];
+        print(dataMap);
         List<Product> serverDataList = dataMap.map((json) => Product.fromJson(json)).toList();
         ///根据服务端商品列表获取商店配置的商品列表
         if (serverDataList.isNotEmpty) getStoreProducts(serverDataList);
@@ -100,8 +101,8 @@ class EnergyController extends GetxController {
   createOrder(ProductDetails storeProductDetails,int type) async{
     Map<String,dynamic> params = {
       "orderAmount": storeProductDetails.rawPrice,
-      "orderType": type,//0:购买商品 1:月度订阅 2:定制角色
-      "productId": storeProductDetails.id,
+      "orderType": type,//0:购买商品 1:月度订阅 2:定制create角色
+      "productId": type==0?currentProduct?.productId ?? '':monthProduct?.productId ?? '',
       "paymentMethodType": GetPlatform.isIOS ? 0 : 1,
       "moneyType": storeProductDetails.currencyCode,
       "couponId": currentCard?.id.toString(),
@@ -146,7 +147,7 @@ class EnergyController extends GetxController {
       return;
     }
     /// 创建订单
-    currentOrderId = await createOrder(storeProductDetails,0);
+    currentOrderId = await createOrder(storeProductDetails,1);
     if(Utils.isEmpty(currentOrderId)){
       exSnackBar("create order fail!", type: ExSnackBarType.error);
       return;
@@ -161,13 +162,16 @@ class EnergyController extends GetxController {
     if(purchaseDetails == null || purchaseDetails.status == PurchaseStatus.canceled || purchaseDetails.status == PurchaseStatus.restored){
       return;
     }
-    ///根据商品id获取apple商品详情
+    ///根据商品id获取商店商品详情
     final ProductDetails? storeProductDetails = storeProductList
         .firstWhereOrNull((product) => product.id == purchaseDetails.productID);
+    ///根据商店商品id获取服务端商品详情
+    final Product? serverProductDetails = energyProductList
+        .firstWhereOrNull((product) => GetPlatform.isAndroid? product.androidId == purchaseDetails.productID:product.iosId == purchaseDetails.productID);
 
     final Map<String, dynamic> params = {
       "orderId": currentOrderId, //订单id
-      "productId": currentProduct?.productId, //服务端商品id
+      "productId": serverProductDetails?.productId, //服务端商品id
       "receipt": storeProductDetails?.rawPrice, //商品实际价格
       "currencyCode": storeProductDetails?.currencyCode, //商品价格单位
       "status": purchaseDetails.status.toString(), //购买状态

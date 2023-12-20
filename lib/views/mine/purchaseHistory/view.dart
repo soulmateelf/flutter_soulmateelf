@@ -30,9 +30,12 @@ class MinePurchaseHistoryPage extends StatelessWidget {
                 onRefresh: () {
                   logic.getOrderList("refresh");
                 },
-                child: Column(
-                  children: renderPurchaseList(),
-                ),
+                child: listViewNoDataPage(
+                  isShowNoData: logic.orderList.isEmpty,
+                  omit: 'No order yet',
+                  child: Column(
+                    children: renderPurchaseList(),
+                )),
               ),
             ));
       },
@@ -60,15 +63,15 @@ class MinePurchaseHistoryPage extends StatelessWidget {
                     order.orderId,
                     style: TextStyle(
                       overflow: TextOverflow.ellipsis,
-                      color: Color.fromRGBO(0, 0, 0, 0.48),
+                      color: const Color.fromRGBO(0, 0, 0, 0.48),
                       fontSize: 13.sp,
                     ),
                   ),
                 ),
                 Text(
-                  "${DateTime.fromMillisecondsSinceEpoch(order.createTime).format(payload: "MMMM DD, YYYY [at] HH:mm")}",
+                  DateTime.fromMillisecondsSinceEpoch(order.createTime).format(payload: "MMMM DD, YYYY [at] HH:mm"),
                   style: TextStyle(
-                    color: Color.fromRGBO(0, 0, 0, 0.48),
+                    color: const Color.fromRGBO(0, 0, 0, 0.48),
                     fontSize: 13.sp,
                   ),
                 )
@@ -90,7 +93,7 @@ class MinePurchaseHistoryPage extends StatelessWidget {
                         color: primaryColor,
                         borderRadius: BorderRadius.circular(16.w),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.flash_on_sharp,
                         color: Colors.white,
                       ),
@@ -111,13 +114,13 @@ class MinePurchaseHistoryPage extends StatelessWidget {
                 ),
                 RichText(
                     text: TextSpan(children: [
-                  TextSpan(
+                      TextSpan(
                     text:
-                        "${order.productAmount != order.orderAmount ? "" : "\$ ${order.productAmount}"}",
+                        order.productType == 1 ? "\$ ${order.productAmount}" : "",
                     style: TextStyle(
                       fontSize: 14.sp,
                       decoration: TextDecoration.lineThrough,
-                      color: Color.fromRGBO(0, 0, 0, 0.48),
+                      color: const Color.fromRGBO(0, 0, 0, 0.48),
                     ),
                   ),
                   WidgetSpan(

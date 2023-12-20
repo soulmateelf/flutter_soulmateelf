@@ -225,7 +225,7 @@ class EnergyState extends State<EnergyPage>
                             height: 20.w,
                           ),
                           Text(
-                            "\$ 99.99 / Month",
+                            "\$${logic.monthProduct?.rawAmount??'--'} / Month",
                             style: TextStyle(
                               fontSize: 18.sp,
                               color: const Color.fromRGBO(0, 0, 0, 0.48),

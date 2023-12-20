@@ -74,7 +74,7 @@ class Step2Controller extends GetxController {
     Map<String,dynamic> params = {
       "orderAmount": storeProductDetails.rawPrice,
       "orderType": type,//0:购买商品 1:月度订阅 2:定制角色
-      "productId": storeProductDetails.id,
+      "productId": customRoleProduct?.productId,
       "paymentMethodType": GetPlatform.isIOS ? 0 : 1,
       "moneyType": storeProductDetails.currencyCode,
     };
