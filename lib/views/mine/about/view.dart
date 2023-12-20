@@ -22,9 +22,11 @@ class AboutPage extends StatelessWidget {
                 child: Column(
                   children: [
                     GestureDetector(
-                      onTap: (){
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
                         Get.toNamed("/privacyPolicy");
-                      },child: Container(
+                      },
+                      child: Container(
                         padding: EdgeInsets.all(20.w),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,28 +51,30 @@ class AboutPage extends StatelessWidget {
                       height: 1.w,
                     ),
                     GestureDetector(
-                      onTap: (){
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
                         Get.toNamed("/termsOfService");
-                      },child: Container(
-                      padding: EdgeInsets.all(20.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Terms of Service",
-                            style: TextStyle(
-                              color: textColor,
-                              fontSize: 18.sp,
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(20.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Terms of Service",
+                              style: TextStyle(
+                                color: textColor,
+                                fontSize: 18.sp,
+                              ),
                             ),
-                          ),
-                          Image.asset(
-                            "assets/images/icons/right_arrow.png",
-                            width: 20.w,
-                            height: 20.w,
-                          )
-                        ],
+                            Image.asset(
+                              "assets/images/icons/right_arrow.png",
+                              width: 20.w,
+                              height: 20.w,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
                     ),
                   ],
                 )),

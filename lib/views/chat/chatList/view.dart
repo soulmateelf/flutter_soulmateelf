@@ -67,7 +67,7 @@ class ChatListPage extends StatelessWidget {
       },
       child: listViewNoDataPage(
           isShowNoData: logic.dataList.isEmpty,
-          omit: 'nothing here',
+          omit: 'No messages yet',
           child: ListView.builder(
               itemCount: logic.dataList.length,
               itemBuilder: (context, index) {

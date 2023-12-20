@@ -19,8 +19,8 @@ Widget listViewNoDataPage(
       ? Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/icons/no_data.png',
-                width: 41.w, height: 53.w),
+            Image.asset('assets/images/image/noData.png',
+                width: 332.w, height: 214.w),
             Text(omit ?? '没有找到结果',
                 style:
                     TextStyle(fontSize: 16.sp, color: const Color(0x3D000000)))

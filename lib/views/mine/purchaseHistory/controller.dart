@@ -24,8 +24,6 @@ class MinePurchaseHistoryController extends GetxController {
       "size": 10,
     }).then((res) {
       List<dynamic> data = res['data'] ?? [];
-      print(data);
-      return;
       final list = data.map((e) => Order.fromJson(e)).toList();
       if (type == "refresh") {
         orderList = list;
