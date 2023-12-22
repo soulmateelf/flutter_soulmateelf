@@ -60,6 +60,8 @@ class EnergyController extends GetxController {
       cardList = data.map((e) => RechargeableCard.fromJson(e)).toList();
       if(cardList.isNotEmpty){
         currentCard = cardList.first;
+      }else{
+        currentCard = null;
       }
       update();
     }).catchError((err) {});
@@ -105,7 +107,7 @@ class EnergyController extends GetxController {
       "productId": type==0?currentProduct?.productId ?? '':monthProduct?.productId ?? '',
       "paymentMethodType": GetPlatform.isIOS ? 0 : 1,
       "moneyType": storeProductDetails.currencyCode,
-      "couponId": currentCard?.id.toString(),
+      "couponId": currentCard?.couponId.toString(),
     };
     return await HttpUtils.diorequst("/order/createOrder",method: 'post',params: params).then((response) {
       if(response['code'] == 200){
@@ -159,9 +161,16 @@ class EnergyController extends GetxController {
   ///通知服务端商品购买成功或者失败
   notifyServerPurchaseResult(PurchaseDetails purchaseDetails) async {
     print(purchaseDetails.status);
-    if(purchaseDetails == null || purchaseDetails.status == PurchaseStatus.canceled || purchaseDetails.status == PurchaseStatus.restored){
-      return;
+    if(purchaseDetails.status == PurchaseStatus.purchased){
+      orderSuccess(purchaseDetails);
     }
+    if(purchaseDetails == null || purchaseDetails.status == PurchaseStatus.canceled || purchaseDetails.status == PurchaseStatus.error){
+      orderFail(purchaseDetails);
+    }
+  }
+
+  //订单成功
+  orderSuccess(PurchaseDetails purchaseDetails) async{
     ///根据商品id获取商店商品详情
     final ProductDetails? storeProductDetails = storeProductList
         .firstWhereOrNull((product) => product.id == purchaseDetails.productID);
@@ -190,6 +199,31 @@ class EnergyController extends GetxController {
         exSnackBar("purchase success", type: ExSnackBarType.success);
       } else {
         exSnackBar("purchase failed", type: ExSnackBarType.error);
+      }
+      ///刷新卡券列表
+      getEnergyCardList();
+    }).catchError((error) {
+      Loading.dismiss();
+      exSnackBar(error, type: ExSnackBarType.error);
+    });
+  }
+  //订单失败
+  orderFail(PurchaseDetails? purchaseDetails) async{
+    //订单状态,0进行中,1功,2失败,3取消
+    final Map<String, dynamic> params = {
+      "orderId": currentOrderId, //订单id
+      "status": purchaseDetails?.status == PurchaseStatus.canceled?3:2, //购买状态
+    };
+    Loading.show();
+    HttpUtils.diorequst("/order/orderFail",method: 'post', params: params).then((response) {
+      Loading.dismiss();
+      if (response['code'] == 200) {
+        //如果是取消和失败的订单,提示不一样
+        if(purchaseDetails?.status == PurchaseStatus.canceled){
+          exSnackBar("purchase canceled", type: ExSnackBarType.error);
+        }else{
+          exSnackBar("purchase failed", type: ExSnackBarType.error);
+        }
       }
     }).catchError((error) {
       Loading.dismiss();

@@ -103,9 +103,16 @@ class Step2Controller extends GetxController {
   ///通知服务端商品购买成功或者失败
   notifyServerPurchaseResult(PurchaseDetails purchaseDetails) async {
     print(purchaseDetails.status);
-    if(purchaseDetails == null || purchaseDetails.status == PurchaseStatus.canceled || purchaseDetails.status == PurchaseStatus.restored){
-      return;
+    if(purchaseDetails.status == PurchaseStatus.purchased){
+      orderSuccess(purchaseDetails);
     }
+    if(purchaseDetails == null || purchaseDetails.status == PurchaseStatus.canceled || purchaseDetails.status == PurchaseStatus.error) {
+      orderFail(purchaseDetails);
+    }
+  }
+
+  //订单成功
+  orderSuccess(PurchaseDetails purchaseDetails) async{
     final Map<String, dynamic> params = {
       "orderId": currentOrderId, //订单id
       "productId": customRoleProduct?.productId, //服务端商品id
@@ -130,6 +137,29 @@ class Step2Controller extends GetxController {
         exSnackBar("purchase success", type: ExSnackBarType.success);
       } else {
         exSnackBar("purchase failed", type: ExSnackBarType.error);
+      }
+    }).catchError((error) {
+      Loading.dismiss();
+      exSnackBar(error, type: ExSnackBarType.error);
+    });
+  }
+  //订单失败
+  orderFail(PurchaseDetails? purchaseDetails) async{
+    //订单状态,0进行中,1功,2失败,3取消
+    final Map<String, dynamic> params = {
+      "orderId": currentOrderId, //订单id
+      "status": purchaseDetails?.status == PurchaseStatus.canceled?3:2, //购买状态
+    };
+    Loading.show();
+    HttpUtils.diorequst("/order/orderFail",method: 'post', params: params).then((response) {
+      Loading.dismiss();
+      if (response['code'] == 200) {
+        //如果是取消和失败的订单,提示不一样
+        if(purchaseDetails?.status == PurchaseStatus.canceled){
+          exSnackBar("purchase canceled", type: ExSnackBarType.error);
+        }else{
+          exSnackBar("purchase failed", type: ExSnackBarType.error);
+        }
       }
     }).catchError((error) {
       Loading.dismiss();
