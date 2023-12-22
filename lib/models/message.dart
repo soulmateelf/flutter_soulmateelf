@@ -12,6 +12,7 @@ class Message {
   int id;
   String messageId;
   String title;
+  ///  消息类别小类,0亲密度相关,1能量相关,2加倍卡,3充值,4订阅,5定制,6版本更新
   int messageType;
   int readStatus;
   dynamic remark;

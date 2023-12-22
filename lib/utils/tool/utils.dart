@@ -375,3 +375,12 @@ Function makeDebounce(Function func, [int milliseconds = 2000]) {
   };
   return target;
 }
+
+
+void messageToPageBySubtype(int subType){
+  if(subType == 3 || subType == 4){
+    Get.toNamed("/minePurchaseHistory");
+  }else if(subType == 5 ){
+    Get.toNamed("/roleList");
+  }
+}

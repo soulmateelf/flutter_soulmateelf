@@ -140,6 +140,7 @@ class AppRoute {
 
     /// 注销账户
     GetPage(name: '/mineDeactivate', page: () => MineDeactivatePage()),
+
     /// 确认注销
     GetPage(
         name: '/mineConfirmDeactivate',

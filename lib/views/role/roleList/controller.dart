@@ -42,7 +42,6 @@ class RoleListController extends GetxController {
     HttpUtils.diorequst('/role/roleList', query: {'page': 1, 'limit': 999})
         .then((response) {
       List roleListMap = response["data"];
-      APPPlugin.logger.d(response);
       var unreadCount = 0;
       roleList = roleListMap.map((json) {
         final r = Role.fromJson(json);
