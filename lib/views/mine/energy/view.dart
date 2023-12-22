@@ -225,7 +225,7 @@ class EnergyState extends State<EnergyPage>
                             height: 20.w,
                           ),
                           Text(
-                            "\$ 99.99 / Month",
+                            "\$${logic.monthProduct?.rawAmount??'--'} / Month",
                             style: TextStyle(
                               fontSize: 18.sp,
                               color: const Color.fromRGBO(0, 0, 0, 0.48),
@@ -376,44 +376,47 @@ class EnergyState extends State<EnergyPage>
                 SizedBox(
                   width: 8.w,
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.w),
-                    gradient: const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color.fromRGBO(255, 56, 48, 1),
-                        primaryColor,
-                      ],
-                    ),
-                    border: Border.all(
-                      width: 2.w,
-                      color: primaryColor,
-                    ),
-                  ),
-                  child: RichText(
-                    text: TextSpan(children: [
-                      TextSpan(
-                        text: "x",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: FontFamily.SFProRoundedBlod,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.sp,
-                        ),
+                Offstage(
+                  offstage: logic.currentCard == null,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.w),
+                      gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color.fromRGBO(255, 56, 48, 1),
+                          primaryColor,
+                        ],
                       ),
-                      TextSpan(
-                        text: "${count}",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: FontFamily.SFProRoundedBlod,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.sp,
-                        ),
+                      border: Border.all(
+                        width: 2.w,
+                        color: primaryColor,
                       ),
-                    ]),
+                    ),
+                    child: RichText(
+                      text: TextSpan(children: [
+                        TextSpan(
+                          text: "x",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: FontFamily.SFProRoundedBlod,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "${count}",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: FontFamily.SFProRoundedBlod,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                      ]),
+                    ),
                   ),
                 ),
               ],

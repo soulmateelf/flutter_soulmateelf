@@ -1,5 +1,6 @@
 class Product {
   double amount;
+  double? rawAmount;
   String productName;
   String productId;
   int id;
@@ -14,6 +15,7 @@ class Product {
 
   Product({
     required this.amount,
+    this.rawAmount,
     required this.productName,
     required this.productId,
     required this.id,
@@ -29,6 +31,7 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
     amount: json["amount"]?.toDouble(),
+    rawAmount: json["rawAmount"]?.toDouble(),
     productName: json["productName"],
     productId: json["productId"],
     id: json["id"],
@@ -44,6 +47,7 @@ class Product {
 
   Map<String, dynamic> toJson() => {
     "amount": amount,
+    "rawAmount": rawAmount,
     "productName": productName,
     "productId": productId,
     "id": id,

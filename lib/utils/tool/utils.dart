@@ -314,6 +314,10 @@ Future requestLogin(String email, String password) async {
     Map<String, dynamic> params = {
       'email': email,
       'password': password,
+      "pushId": Application.pushId,
+      "platform": GetPlatform.isAndroid ? 'android' : 'ios',
+      "buildNumber": APPPlugin.appInfo?.buildNumber,
+      "sdkVersion": APPPlugin.appInfo?.version
     };
     Map<String, dynamic> response =
         await HttpUtils.diorequst('/login', method: 'post', params: params);

@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:soulmate/firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:soulmate/utils/core/application.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -40,9 +41,8 @@ class GoogleMessage {
       sound: true,
     );
 
-    print('User granted permission: ${settings.authorizationStatus}');
     /// 获取token
-    await FirebaseMessaging.instance.getToken().then((value) { print(11111);print(value);});
+    await FirebaseMessaging.instance.getToken().then((value) { Application.pushId = value; });
 
     /// 前台状态监听
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {

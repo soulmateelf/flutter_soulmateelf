@@ -24,7 +24,6 @@ class MinePurchaseHistoryController extends GetxController {
       "size": 10,
     }).then((res) {
       List<dynamic> data = res['data'] ?? [];
-      APPPlugin.logger.d(data);
       final list = data.map((e) => Order.fromJson(e)).toList();
       if (type == "refresh") {
         orderList = list;
@@ -35,6 +34,12 @@ class MinePurchaseHistoryController extends GetxController {
       }
       update();
     }).catchError((err) {
+      if (type == "refresh") {
+        refreshController.refreshCompleted();
+      } else if (type == "loadMore") {
+        refreshController.loadComplete();
+      }
+      update();
       exSnackBar(err, type: ExSnackBarType.error);
     });
   }

@@ -8,13 +8,14 @@
 /// Author: kele
 /// Date: 2022-01-13 15:18:59
 /// LastEditors: kele
-/// LastEditTime: 2023-10-20 17:19:06
+/// LastEditTime: 2023-12-19 11:01:42
 /// Description: 登录
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/plugin/ThirdLogin.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/views/base/welcome/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
@@ -60,7 +61,7 @@ class WelcomePage extends StatelessWidget {
                   minWidth: double.infinity,
                   height: 64.w,
                   onPressed: () {
-                    logic.googleLogin();
+                    ThirdLogin.googleLogin();
                   },
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -97,7 +98,7 @@ class WelcomePage extends StatelessWidget {
                     minWidth: double.infinity,
                     height: 64.w,
                     onPressed: () {
-                      logic.appleIdLogin();
+                      ThirdLogin.appleIdLogin();
                     },
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
@@ -108,7 +109,7 @@ class WelcomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Image.asset(
-                          "assets/images/icons/facebook.png",
+                          "assets/images/icons/apple.png",
                           width: 34.w,
                           height: 34.w,
                         ),

@@ -17,6 +17,9 @@ class Application {
   /// 全局存储
   static SharedPreferences? pres;
 
+  /// pushId
+  static String? _pushId;
+
   /// 用户信息
   static User? _userInfo; //用户信息
 
@@ -37,6 +40,10 @@ class Application {
     ///初始化token
     String? token = Application.pres?.getString("token");
     _token = token;
+
+    ///初始化pushId
+    String? pushId = Application.pres?.getString("token");
+    _pushId = pushId;
   }
 
   static User? get userInfo {
@@ -63,6 +70,19 @@ class Application {
       pres?.setString("token", value);
     } else {
       pres?.remove("token");
+    }
+  }
+
+  static String? get pushId {
+    return _pushId;
+  }
+
+  static void set pushId(String? value) {
+    _pushId = value;
+    if (value != null) {
+      pres?.setString("pushId", value);
+    } else {
+      pres?.remove("pushId");
     }
   }
 
