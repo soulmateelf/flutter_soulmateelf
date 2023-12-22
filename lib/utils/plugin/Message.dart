@@ -8,8 +8,7 @@ import 'package:soulmate/firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
-
-import '../tool/utils.dart';
+import 'package:soulmate/utils/tool/utils.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -65,9 +64,6 @@ class GoogleMessage {
 
     /// 前台状态监听
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-      print(message.notification?.title);
       GoogleMessage.showFlutterNotification(message);
     });
 
@@ -81,7 +77,7 @@ class GoogleMessage {
       final payload = notificationResponse.payload!;
       final data = jsonDecode(payload);
       if (data?['subType'] != null) {
-        messageToPageBySubtype(int.parse(data['subType']));
+        Utils.messageToPageBySubtype(int.parse(data['subType']));
       }
     }
   }
@@ -94,7 +90,7 @@ class GoogleMessage {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       final subType = message.data?['subType'];
       if (subType != null) {
-        messageToPageBySubtype(int.parse((subType as String)));
+        Utils.messageToPageBySubtype(int.parse((subType as String)));
       }
     });
     channel = const AndroidNotificationChannel(

@@ -126,7 +126,7 @@ class MessagePage extends StatelessWidget {
     messages.forEach((element) {
       list.add(GestureDetector(
         onTap: (){
-          messageToPageBySubtype(element.subType);
+          Utils.messageToPageBySubtype(element.subType);
         },
 
         child: Stack(
