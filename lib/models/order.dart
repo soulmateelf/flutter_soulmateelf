@@ -9,8 +9,6 @@ Order orderFromJson(String str) => Order.fromJson(json.decode(str));
 String orderToJson(Order data) => json.encode(data.toJson());
 
 class Order {
-  String productName;
-  int status;
   int productType;
   dynamic remark;
   String orderId;
@@ -26,14 +24,14 @@ class Order {
   String productId;
   int createTime;
   double productAmount;
-  String couponId;
+  dynamic couponId;
   dynamic updateTime;
   int productEnergy;
   String result;
+  String productName;
+  int status;
 
   Order({
-    required this.productName,
-    required this.status,
     required this.productType,
     required this.remark,
     required this.orderId,
@@ -53,11 +51,11 @@ class Order {
     required this.updateTime,
     required this.productEnergy,
     required this.result,
+    required this.productName,
+    required this.status,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
-    productName: json["productName"],
-    status: json["status"],
     productType: json["productType"],
     remark: json["remark"],
     orderId: json["orderId"],
@@ -69,7 +67,7 @@ class Order {
     userId: json["userId"],
     type: json["type"],
     productNum: json["productNum"],
-    orderAmount: json["orderAmount"],
+    orderAmount: json["orderAmount"]?.toDouble(),
     productId: json["productId"],
     createTime: json["createTime"],
     productAmount: json["productAmount"]?.toDouble(),
@@ -77,11 +75,11 @@ class Order {
     updateTime: json["updateTime"],
     productEnergy: json["productEnergy"],
     result: json["result"],
+    productName: json["productName"],
+    status: json["status"],
   );
 
   Map<String, dynamic> toJson() => {
-    "productName": productName,
-    "status": status,
     "productType": productType,
     "remark": remark,
     "orderId": orderId,
@@ -101,5 +99,7 @@ class Order {
     "updateTime": updateTime,
     "productEnergy": productEnergy,
     "result": result,
+    "productName": productName,
+    "status": status,
   };
 }

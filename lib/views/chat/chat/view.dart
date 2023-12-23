@@ -124,14 +124,25 @@ class ChatState extends State<ChatPage> {
                         color: const Color.fromRGBO(0, 0, 0, 0.8))),
               ],
             ),
-            leading: IconButton(
-                iconSize: 44.w,
-                onPressed: () {
+            leading: Container(
+              alignment: Alignment.center,
+              child: GestureDetector(
+                onTap: () {
                   Get.back();
                 },
-                icon: Image.asset(
-                  "assets/images/icons/backIcon.png",
-                )),
+                child: Container(
+                  key: logic.leadingKey,
+                  width: 44.w,
+                  height: 44.w,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(44.w),
+                  ),
+                  child: Image.asset(
+                    "assets/images/icons/backIcon.png",
+                  ),
+                ),
+              ),
+            ),
             actions: [
               IconButton(
                   iconSize: 44.w,

@@ -294,10 +294,10 @@ class Utils {
     return 'Please enter a valid email';
   }
 
-  static void messageToPageBySubtype(int subType){
-    if(subType == 3 || subType == 4){
+  static void messageToPageBySubtype(int subType) {
+    if (subType == 3 || subType == 4) {
       Get.toNamed("/minePurchaseHistory");
-    }else if(subType == 5 ){
+    } else if (subType == 5) {
       Get.toNamed("/roleList");
     }
   }
@@ -360,7 +360,6 @@ bool checkPassword(String s) {
   return isP;
 }
 
-
 Map<String, Timer> _funcDebounce = {};
 
 /// 函数防抖
@@ -384,4 +383,43 @@ Function makeDebounce(Function func, [int milliseconds = 2000]) {
   return target;
 }
 
+EdgeInsets getMargin(BuildContext ctx) {
+  Widget? widget = ctx.widget;
+  late EdgeInsets margin = EdgeInsets.zero;
+  if (widget != null) {
+    if (widget is Container) {
+      margin = (widget.margin ?? EdgeInsets.zero) as EdgeInsets;
+    }
+  }
+  return margin;
+}
 
+EdgeInsets getPadding(BuildContext ctx) {
+  Widget? widget = ctx.widget;
+  late EdgeInsets padding = EdgeInsets.zero;
+  if (widget != null) {
+    if (widget is Container) {
+      padding = (widget.padding ?? EdgeInsets.zero) as EdgeInsets;
+    } else if (widget is Padding) {
+      padding = widget.padding as EdgeInsets;
+    }
+  }
+
+  return padding;
+}
+
+BorderRadius getBorderRadius(BuildContext ctx) {
+  Widget? widget = ctx.widget;
+  BorderRadius borderRadius = BorderRadius.zero;
+  if (widget != null) {
+    if (widget is Container) {
+      var decoration = widget.decoration;
+      if (decoration is BoxDecoration) {
+        borderRadius =
+            (decoration.borderRadius ?? BorderRadius.zero) as BorderRadius;
+      }
+    }
+  }
+
+  return borderRadius;
+}

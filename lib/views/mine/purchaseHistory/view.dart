@@ -33,9 +33,11 @@ class MinePurchaseHistoryPage extends StatelessWidget {
                 child: listViewNoDataPage(
                   isShowNoData: logic.orderList.isEmpty,
                   omit: 'No order yet',
-                  child: Column(
-                    children: renderPurchaseList(),
-                )),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: renderPurchaseList(),
+                ),
+                  )),
               ),
             ));
       },

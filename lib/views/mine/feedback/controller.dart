@@ -73,6 +73,10 @@ class FeedbackController extends GetxController {
 
     HttpUtils.diorequst('/feedback', method: "post", params: fd).then((res) {
       APPPlugin.logger.d(res);
+      if (res?['code'] == 200) {
+        Get.back();
+        exSnackBar(res?['message']);
+      }
     }).catchError((err) {
       APPPlugin.logger.e(err);
     });

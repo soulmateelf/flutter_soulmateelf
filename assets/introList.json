@@ -47,7 +47,7 @@
           "message": "What question would you like to ask?",
           "options": [
             {
-              "text": "A. Wealth",
+              "text": "Wealth",
               "next": {
                 "message": "What method do you choose?",
                 "options": [
@@ -71,7 +71,7 @@
               }
             },
             {
-              "text": "B. Career",
+              "text": "Career",
               "next": {
                 "message": "What method do you choose?",
                 "options": [
@@ -95,7 +95,7 @@
               }
             },
             {
-              "text": "C. Relationships",
+              "text": "Relationships",
               "next": {
                 "message": "What method do you choose?",
                 "options": [
@@ -119,7 +119,7 @@
               }
             },
             {
-              "text": "D. Health",
+              "text": "Health",
               "next": {
                 "message": "What method do you choose?",
                 "options": [

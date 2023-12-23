@@ -16,10 +16,12 @@ import 'package:get/get.dart' hide FormData;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/models/chat.dart';
 import 'package:soulmate/models/role.dart';
+import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
+import 'package:soulmate/views/base/menu/controller.dart';
 import 'package:soulmate/views/chat/chatList/controller.dart';
 import 'package:soulmate/views/intro/index.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
@@ -78,6 +80,10 @@ class ChatController extends GetxController {
 
   /// 遮罩层
   OverlayEntry? overlayEntry;
+
+  GlobalKey leadingKey = GlobalKey();
+
+  SoulMateMenuController menuLogic = Get.find<SoulMateMenuController>();
 
   void toggleShowVoiceWidget() {
     showVoiceWidget = !showVoiceWidget;
@@ -142,7 +148,6 @@ class ChatController extends GetxController {
       page++;
       refreshController.refreshCompleted();
       List chatListMap = response["data"];
-      APPPlugin.logger.d(chatListMap);
       List<ChatHistory> newList =
           chatListMap.map((json) => ChatHistory.fromJson(json)).toList();
       if (from == 'newMessage') {
@@ -151,6 +156,10 @@ class ChatController extends GetxController {
 
         /// 记录聊过天的状态
         hasChat = true;
+
+        if (isIntro) {
+          showGiftIntro();
+        }
       } else {
         ///历史消息,往上插入
         messageList.insertAll(0, newList);
@@ -182,7 +191,6 @@ class ChatController extends GetxController {
   ///发送消息
   void sendMessage(
       {String? message, required String message_type, dynamic? message_file}) {
-    APPPlugin.logger.d(message_file);
     if (message_type == "0" && Utils.isEmpty(message)) {
       return;
     } else if (message_type == "1" && message_file == null) {
@@ -277,7 +285,6 @@ class ChatController extends GetxController {
   List<String> introHistoryList = [];
 
   void endIntro() {
-    APPPlugin.logger.d(introHistoryList);
     if (introHistoryList.length == 0) {
       return;
     }
@@ -312,7 +319,7 @@ class ChatController extends GetxController {
         sendMessage(message_type: "0", message: message);
       }
     }).catchError((err) {
-      APPPlugin.logger.d(err);
+      APPPlugin.logger.e(err);
     });
   }
 
@@ -518,6 +525,188 @@ class ChatController extends GetxController {
       );
     });
 
+    Overlay.of(Get.context!).insert(overlayEntry!);
+  }
+
+  void showGiftIntro() {
+    final ctx = leadingKey.currentContext!;
+    RenderBox renderBox = ctx.findRenderObject() as RenderBox;
+    Size size = renderBox.size;
+    Offset offset = renderBox.localToGlobal(Offset.zero);
+    EdgeInsets _margin = getMargin(ctx);
+    EdgeInsets _padding = getPadding(ctx);
+    BorderRadius _borderRadius = getBorderRadius(ctx);
+    overlayEntry = OverlayEntry(builder: (_) {
+      return Stack(
+        children: [
+          ColorFiltered(
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.4),
+              BlendMode.srcOut,
+            ),
+            child: Stack(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    // overlayEntry?.remove();
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        backgroundBlendMode: BlendMode.dstOut),
+                  ),
+                ),
+                AnimatedPositioned(
+                    duration: Duration(milliseconds: 1000),
+                    top: offset.dy + _margin.top,
+                    left: offset.dx + _margin.left,
+                    child: GestureDetector(
+                      onTap: () {
+                        overlayEntry?.remove();
+                        Application.hasIntro = true;
+                        menuLogic.changeMenu(2);
+                        Get.until((route) => Get.currentRoute == "/menu");
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 1000),
+                        width: size.width - _margin.left,
+                        height: size.height - _margin.top,
+                        decoration: BoxDecoration(
+                            color: Colors.white, borderRadius: _borderRadius),
+                      ),
+                    )),
+              ],
+            ),
+          ),
+          Positioned(
+            left: 20.w,
+            top: size.height + offset.dy,
+            right: 20.w,
+            bottom: 20.w,
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: size.width, right: 38.w),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 17.w, vertical: 10.w),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(borderRadius),
+                          bottomRight: Radius.circular(borderRadius),
+                          bottomLeft: Radius.circular(borderRadius),
+                        ),
+                      ),
+                      child: Text(
+                        "Click here to return, then go to the personal center, where you can check the balance.",
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: 15.sp,
+                          fontFamily: FontFamily.SFProRoundedMedium,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 127.w,
+                  ),
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        width: 388.w,
+                        height: 377.w,
+                        padding: EdgeInsets.only(
+                            top: 77.w, left: 32.w, right: 32.w, bottom: 32.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(
+                              height: 12.w,
+                            ),
+                            Text(
+                              "Your gift",
+                              style: TextStyle(
+                                color: textColor,
+                                fontFamily: FontFamily.SFProRoundedMedium,
+                                fontSize: 24.sp,
+                              ),
+                            ),
+                            Text(
+                              "Star energy   +1",
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontFamily: FontFamily.SFProRoundedBlod,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30.sp,
+                              ),
+                            ),
+                            Text(
+                              "Intimacy  +20",
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontFamily: FontFamily.SFProRoundedBlod,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30.sp,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 21.w,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 64.w,
+                              child: MaterialButton(
+                                onPressed: () {
+                                  overlayEntry?.remove();
+                                  Application.hasIntro = true;
+                                },
+                                color: primaryColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(borderRadius),
+                                ),
+                                child: Text(
+                                  "Receive",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24.sp,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        top: -77.w,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 154.w,
+                          alignment: Alignment.center,
+                          child:
+                              Image.asset("assets/images/icons/giftIcon.png"),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      );
+    });
     Overlay.of(Get.context!).insert(overlayEntry!);
   }
 }

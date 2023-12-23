@@ -65,7 +65,11 @@ class AuthCodeController extends GetxController {
       HttpUtils.diorequst("/sendEmail", method: "post", params: {
         "type": arguments['codeType'],
         "email": arguments['email']
-      }).then((value) {}).whenComplete(() {
+      }).then((value) {
+        if (value?['code'] == 200) {
+          exSnackBar(value?['message']);
+        }
+      }).whenComplete(() {
         setLoading(false);
       });
     }

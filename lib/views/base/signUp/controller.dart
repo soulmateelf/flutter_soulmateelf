@@ -55,7 +55,8 @@ class SignUpController extends GetxController {
 
   void next() {
     HttpUtils.diorequst("/emailExist", query: {"email": email}).then((value) {
-      if (value['code'] == 200) {
+      APPPlugin.logger.d(value);
+      if (value?['code'] == 200 && value?['data'] != true) {
         Get.toNamed('/authCode', arguments: {
           "codeType": VerifyState.signUp,
           "email": email,
@@ -65,6 +66,8 @@ class SignUpController extends GetxController {
           "buildNumber": APPPlugin.appInfo?.buildNumber,
           "sdkVersion": APPPlugin.appInfo?.version
         });
+      } else {
+        exSnackBar(value?['message'], type: ExSnackBarType.error);
       }
     }, onError: (err) {
       exSnackBar(err.toString(), type: ExSnackBarType.error);
