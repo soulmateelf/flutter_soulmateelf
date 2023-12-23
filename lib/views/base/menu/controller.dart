@@ -53,6 +53,14 @@ class SoulMateMenuController extends GetxController {
     }
   }
 
+  @override
+  void onReady() {
+    final hasIntro = Application.hasIntro;
+    if (!hasIntro) {
+      Get.toNamed("/introWelcome");
+    }
+  }
+
   /// 切换菜单
   changeMenu(index) {
     currentIndex = index;

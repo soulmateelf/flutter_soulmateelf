@@ -26,6 +26,16 @@ class Application {
   /// token
   static String? _token;
 
+  /// 是否引导过
+  static bool _hasIntro = false;
+
+  static bool get hasIntro => _hasIntro;
+
+  static set hasIntro(bool value) {
+    _hasIntro = value;
+    Application.pres?.setBool("hasIntro", value);
+  }
+
   static initGlobe() async {
     /// 全局变量的初始化
     /// 存储
@@ -44,6 +54,8 @@ class Application {
     ///初始化pushId
     String? pushId = Application.pres?.getString("token");
     _pushId = pushId;
+
+    hasIntro = Application.pres?.getBool("hasIntro") ?? false;
   }
 
   static User? get userInfo {
@@ -88,9 +100,16 @@ class Application {
 
   static Future clearStorage() async {
     /// 由于全局主题色的原因，不能直接全部清空存储，需要保留当前主题
+    ///
+
+    final intro = Application.pres?.getBool("hasIntro") ?? false;
+
     Application.pres?.clear();
     Application.token = null;
     Application.userInfo = null;
+
+    /// 保留是否引导过
+    Application.hasIntro = intro;
 
     /// 保留：主题
     // Application.pres?.setInt('themeIndex', Application.themeIndex);
@@ -108,14 +127,12 @@ class Application {
     } catch (err) {}
   }
 
-
   /// 退出登录
-  static Future<void> logout() async{
+  static Future<void> logout() async {
     if (userInfo?.userId != null) {
       await HttpUtils.diorequst("/logout", method: "post");
-      Application.pres?.clear();
+      clearStorage();
       Get.offAllNamed("/welcome");
     }
   }
-
 }
