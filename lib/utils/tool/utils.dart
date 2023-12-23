@@ -293,6 +293,14 @@ class Utils {
     }
     return 'Please enter a valid email';
   }
+
+  static void messageToPageBySubtype(int subType){
+    if(subType == 3 || subType == 4){
+      Get.toNamed("/minePurchaseHistory");
+    }else if(subType == 5 ){
+      Get.toNamed("/roleList");
+    }
+  }
 }
 
 /// 选择获取图片的方式
@@ -377,10 +385,3 @@ Function makeDebounce(Function func, [int milliseconds = 2000]) {
 }
 
 
-void messageToPageBySubtype(int subType){
-  if(subType == 3 || subType == 4){
-    Get.toNamed("/minePurchaseHistory");
-  }else if(subType == 5 ){
-    Get.toNamed("/roleList");
-  }
-}
