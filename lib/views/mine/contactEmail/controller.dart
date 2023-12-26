@@ -55,7 +55,6 @@ class MineContactEmailController extends GetxController {
       HttpUtils.diorequst("/settingEmergencyEmail", method: 'post', params: {
         "emergencyEmail": email,
       }).then((value) {
-        APPPlugin.logger.d(value);
         Application.regainUserInfo();
       }).catchError((err) {
         exSnackBar(err.toString(), type: ExSnackBarType.error);

@@ -26,7 +26,6 @@ class ChatBackgroundController extends GetxController {
     HttpUtils.diorequst('/role/selectRoleBackgroundImage', query: {
       "roleId": chatLogic.roleId,
     }).then((res) {
-      APPPlugin.logger.d(res);
       backgroundList = res['data'];
       update();
     });

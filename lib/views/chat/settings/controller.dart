@@ -18,11 +18,9 @@ class ChatSettingsController extends GetxController {
     _currentModal = value;
     if (user != null) {
       user!.model = value;
-      HttpUtils.diorequst("/settingModel",method: "post", params: {"model": currentModal})
-          .then((res) {
-            APPPlugin.logger.d(res);
-      })
-          .catchError((err) {
+      HttpUtils.diorequst("/settingModel",
+          method: "post",
+          params: {"model": currentModal}).then((res) {}).catchError((err) {
         exSnackBar(err.toString(), type: ExSnackBarType.error);
       });
     }

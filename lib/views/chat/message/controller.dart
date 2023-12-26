@@ -78,7 +78,6 @@ class MessageController extends GetxController {
     HttpUtils.diorequst('/message/messageList',
         query: {"page": page, "limit": 10, "messageType": type}).then((res) {
       List<dynamic> data = res?['data'] ?? [];
-      APPPlugin.logger.d(data);
       List<Message> list = data.map((e) => Message.fromJson(e)).toList();
       if (type == 0) {
         if (isAdd) {

@@ -23,7 +23,6 @@ class MinePurchaseHistoryController extends GetxController {
       "page": page,
       "size": 10,
     }).then((res) {
-      APPPlugin.logger.d(res);
       List<dynamic> data = res['data'] ?? [];
       final list = data.map((e) => Order.fromJson(e)).toList();
       if (type == "refresh") {

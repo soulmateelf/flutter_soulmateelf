@@ -131,7 +131,6 @@ class _WaveBubbleState extends State<WaveBubble> {
 
   @override
   Widget build(BuildContext context) {
-    APPPlugin.logger.d(controller.maxDuration);
     return widget.path != null || file?.path != null
         ? Align(
             alignment:

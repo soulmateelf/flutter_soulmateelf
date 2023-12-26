@@ -25,7 +25,6 @@ class RoleEventController extends GetxController {
       if (element.type == 0) {
         likes.add(element);
         if (element.userId == Application.userInfo?.userId) {
-          APPPlugin.logger.d("adasd");
           isLiked = true;
         }
       } else if (element.type == 1) {
@@ -33,7 +32,6 @@ class RoleEventController extends GetxController {
       }
     });
     roleLogic.updateOneEvent(value);
-    APPPlugin.logger.d(isLiked);
     update();
   }
 
@@ -98,8 +96,8 @@ class RoleEventController extends GetxController {
     try {
       if (roleLogic.roleDetail != null && roleEvent != null) {
         final activity = likes.firstWhereOrNull(
-              (element) =>
-          element.type == 0 &&
+          (element) =>
+              element.type == 0 &&
               element.userId == Application.userInfo?.userId,
         );
         final res = await HttpUtils.diorequst("/role/sendLike",

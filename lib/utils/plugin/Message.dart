@@ -57,7 +57,6 @@ class GoogleMessage {
     /// 获取token
     await FirebaseMessaging.instance.getToken().then((value) {
       Application.pushId = value;
-      APPPlugin.logger.d(value);
     }).catchError((err) {
       APPPlugin.logger.d(err);
     });
@@ -83,7 +82,6 @@ class GoogleMessage {
   }
 
   static Future<void> setupFlutterNotifications() async {
-    APPPlugin.logger.e("setupFlutterNotifications22");
     if (isFlutterLocalNotificationsInitialized) {
       return;
     }

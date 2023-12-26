@@ -14,7 +14,6 @@ class Topic {
   );
 }
 
-
 class XMqttClient {
   static final XMqttClient _instance = XMqttClient._();
 
@@ -28,7 +27,7 @@ class XMqttClient {
 
   static const pwd = 'public'; //密码
 
-  static  Map<String, Topic> topicMap = {};
+  static Map<String, Topic> topicMap = {};
 
   List<String> topics = [];
 
@@ -95,9 +94,8 @@ class XMqttClient {
   _subscribe(Topic topic) {
     client?.subscribe(topic.topic, MqttQos.atLeastOnce);
     topicMap.addAll({
-      "${topic.topic}":topic,
+      "${topic.topic}": topic,
     });
-    APPPlugin.logger.d(topicMap);
   }
 
   ///订阅多个主题

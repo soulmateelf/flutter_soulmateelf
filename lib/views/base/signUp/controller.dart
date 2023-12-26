@@ -55,7 +55,6 @@ class SignUpController extends GetxController {
 
   void next() {
     HttpUtils.diorequst("/emailExist", query: {"email": email}).then((value) {
-      APPPlugin.logger.d(value);
       if (value?['code'] == 200 && value?['data'] != true) {
         Get.toNamed('/authCode', arguments: {
           "codeType": VerifyState.signUp,

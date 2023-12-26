@@ -38,7 +38,6 @@ class MineAccountController extends GetxController {
     HttpUtils.diorequst("/user/downloadUserData", query: {
       "email": user?.email,
     }).then((res) {
-      APPPlugin.logger.d(res);
       if (res?['data'] == "true") {
         exSnackBar(res?['message']);
       }

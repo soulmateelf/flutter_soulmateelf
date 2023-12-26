@@ -17,7 +17,6 @@ class MineNickNameController extends GetxController {
     HttpUtils.diorequst("/user/updateName", query: {
       "newName": controller.text,
     }).then((res) async {
-      APPPlugin.logger.d(res);
       Get.back();
     }).catchError((err) {
       APPPlugin.logger.e(err);

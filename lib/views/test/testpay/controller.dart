@@ -86,15 +86,6 @@ class TestPay extends GetxController {
     products = response.productDetails;
     products.forEach((element) {
       // print(jsonEncode(element));
-      // APPPlugin.logger.i({
-      //   'id': element.id,
-      //   'title': element.title,
-      //   'description': element.description,
-      //   'price': element.price,
-      //   'currencyCode': element.currencyCode,
-      //   'rawPrice': element.rawPrice,
-      //   'currencySymbol': element.currencySymbol
-      // });
     });
   }
 

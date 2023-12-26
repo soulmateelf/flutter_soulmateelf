@@ -23,7 +23,6 @@ class IntroRecommendController extends GetxController {
     Map<String, dynamic> json =
         jsonDecode(await rootBundle.loadString("assets/introList.json"));
     data = json['data'];
-    APPPlugin.logger.d(data);
     update();
   }
 

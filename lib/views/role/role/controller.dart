@@ -59,7 +59,6 @@ class RoleController extends GetxController {
     HttpUtils.diorequst('/role/roleEventList', query: {"roleId": roleId})
         .then((res) {
       final List<dynamic> data = res?['data'] ?? [];
-      APPPlugin.logger.d("list");
       if (data != null) {
         final list = data?.map((e) => RoleEvent.fromJson(e))?.toList() ?? [];
         roleEventList = list;
@@ -87,9 +86,7 @@ class RoleController extends GetxController {
               "activityId": activity != null ? activity.activityId : "",
               "isAdd": activity == null,
             });
-        APPPlugin.logger.d(activity);
         if (res?['code'] == 200) {
-          APPPlugin.logger.d('like');
           getRoleRecordList();
           return activity == null;
         }

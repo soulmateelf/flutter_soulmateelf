@@ -80,9 +80,6 @@ class TestPage extends StatelessWidget {
     } else if (step == 2) {
       overlayChild = getOverlayChild(step2Key);
     }
-
-    APPPlugin.logger.d(overlayEntry);
-    APPPlugin.logger.d(overlayChild);
     if (overlayEntry == null) {
       createOverlay();
     } else {
@@ -160,17 +157,9 @@ class TestPage extends StatelessWidget {
                       .findAncestorWidgetOfExactType<Padding>() ??
                   step2Key.currentContext!
                       .findAncestorWidgetOfExactType<Container>();
-              APPPlugin.logger.d(parentWidget);
               BuildContext ctx = step2Key.currentContext!;
               Widget widget = ctx.widget;
               if (widget is Container) {}
-              // if (parentWidget is Padding) {
-              //   APPPlugin.logger.d("isPadding: ${parentWidget.padding}");
-              // } else if (parentWidget is Container) {
-              //   APPPlugin.logger.d("isContainer->Margin-> ${parentWidget.margin}");
-              //   APPPlugin.logger.d("isContainer->Padding-> ${parentWidget.padding}");
-              //   APPPlugin.logger.d(parentWidget.color);
-              // }
             },
             child: Text("findWidgetRenderObject"),
           ),

@@ -147,10 +147,10 @@ class ChatState extends State<ChatPage> {
               IconButton(
                   iconSize: 44.w,
                   onPressed: () {
-                    Get.toNamed('/chatDetails');
+                    Get.toNamed('/chatBackground');
                   },
                   icon: Image.asset(
-                    "assets/images/icons/more.png",
+                    "assets/images/icons/backGroundIcon.png",
                   ))
             ],
             actionsIconTheme: const IconThemeData(color: Colors.black),
@@ -479,7 +479,6 @@ class ChatState extends State<ChatPage> {
         isRecordingCompleted = false;
         isRecording = !isRecording;
       });
-      APPPlugin.logger.d("startRecord");
     } catch (e) {
       debugPrint("debug:${e.toString()}");
     }
@@ -523,7 +522,6 @@ class ChatState extends State<ChatPage> {
         setState(() {
           isRecording = !isRecording;
         });
-        APPPlugin.logger.d("stopRecord");
       }
     } catch (e) {
       debugPrint("debug:${e.toString()}");

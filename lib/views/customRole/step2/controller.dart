@@ -198,7 +198,6 @@ class Step2Controller extends GetxController {
 
   void uploadAvatar() {
     Utils.pickerImage(Get.context!).then((files) {
-      APPPlugin.logger.d(files);
       if (files.isNotEmpty) {
         avatar = files[0];
         update();
