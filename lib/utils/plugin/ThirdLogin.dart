@@ -62,15 +62,6 @@ class ThirdLogin {
     if(credential == null){
       return;
     }
-    print(credential.userIdentifier);
-    print(credential.email);
-    // print(credential.authorizationCode);
-    // print(credential.identityToken);
-    print(credential.state);
-    SignInWithApple.getKeychainCredential().then((value) {
-      print(value);
-    });
-    return;
     var params = {
       "appleLoginId": credential.userIdentifier,
       "nickName": "${credential.givenName??''} ${credential.familyName??''}",

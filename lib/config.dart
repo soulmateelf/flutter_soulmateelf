@@ -4,16 +4,12 @@
 /// LastEditTime: 2023-05-04 18:54:38
 /// Description:
 
-///在这里设置jpush的key，通过极光插件初始化并不会覆盖android项目的key，
-///所以正式打包的时候还是需要手动修改android/app/build.gradle   中的    JPUSH_APPKEY
 class ProjectConfig {
   /// debug or not
   bool isDebug = true;
 
   Map baseConfig = {
-    'PrivacyPolicyUrl': 'https://icyberelf.com/PrivacyPolicy.html', //隐私协议
-    'TermsofServiceUrl': 'https://icyberelf.com/TermsofService.html', //服务条款
-    'packageName': 'com.icyberelf.elf', // 包名
+    'packageName': 'cn.soulmate.elf', // 包名
   };
 
   Map debugConfig = {
@@ -21,7 +17,7 @@ class ProjectConfig {
     // 'BaseUrl': 'http://dev.icyberelf.com', //测试环境,
   };
   Map releaseConfig = {
-    'BaseUrl': 'http://api.timcloud.club/api', //生产环境
+    'BaseUrl': 'http://soulmate.health/api', //生产环境
   };
 
   // 静态变量_instance，存储唯一对象

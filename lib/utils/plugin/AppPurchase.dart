@@ -83,13 +83,12 @@ class AppPurchase {
   }
 
   ///购买商品 type 1:购买 2:订阅
-  static payProductNow(ProductDetails productDetails,int type) {
+  static payProductNow(ProductDetails productDetails,int type, String orderId) {
     if (productDetails == null) {
       exSnackBar("please check you product", type: ExSnackBarType.warning);
       return;
     }
-    final PurchaseParam purchaseParam =
-        PurchaseParam(productDetails: productDetails);
+    final PurchaseParam purchaseParam = PurchaseParam(productDetails: productDetails,applicationUserName: orderId);
     // 消耗型商品(一次性购买)和非消耗型商品(月度订阅，年度订阅)的购买是不一样的
     if (type == 1) {
       InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
