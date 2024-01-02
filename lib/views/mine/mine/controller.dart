@@ -4,6 +4,8 @@
  * @LastEditTime: 2023-04-25 19:51:12
  * @FilePath: \soulmate\lib\views\main\home\controller.dart
  */
+import 'dart:math';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -27,6 +29,8 @@ class MineController extends GetxController {
 
   /// 开启紧急联系邮箱
   bool contact = false;
+  /// 用户信息
+  User? user;
 
   setContact(bool c) {
     contact = c;
@@ -124,9 +128,18 @@ class MineController extends GetxController {
     );
   }
 
+  void getUser() async {
+    await Application.regainUserInfo();
+    user = Application.userInfo;
+    update();
+  }
+
   @override
   void onInit() {
     super.onInit();
+    user = Application.userInfo;
+    setContact(user?.emergencyContact == 1);
+    update();
     return;
   }
 
@@ -142,8 +155,4 @@ class MineController extends GetxController {
     return;
   }
 
-  void init() {
-    User? user = Application.userInfo;
-    setContact(user?.emergencyContact == 1);
-  }
 }

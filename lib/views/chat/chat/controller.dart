@@ -183,7 +183,7 @@ class ChatController extends GetxController {
         });
       }
     }).catchError((error) {
-      refreshController.refreshCompleted();
+      refreshController.refreshFailed();
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }

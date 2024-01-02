@@ -28,7 +28,7 @@ class HttpUtils {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       String errMessage = "please check your network!";
-      Loading.toast(errMessage, toastPosition: EasyLoadingToastPosition.top);
+      // Loading.toast(errMessage, toastPosition: EasyLoadingToastPosition.top);
       return _error(message: errMessage);
     }
 
@@ -129,7 +129,8 @@ class HttpUtils {
         }
         break;
       default:
-        // print(dioError.response);
+        /// 连着vpn,但是断网的时候，也会走这里
+        /// 网络状态显示的是vpn,并不会走断网的逻辑
         errMessage = "something wrong!";
         if (ProjectConfig.getInstance()?.isDebug == true) {
           APPPlugin.logger.d(dioError);

@@ -84,6 +84,7 @@ class MessagePage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 12.w),
                   child: SmartRefresher(
                     controller: logic.controller,
+                    enablePullUp: true,
                     onRefresh: () {
                       logic.getMessages(
                           logic.tabKey == MessageTabKey.normal ? 0 : 1);
@@ -93,7 +94,6 @@ class MessagePage extends StatelessWidget {
                           logic.tabKey == MessageTabKey.normal ? 0 : 1,
                           action: "add");
                     },
-                    enablePullUp: true,
                     child: GetBuilder<MessageController>(
                       builder: (controller) {
                         final messages =

@@ -163,13 +163,15 @@ class Step2Controller extends GetxController {
         params: formData,
         extra: {'formData': true}).then((response) {
       Loading.dismiss();
+      ///清空当前订单id
+      currentOrderId = '';
       if (response['code'] == 200) {
         exSnackBar("purchase success", type: ExSnackBarType.success);
+        ///返回到菜单页面
+        Get.until((route) => Get.currentRoute == "/menu");
       } else {
         exSnackBar("purchase failed", type: ExSnackBarType.error);
       }
-      ///清空当前订单id
-      currentOrderId = '';
     }).catchError((error) {
       Loading.dismiss();
       exSnackBar(error, type: ExSnackBarType.error);

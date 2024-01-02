@@ -87,18 +87,19 @@ class GiftBackpackPage extends StatelessWidget {
                         return SmartRefresher(
                             key: ObjectKey(GiftTabKey.energy),
                             controller: logic.energyRefreshController,
+                            enablePullUp: true,
                             onRefresh: () {
                               logic.getEnergyHistoryList(LoadDataType.refresh);
                             },
                             onLoading: () {
                               logic.getEnergyHistoryList(LoadDataType.loadMore);
                             },
-                            child:  listViewNoDataPage(
+                            child: listViewNoDataPage(
                                 isShowNoData: logic.energyCardList.isEmpty,
                                 omit: 'No data',
-                                child:Column(
-                                children:
-                                    renderEnergyCardList(controller.tabKey))));
+                                child: Column(
+                                    children: renderEnergyCardList(
+                                        controller.tabKey))));
                       }
                       return SmartRefresher(
                           key: ObjectKey(GiftTabKey.rechargeable),
@@ -109,6 +110,7 @@ class GiftBackpackPage extends StatelessWidget {
                             logic.getCardList(LoadDataType.loadMore);
                           },
                           controller: logic.rechargeRefreshController,
+                          enablePullUp: true,
                           child: listViewNoDataPage(
                               isShowNoData: logic.rechargeableCardList.isEmpty,
                               omit: 'No data',

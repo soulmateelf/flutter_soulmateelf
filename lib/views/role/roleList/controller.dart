@@ -55,7 +55,7 @@ class RoleListController extends GetxController {
       refreshController.refreshCompleted();
       update();
     }).catchError((error) {
-      refreshController.refreshCompleted();
+      refreshController.refreshFailed();
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }

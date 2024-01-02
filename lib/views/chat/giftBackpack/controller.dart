@@ -9,6 +9,7 @@ import 'package:soulmate/models/recharge.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:pull_to_refresh/src/smart_refresher.dart';
+import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 import '../../../models/energyCard.dart';
 
@@ -54,11 +55,23 @@ class GiftBackpackController extends GetxController {
       if (type == LoadDataType.refresh) {
         rechargeableCardList = list;
         rechargeRefreshController.refreshCompleted();
+        rechargeRefreshController.resetNoData();
       } else if (type == LoadDataType.loadMore) {
         rechargeableCardList.addAll(list);
         rechargeRefreshController.loadComplete();
       }
+      if (data.isEmpty) {
+        rechargeRefreshController.loadNoData();
+      }
       update();
+    }).catchError((err) {
+      if (type == "refresh") {
+        rechargeRefreshController.refreshFailed();
+      } else if (type == "loadMore") {
+        rechargeRefreshController.loadFailed();
+      }
+      update();
+      exSnackBar(err, type: ExSnackBarType.error);
     });
   }
 
@@ -75,11 +88,23 @@ class GiftBackpackController extends GetxController {
       if (type == LoadDataType.refresh) {
         energyCardList = list;
         energyRefreshController.refreshCompleted();
+        energyRefreshController.resetNoData();
       } else if (type == LoadDataType.loadMore) {
         energyCardList.addAll(list);
         energyRefreshController.loadComplete();
       }
-    }).catchError((err) {});
+      if (data.isEmpty) {
+        energyRefreshController.loadNoData();
+      }
+    }).catchError((err) {
+      if (type == "refresh") {
+        energyRefreshController.refreshFailed();
+      } else if (type == "loadMore") {
+        energyRefreshController.loadFailed();
+      }
+      update();
+      exSnackBar(err.toString(), type: ExSnackBarType.error);
+    });
   }
 
   @override

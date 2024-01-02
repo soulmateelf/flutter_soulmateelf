@@ -94,19 +94,24 @@ class MessageController extends GetxController {
       }
       if (controller.isRefresh) {
         controller.refreshCompleted();
+        controller.resetNoData();
       }
       if (controller.isLoading) {
         controller.loadComplete();
+      }
+      if (data.isEmpty) {
+        controller.loadNoData();
       }
       update();
     }).catchError((err) {
-      exSnackBar(err.toString(), type: ExSnackBarType.error);
       if (controller.isRefresh) {
-        controller.refreshCompleted();
+        controller.refreshFailed();
       }
       if (controller.isLoading) {
-        controller.loadComplete();
+        controller.loadFailed();
       }
+      update();
+      exSnackBar(err, type: ExSnackBarType.error);
     });
   }
 }

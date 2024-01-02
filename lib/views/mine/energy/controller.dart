@@ -7,6 +7,7 @@ import 'package:soulmate/utils/plugin/AppPurchase.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/views/mine/account/controller.dart';
+import 'package:soulmate/views/mine/mine/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:soulmate/models/product.dart';
 import 'package:soulmate/models/energyCard.dart';
@@ -258,7 +259,7 @@ class EnergyController extends GetxController {
       ///刷新卡券列表
       getEnergyCardList();
       ///刷新用户信息
-      MineAccountController userController = Get.find<MineAccountController>();
+      MineController userController = Get.find<MineController>();
       userController.getUser();
     }).catchError((error) {
       Loading.dismiss();

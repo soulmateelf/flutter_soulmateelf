@@ -51,7 +51,7 @@ class ChatListController extends GetxController {
       // menuLogic.updateMessageNum(chatMessageNum: 8);
       update();
     }).catchError((error) {
-      refreshController.refreshCompleted();
+      refreshController.refreshFailed();
       exSnackBar(error, type: ExSnackBarType.error);
     });
 

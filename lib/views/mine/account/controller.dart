@@ -49,6 +49,7 @@ class MineAccountController extends GetxController {
   void getUser() async {
     await Application.regainUserInfo();
     user = Application.userInfo;
+    print(user?.energy);
     update();
   }
 

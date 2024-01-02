@@ -28,16 +28,20 @@ class MinePurchaseHistoryController extends GetxController {
       if (type == "refresh") {
         orderList = list;
         refreshController.refreshCompleted();
+        refreshController.resetNoData();
       } else if (type == "loadMore") {
         orderList.addAll(list);
         refreshController.loadComplete();
       }
+      if(data.isEmpty) {
+        refreshController.loadNoData();
+      }
       update();
     }).catchError((err) {
       if (type == "refresh") {
-        refreshController.refreshCompleted();
+        refreshController.refreshFailed();
       } else if (type == "loadMore") {
-        refreshController.loadComplete();
+        refreshController.loadFailed();
       }
       update();
       exSnackBar(err, type: ExSnackBarType.error);

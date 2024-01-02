@@ -130,7 +130,7 @@ class MyApp extends StatelessWidget {
                     Container(
                       width: 3.0,
                     ),
-                    const Text('something wrong',
+                    const Text('refresh failed',
                         style: TextStyle(color: Colors.grey))
                   ]),
             ),

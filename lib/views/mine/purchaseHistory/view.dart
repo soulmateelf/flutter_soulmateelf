@@ -23,6 +23,7 @@ class MinePurchaseHistoryPage extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 12.w),
               child: SmartRefresher(
+                enablePullUp: true,
                 controller: controller.refreshController,
                 onLoading: () {
                   logic.getOrderList("loadMore");
