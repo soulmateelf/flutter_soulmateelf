@@ -157,6 +157,9 @@ dependencies:
   # 轮播图效果
   # https://pub.dev/packages/card_swiper
   card_swiper: ^3.0.1
+  # SQLite数据库
+  # https://pub-web.flutter-io.cn/packages/sqflite
+  sqflite: ^2.3.0
 
 dev_dependencies:
   flutter_test:

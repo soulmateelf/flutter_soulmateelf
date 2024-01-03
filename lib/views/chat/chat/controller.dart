@@ -19,6 +19,7 @@ import 'package:soulmate/models/role.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
+import 'package:soulmate/utils/plugin/DBUtil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/views/base/menu/controller.dart';
@@ -98,6 +99,7 @@ class ChatController extends GetxController {
     getRoleDetail();
     getMessageList('init');
     if (isIntro) {
+      ///开启引导功能
       getIntroData().then((res) {
         showIntro();
       });
@@ -107,8 +109,11 @@ class ChatController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
-
     super.onInit();
+    roleId = Get.arguments?["roleId"];
+    /// 如果不存在用户角色聊天记录表，创建
+    String tableName = 'chat_${Application.userInfo?.id}_$roleId';
+    DBUtil.createTableIfNotExists(tableName);
   }
 
   @override
@@ -156,7 +161,7 @@ class ChatController extends GetxController {
 
         /// 记录聊过天的状态
         hasChat = true;
-
+        /// 如果是引导功能进来的，角色回复第一条消息，显示引导结束提示框
         if (isIntro) {
           showGiftIntro();
         }
@@ -271,7 +276,7 @@ class ChatController extends GetxController {
       _debounce = Timer(duration, startGptTask);
     }
   }
-
+  /// 加载引导数据
   Future<void> getIntroData() async {
     Map<String, dynamic> json =
         jsonDecode(await rootBundle.loadString("assets/introList.json"));
@@ -451,7 +456,7 @@ class ChatController extends GetxController {
     });
     Overlay.of(Get.context!).insert(overlayEntry!);
   }
-
+  /// 开始引导展示框
   void showIntro() {
     overlayEntry = OverlayEntry(builder: (_) {
       return GestureDetector(
@@ -527,7 +532,7 @@ class ChatController extends GetxController {
 
     Overlay.of(Get.context!).insert(overlayEntry!);
   }
-
+  ///  引导结束提示框
   void showGiftIntro() {
     final ctx = leadingKey.currentContext!;
     RenderBox renderBox = ctx.findRenderObject() as RenderBox;

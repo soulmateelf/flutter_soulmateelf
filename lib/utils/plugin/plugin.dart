@@ -10,6 +10,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:get/get.dart';
+import 'package:soulmate/utils/plugin/DBUtil.dart';
 import 'package:soulmate/utils/plugin/Message.dart';
 import 'package:soulmate/utils/plugin/mqtt.dart';
 
@@ -28,6 +29,9 @@ class APPPlugin {
     /// 插件初始化
     /// logger
     APPPlugin.logger = Logger(printer: PrettyPrinter());
+
+    /// 初始化本地数据库
+    DBUtil.init();
 
     /// 遮罩加载框
     EasyLoading.instance
