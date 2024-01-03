@@ -288,21 +288,18 @@ class RolePage extends StatelessWidget {
   /// 朋友圈列表
   List<Widget> renderRecordList(List<RoleEvent> events) {
     List<Widget> list = [];
-
     events.forEach((event) {
-      var likeCount = 0;
+      var likes = logic.sendLikeMap?[event.memoryId] ?? [];
+
+      var likeCount = likes.length;
       var commentCount = 0;
-      bool hasLike = false;
+      bool hasLike = likes.indexOf(logic.user!.userId!) != -1;
       event.activities.forEach((element) {
-        if (element.type == 0) {
-          likeCount++;
-          if (!hasLike && element.userId == logic.user?.userId) {
-            hasLike = true;
-          }
-        } else if (element.type == 1) {
+        if (element.type == 1) {
           commentCount++;
         }
       });
+
       list.add(Container(
         padding: EdgeInsets.fromLTRB(26.w, 20.w, 20.w, 20.w),
         child: Row(
@@ -340,33 +337,33 @@ class RolePage extends StatelessWidget {
               width: 31.w,
             ),
             Expanded(
-              child: Column(
-                children: [
-                  Container(
-                    clipBehavior: Clip.hardEdge,
-                    width: 288.w,
-                    height: 234.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.w),
-                    ),
-                    child: CachedNetworkImage(
+              child: GestureDetector(
+                onTap: () {
+                  logic.toEventDetail(event);
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      clipBehavior: Clip.hardEdge,
                       width: 288.w,
                       height: 234.w,
-                      fit: BoxFit.cover,
-                      imageUrl: event.image ?? "",
-                      placeholder: (context, url) =>
-                          const CupertinoActivityIndicator(),
-                      errorWidget: (context, url, error) => Container(),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.w),
+                      ),
+                      child: CachedNetworkImage(
+                        width: 288.w,
+                        height: 234.w,
+                        fit: BoxFit.cover,
+                        imageUrl: event.image ?? "",
+                        placeholder: (context, url) =>
+                            const CupertinoActivityIndicator(),
+                        errorWidget: (context, url, error) => Container(),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 8.w,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      logic.toEventDetail(event);
-                    },
-                    child: Text(
+                    SizedBox(
+                      height: 8.w,
+                    ),
+                    Text(
                       event.content,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 3,
@@ -375,17 +372,12 @@ class RolePage extends StatelessWidget {
                         fontSize: 15.sp,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 8.w,
-                  ),
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          logic.toEventDetail(event);
-                        },
-                        child: Row(
+                    SizedBox(
+                      height: 8.w,
+                    ),
+                    Row(
+                      children: [
+                        Row(
                           children: [
                             Image.asset(
                               "assets/images/icons/comment.png",
@@ -404,48 +396,48 @@ class RolePage extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(
-                        width: 32.w,
-                      ),
-                      Row(
-                        children: [
-                          LikeButton(
-                            size: 18.sp,
-                            isLiked: hasLike,
-                            circleColor: CircleColor(
-                                start: Colors.grey, end: primaryColor),
-                            bubblesColor: BubblesColor(
-                              dotPrimaryColor: primaryColor,
-                              dotSecondaryColor: primaryColor,
+                        SizedBox(
+                          width: 32.w,
+                        ),
+                        Row(
+                          children: [
+                            LikeButton(
+                              size: 18.sp,
+                              isLiked: hasLike,
+                              circleColor: CircleColor(
+                                  start: Colors.grey, end: primaryColor),
+                              bubblesColor: BubblesColor(
+                                dotPrimaryColor: primaryColor,
+                                dotSecondaryColor: primaryColor,
+                              ),
+                              likeCount: likeCount,
+                              countBuilder: (c, _, __) {
+                                return Text(
+                                  "${c}",
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 0.64),
+                                    fontSize: 15.sp,
+                                  ),
+                                );
+                              },
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  Icons.thumb_up_alt_outlined,
+                                  color:
+                                      isLiked ? primaryColor : Colors.black87,
+                                  size: 18.sp,
+                                );
+                              },
+                              onTap: (liked) async {
+                                logic.debounceSendLike(event);
+                              },
                             ),
-                            likeCount: likeCount,
-                            countBuilder: (c, _, __) {
-                              return Text(
-                                "${c}",
-                                style: TextStyle(
-                                  color: Color.fromRGBO(0, 0, 0, 0.64),
-                                  fontSize: 15.sp,
-                                ),
-                              );
-                            },
-                            likeBuilder: (bool isLiked) {
-                              return Icon(
-                                Icons.thumb_up_alt_outlined,
-                                color: isLiked ? primaryColor : Colors.black87,
-                                size: 18.sp,
-                              );
-                            },
-                            onTap: (liked) async {
-                              final like = logic.sendLike(event);
-                              return like;
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
-                ],
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ],

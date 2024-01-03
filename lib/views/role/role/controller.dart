@@ -4,20 +4,15 @@
  * @LastEditTime: 2023-04-25 19:51:12
  * @FilePath: \soulmate\lib\views\main\home\controller.dart
  */
-import 'dart:convert';
 
-import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:soulmate/config.dart';
-import 'package:soulmate/models/activety.dart';
 import 'package:soulmate/models/role.dart';
 import 'package:soulmate/models/roleEvent.dart';
 import 'package:soulmate/models/user.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/utils/tool/utils.dart';
+import 'package:soulmate/views/role/roleList/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
@@ -33,13 +28,21 @@ class RoleController extends GetxController {
   /// 角色朋友圈列表
   late List<RoleEvent> roleEventList = [];
 
+  final Map<String, List<String>> sendLikeMap = {};
+
+  RoleListController roleListController = Get.find<RoleListController>();
+
   @override
   void onReady() {
     super.onReady();
     roleId = Get.arguments?["roleId"];
-    getRoleDetail();
+    roleDetail = Get.arguments?['roleData'];
+    // getRoleDetail();
     getRoleRecordList();
+    roleListController.getDataList();
     user = Application.userInfo;
+
+    update();
   }
 
   /// 获取角色详情
@@ -56,12 +59,22 @@ class RoleController extends GetxController {
 
   /// 获取朋友圈列表
   void getRoleRecordList() {
+    sendLikeMap.clear();
     HttpUtils.diorequst('/role/roleEventList', query: {"roleId": roleId})
         .then((res) {
       final List<dynamic> data = res?['data'] ?? [];
       if (data != null) {
         final list = data?.map((e) => RoleEvent.fromJson(e))?.toList() ?? [];
         roleEventList = list;
+        roleEventList.forEach((element) {
+          List<String> likes = [];
+          element.activities.forEach((element) {
+            if (element.type == 0) {
+              likes.add(element.userId);
+            }
+          });
+          sendLikeMap.addAll({element.memoryId: likes});
+        });
         update();
       }
     }).catchError((err) {
@@ -69,32 +82,39 @@ class RoleController extends GetxController {
     });
   }
 
+  Debouncer debouncer = Debouncer(delay: Duration(milliseconds: 500));
+
+  void debounceSendLike(RoleEvent roleEvent) {
+    sendLikeMap.update(roleEvent.memoryId, (value) {
+      final index = value.indexOf(user!.userId);
+      if (index == -1) {
+        value.add(user!.userId);
+      } else {
+        value.removeAt(index);
+      }
+      return value;
+    });
+    update();
+    debouncer.debounce((arguments) {
+      sendLike(roleEvent);
+    });
+  }
+
   /// 点赞
-  Future<bool> sendLike(RoleEvent roleEvent) async {
+  void sendLike(RoleEvent roleEvent) async {
     try {
       if (roleDetail != null) {
-        final activity = roleEvent.activities.firstWhereOrNull(
-          (element) =>
-              element.type == 0 &&
-              element.userId == Application.userInfo?.userId,
-        );
-        final res = await HttpUtils.diorequst("/role/sendLike",
-            method: "post",
-            params: {
-              "roleId": roleDetail!.roleId!,
-              "memoryId": roleEvent.memoryId,
-              "activityId": activity != null ? activity.activityId : "",
-              "isAdd": activity == null,
-            });
-        if (res?['code'] == 200) {
-          getRoleRecordList();
-          return activity == null;
-        }
+        final activity = sendLikeMap?[roleEvent.memoryId]?.indexOf(user!.userId) != -1;
+        HttpUtils.diorequst("/role/sendLike", method: "post", params: {
+          "roleId": roleDetail!.roleId!,
+          "memoryId": roleEvent.memoryId,
+          "activityId": activity??'',
+          "isAdd": activity,
+        });
       }
     } catch (err) {
       exSnackBar(err.toString(), type: ExSnackBarType.error);
     }
-    return false;
   }
 
   /// 更新某一条事件
@@ -116,5 +136,12 @@ class RoleController extends GetxController {
 
   void toChat() {
     Get.toNamed('/chat', arguments: {"roleId": roleDetail?.roleId});
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    debouncer.dispose();
   }
 }

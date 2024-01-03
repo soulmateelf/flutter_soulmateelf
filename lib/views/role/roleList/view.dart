@@ -13,6 +13,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import '../../base/menu/controller.dart';
 import 'controller.dart';
 
 class RoleListPage extends StatelessWidget {
@@ -31,8 +32,32 @@ class RoleListPage extends StatelessWidget {
             onPressed: () {
               Get.toNamed('/message');
             },
-            icon: Image.asset(
-              "assets/images/icons/message.png",
+            icon: GetBuilder<SoulMateMenuController>(
+              builder: (controller) {
+                return Stack(
+                  children: [
+                    Image.asset(
+                      "assets/images/icons/message.png",
+                    ),
+                    Positioned(
+                      top: 10.w,
+                      right: 10.w,
+                      child: AnimatedOpacity(
+                        opacity: controller.unreadMessageCount > 0 ? 1 : 0,
+                        duration: const Duration(milliseconds: 200),
+                        child: Container(
+                          width: 6.w,
+                          height: 6.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6.w),
+                            color: const Color.fromRGBO(255, 90, 90, 1),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
             )),
         actions: [
           IconButton(
@@ -47,7 +72,7 @@ class RoleListPage extends StatelessWidget {
       return Container(
         width: double.infinity,
         height: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 14.w),
+        padding: EdgeInsets.only(top: 10.w, left: 14.w, right: 14.w),
         color: Colors.transparent,
         child: Column(
           children: [_customContainer(), Expanded(child: _refreshListView)],
@@ -159,7 +184,7 @@ class RoleListPage extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         /// todo-这里是有朋友圈事件展示边框，第二版做
-        gradient: (roleData.readCount !=null && roleData.readCount! > 0)
+        gradient: (roleData.readCount != null && roleData.readCount! > 0)
             ? const LinearGradient(
                 colors: [
                   Color.fromRGBO(217, 78, 255, 1),

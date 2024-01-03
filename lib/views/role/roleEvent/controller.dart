@@ -15,6 +15,7 @@ class RoleEventController extends GetxController {
   late final arguments;
   RoleEvent? roleEvent;
   bool isLiked = false;
+  bool sendLikeLoding = false;
 
   void setRoleEvent(RoleEvent value) {
     roleEvent = value;
@@ -67,6 +68,8 @@ class RoleEventController extends GetxController {
       setRoleEvent(RoleEvent.fromJson(res['data']));
     }).catchError((err) {
       APPPlugin.logger.e(err.toString());
+    }).whenComplete(() {
+      sendLikeLoding = false;
     });
   }
 
@@ -92,7 +95,11 @@ class RoleEventController extends GetxController {
     });
   }
 
-  Future<bool> sendLike(bool liked) async {
+  void sendLike(bool liked) async {
+    if (sendLikeLoding) {
+      return;
+    }
+    sendLikeLoding = true;
     try {
       if (roleLogic.roleDetail != null && roleEvent != null) {
         final activity = likes.firstWhereOrNull(
@@ -110,12 +117,10 @@ class RoleEventController extends GetxController {
             });
         if (res?['code'] == 200) {
           getEventDetail();
-          return true;
         }
       }
     } catch (err) {
       exSnackBar(err.toString(), type: ExSnackBarType.error);
     }
-    return false;
   }
 }

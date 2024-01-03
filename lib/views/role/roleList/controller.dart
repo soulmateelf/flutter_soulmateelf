@@ -63,6 +63,7 @@ class RoleListController extends GetxController {
   ///点击角色列表项
   void roleItemClick(index) {
     Role roleData = roleList[index];
-    Get.toNamed('/role', arguments: {"roleId": roleData.roleId});
+    Get.toNamed('/role',
+        arguments: {"roleId": roleData.roleId, "roleData": roleData});
   }
 }

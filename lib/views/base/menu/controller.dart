@@ -29,7 +29,18 @@ class SoulMateMenuController extends GetxController {
   /// 点击安卓返回键时间
   late PageController controller;
 
+  ///左上角铃铛
+  int unreadMessageCount = 0;
+
   ChatListController? chatListController;
+
+  /// 获取左上角未读消息的数量
+  void getUnreadMessage() {
+    HttpUtils.diorequst("/message/messageNoReadCount").then((res) {
+      unreadMessageCount = res?['data'] ?? 0;
+      update();
+    });
+  }
 
   @override
   void onInit() {
@@ -43,7 +54,7 @@ class SoulMateMenuController extends GetxController {
         Topic(user!.userId!, (message) {
           if (message.clear == true) {
             if (message.messageType == 0) {
-              chatListController?.getUnreadMessage();
+              getUnreadMessage();
             } else if (message.messageType == 1) {
               chatListController?.getRoleListUnreadCount();
             }
@@ -56,6 +67,7 @@ class SoulMateMenuController extends GetxController {
   @override
   void onReady() {
     final hasIntro = Application.hasIntro;
+    getUnreadMessage();
     if (!hasIntro) {
       Get.toNamed("/introWelcome");
     }

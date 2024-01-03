@@ -174,17 +174,22 @@ class ChatController extends GetxController {
       update();
       if (from != 'refresh') {
         ///新消息或者第一页，滚动到底部
-        Future.delayed(const Duration(milliseconds: 300), () {
-          scrollController.animateTo(
-            scrollController.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-          );
-        });
+        toEndMeesage();
       }
     }).catchError((error) {
       refreshController.refreshFailed();
       exSnackBar(error, type: ExSnackBarType.error);
+    });
+  }
+
+  /// 消息列表滚动到最底部
+  void toEndMeesage() {
+    Future.delayed(const Duration(milliseconds: 300), () {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
     });
   }
 

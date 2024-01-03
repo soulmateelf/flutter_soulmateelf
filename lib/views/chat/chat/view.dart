@@ -37,7 +37,7 @@ class ChatPage extends StatefulWidget {
   }
 }
 
-class ChatState extends State<ChatPage> {
+class ChatState extends State<ChatPage> with WidgetsBindingObserver {
   final logic = Get.put(ChatController());
   late final RecorderController recorderController;
 
@@ -57,6 +57,7 @@ class ChatState extends State<ChatPage> {
     super.initState();
     _getDir();
     _initialiseControllers();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   void _getDir() async {
@@ -64,6 +65,22 @@ class ChatState extends State<ChatPage> {
     path = "${appDirectory.path}/recording.m4a";
     isLoading = false;
     setState(() {});
+  }
+
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        if (MediaQuery.of(context).viewInsets.bottom == 0) {
+          /// 键盘收回
+          logic.toEndMeesage();
+        } else {
+          /// 键盘弹出
+          logic.toEndMeesage();
+        }
+      });
+    });
   }
 
   void _initialiseControllers() async {
@@ -80,6 +97,8 @@ class ChatState extends State<ChatPage> {
     // TODO: implement dispose
     super.dispose();
     timer?.cancel();
+
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override
@@ -166,10 +185,10 @@ class ChatState extends State<ChatPage> {
                     padding: EdgeInsets.only(top: 14.w),
                     child: Container(
                       decoration: BoxDecoration(
-                        image: logic.roleDetail?.backgroundImageUrl != null
+                        image: logic.roleDetail?.imageId != null
                             ? DecorationImage(
-                                image: NetworkImage(
-                                    logic.roleDetail!.backgroundImageUrl!),
+                                image: AssetImage(
+                                    "assets/images/image/${logic.roleDetail!.imageId}.png"),
                                 fit: BoxFit.cover,
                               )
                             : null,

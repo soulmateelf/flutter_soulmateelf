@@ -360,28 +360,27 @@ bool checkPassword(String s) {
   return isP;
 }
 
-Map<String, Timer> _funcDebounce = {};
 
-/// 函数防抖
-///
-/// [func]: 要执行的方法
-/// [milliseconds]: 要迟延的毫秒时间
-Function makeDebounce(Function func, [int milliseconds = 2000]) {
-  Function target = () {
-    String key = func.hashCode.toString();
-    Timer? _timer = _funcDebounce[key];
-    if (_timer == null) {
-      func?.call();
-      _timer = Timer(Duration(milliseconds: milliseconds), () {
-        Timer? t = _funcDebounce.remove(key);
-        t?.cancel();
-        t = null;
-      });
-      _funcDebounce[key] = _timer;
-    }
-  };
-  return target;
+typedef void DebounceAction(dynamic arguments);
+
+class Debouncer {
+  final Duration delay;
+  Timer? _timer;
+
+  Debouncer({required this.delay});
+
+  void debounce(DebounceAction action, [dynamic arguments]) {
+    _timer?.cancel();
+    _timer = Timer(delay, () {
+      action(arguments);
+    });
+  }
+
+  void dispose() {
+    _timer?.cancel();
+  }
 }
+
 
 EdgeInsets getMargin(BuildContext ctx) {
   Widget? widget = ctx.widget;

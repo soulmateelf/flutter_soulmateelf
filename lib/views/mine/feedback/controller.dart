@@ -77,7 +77,7 @@ class FeedbackController extends GetxController {
         exSnackBar(res?['message']);
       }
     }).catchError((err) {
-      APPPlugin.logger.e(err);
+      exSnackBar(err,type: ExSnackBarType.error);
     });
   }
 

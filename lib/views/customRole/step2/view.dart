@@ -58,11 +58,13 @@ class Step2Page extends StatelessWidget {
                                             height: 112.w,
                                           ).image
                                         : null,
-                                    child: controller.avatar == null?Image.asset(
-                                      "assets/images/icons/customRoleUserIcon.png",
-                                      width: 38.w,
-                                      height: 42.w,
-                                    ):null,
+                                    child: controller.avatar == null
+                                        ? Image.asset(
+                                            "assets/images/icons/customRoleUserIcon.png",
+                                            width: 38.w,
+                                            height: 42.w,
+                                          )
+                                        : null,
                                   ),
                                 ),
                                 Positioned(
@@ -220,7 +222,9 @@ class Step2Page extends StatelessWidget {
                                         )),
                                     alignment: Alignment.center,
                                     child: Image.asset(
-                                      "assets/images/icons/otherGender.png",
+                                      controller.genderType == "other"
+                                          ? "assets/images/icons/activeOtherGender.png"
+                                          : "assets/images/icons/otherGender.png",
                                       width: 24.w,
                                       height: 24.w,
                                     ),
@@ -404,7 +408,7 @@ class Step2Page extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "\$${logic.customRoleProduct?.amount??'--'}",
+                        "\$${logic.customRoleProduct?.amount ?? '--'}",
                         style: TextStyle(
                           color: textColor,
                           fontSize: 24.sp,

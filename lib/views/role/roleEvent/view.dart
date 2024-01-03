@@ -91,8 +91,7 @@ class RoleEventPage extends StatelessWidget {
                                   );
                                 },
                                 onTap: (liked) async {
-                                  final like = controller.sendLike(liked);
-                                  return like;
+                                  controller.sendLike(liked);
                                 },
                               ),
                               ...renderLikes(controller.likes),
