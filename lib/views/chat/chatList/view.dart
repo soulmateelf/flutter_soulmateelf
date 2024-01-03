@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/tool/utils.dart';
+import 'package:soulmate/views/base/menu/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -34,7 +35,7 @@ class ChatListPage extends StatelessWidget {
             onPressed: () {
               Get.toNamed('/message');
             },
-            icon: GetBuilder<ChatListController>(
+            icon: GetBuilder<SoulMateMenuController>(
               builder: (controller) {
                 return Stack(
                   children: [

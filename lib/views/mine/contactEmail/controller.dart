@@ -5,11 +5,13 @@ import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:flutter/src/widgets/focus_manager.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/views/mine/mine/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class MineContactEmailController extends GetxController {
   String _email = '';
   String? errorText;
+  MineController mineController = Get.find<MineController>();
 
   late final User? user;
   TextEditingController controller = TextEditingController();
@@ -51,11 +53,15 @@ class MineContactEmailController extends GetxController {
   }
 
   void done() {
+    validateEmail(email);
     if (!email.isEmpty && errorText == null) {
       HttpUtils.diorequst("/settingEmergencyEmail", method: 'post', params: {
         "emergencyEmail": email,
-      }).then((value) {
-        Application.regainUserInfo();
+      }).then((value) async {
+        Get.back();
+        await Application.regainUserInfo();
+        mineController.update();
+        exSnackBar(value?['message']);
       }).catchError((err) {
         exSnackBar(err.toString(), type: ExSnackBarType.error);
       });

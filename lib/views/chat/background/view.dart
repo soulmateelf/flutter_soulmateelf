@@ -33,17 +33,17 @@ class ChatBackgroundPage extends StatelessWidget {
   List<Widget> renderBackgroundList() {
     List<Widget> list = [];
     logic.backgroundList.forEach((bg) {
-      final checked = bg['imageId'] == logic.checkedImageId;
+      final checked = bg == logic.checkedImageId;
       list.add(GestureDetector(
         onTap: () {
-          logic.changeImage(bg['imageId']);
+          logic.changeImage(bg);
         },
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white30,
             image: DecorationImage(
-              image: NetworkImage(
-                bg['imageUrl'],
+              image: AssetImage(
+                "assets/images/image/${bg}.png",
               ),
               fit: BoxFit.cover,
             ),

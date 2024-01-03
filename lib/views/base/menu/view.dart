@@ -147,12 +147,14 @@ class MenuPage extends StatelessWidget {
       onTap: (index) {
         logic.changeMenu(index);
       },
+      borderColor: Colors.white,
       // hideAnimationController: _hideBottomBarAnimationController,
-      shadow: const BoxShadow(
-        offset: Offset(0, 2),
-        blurRadius: 10,
-        color: Color.fromRGBO(0, 0, 0, 0.08),
-      ),
+      // shadow: const BoxShadow(
+      //   offset: Offset(0, 2),
+      //   blurRadius: 10,
+      //   color: Color.fromRGBO(0, 0, 0, 0.08),
+      // ),
+
     );
   }
 }

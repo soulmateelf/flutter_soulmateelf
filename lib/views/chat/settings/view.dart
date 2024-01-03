@@ -14,17 +14,20 @@ class ChatSettingsPage extends StatelessWidget {
     {
       "title": "Simple",
       "description":
-          "Can communicate with you normally, but may not remember the content of the communication"
+          "Can communicate with you normally, but may not remember the content of the communication",
+      "locked": false,
     },
     {
       "title": "Ordinary",
       "description":
-          "Can communicate with you normally, may remember a little communication content"
+          "Can communicate with you normally, may remember a little communication content",
+      "locked": false,
     },
     {
       "title": "Advanced",
       "description":
-          "Can communicate with you normally, probably remember everything，Please look forward to…"
+          "Can communicate with you normally, probably remember everything，Please look forward to…",
+      "locked": true,
     },
   ];
 
@@ -51,49 +54,61 @@ class ChatSettingsPage extends StatelessWidget {
 
     for (int i = 0; i < modelList.length; i++) {
       final modelItme = modelList[i];
+      bool locked = modelItme['locked'] ?? true;
       list.add(GestureDetector(
         onTap: () {
-          if (i < 2) {
+          if (locked == false) {
             logic.currentModal = i;
           }
         },
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          padding: EdgeInsets.all(20.w),
-          decoration: BoxDecoration(
-              color: logic.currentModal == i
-                  ? Color.fromRGBO(255, 245, 235, 0.48)
-                  : Colors.white,
-              borderRadius: BorderRadius.circular(borderRadius),
-              border: Border.all(
-                width: borderWidth,
-                color: logic.currentModal == i ? primaryColor : Colors.white,
-              )),
-          margin: EdgeInsets.only(bottom: 8.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                modelItme['title'],
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 22.sp,
-                  fontFamily: FontFamily.SFProRoundedBlod,
-                  fontWeight: FontWeight.bold,
-                ),
+        child: Stack(
+          children: [
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              padding: EdgeInsets.all(20.w),
+              decoration: BoxDecoration(
+                  color: logic.currentModal == i
+                      ? Color.fromRGBO(255, 245, 235, 0.48)
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(borderRadius),
+                  border: Border.all(
+                    width: borderWidth,
+                    color:
+                        logic.currentModal == i ? primaryColor : Colors.white,
+                  )),
+              margin: EdgeInsets.only(bottom: 8.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    modelItme['title'],
+                    style: TextStyle(
+                      color: locked ? Color.fromRGBO(0, 0, 0, 0.48) : textColor,
+                      fontSize: 22.sp,
+                      fontFamily: FontFamily.SFProRoundedBlod,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.w,
+                  ),
+                  Text(
+                    modelItme['description'],
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: Color.fromRGBO(0, 0, 0, locked ? 0.24 : 0.48),
+                    ),
+                  )
+                ],
               ),
-              SizedBox(
-                height: 20.w,
-              ),
-              Text(
-                modelItme['description'],
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Color.fromRGBO(0, 0, 0, 0.48),
-                ),
-              )
-            ],
-          ),
+            ),
+            locked
+                ? Positioned(
+                    top: 22.w,
+                    right: 22.w,
+                    child: Icon(Icons.lock_outline_rounded))
+                : Container(),
+          ],
         ),
       ));
     }

@@ -25,13 +25,11 @@ class ChatListController extends GetxController {
   List<Role> dataList = [];
   final menuLogic = Get.find<SoulMateMenuController>();
 
-  int unreadMessageCount = 0;
 
   @override
   void onReady() {
     super.onReady();
     getDataList();
-    getUnreadMessage();
     menuLogic.chatListController = this;
   }
 
@@ -65,13 +63,7 @@ class ChatListController extends GetxController {
     });
   }
 
-  /// 获取左上角未读消息的数量
-  void getUnreadMessage() {
-    HttpUtils.diorequst("/message/messageNoReadCount").then((res) {
-      unreadMessageCount = res?['data'] ?? 0;
-      update();
-    });
-  }
+
 
   ///点击聊天列表项
   void chatItemClick(index) {

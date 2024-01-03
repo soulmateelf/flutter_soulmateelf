@@ -27,7 +27,9 @@ class MessageController extends GetxController {
   List<Message> normalMessages = [];
   List<Message> systemMessages = [];
 
-  RefreshController controller = RefreshController();
+  RefreshController normalController = RefreshController();
+
+  RefreshController systemController = RefreshController();
 
   SoulMateMenuController menuController = Get.find<SoulMateMenuController>();
 
@@ -58,6 +60,7 @@ class MessageController extends GetxController {
 
   void getMessages(int type, {String? action}) {
     bool isAdd = action == "add";
+    late RefreshController controller;
     late int page;
     if (type == 0) {
       if (isAdd) {
@@ -66,6 +69,7 @@ class MessageController extends GetxController {
         normalPage = 1;
       }
       page = normalPage;
+      controller = normalController;
     } else if (type == 1) {
       if (isAdd) {
         systemPage++;
@@ -73,6 +77,7 @@ class MessageController extends GetxController {
         systemPage = 1;
       }
       page = systemPage;
+      controller = systemController;
     }
 
     HttpUtils.diorequst('/message/messageList',
