@@ -52,12 +52,12 @@ class DBUtil {
     await database.execute('''
       CREATE TABLE IF NOT EXISTS $tableName (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        chatId TEXT,
+        localChatId TEXT,
+        serverChatId TEXT,
         role TEXT,
         origin INTEGER,
         content TEXT,
         voiceUrl TEXT,
-        roleId TEXT,
         inputType INTEGER,
         status INTEGER,
         localStatus INTEGER,

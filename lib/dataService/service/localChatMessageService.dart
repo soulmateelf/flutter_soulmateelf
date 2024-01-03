@@ -13,7 +13,7 @@ class LocalChatMessageService {
     // 使用事务插入多行数据，以提高性能
     await DBUtil.database.transaction((txn) async {
       for (var localChatMessage in localChatMessageList) {
-        await txn.insert('person', localChatMessage.toJson());
+        await txn.insert(tableName, localChatMessage.toJson());
       }
     });
   }
@@ -27,8 +27,8 @@ class LocalChatMessageService {
     });
   }
   /// 获取单条聊天记录
-  static Future<LocalChatMessage?> getChatMessageRecord(String tableName, String chatId) async {
-    List<Map<String, dynamic>> maps = await DBUtil.database.query(tableName, where: 'chatId = ?', whereArgs: [chatId]);
+  static Future<LocalChatMessage?> getChatMessageRecord(String tableName, String localChatId) async {
+    List<Map<String, dynamic>> maps = await DBUtil.database.query(tableName, where: 'localChatId = ?', whereArgs: [localChatId]);
     if(maps.isNotEmpty){
       return LocalChatMessage.fromJson(maps.first);
     }
@@ -36,10 +36,10 @@ class LocalChatMessageService {
   }
   /// 更新聊天记录
   static Future<void> updateChatMessage(String tableName, LocalChatMessage localChatMessage) async {
-    await DBUtil.database.update(tableName, localChatMessage.toJson(), where: 'chatId = ?', whereArgs: [localChatMessage.chatId]);
+    await DBUtil.database.update(tableName, localChatMessage.toJson(), where: 'localChatId = ?', whereArgs: [localChatMessage.localChatId]);
   }
   /// 删除聊天记录
-  static Future<void> deleteChatMessage(String tableName, String chatId) async {
-    await DBUtil.database.delete(tableName, where: 'chatId = ?', whereArgs: [chatId]);
+  static Future<void> deleteChatMessage(String tableName, String localChatId) async {
+    await DBUtil.database.delete(tableName, where: 'localChatId = ?', whereArgs: [localChatId]);
   }
 }

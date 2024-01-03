@@ -7,6 +7,7 @@ import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/mqtt.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/views/chat/chat/controller.dart';
 import 'package:soulmate/views/chat/chatList/controller.dart';
 import 'package:soulmate/views/chat/message/controller.dart';
 
@@ -48,15 +49,21 @@ class SoulMateMenuController extends GetxController {
     super.onInit();
     controller = PageController(initialPage: currentIndex);
     user = Application.userInfo;
-
     if (user != null) {
       APPPlugin.mqttClient?.topicSubscribe([
         Topic(user!.userId!, (message) {
+          ///0是日常消息与系统消息刷新，1是聊天未读数刷新,2是gpt聊天消息模块
           if (message.clear == true) {
             if (message.messageType == 0) {
               getUnreadMessage();
             } else if (message.messageType == 1) {
               chatListController?.getRoleListUnreadCount();
+            } else if (message.messageType == 2) {
+              print(222);
+              ChatController chatController = Get.find<ChatController>();
+              if(chatController != null){
+                chatController.mqttServerMessageback(message.content);
+              }
             }
           }
         })

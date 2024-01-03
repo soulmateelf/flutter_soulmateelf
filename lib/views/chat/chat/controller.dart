@@ -14,6 +14,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:soulmate/dataService/model/localChatMessage.dart';
+import 'package:soulmate/dataService/service/localChatMessageService.dart';
 import 'package:soulmate/models/chat.dart';
 import 'package:soulmate/models/role.dart';
 import 'package:soulmate/utils/core/application.dart';
@@ -26,6 +28,7 @@ import 'package:soulmate/views/base/menu/controller.dart';
 import 'package:soulmate/views/chat/chatList/controller.dart';
 import 'package:soulmate/views/intro/index.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
+import 'package:uuid/uuid.dart';
 import 'package:flutter/services.dart';
 
 class ChatController extends GetxController {
@@ -36,7 +39,7 @@ class ChatController extends GetxController {
   Role? roleDetail;
 
   /// 聊天记录
-  List<ChatHistory> messageList = [];
+  List<LocalChatMessage> messageList = [];
 
   ///刷新控制器
   RefreshController refreshController =
@@ -86,6 +89,12 @@ class ChatController extends GetxController {
 
   SoulMateMenuController menuLogic = Get.find<SoulMateMenuController>();
 
+  /// 本地数据库表名
+  String tableName = '';
+
+  /// 调用gpt的lockId,为了多条消息合并成一条调用gpt，后端要求的参数
+  String lockId = '';
+
   void toggleShowVoiceWidget() {
     showVoiceWidget = !showVoiceWidget;
     update();
@@ -97,7 +106,7 @@ class ChatController extends GetxController {
     roleId = Get.arguments?["roleId"];
     isIntro = Get.arguments['intro'] ?? false;
     getRoleDetail();
-    getMessageList('init');
+    getLocalChatMessageList('init');
     if (isIntro) {
       ///开启引导功能
       getIntroData().then((res) {
@@ -108,11 +117,10 @@ class ChatController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     roleId = Get.arguments?["roleId"];
     /// 如果不存在用户角色聊天记录表，创建
-    String tableName = 'chat_${Application.userInfo?.id}_$roleId';
+    tableName = 'chat_${Application.userInfo?.id}_$roleId';
     DBUtil.createTableIfNotExists(tableName);
   }
 
@@ -142,44 +150,23 @@ class ChatController extends GetxController {
     });
   }
 
-  /// 获取聊天记录
-  void getMessageList(String from) {
-    Map<String, dynamic> query = {
-      'page': from == 'newMessage' ? 1 : (page + 1),
-      'size': from == 'newMessage' ? 1 : 10,
-      'roleId': roleId
-    };
-    HttpUtils.diorequst('/chat/getMessageList', query: query).then((response) {
-      page++;
+  /// 获取本地聊天记录
+  void getLocalChatMessageList(String from) {
+    int queryPage = page + 1;
+    int limit =  2;
+    LocalChatMessageService.getChatMessageList(tableName,page:queryPage, limit:limit).then((List<LocalChatMessage> newList) {
       refreshController.refreshCompleted();
-      List chatListMap = response["data"];
-      List<ChatHistory> newList =
-          chatListMap.map((json) => ChatHistory.fromJson(json)).toList();
-      if (from == 'newMessage') {
-        ///新消息，往下加
-        messageList.addAll(newList);
-
-        /// 记录聊过天的状态
-        hasChat = true;
-        /// 如果是引导功能进来的，角色回复第一条消息，显示引导结束提示框
-        if (isIntro) {
-          showGiftIntro();
-        }
-      } else {
-        ///历史消息,往上插入
-        messageList.insertAll(0, newList);
-      }
-
-      if (chatListMap == null || chatListMap.isEmpty) {
+      page++;
+      ///历史消息,往上插入
+      messageList.insertAll(0, newList.reversed);
+      if (newList.isEmpty) {
         ///没有更多数据了
         canRefresh = false;
-      } else {
-        canRefresh = true;
       }
       update();
-      if (from != 'refresh') {
-        ///新消息或者第一页，滚动到底部
-        toEndMeesage();
+      if (from == 'init') {
+        ///进来第一页，滚动到底部
+        toEndMessage();
       }
     }).catchError((error) {
       refreshController.refreshFailed();
@@ -187,8 +174,13 @@ class ChatController extends GetxController {
     });
   }
 
+  /// 如果是引导功能进来的，角色回复第一条消息，显示引导结束提示框---todo,mqtt
+  // if (isIntro) {
+  // showGiftIntro();
+  // }
+
   /// 消息列表滚动到最底部
-  void toEndMeesage() {
+  void toEndMessage() {
     Future.delayed(const Duration(milliseconds: 300), () {
       scrollController.animateTo(
         scrollController.position.maxScrollExtent,
@@ -197,37 +189,99 @@ class ChatController extends GetxController {
       );
     });
   }
-
+  ///本地数据库插入新消息
+  void insertLocalChatMessage(LocalChatMessage localChatMessage) async{
+    LocalChatMessageService.insertChatMessage(tableName, localChatMessage).then((value) {
+      ///插入成功
+      ///清空当前消息
+      inputContent = '';
+      ///更新本地消息列表
+      messageList.add(localChatMessage);
+      update();
+    }).catchError((error) {
+      exSnackBar(error.toString(), type: ExSnackBarType.error);
+    });
+  }
+  /// 消息发送至服务端，更新本地数据库消息状态
+  void updateLocalChatData(ChatHistory chatHistory,String localChatId) async{
+    ///先查询本地数据库的消息
+    LocalChatMessage? localChatMessage = await LocalChatMessageService.getChatMessageRecord(tableName, localChatId);
+    if (localChatMessage == null) {
+      return;
+    }
+    ///构建本地消息
+    localChatMessage.serverChatId = chatHistory.chatId;
+    localChatMessage.voiceUrl = chatHistory.voiceUrl??"";
+    localChatMessage.status = chatHistory.status;
+    localChatMessage.localStatus = 1;
+    LocalChatMessageService.updateChatMessage(tableName, localChatMessage).then((value) {
+      ///查找到本地消息列表的那一条，更新本地消息列表
+      messageList.firstWhereOrNull((element) => element.localChatId == localChatMessage.localChatId)?.localStatus = 1;
+      update();
+    }).catchError((error) {
+      exSnackBar(error.toString(), type: ExSnackBarType.error);
+    });
+  }
+  ///本地数据库插入新消息
+  void mqttServerMessageback(String payload) async{
+    APPPlugin.logger.e(payload);return;
+    // LocalChatMessageService.insertChatMessage(tableName, localChatMessage).then((value) {
+    //   ///插入成功
+    //   ///清空当前消息
+    //   inputContent = '';
+    //   ///更新本地消息列表
+    //   messageList.add(localChatMessage);
+    //   update();
+    // }).catchError((error) {
+    //   print(error.toString());
+    //   exSnackBar(error.toString(), type: ExSnackBarType.error);
+    // });
+  }
   ///发送消息
   void sendMessage(
-      {String? message, required String message_type, dynamic? message_file}) {
-    if (message_type == "0" && Utils.isEmpty(message)) {
+      {String? message, required String messageType, dynamic? message_file}) {
+    if (messageType == "0" && Utils.isEmpty(message)) {
       return;
-    } else if (message_type == "1" && message_file == null) {
+    } else if (messageType == "1" && message_file == null) {
       return;
     }
+    ///立即往本地数据库新增一条消息
+    ///构建本地消息
+    LocalChatMessage templocalChatMessage = LocalChatMessage(
+        localChatId: const Uuid().v4(),
+        role: 'user',
+        origin: 0,
+        content: message??'',
+        voiceUrl: '',
+        inputType: int.parse(messageType),
+        status: 0,
+        localStatus: 0,
+        createTime: DateTime.now().millisecondsSinceEpoch,
+        updateTime: DateTime.now().millisecondsSinceEpoch
+    );
+    ///插入本地数据库
+    insertLocalChatMessage(templocalChatMessage);
+
+    ///构建FormData请求参数
     FormData params = FormData();
-
     params.fields.add(MapEntry("roleId", roleId));
-    params.fields.add(MapEntry("message_type", message_type));
-
-    if (message_type == "0" && !Utils.isEmpty(message)) {
+    params.fields.add(MapEntry("message_type", messageType));
+    if (messageType == "0" && !Utils.isEmpty(message)) {
       focusNode.unfocus();
       params.fields.add(MapEntry("messages", message!));
-    } else if (message_type == "1" && message_file != null) {
+    } else if (messageType == "1" && message_file != null) {
       params.files.add(MapEntry("file", message_file));
     }
-
-    // {'message': message, 'roleId': roleId,'message_type' : 0}
     HttpUtils.diorequst('/chat/sendMessage', method: 'post', params: params)
         .then(
       (response) {
-        if (response?['data'] == true) {
-          //清空当前消息
-          inputContent = '';
-          update();
-          //获取最新消息列表
-          getMessageList('newMessage');
+        if (response?['data'].isNotEmpty) {
+          /// 记录聊过天的状态
+          hasChat = true;
+          ///发送成功，更新本地消息状态-todo
+          lockId = response?['data']['lockId'];
+          ChatHistory chatHistory = ChatHistory.fromJson(response?['data']['message']);
+          updateLocalChatData(chatHistory,templocalChatMessage.localChatId);
           //启动定时器，如果已存在，删掉，搞个新的
           if (_debounce?.isActive ?? false) _debounce?.cancel();
           _debounce = Timer(duration, startGptTask);
@@ -236,23 +290,27 @@ class ChatController extends GetxController {
         }
       },
     ).catchError((error) {
-      exSnackBar(error, type: ExSnackBarType.error);
+      exSnackBar(error.toString(), type: ExSnackBarType.error);
     });
   }
 
   ///发送信号给后台，可以调用gpt接口了
   void startGptTask() {
-    Map<String, dynamic> params = {'roleId': roleId};
+    Map<String, dynamic> params = {'roleId': roleId, 'lockId': lockId};
     HttpUtils.diorequst('/chat/chatRollBack', method: 'post', params: params)
         .then((response) {
-      getMessageList('newMessage');
+      if (response?['data'].isNotEmpty) {
+        ///发送成功，服务端返回的一条数据通过mqtt返回-todo
+      } else {
+        exSnackBar(response?['message'], type: ExSnackBarType.error);
+      }
     }).catchError((error) {
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }
 
   ///是否展示时间模块
-  bool showTime(ChatHistory chatData, int index) {
+  bool showTime(LocalChatMessage chatData, int index) {
     if (index == 0) {
       ///第一条消息就展示时间
       return true;
@@ -308,8 +366,7 @@ class ChatController extends GetxController {
       "chooseType": firstStep == "chatNow" ? 0 : 1
     }).then((res) {
       if (firstStep == "chatNow") {
-        /// 请后后端打招呼
-        getMessageList("newMessage");
+        /// 请求后端打招呼，这时候通过mqtt推送过来，这里不处理，需要测试-todo
       } else if (firstStep == "test") {
         /// 帮助用户发送一条消息
         late String message = "";
@@ -326,7 +383,7 @@ class ChatController extends GetxController {
           message = introHistoryList[2];
         }
 
-        sendMessage(message_type: "0", message: message);
+        sendMessage(messageType: "0", message: message);
       }
     }).catchError((err) {
       APPPlugin.logger.e(err);
@@ -372,7 +429,7 @@ class ChatController extends GetxController {
               height: 34.w,
               width: 213.w,
               alignment: Alignment.center,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   image: DecorationImage(
                 image:
                     AssetImage('assets/images/image/introOptionButtonBg.png'),

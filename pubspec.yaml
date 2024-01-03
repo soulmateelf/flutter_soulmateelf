@@ -160,6 +160,9 @@ dependencies:
   # SQLite数据库
   # https://pub-web.flutter-io.cn/packages/sqflite
   sqflite: ^2.3.0
+  # uuid
+  # https://pub-web.flutter-io.cn/packages/uuid
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
@@ -176,6 +179,7 @@ flutter:
     - assets/images/image/
     - assets/images/icons/
     - assets/images/menuIcon/
+    - assets/images/chatBackground/
     - assets/mp3/
     - assets/
 

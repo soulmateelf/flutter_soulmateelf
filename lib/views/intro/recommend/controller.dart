@@ -27,7 +27,7 @@ class IntroRecommendController extends GetxController {
   }
 
   void chatNow(String roleId) {
-    Get.offNamedUntil("/menu", (route) => Get.currentRoute == "/chat",
+    Get.offNamedUntil("/chat", (route) => route.settings.name == "/menu",
         arguments: {"roleId": roleId, "intro": true});
   }
 

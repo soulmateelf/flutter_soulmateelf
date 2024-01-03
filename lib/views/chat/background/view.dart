@@ -43,7 +43,7 @@ class ChatBackgroundPage extends StatelessWidget {
             color: Colors.white30,
             image: DecorationImage(
               image: AssetImage(
-                "assets/images/image/${bg}.png",
+                "assets/images/chatBackground/${bg}.png",
               ),
               fit: BoxFit.cover,
             ),

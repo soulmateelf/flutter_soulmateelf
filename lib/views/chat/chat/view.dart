@@ -20,6 +20,7 @@ import 'package:get/get.dart' hide MultipartFile;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:soulmate/dataService/model/localChatMessage.dart';
 import 'package:soulmate/models/chat.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
@@ -74,10 +75,10 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
       setState(() {
         if (MediaQuery.of(context).viewInsets.bottom == 0) {
           /// 键盘收回
-          logic.toEndMeesage();
+          logic.toEndMessage();
         } else {
           /// 键盘弹出
-          logic.toEndMeesage();
+          logic.toEndMessage();
         }
       });
     });
@@ -188,7 +189,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                         image: logic.roleDetail?.imageId != null
                             ? DecorationImage(
                                 image: AssetImage(
-                                    "assets/images/image/${logic.roleDetail!.imageId}.png"),
+                                    "assets/images/chatBackground/${logic.roleDetail!.imageId}.png"),
                                 fit: BoxFit.cover,
                               )
                             : null,
@@ -220,7 +221,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
       controller: logic.refreshController,
       scrollController: logic.scrollController,
       onRefresh: () {
-        logic.getMessageList('refresh');
+        logic.getLocalChatMessageList('refresh');
       },
       child: ListView.builder(
           cacheExtent: double.infinity,
@@ -324,7 +325,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                         final messageFile = await MultipartFile.fromFile(path!,
                             filename: "voice.m4a");
                         logic.sendMessage(
-                            message_type: "1", message_file: messageFile);
+                            messageType: "1", message_file: messageFile);
                       },
                       child: Image.asset(
                         "assets/images/icons/activeSend.png",
@@ -378,7 +379,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                               logic.inputContent = str;
                               logic.sendMessage(
                                   message: logic.inputContent,
-                                  message_type: "0");
+                                  messageType: "0");
                             },
                             decoration: InputDecoration(
                                 hintText:
@@ -411,7 +412,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
 
   /// 聊天信息展示组件
   Widget _messageItem(index) {
-    ChatHistory chatData = logic.messageList[index];
+    LocalChatMessage chatData = logic.messageList[index];
     return chatData.inputType == 0
         ? Container(
             margin: EdgeInsets.only(bottom: 12.w),
@@ -446,33 +447,55 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                         ? Alignment.centerRight
                         : Alignment.centerLeft,
                     margin: EdgeInsets.only(top: 12.w),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: chatData.role == 'user'
-                            ? primaryColor
-                            : const Color.fromRGBO(239, 239, 239, 1),
-                        borderRadius: chatData.role == 'user'
-                            ? BorderRadius.only(
-                                topLeft: Radius.circular(20.w),
-                                topRight: Radius.circular(20.w),
-                                bottomLeft: Radius.circular(20.w))
-                            : BorderRadius.only(
-                                topLeft: Radius.circular(20.w),
-                                topRight: Radius.circular(20.w),
-                                bottomRight: Radius.circular(20.w)),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 12.w, horizontal: 20.w),
-                      child: Text(
-                        chatData.content,
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w400,
-                            height: 1.3,
-                            color: chatData.role == 'user'
-                                ? Colors.white
-                                : const Color.fromRGBO(0, 0, 0, 0.8)),
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ///0发送中, 1已发送, 2发送失败，3已删除
+                        Offstage(
+                          offstage: chatData.localStatus != 0,
+                          child:CupertinoActivityIndicator(radius: 8.w,)
+                        ),
+                        Offstage(
+                            offstage: chatData.localStatus != 2,
+                            child: Icon(
+                              Icons.error,
+                              color: Colors.red,
+                              size: 20.w,
+                            ),
+                        ),
+                        SizedBox(
+                          width: 4.w,
+                        ),
+                        Flexible(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: chatData.role == 'user'
+                                  ? primaryColor
+                                  : const Color.fromRGBO(239, 239, 239, 1),
+                              borderRadius: chatData.role == 'user'
+                                  ? BorderRadius.only(
+                                  topLeft: Radius.circular(20.w),
+                                  topRight: Radius.circular(20.w),
+                                  bottomLeft: Radius.circular(20.w))
+                                  : BorderRadius.only(
+                                  topLeft: Radius.circular(20.w),
+                                  topRight: Radius.circular(20.w),
+                                  bottomRight: Radius.circular(20.w)),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 12.w, horizontal: 20.w),
+                            child: Text(
+                              chatData.content,
+                              style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                  height: 1.3,
+                                  color: chatData.role == 'user'
+                                      ? Colors.white
+                                      : const Color.fromRGBO(0, 0, 0, 0.8)),
+                            ),
+                          ))
+                      ],
                     )),
               ],
             ),
@@ -483,7 +506,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
   }
 
   void craeteRecordTimer() {
-    timer = Timer.periodic(Duration(milliseconds: 120), (timer) {
+    timer = Timer.periodic(const Duration(milliseconds: 120), (timer) {
       recordDuration = recorderController.elapsedDuration.inMilliseconds;
       setState(() {});
     });

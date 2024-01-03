@@ -1,19 +1,17 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:math';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:soulmate/dataService/model/localChatMessage.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../../models/chat.dart';
 
 class ChatBlubble extends StatefulWidget {
-  ChatHistory chatData;
+  LocalChatMessage chatData;
 
   ChatBlubble({super.key, required this.chatData});
 
@@ -51,7 +49,7 @@ class _ChatBlubbleState extends State<ChatBlubble> {
     // Prepare player with extracting waveform if index is even.
 
     final appDirectory = await getApplicationDocumentsDirectory();
-    String path = "${appDirectory.path}/${widget.chatData.chatId}.wav";
+    String path = "${appDirectory.path}/${widget.chatData.localChatId}.wav";
     await HttpUtils.dio.download("${widget.chatData.voiceUrl}", path);
 
     controller.preparePlayer(
@@ -89,7 +87,7 @@ class _ChatBlubbleState extends State<ChatBlubble> {
   @override
   Widget build(BuildContext context) {
     final isUser = widget.chatData.role == 'user';
-    final color = isUser ? Colors.white : Color.fromRGBO(0, 0, 0, 0.24);
+    final color = isUser ? Colors.white : const Color.fromRGBO(0, 0, 0, 0.24);
 
     return Container(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
@@ -99,7 +97,7 @@ class _ChatBlubbleState extends State<ChatBlubble> {
         height: 76.w,
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 26.w),
         decoration: BoxDecoration(
-            color: isUser ? primaryColor : Color.fromRGBO(239, 239, 239, 1),
+            color: isUser ? primaryColor : const Color.fromRGBO(239, 239, 239, 1),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(borderRadius),
               topRight: Radius.circular(borderRadius),
@@ -117,7 +115,7 @@ class _ChatBlubbleState extends State<ChatBlubble> {
                 color: color,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             AudioFileWaveforms(
@@ -126,11 +124,11 @@ class _ChatBlubbleState extends State<ChatBlubble> {
               waveformType: false ? WaveformType.fitWidth : WaveformType.long,
               playerWaveStyle: playerWaveStyle,
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Text(
-              "${controller.maxDuration != null ? (controller.maxDuration / 1000).toStringAsFixed(1) : "123"}",
+              controller.maxDuration != null ? (controller.maxDuration / 1000).toStringAsFixed(1) : "--",
               style: TextStyle(
                 color: color,
                 fontSize: 14.sp,
