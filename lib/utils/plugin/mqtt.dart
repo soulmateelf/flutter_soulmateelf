@@ -76,15 +76,13 @@ class XMqttClient {
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
       // 解码包含中文字符的字符串
       final String decodedString = utf8.decode(pt.codeUnits);
+      APPPlugin.logger.d('12345Received message: $decodedString from topic: ${c[0].topic}');
       if (topicMap.containsKey("${c[0].topic}")) {
         final topic = topicMap["${c[0].topic}"];
         if (topic is Topic) {
           topic.callback!(MqttMessageData.fromJson(jsonDecode(decodedString)));
         }
       }
-
-      APPPlugin.logger
-          .d('12345Received message: $decodedString from topic: ${c[0].topic}');
     });
 
     return client;

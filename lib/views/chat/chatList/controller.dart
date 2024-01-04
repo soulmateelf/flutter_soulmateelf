@@ -71,7 +71,7 @@ class ChatListController extends GetxController {
     Get.toNamed("/chat", arguments: {"roleId": itemData.roleId});
   }
 
-  void deleteConfirm(index) {
+  void deleteConfirm(String roleId) {
     final makeDialogController = MakeDialogController();
 
     makeDialogController.show(
@@ -103,7 +103,7 @@ class ChatListController extends GetxController {
             child: TextButton(
                 onPressed: () {
                   makeDialogController.close();
-                  deleteChatItem(index);
+                  deleteChatItem(roleId);
                 },
                 style: ButtonStyle(
                     textStyle: MaterialStateProperty.all(
@@ -151,12 +151,17 @@ class ChatListController extends GetxController {
     );
   }
 
-  void deleteChatItem(index) {
+  void deleteChatItem(String roleId) {
     HttpUtils.diorequst('/role/deleteUserRole',
         method: 'post',
-        params: {"roleId": dataList[index].roleId}).then((response) {
-      dataList.removeAt(index);
-      update();
+        params: {"roleId": roleId}).then(
+      (response) {
+      ///找到列表项，删除
+      int index = dataList.indexWhere((element) => element.roleId == roleId);
+      if (index != -1) {
+        dataList.removeAt(index);
+        update();
+      }
     }).catchError((error) {
       exSnackBar(error, type: ExSnackBarType.error);
     });

@@ -17,13 +17,14 @@ class IntroWelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return basePage("",
+        showAppbar: false,
         backGroundImage: const AssetImage(
           "assets/images/image/introBackground.png",
         ),
         leading: Container(),
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(vertical: 0.w, horizontal: 34.w),
+          padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 34.w),
           child: Column(
             children: [
               Stack(
@@ -110,7 +111,7 @@ class IntroWelcomePage extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 50.w,
+                height: 40.w,
               ),
               GetBuilder<IntroWelcomeController>(
                 builder: (controller) {

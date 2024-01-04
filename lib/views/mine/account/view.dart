@@ -50,7 +50,7 @@ class MineAccountPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(56.w),
                             child: controller.user?.avatar != null
                                 ? CachedNetworkImage(
-                                    imageUrl: controller.user!.avatar!,
+                                    imageUrl: controller.user!.avatar??"",
                                     fit: BoxFit.cover,
                                     errorWidget: (_, __, ___) {
                                       return Image.asset(
@@ -141,14 +141,13 @@ class MineAccountPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Divider(
+                        const Divider(
                           height: 1,
                         ),
                         GestureDetector(
                             behavior: HitTestBehavior.translucent,
                             onTap: () async {
-                              final back = await Get.toNamed('/mineNickname');
-                              controller.getUser();
+                              Get.toNamed('/mineNickname');
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(

@@ -86,18 +86,16 @@ class _MinePage extends State<MinePage> {
                               clipBehavior: Clip.hardEdge,
                               height: 80.w,
                               width: 80.w,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(40.w)),
-                              child: logic.user?.avatar != null
-                                  ? CachedNetworkImage(
-                                      imageUrl: logic.user!.avatar!,
-                                      fit: BoxFit.cover,
-                                      errorWidget: (_, __, ___) {
-                                        return Image.asset(
-                                            "assets/images/icons/avatar.png");
-                                      },
-                                    )
-                                  : Image.asset("assets/images/icons/avatar.png"),
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl: logic.user?.avatar ?? '',
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) =>
+                                const CupertinoActivityIndicator(),
+                                errorWidget: (context, url, error) => Image.asset("assets/images/icons/avatar.png"),
+                              ),
                             ),
                           ),
                         ),
@@ -316,7 +314,7 @@ class _MinePage extends State<MinePage> {
                                                   ),
                                                 ),
                                                 ColorFiltered(
-                                                  colorFilter: ColorFilter.mode(
+                                                  colorFilter: const ColorFilter.mode(
                                                       Colors.white, BlendMode.srcOut),
                                                   child: ImageFiltered(
                                                     imageFilter: ImageFilter.blur(

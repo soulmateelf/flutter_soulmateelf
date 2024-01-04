@@ -5,6 +5,7 @@
 /// Description:
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ffi' hide Size;
 import 'dart:io';
 import 'dart:ui';
@@ -252,7 +253,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                     GestureDetector(
                       onTap: () async {
                         await _stopRecording();
-                        logic.toggleShowVoiceWidget();
+                        logic.toggleShowVoiceWidget(false);
                       },
                       child: Image.asset(
                         "assets/images/icons/activeRemove.png",
@@ -320,12 +321,13 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                     ),
                     GestureDetector(
                       onTap: () async {
+                        if(logic.showVoiceWidget==false || recordDuration<1000) return;
+                        logic.toggleShowVoiceWidget(false);
                         await _stopRecording();
-                        logic.toggleShowVoiceWidget();
                         final messageFile = await MultipartFile.fromFile(path!,
                             filename: "voice.m4a");
                         logic.sendMessage(
-                            messageType: "1", message_file: messageFile);
+                            messageType: "1", message_file: messageFile,filePath: path!);
                       },
                       child: Image.asset(
                         "assets/images/icons/activeSend.png",
@@ -395,7 +397,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                       padding: EdgeInsets.only(top: 10.w, bottom: 5.w),
                       child: GestureDetector(
                           onTap: () {
-                            logic.toggleShowVoiceWidget();
+                            logic.toggleShowVoiceWidget(true);
                             _startRecording();
                           },
                           child: Image.asset(
@@ -451,8 +453,9 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         ///0发送中, 1已发送, 2发送失败，3已删除
+                        ///状态是0发送中，并且是3分钟内的消息，才显示loading，因为特殊情况下，发送失败的事件没接收到，状态就还是0，显示loading就很奇怪
                         Offstage(
-                          offstage: chatData.localStatus != 0,
+                          offstage: (chatData.localStatus == 0 && DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(chatData.createTime)).inMinutes < 3) == false,
                           child:CupertinoActivityIndicator(radius: 8.w,)
                         ),
                         Offstage(
@@ -505,7 +508,8 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
           );
   }
 
-  void craeteRecordTimer() {
+
+  void createRecordTimer() {
     timer = Timer.periodic(const Duration(milliseconds: 120), (timer) {
       recordDuration = recorderController.elapsedDuration.inMilliseconds;
       setState(() {});
@@ -516,7 +520,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
   void _startRecording() async {
     try {
       await recorderController.record(path: path);
-      craeteRecordTimer();
+      createRecordTimer();
       setState(() {
         isRecordingCompleted = false;
         isRecording = !isRecording;
@@ -535,7 +539,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
           timer?.cancel();
         } else {
           await recorderController.pause();
-          craeteRecordTimer();
+          createRecordTimer();
         }
 
         setState(() {

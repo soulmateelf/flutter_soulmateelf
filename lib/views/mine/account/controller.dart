@@ -8,6 +8,7 @@ import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:dio/src/form_data.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/views/mine/mine/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class MineAccountController extends GetxController {
@@ -28,7 +29,10 @@ class MineAccountController extends GetxController {
             },
             params: formData)
         .then((res) async {
-      getUser();
+          MineController mineController = Get.find<MineController>();
+          await mineController.getUser();
+          user = Application.userInfo;
+          update();
     }).catchError((err) {
       APPPlugin.logger.e(err);
     });
@@ -42,13 +46,11 @@ class MineAccountController extends GetxController {
         exSnackBar(res?['message']);
       }
     }).catchError((err) {
-      APPPlugin.logger.d(err);
       exSnackBar(err,type: ExSnackBarType.error);
     });
   }
 
   void getUser() async {
-    await Application.regainUserInfo();
     user = Application.userInfo;
     update();
   }
@@ -56,7 +58,6 @@ class MineAccountController extends GetxController {
   @override
   void onReady() {
     // TODO: implement onReady
-    getUser();
     super.onReady();
   }
 
@@ -64,5 +65,7 @@ class MineAccountController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    user = Application.userInfo;
+    update();
   }
 }

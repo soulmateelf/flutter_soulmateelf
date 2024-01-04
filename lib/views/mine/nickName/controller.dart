@@ -3,6 +3,9 @@ import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/views/mine/account/controller.dart';
+import 'package:soulmate/views/mine/mine/controller.dart';
+import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 import '../../../models/user.dart';
 
@@ -17,9 +20,14 @@ class MineNickNameController extends GetxController {
     HttpUtils.diorequst("/user/updateName", query: {
       "newName": controller.text,
     }).then((res) async {
+      MineController mineController = Get.find<MineController>();
+      await mineController.getUser();
+      MineAccountController mineAccountController = Get.find<MineAccountController>();
+      mineAccountController.getUser();
       Get.back();
+      exSnackBar('success');
     }).catchError((err) {
-      APPPlugin.logger.e(err);
+      exSnackBar(err,type: ExSnackBarType.error);
     });
   }
 

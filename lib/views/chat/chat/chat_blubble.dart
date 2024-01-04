@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,10 @@ class _ChatBlubbleState extends State<ChatBlubble> {
 
     final appDirectory = await getApplicationDocumentsDirectory();
     String path = "${appDirectory.path}/${widget.chatData.localChatId}.wav";
-    await HttpUtils.dio.download("${widget.chatData.voiceUrl}", path);
+    File sourceFile = File(path);
+    if (!sourceFile.existsSync() && widget.chatData.voiceUrl != null) {
+      await HttpUtils.dio.download("${widget.chatData.voiceUrl}", path);
+    }
 
     controller.preparePlayer(
       path: path!,
@@ -60,8 +64,7 @@ class _ChatBlubbleState extends State<ChatBlubble> {
         .extractWaveformData(
           path: path!,
           noOfSamples: playerWaveStyle.getSamplesForWidth(200),
-        )
-        .then((waveformData) => debugPrint(waveformData.toString()));
+        );
   }
 
   @override
@@ -94,8 +97,8 @@ class _ChatBlubbleState extends State<ChatBlubble> {
       padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 8.w),
       child: Container(
         width: 348.w,
-        height: 76.w,
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 26.w),
+        height: 66.w,
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 21.w),
         decoration: BoxDecoration(
             color: isUser ? primaryColor : const Color.fromRGBO(239, 239, 239, 1),
             borderRadius: BorderRadius.only(

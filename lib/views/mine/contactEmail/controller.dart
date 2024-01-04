@@ -25,15 +25,15 @@ class MineContactEmailController extends GetxController {
   }
 
   void validateEmail(String email) {
-    if (email.isEmpty) {
+    final isEmail = GetUtils.isEmail(email);
+    if (isEmail) {
       errorText = null;
     } else {
-      final isEmail = GetUtils.isEmail(email);
-      if (isEmail) {
-        errorText = null;
-      } else {
-        errorText = "Please enter a valid email.";
-      }
+      errorText = "Please enter a valid email.";
+    }
+    ///不能用自己的邮箱
+    if (email == Application.userInfo?.email) {
+      errorText = "Can't use your own email.";
     }
     update();
   }
@@ -59,8 +59,7 @@ class MineContactEmailController extends GetxController {
         "emergencyEmail": email,
       }).then((value) async {
         Get.back();
-        await Application.regainUserInfo();
-        mineController.update();
+        mineController.getUser();
         exSnackBar(value?['message']);
       }).catchError((err) {
         exSnackBar(err.toString(), type: ExSnackBarType.error);

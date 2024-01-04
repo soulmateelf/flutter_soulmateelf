@@ -123,7 +123,7 @@ class ChatListPage extends StatelessWidget {
         children: [
           CustomSlidableAction(
             onPressed: (context) {
-              logic.deleteConfirm(index);
+              logic.deleteConfirm(roleData.roleId);
             },
             child: Image.asset('assets/images/icons/slideDelete.png',
                 width: 44.w, height: 44.w),

@@ -128,7 +128,7 @@ class MineController extends GetxController {
     );
   }
 
-  void getUser() async {
+  Future<void> getUser() async {
     await Application.regainUserInfo();
     user = Application.userInfo;
     update();
