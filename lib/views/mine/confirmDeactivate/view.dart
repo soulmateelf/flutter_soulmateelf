@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/views/mine/confirmDeactivate/controller.dart';
 import 'package:soulmate/views/mine/deactivate/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
-
-import '../../../utils/core/constants.dart';
 
 class MineConfirmDeactivatePage extends StatelessWidget {
   MineConfirmDeactivatePage({super.key});

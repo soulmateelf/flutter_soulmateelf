@@ -10,10 +10,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:soulmate/views/base/menu/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
-import '../../base/menu/controller.dart';
 import 'controller.dart';
 
 class RoleListPage extends StatelessWidget {

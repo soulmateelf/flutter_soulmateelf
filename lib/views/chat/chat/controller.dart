@@ -58,8 +58,8 @@ class ChatController extends GetxController {
   ///输入框焦点
   FocusNode focusNode = FocusNode();
 
-  ///页码
-  int page = 0;
+  ///当前页面最老的一条数据的localChatId
+  String lastLocalChatId = '';
 
   ///可以下拉刷新
   bool canRefresh = true;
@@ -122,6 +122,7 @@ class ChatController extends GetxController {
   void onInit() {
     super.onInit();
     roleId = Get.arguments?["roleId"];
+
     /// 如果不存在用户角色聊天记录表，创建
     tableName = 'chat_${Application.userInfo?.userId}_$roleId';
     DBUtil.createTableIfNotExists(tableName);
@@ -155,11 +156,15 @@ class ChatController extends GetxController {
 
   /// 获取本地聊天记录
   void getLocalChatMessageList(String from) {
-    int queryPage = page + 1;
-    int limit =  10;
-    LocalChatMessageService.getChatMessageList(tableName,page:queryPage, limit:limit).then((List<LocalChatMessage> newList) {
+    int limit = 10;
+    LocalChatMessageService.getChatMessageList(tableName,
+            lastLocalChatId: lastLocalChatId, limit: limit)
+        .then((List<LocalChatMessage> newList) {
       refreshController.refreshCompleted();
-      page++;
+
+      ///最老的一条数据的localChatId，倒序排列，最后一条就是最老的
+      lastLocalChatId = newList.last.localChatId;
+
       ///历史消息,往上插入
       messageList.insertAll(0, newList.reversed);
       if (newList.isEmpty) {
@@ -187,112 +192,152 @@ class ChatController extends GetxController {
       );
     });
   }
+
   ///本地数据库插入新消息
-  void insertLocalChatMessage(LocalChatMessage localChatMessage) async{
-    LocalChatMessageService.insertChatMessage(tableName, localChatMessage).then((value) {
+  void insertLocalChatMessage(LocalChatMessage localChatMessage) async {
+    LocalChatMessageService.insertChatMessage(tableName, localChatMessage)
+        .then((value) {
       ///插入成功
       ///清空当前消息
       inputContent = '';
+
       ///更新本地消息列表
       messageList.add(localChatMessage);
       update();
+
       ///滚动到底部
       toEndMessage();
     }).catchError((error) {
       exSnackBar(error.toString(), type: ExSnackBarType.error);
     });
   }
+
   /// 消息发送至服务端，成功或者失败，更新本地数据库消息状态
-  void updateLocalChatData(String localChatId,{ChatHistory? chatHistory}) async{
+  void updateLocalChatData(String localChatId,
+      {ChatHistory? chatHistory}) async {
     ///先查询本地数据库的消息
-    LocalChatMessage? localChatMessage = await LocalChatMessageService.getChatMessageRecord(tableName, localChatId);
+    LocalChatMessage? localChatMessage =
+        await LocalChatMessageService.getChatMessageRecord(
+            tableName, localChatId);
     if (localChatMessage == null) {
       return;
     }
+
     ///有chatHistory，是发送成功的消息
-    if(chatHistory != null) {
+    if (chatHistory != null) {
       ///更新本地消息
       localChatMessage.serverChatId = chatHistory.chatId;
-      localChatMessage.voiceUrl = chatHistory.voiceUrl??"";
+      localChatMessage.voiceUrl = chatHistory.voiceUrl ?? "";
       localChatMessage.status = chatHistory.status;
       localChatMessage.createTime = chatHistory.createTime;
       localChatMessage.updateTime = DateTime.now().millisecondsSinceEpoch;
       localChatMessage.localStatus = 1;
-    }else {
+    } else {
       ///更新本地消息
       localChatMessage.updateTime = DateTime.now().millisecondsSinceEpoch;
       localChatMessage.localStatus = 2;
     }
-    LocalChatMessageService.updateChatMessage(tableName, localChatMessage).then((value) {
+    LocalChatMessageService.updateChatMessage(tableName, localChatMessage)
+        .then((value) {
       ///查找到本地消息列表的那一条，更新本地消息列表
-      int index = messageList.indexWhere((element) => element.localChatId == localChatMessage.localChatId);
+      int index = messageList.indexWhere(
+          (element) => element.localChatId == localChatMessage.localChatId);
       if (index != -1) {
         messageList[index] = localChatMessage;
         update();
       }
+
       ///发送消息成功，更新同步记录表，记录本地最新的消息id
       if (chatHistory != null) {
-        SyncRecordService.insertOrUpdateSyncRecord(Application.userInfo!.userId,roleId,chatHistory.chatId,chatHistory.createTime);
+        SyncRecordService.insertOrUpdateSyncRecord(Application.userInfo!.userId,
+            roleId, chatHistory.chatId, chatHistory.createTime);
       }
     }).catchError((error) {
       exSnackBar(error.toString(), type: ExSnackBarType.error);
     });
   }
+
   ///mqtt回复消息了，更新页面消息列表
-  void mqttUpdateMessageList(String roleId,LocalChatMessage localChatMessage) async{
+  void mqttUpdateMessageList(
+      String roleId, LocalChatMessage localChatMessage) async {
     ///不是当前角色的消息，不处理
     if (roleId != this.roleId) {
       return;
     }
+
     ///更新本地消息列表
     messageList.add(localChatMessage);
     update();
+
     ///滚动到底部
     toEndMessage();
+
     /// 如果是引导功能进来的，角色回复第一条消息，显示引导结束提示框
-    if (isIntro) {
+    if (isIntro && Application.hasIntro == false) {
       showGiftIntro();
     }
   }
+
   ///本地数据库的数据处理
-  void localDataHandle({required String localChatId,String? message, required String messageType, dynamic? message_file,String? filePath}) async{
+  void localDataHandle(
+      {required String localChatId,
+      String? message,
+      required String messageType,
+      dynamic? message_file,
+      String? filePath}) async {
     ///立即往本地数据库新增一条消息
     ///构建本地消息
     LocalChatMessage tempLocalChatMessage = LocalChatMessage(
         localChatId: localChatId,
         role: 'user',
         origin: 0,
-        content: message??'',
+        content: message ?? '',
         voiceUrl: '',
         inputType: int.parse(messageType),
         status: 0,
         localStatus: 0,
-        createTime: DateTime.now().millisecondsSinceEpoch
-    );
+        createTime: DateTime.now().millisecondsSinceEpoch);
+
     ///如果是语音，复制一份语音文件到本地，这样就能直接播放，不需要等mqtt推送再下载了
     if (messageType == "1" && message_file != null && filePath != null) {
       File file = File(filePath!);
       final appDirectory = await getApplicationDocumentsDirectory();
+
       ///目标文件路径
-      String destinationFilePath = "${appDirectory.path}/${tempLocalChatMessage.localChatId}.wav";
+      String destinationFilePath =
+          "${appDirectory.path}/${tempLocalChatMessage.localChatId}.wav";
+
       ///复制文件，这里我直接把录音的m4a文件复制成wav文件了
       file.copySync(destinationFilePath);
     }
+
     ///插入本地数据库
     insertLocalChatMessage(tempLocalChatMessage);
   }
+
   ///发送消息
   Future<void> sendMessage(
-      {String? message, required String messageType, dynamic? message_file,String? filePath}) async {
+      {String? message,
+      required String messageType,
+      dynamic? message_file,
+      String? filePath}) async {
     if (messageType == "0" && Utils.isEmpty(message)) {
       return;
     } else if (messageType == "1" && message_file == null) {
       return;
     }
+
     /// 本地消息的id
     String localChatId = const Uuid().v4();
+
     ///本地数据库的数据处理
-    localDataHandle(localChatId: localChatId,message: message,messageType: messageType,message_file: message_file,filePath: filePath);
+    localDataHandle(
+        localChatId: localChatId,
+        message: message,
+        messageType: messageType,
+        message_file: message_file,
+        filePath: filePath);
+
     ///构建FormData请求参数
     FormData params = FormData();
     params.fields.add(MapEntry("roleId", roleId));
@@ -309,10 +354,12 @@ class ChatController extends GetxController {
         if (response?['data'].isNotEmpty) {
           /// 记录聊过天的状态
           hasChat = true;
+
           ///发送成功，更新本地消息状态
           lockId = response?['data']['lockId'];
-          ChatHistory chatHistory = ChatHistory.fromJson(response?['data']['message']);
-          updateLocalChatData(localChatId,chatHistory: chatHistory);
+          ChatHistory chatHistory =
+              ChatHistory.fromJson(response?['data']['message']);
+          updateLocalChatData(localChatId, chatHistory: chatHistory);
           //启动定时器，如果已存在，删掉，搞个新的
           if (_debounce?.isActive ?? false) _debounce?.cancel();
           _debounce = Timer(duration, startGptTask);
@@ -330,8 +377,8 @@ class ChatController extends GetxController {
   void startGptTask() {
     Map<String, dynamic> params = {'roleId': roleId, 'lockId': lockId};
     HttpUtils.diorequst('/chat/chatRollBack', method: 'post', params: params)
-        .then((response) {
-    }).catchError((error) {
+        .then((response) {})
+        .catchError((error) {
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }
@@ -366,6 +413,7 @@ class ChatController extends GetxController {
       _debounce = Timer(duration, startGptTask);
     }
   }
+
   /// 加载引导数据
   Future<void> getIntroData() async {
     Map<String, dynamic> json =
@@ -410,7 +458,7 @@ class ChatController extends GetxController {
         sendMessage(messageType: "0", message: message);
       }
     }).catchError((err) {
-      APPPlugin.logger.e(err);
+      exSnackBar(err, type: ExSnackBarType.error);
     });
   }
 
@@ -542,6 +590,7 @@ class ChatController extends GetxController {
     });
     Overlay.of(Get.context!).insert(overlayEntry!);
   }
+
   /// 开始引导展示框
   void showIntro() {
     overlayEntry = OverlayEntry(builder: (_) {
@@ -618,6 +667,7 @@ class ChatController extends GetxController {
 
     Overlay.of(Get.context!).insert(overlayEntry!);
   }
+
   ///  引导结束提示框
   void showGiftIntro() {
     final ctx = leadingKey.currentContext!;
@@ -648,7 +698,7 @@ class ChatController extends GetxController {
                   ),
                 ),
                 AnimatedPositioned(
-                    duration: Duration(milliseconds: 1000),
+                    duration: const Duration(milliseconds: 1000),
                     top: offset.dy + _margin.top,
                     left: offset.dx + _margin.left,
                     child: GestureDetector(

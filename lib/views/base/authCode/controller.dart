@@ -164,7 +164,7 @@ class AuthCodeController extends GetxController {
                     await Application.logout();
                     exSnackBar(res['message']);
                   }).catchError((err) {
-                    APPPlugin.logger.e(err);
+                    exSnackBar(err, type: ExSnackBarType.error);
                   });
                 },
                 style: ButtonStyle(

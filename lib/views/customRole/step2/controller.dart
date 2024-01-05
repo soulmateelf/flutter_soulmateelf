@@ -9,13 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:soulmate/models/product.dart';
 import 'package:soulmate/utils/core/application.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/AppPurchase.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
-
-import '../../../utils/core/constants.dart';
-import '../../../widgets/library/projectLibrary.dart';
+import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class Step2Controller extends GetxController {
   final nameController = TextEditingController();
@@ -118,7 +117,8 @@ class Step2Controller extends GetxController {
 
   ///通知服务端商品购买成功或者失败
   notifyServerPurchaseResult(PurchaseDetails purchaseDetails) async {
-    print(purchaseDetails.status);
+    // print(purchaseDetails.status);
+
     ///ios在月度订阅扣费的时候也会进入这里，android就不会
     ///订单支付成功或者失败都会清空currentOrderId,如果currentOrderId为空，就不在执行更新订单信息的回调操作
     if (Utils.isEmpty(currentOrderId)) {
@@ -163,10 +163,12 @@ class Step2Controller extends GetxController {
         params: formData,
         extra: {'formData': true}).then((response) {
       Loading.dismiss();
+
       ///清空当前订单id
       currentOrderId = '';
       if (response['code'] == 200) {
         exSnackBar("purchase success", type: ExSnackBarType.success);
+
         ///返回到菜单页面
         Get.until((route) => Get.currentRoute == "/menu");
       } else {
@@ -175,6 +177,7 @@ class Step2Controller extends GetxController {
     }).catchError((error) {
       Loading.dismiss();
       exSnackBar(error, type: ExSnackBarType.error);
+
       ///清空当前订单id
       currentOrderId = '';
     });
@@ -201,11 +204,13 @@ class Step2Controller extends GetxController {
           exSnackBar("purchase failed", type: ExSnackBarType.error);
         }
       }
+
       ///清空当前订单id
       currentOrderId = '';
     }).catchError((error) {
       Loading.dismiss();
       exSnackBar(error, type: ExSnackBarType.error);
+
       ///清空当前订单id
       currentOrderId = '';
     });
@@ -218,7 +223,7 @@ class Step2Controller extends GetxController {
         update();
       }
     }).catchError((err) {
-      APPPlugin.logger.e(err);
+      exSnackBar(err, type: ExSnackBarType.error);
     });
   }
 

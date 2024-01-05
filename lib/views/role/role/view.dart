@@ -13,13 +13,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:moment_dart/moment_dart.dart';
+import 'package:soulmate/models/roleEvent.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
-
-import '../../../models/roleEvent.dart';
 import 'controller.dart';
 
 class RolePage extends StatelessWidget {

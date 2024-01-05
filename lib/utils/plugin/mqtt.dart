@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:mqtt_client/mqtt_client.dart' hide Topic;
 import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:soulmate/config.dart';
 import 'package:soulmate/models/MQTTMsg.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 
@@ -44,7 +45,6 @@ class XMqttClient {
   }
 
   Future<MqttServerClient> connect(String cid) async {
-    APPPlugin.logger.d('mqtt connect host = $host cid = $cid ');
     MqttServerClient client = MqttServerClient.withPort(host, cid, port);
     client.logging(on: true);
     client.onConnected = onConnected;
@@ -76,7 +76,10 @@ class XMqttClient {
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
       // 解码包含中文字符的字符串
       final String decodedString = utf8.decode(pt.codeUnits);
-      APPPlugin.logger.d('12345Received message: $decodedString from topic: ${c[0].topic}');
+      if (ProjectConfig.getInstance()?.isDebug == true) {
+        APPPlugin.logger.d(
+            '12345Received message: $decodedString from topic: ${c[0].topic}');
+      }
       if (topicMap.containsKey("${c[0].topic}")) {
         final topic = topicMap["${c[0].topic}"];
         if (topic is Topic) {

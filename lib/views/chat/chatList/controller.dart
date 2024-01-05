@@ -46,7 +46,6 @@ class ChatListController extends GetxController {
       List roleListMap = response["data"];
       dataList = roleListMap.map((json) => Role.fromJson(json)).toList();
       refreshController.refreshCompleted();
-      // menuLogic.updateMessageNum(chatMessageNum: 8);
       update();
     }).catchError((error) {
       refreshController.refreshFailed();

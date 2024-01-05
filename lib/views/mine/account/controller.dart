@@ -29,12 +29,12 @@ class MineAccountController extends GetxController {
             },
             params: formData)
         .then((res) async {
-          MineController mineController = Get.find<MineController>();
-          await mineController.getUser();
-          user = Application.userInfo;
-          update();
+      MineController mineController = Get.find<MineController>();
+      await mineController.getUser();
+      user = Application.userInfo;
+      update();
     }).catchError((err) {
-      APPPlugin.logger.e(err);
+      exSnackBar(err, type: ExSnackBarType.error);
     });
   }
 
@@ -46,7 +46,7 @@ class MineAccountController extends GetxController {
         exSnackBar(res?['message']);
       }
     }).catchError((err) {
-      exSnackBar(err,type: ExSnackBarType.error);
+      exSnackBar(err, type: ExSnackBarType.error);
     });
   }
 

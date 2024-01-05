@@ -5,12 +5,11 @@
  * @FilePath: \soulmate\lib\views\base\password\controller.dart
  */
 import 'package:get/get.dart';
+import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
-
-import '../../../utils/core/constants.dart';
-import '../../../utils/core/httputil.dart';
-import '../../../utils/tool/utils.dart';
 
 class PasswordController extends GetxController {
   var confirmPassword = "";

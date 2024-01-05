@@ -2,12 +2,11 @@ import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:soulmate/utils/core/application.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
-
-import '../../../utils/core/constants.dart';
 
 class MineConfirmDeactivateController extends GetxController {
   final controller = TextEditingController();

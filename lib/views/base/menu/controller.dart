@@ -4,8 +4,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:soulmate/dataService/model/localChatMessage.dart';
+import 'package:soulmate/dataService/model/syncRecord.dart';
 import 'package:soulmate/dataService/service/localChatMessageService.dart';
 import 'package:soulmate/dataService/service/syncRecordService.dart';
+import 'package:soulmate/models/user.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/DBUtil.dart';
@@ -13,10 +15,8 @@ import 'package:soulmate/utils/plugin/mqtt.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/views/chat/chat/controller.dart';
 import 'package:soulmate/views/chat/chatList/controller.dart';
-import 'package:soulmate/views/chat/message/controller.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../models/user.dart';
 
 class SoulMateMenuController extends GetxController {
   late User? user;
@@ -83,6 +83,13 @@ class SoulMateMenuController extends GetxController {
     });
   }
 
+  ///数据同步
+  void syncServerData() async{
+    ///获取本地存储的同步记录，记录里存的是本地最新的消息id
+    List<SyncRecord> syncRecordList = await SyncRecordService.getSyncRecordList(Application.userInfo!.userId);
+    print(syncRecordList);
+  }
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -90,6 +97,7 @@ class SoulMateMenuController extends GetxController {
     controller = PageController(initialPage: currentIndex);
     user = Application.userInfo;
     if (user != null) {
+      ///订阅mqtt消息
       APPPlugin.mqttClient?.topicSubscribe([
         Topic(user!.userId!, (message) {
           ///0是日常消息与系统消息刷新，1是聊天未读数刷新,2是gpt聊天消息模块
@@ -106,6 +114,8 @@ class SoulMateMenuController extends GetxController {
           }
         })
       ]);
+      ///开启本地数据库服务端数据库的数据同步
+      syncServerData();
     }
   }
 
@@ -120,6 +130,10 @@ class SoulMateMenuController extends GetxController {
 
   /// 切换菜单
   changeMenu(index) {
+    syncServerData();
+    if(currentIndex == index) {
+      return;
+    }
     currentIndex = index;
     controller.jumpToPage(index);
     update();

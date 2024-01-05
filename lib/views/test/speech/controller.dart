@@ -74,7 +74,6 @@ class TextToSpeechController extends GetxController {
           .toList(),
     );
     if (result != null) {
-      print(result);
       currentVoice = result;
       // flutterTts.setVoice({
       //   'name': (result as dynamic)['name'],

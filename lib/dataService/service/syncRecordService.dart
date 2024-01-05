@@ -9,9 +9,9 @@ class SyncRecordService {
   static Future<void> insertSyncRecord(SyncRecord syncRecord) async {
     await DBUtil.database.insert('syncRecord', syncRecord.toJson());
   }
-  /// 获取所有同步记录
-  static Future<List<SyncRecord>> getSyncRecordList() async {
-    String query = 'SELECT * FROM syncRecord order by createTime desc';
+  /// 获取所有同步记录，可能会有多个账号的同步记录，所以要传入userId
+  static Future<List<SyncRecord>> getSyncRecordList(String userId) async {
+    String query = 'SELECT * FROM syncRecord where userId = "$userId" order by createTime desc';
     List<Map<String, dynamic>> maps = await DBUtil.database.rawQuery(query);
     return List.generate(maps.length, (index) {
       return SyncRecord.fromJson(maps[index]);

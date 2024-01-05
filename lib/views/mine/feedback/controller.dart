@@ -12,10 +12,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
-
-import '../../../utils/tool/utils.dart';
 import 'package:flutter/src/widgets/editable_text.dart';
 
 class FeedbackController extends GetxController {
@@ -77,7 +76,7 @@ class FeedbackController extends GetxController {
         exSnackBar(res?['message']);
       }
     }).catchError((err) {
-      exSnackBar(err,type: ExSnackBarType.error);
+      exSnackBar(err, type: ExSnackBarType.error);
     });
   }
 

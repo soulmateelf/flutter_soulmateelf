@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
+import 'package:soulmate/models/user.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
-
-import '../../../models/user.dart';
 
 class ChatSettingsController extends GetxController {
   /// 当前选择的聊天模式

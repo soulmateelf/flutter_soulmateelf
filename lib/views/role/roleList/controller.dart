@@ -11,10 +11,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/models/role.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/views/base/menu/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
-
-import '../../base/menu/controller.dart';
 
 class RoleListController extends GetxController {
   RefreshController refreshController =

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:flutter/cupertino.dart';
-
-import '../../../utils/core/constants.dart';
 import 'controller.dart';
 
 class MineUpdatePasswordPage extends StatelessWidget {
@@ -155,7 +154,6 @@ class MineUpdatePasswordPage extends StatelessWidget {
                                       onTap: () {
                                         logic.showConfirmPassword =
                                             !logic.showConfirmPassword;
-                                        print(logic.showConfirmPassword);
                                       },
                                       child: Icon(logic.showConfirmPassword
                                           ? CupertinoIcons.eye

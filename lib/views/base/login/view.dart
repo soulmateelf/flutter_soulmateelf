@@ -8,7 +8,7 @@
 /// Author: kele
 /// Date: 2022-01-13 15:18:59
 /// LastEditors: kele
-/// LastEditTime: 2023-10-20 17:18:40
+/// LastEditTime: 2024-01-05 11:15:40
 /// Description: 登录
 
 import 'package:flutter/material.dart';
@@ -16,9 +16,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/GoogleAds.dart';
 import 'package:soulmate/utils/plugin/ThirdLogin.dart';
+import 'package:soulmate/widgets/FadeAnimation.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
-import '../../../widgets/FadeAnimation.dart';
 import 'controller.dart';
 import 'package:flutter/cupertino.dart';
 

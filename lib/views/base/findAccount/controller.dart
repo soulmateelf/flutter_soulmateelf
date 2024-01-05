@@ -1,11 +1,10 @@
 import 'dart:math';
 
 import 'package:get/get.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
-
-import '../../../utils/core/constants.dart';
-import '../../../widgets/library/projectLibrary.dart';
+import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class FindAccountController extends GetxController {
   var email = "";

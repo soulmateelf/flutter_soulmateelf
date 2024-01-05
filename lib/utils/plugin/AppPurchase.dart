@@ -11,7 +11,6 @@ class AppPurchase {
   ///订单业务回调
   static Function? orderCallback;
 
-
   ///初始化支付订单状态订阅
   static initAppPayConfig() async {
     final Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
@@ -65,32 +64,32 @@ class AppPurchase {
   static Future<List<ProductDetails>> getServerProducts(
       Set<String> pIds) async {
     ///根据商品id获取云端商品列表
-    try{
+    try {
       final bool isAvailable = await InAppPurchase.instance.isAvailable();
       if (!isAvailable) {
         return [];
       }
       final ProductDetailsResponse response =
-      await InAppPurchase.instance.queryProductDetails(pIds);
+          await InAppPurchase.instance.queryProductDetails(pIds);
       if (response.notFoundIDs.isNotEmpty) {
         return [];
       }
       return response.productDetails;
-    }catch(err){
-      print(err);
+    } catch (err) {
+      APPPlugin.logger.e(err);
     }
     return [];
   }
 
   ///购买商品 type 1:购买 2:订阅
-  static payProductNow(ProductDetails productDetails,int type, String orderId) {
+  static payProductNow(
+      ProductDetails productDetails, int type, String orderId) {
     if (productDetails == null) {
       exSnackBar("please check you product", type: ExSnackBarType.warning);
       return;
     }
-    print('payProductNow');
-    print("orderId:$orderId");
-    final PurchaseParam purchaseParam = PurchaseParam(productDetails: productDetails,applicationUserName: orderId);
+    final PurchaseParam purchaseParam = PurchaseParam(
+        productDetails: productDetails, applicationUserName: orderId);
     // 消耗型商品(一次性购买)和非消耗型商品(月度订阅，年度订阅)的购买是不一样的
     if (type == 1) {
       InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);

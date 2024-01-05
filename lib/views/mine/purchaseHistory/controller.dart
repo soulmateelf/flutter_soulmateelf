@@ -1,10 +1,9 @@
 import 'package:get/get.dart';
+import 'package:soulmate/models/order.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
-
 import 'package:pull_to_refresh/src/smart_refresher.dart';
-import '../../../models/order.dart';
 
 class MinePurchaseHistoryController extends GetxController {
   final RefreshController refreshController = RefreshController();
@@ -33,7 +32,7 @@ class MinePurchaseHistoryController extends GetxController {
         orderList.addAll(list);
         refreshController.loadComplete();
       }
-      if(data.isEmpty) {
+      if (data.isEmpty) {
         refreshController.loadNoData();
       }
       update();

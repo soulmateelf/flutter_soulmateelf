@@ -1,6 +1,7 @@
 
 import 'package:soulmate/dataService/model/localChatMessage.dart';
 import 'package:soulmate/utils/plugin/DBUtil.dart';
+import 'package:soulmate/utils/tool/utils.dart';
 
 /// 聊天记录service
 class LocalChatMessageService {
@@ -18,9 +19,13 @@ class LocalChatMessageService {
     });
   }
   /// 获取聊天记录分页列表
-  static Future<List<LocalChatMessage>> getChatMessageList(String tableName, {int? limit=10, int? page=1}) async {
-    int offset = (page! - 1) * limit!;
-    String query = 'SELECT * FROM $tableName order by createTime desc LIMIT $limit OFFSET $offset';
+  /// 本来我是写的按照page和limit来分页的，但是如果请求第一页数据之后继续聊天，数据库记录持续增加，
+  /// 再请求第二页数据，这时候第二页数据就会有重复的，所以改成了按照localChatId来分页
+  static Future<List<LocalChatMessage>> getChatMessageList(String tableName, {String? lastLocalChatId,int? limit=10}) async {
+    String query = 'SELECT * FROM $tableName order by createTime desc LIMIT $limit';
+    if(!Utils.isEmpty(lastLocalChatId)){
+      query = 'SELECT * FROM $tableName where createTime < (select createTime from $tableName where localChatId = "$lastLocalChatId") order by createTime desc LIMIT $limit';
+    }
     List<Map<String, dynamic>> maps = await DBUtil.database.rawQuery(query);
     return List.generate(maps.length, (index) {
       return LocalChatMessage.fromJson(maps[index]);

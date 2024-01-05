@@ -10,8 +10,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../models/user.dart';
+import 'package:soulmate/models/user.dart';
 
 class Application {
   /// 全局存储

@@ -78,7 +78,7 @@ class RoleController extends GetxController {
         update();
       }
     }).catchError((err) {
-      APPPlugin.logger.e(err.toString());
+      exSnackBar(err, type: ExSnackBarType.error);
     });
   }
 
@@ -104,11 +104,12 @@ class RoleController extends GetxController {
   void sendLike(RoleEvent roleEvent) async {
     try {
       if (roleDetail != null) {
-        final activity = sendLikeMap?[roleEvent.memoryId]?.indexOf(user!.userId) != -1;
+        final activity =
+            sendLikeMap?[roleEvent.memoryId]?.indexOf(user!.userId) != -1;
         HttpUtils.diorequst("/role/sendLike", method: "post", params: {
           "roleId": roleDetail!.roleId!,
           "memoryId": roleEvent.memoryId,
-          "activityId": activity??'',
+          "activityId": activity ?? '',
           "isAdd": activity,
         });
       }

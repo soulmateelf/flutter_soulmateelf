@@ -92,12 +92,9 @@ class ChatListPage extends StatelessWidget {
   /// 下拉列表
   Widget get _refreshListView => SmartRefresher(
       enablePullDown: true,
-      enablePullUp: true,
+      enablePullUp: false,
       controller: logic.refreshController,
       onRefresh: logic.getDataList,
-      onLoading: () {
-        print("loading");
-      },
       child: listViewNoDataPage(
           isShowNoData: logic.dataList.isEmpty,
           omit: 'No messages yet',

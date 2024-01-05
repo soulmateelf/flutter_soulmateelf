@@ -17,9 +17,6 @@ import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
-import '../../../utils/core/application.dart';
-import '../../../utils/plugin/plugin.dart';
-import '../../../utils/tool/utils.dart';
 import 'controller.dart';
 import 'package:flutter/cupertino.dart';
 

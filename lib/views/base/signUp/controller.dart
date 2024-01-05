@@ -1,10 +1,9 @@
 import 'package:get/get.dart';
 import 'package:soulmate/utils/core/application.dart';
+import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
-
-import '../../../utils/core/constants.dart';
-import '../../../utils/core/httputil.dart';
-import '../../../widgets/library/projectLibrary.dart';
+import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class SignUpController extends GetxController {
   var email = "";

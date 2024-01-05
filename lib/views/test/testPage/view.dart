@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
-
-import '../../../utils/core/constants.dart';
 
 class TestPage extends StatelessWidget {
   TestPage({Key? key}) : super(key: key);

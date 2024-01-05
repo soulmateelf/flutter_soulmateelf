@@ -1,9 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
-
-import '../../../utils/core/constants.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
   const PrivacyPolicyPage({super.key});
@@ -47,9 +45,7 @@ In conclusion, our privacy policy reflects our commitment to protecting the pers
 
 Thank you for taking the time to read our privacy policy. If you have any feedback or suggestions on how we can improve it, please do not hesitate to contact us.""",
                 style: TextStyle(
-                    fontSize: 18.sp,
-                    fontFamily: FontFamily.SFProRoundedLight
-                ),
+                    fontSize: 18.sp, fontFamily: FontFamily.SFProRoundedLight),
               ),
             ),
           ),

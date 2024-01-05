@@ -5,10 +5,10 @@ import 'package:soulmate/models/roleEvent.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
+import 'package:soulmate/views/role/role/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:flutter/src/widgets/focus_manager.dart';
-import '../role/controller.dart';
 
 class RoleEventController extends GetxController {
   final roleLogic = Get.find<RoleController>();
@@ -67,7 +67,7 @@ class RoleEventController extends GetxController {
         .then((res) {
       setRoleEvent(RoleEvent.fromJson(res['data']));
     }).catchError((err) {
-      APPPlugin.logger.e(err.toString());
+      exSnackBar(err, type: ExSnackBarType.error);
     }).whenComplete(() {
       sendLikeLoding = false;
     });
