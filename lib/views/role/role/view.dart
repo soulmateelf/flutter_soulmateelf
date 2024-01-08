@@ -13,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:moment_dart/moment_dart.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/models/roleEvent.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
@@ -33,125 +34,137 @@ class RolePage extends StatelessWidget {
             child: GetBuilder<RoleController>(builder: (logic) {
               return Container(
                 // padding: EdgeInsets.symmetric(vertical: 24.w, horizontal: 20.w),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 24.w, horizontal: 20.w),
-                      child: _roleDetailContainer(),
-                    ),
-                    Expanded(
-                        child: Stack(
+                child: SmartRefresher(
+                  controller: logic.refreshController,
+                  enablePullUp: true,
+                  physics: logic.showEventList
+                      ? const BouncingScrollPhysics()
+                      : const NeverScrollableScrollPhysics(),
+                  onLoading: () {
+                    logic.getRoleRecordList(GetRoleEventType.loadMore);
+                  },
+                  onRefresh: () {
+                    logic.getRoleRecordList(GetRoleEventType.refresh);
+                  },
+                  child: SingleChildScrollView(
+                    child: Column(
                       children: [
-                        SingleChildScrollView(
-                          child: Container(
-                            child: GetBuilder<RoleController>(
-                              builder: (controller) {
-                                return Column(
-                                  children: renderRecordList(
-                                      controller.roleEventList),
-                                );
-                              },
-                            ),
-                          ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 24.w, horizontal: 20.w),
+                          child: _roleDetailContainer(),
                         ),
-                        Offstage(
-                          offstage: logic.roleDetail?.intimacy != null &&
-                              logic.roleDetail!.intimacy! >= 20,
-                          child: ClipRect(
-                            child: BackdropFilter(
-                              filter:
-                                  ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                              child: Container(
-                                color: Colors.transparent,
-                                width: double.infinity,
-                                height: double.infinity,
-                                child: Container(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Stack(
-                                    clipBehavior: Clip.none,
-                                    children: [
-                                      Container(
+                        Stack(
+                          children: [
+                            Container(
+                              child: GetBuilder<RoleController>(
+                                builder: (controller) {
+                                  return Column(
+                                    children: renderRecordList(
+                                        controller.roleEventList),
+                                  );
+                                },
+                              ),
+                            ),
+                            Offstage(
+                              offstage: logic.showEventList,
+                              child: ClipRect(
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                      sigmaX: 10.0, sigmaY: 10.0),
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    width: double.infinity,
+                                    height: 530.h,
+                                    child: Container(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Stack(
                                         clipBehavior: Clip.none,
-                                        width: double.infinity,
-                                        height: 308.w,
-                                        padding: EdgeInsets.only(top: 75.w),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(40.w),
-                                            topRight: Radius.circular(40.w),
-                                          ),
-                                        ),
-                                        child: Container(
-                                          padding: EdgeInsets.all(12.w),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                "Intimacy greater than 20 to view.Come chat with me!",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 24.sp,
-                                                  color: textColor,
-                                                  fontFamily: FontFamily
-                                                      .SFProRoundedMedium,
-                                                ),
+                                        children: [
+                                          Container(
+                                            clipBehavior: Clip.none,
+                                            width: double.infinity,
+                                            height: 308.w,
+                                            padding: EdgeInsets.only(top: 75.w),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(40.w),
+                                                topRight: Radius.circular(40.w),
                                               ),
-                                              SizedBox(
-                                                height: 24.w,
-                                              ),
-                                              Container(
-                                                height: 64.w,
-                                                width: double.infinity,
-                                                child: MaterialButton(
-                                                  color: primaryColor,
-                                                  onPressed: () {
-                                                    logic.toChat();
-                                                  },
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            borderRadius),
-                                                  ),
-                                                  child: Text(
-                                                    "Chat now",
+                                            ),
+                                            child: Container(
+                                              padding: EdgeInsets.all(12.w),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    "Intimacy greater than 20 to view.Come chat with me!",
+                                                    textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20.sp,
+                                                      fontSize: 24.sp,
+                                                      color: textColor,
                                                       fontFamily: FontFamily
-                                                          .SFProRoundedBlod,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                          .SFProRoundedMedium,
                                                     ),
                                                   ),
-                                                ),
-                                              )
-                                            ],
+                                                  SizedBox(
+                                                    height: 24.w,
+                                                  ),
+                                                  Container(
+                                                    height: 64.w,
+                                                    width: double.infinity,
+                                                    child: MaterialButton(
+                                                      color: primaryColor,
+                                                      onPressed: () {
+                                                        logic.toChat();
+                                                      },
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                borderRadius),
+                                                      ),
+                                                      child: Text(
+                                                        "Chat now",
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 20.sp,
+                                                          fontFamily: FontFamily
+                                                              .SFProRoundedBlod,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                          Positioned(
+                                            top: -65.w,
+                                            left: 0,
+                                            right: 0,
+                                            child: Container(
+                                              width: 130.w,
+                                              height: 130.w,
+                                              alignment: Alignment.center,
+                                              child: Image.asset(
+                                                  "assets/images/image/successfully.png"),
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                      Positioned(
-                                        top: -65.w,
-                                        left: 0,
-                                        right: 0,
-                                        child: Container(
-                                          width: 130.w,
-                                          height: 130.w,
-                                          alignment: Alignment.center,
-                                          child: Image.asset(
-                                              "assets/images/image/successfully.png"),
-                                        ),
-                                      )
-                                    ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
-                    )),
-                  ],
+                    ),
+                  ),
                 ),
               );
             })));
@@ -234,7 +247,7 @@ class RolePage extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                         color: const Color.fromRGBO(0, 0, 0, 0.64)))),
             Container(
-              height: 160.w,
+              height: 130.w,
               child: SingleChildScrollView(
                 child: Container(
                     margin: EdgeInsets.only(top: 16.w),
@@ -246,6 +259,9 @@ class RolePage extends StatelessWidget {
                             color: const Color.fromRGBO(0, 0, 0, 0.56)))),
               ),
             ),
+            SizedBox(
+              height: 8.w,
+            ),
             Offstage(
                 offstage: !(logic.roleDetail?.intimacy != null &&
                     logic.roleDetail!.intimacy! >= 20),
@@ -256,7 +272,6 @@ class RolePage extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     alignment: Alignment.center,
-                    margin: EdgeInsets.only(top: 16.w),
                     padding: EdgeInsets.symmetric(vertical: 10.w),
                     decoration: BoxDecoration(
                         color: primaryColor,

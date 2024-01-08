@@ -43,8 +43,12 @@ class Role {
   String? backgroundImageUrl;
   String? imageId;
   int? readCount;
+
   /// 语音时长
-  // int? voiceSize;
+  int? voiceSize;
+
+  /// 消息类型 0文本 1语音
+  int? inputType;
 
   Role({
     required this.roleId,
@@ -65,6 +69,8 @@ class Role {
     this.readCount,
     this.countSize,
     this.imageId,
+    this.voiceSize,
+    this.inputType,
   });
 
   factory Role.fromJson(Map<String, dynamic> json) => Role(
@@ -86,6 +92,8 @@ class Role {
         readCount: json['readCount'],
         countSize: json["countSize"],
         imageId: json['imageId'],
+        voiceSize: json["voiceSize"],
+        inputType: json["inputType"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -107,5 +115,7 @@ class Role {
         "readCount": readCount,
         "countSize": countSize,
         "imageId": imageId,
+        "voiceSize": voiceSize,
+        "inputType": inputType,
       };
 }

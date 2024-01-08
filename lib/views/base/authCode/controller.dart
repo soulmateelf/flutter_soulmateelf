@@ -42,11 +42,16 @@ class AuthCodeController extends GetxController {
   var code = "";
   int time = 180;
   int intervalTime = 0;
+  int startTime = 0;
 
   void recursionTime() {
     Future.delayed(const Duration(seconds: 1), () {
-      if (intervalTime > 0) {
-        intervalTime--;
+      final currentTime = DateTime
+          .now()
+          .millisecondsSinceEpoch;
+      final gapTime = ((currentTime - startTime )/ 1000).toInt();
+      if (intervalTime > 0 && startTime > 0 && gapTime <= time ) {
+        intervalTime = time - gapTime;
         update();
         recursionTime();
       }
@@ -58,6 +63,9 @@ class AuthCodeController extends GetxController {
       return;
     }
     intervalTime = time;
+    startTime = DateTime
+        .now()
+        .millisecondsSinceEpoch;
     recursionTime();
     if (!loading) {
       var arguments = Get.arguments;

@@ -107,7 +107,7 @@ class ChatController extends GetxController {
   void onReady() {
     super.onReady();
     roleId = Get.arguments?["roleId"];
-    isIntro = Get.arguments['intro'] ?? true;
+    isIntro = Get.arguments['intro'] ?? false;
     getRoleDetail();
     getLocalChatMessageList('init');
     if (isIntro) {
