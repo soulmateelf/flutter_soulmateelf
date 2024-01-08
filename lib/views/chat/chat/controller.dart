@@ -107,7 +107,7 @@ class ChatController extends GetxController {
   void onReady() {
     super.onReady();
     roleId = Get.arguments?["roleId"];
-    isIntro = Get.arguments['intro'] ?? false;
+    isIntro = Get.arguments['intro'] ?? true;
     getRoleDetail();
     getLocalChatMessageList('init');
     if (isIntro) {
@@ -441,16 +441,16 @@ class ChatController extends GetxController {
       if (firstStep == "test") {
         /// 帮助用户发送一条消息
         late String message = "";
-        if (roleId == "3333") {
+        if (roleId == "3c847a386ab840a9ac153e31679eee83") {
           message =
               "Begin the divination for ${introHistoryList[1]}(I ${introHistoryList[2]}).";
-        } else if (roleId == "otyuiyiytuiyuiuiytui") {
+        } else if (roleId == "f598581bf3d14d8285959f33c9ea22ce") {
           message = introHistoryList[2];
-        } else if (roleId == "opasdioaoduiowe") {
+        } else if (roleId == "8d5dc0f356bf46cdb34f2695dab76229") {
           message = introHistoryList[2];
-        } else if (roleId == "fsdgasagsagsagsgsg") {
+        } else if (roleId == "31dc12502c29419cae79b78e8110f531") {
           message = introHistoryList[2];
-        } else if (roleId == "qeqqeqwqeqee") {
+        } else if (roleId == "1fd1848293d64afca1a50a7a307584ae") {
           message = introHistoryList[2];
         }
         sendMessage(messageType: "0", message: message);
@@ -550,7 +550,7 @@ class ChatController extends GetxController {
                     padding: EdgeInsets.only(
                       left: 17.w,
                       right: 33.w,
-                      top: 17.w,
+                      top: 22.w,
                     ),
                     decoration: const BoxDecoration(
                       image: DecorationImage(

@@ -10,6 +10,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:soulmate/models/user.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
@@ -29,6 +30,7 @@ class MineController extends GetxController {
 
   /// 开启紧急联系邮箱
   bool contact = false;
+
   /// 用户信息
   User? user;
 
@@ -130,6 +132,20 @@ class MineController extends GetxController {
     update();
   }
 
+  void share() async {
+    final result = await Share.shareWithResult(
+      'https://soulmate.health',
+      subject: "share soulemate",
+    );
+    if (result.status == ShareResultStatus.success) {
+      HttpUtils.diorequst("/share").then((res) {
+        if (res?['code'] == 200) {
+          exSnackBar(res?['message']);
+        }
+      });
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -150,5 +166,4 @@ class MineController extends GetxController {
     super.onClose();
     return;
   }
-
 }

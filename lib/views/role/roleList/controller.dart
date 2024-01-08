@@ -42,6 +42,7 @@ class RoleListController extends GetxController {
         .then((response) {
       List roleListMap = response["data"];
       var unreadCount = 0;
+      APPPlugin.logger.d(roleListMap);
       roleList = roleListMap.map((json) {
         final r = Role.fromJson(json);
         if (r.readCount is int && r.readCount! >= 0) {
