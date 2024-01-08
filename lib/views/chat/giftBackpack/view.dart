@@ -141,7 +141,7 @@ class GiftBackpackPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "${energy.id}${DateTime.fromMillisecondsSinceEpoch(energy.createTime).format(payload: "YYYY-MM-DD HH:mm [Obtained]")}",
+              "${DateTime.fromMillisecondsSinceEpoch(energy.createTime).format(payload: "YYYY-MM-DD HH:mm [Obtained]")}",
               style: TextStyle(
                 fontSize: 13.sp,
                 color: Color.fromRGBO(0, 0, 0, 0.48),
