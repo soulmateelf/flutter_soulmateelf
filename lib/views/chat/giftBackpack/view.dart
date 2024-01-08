@@ -97,7 +97,8 @@ class GiftBackpackPage extends StatelessWidget {
                             child: listViewNoDataPage(
                                 isShowNoData: logic.energyCardList.isEmpty,
                                 omit: 'No data',
-                                child: SingleChildScrollView(child: Column(
+                                child: SingleChildScrollView(
+                                    child: Column(
                                     children: renderEnergyCardList(
                                         controller.tabKey)) )));
                       }

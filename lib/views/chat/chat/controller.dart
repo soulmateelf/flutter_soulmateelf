@@ -107,7 +107,7 @@ class ChatController extends GetxController {
   void onReady() {
     super.onReady();
     roleId = Get.arguments?["roleId"];
-    isIntro = Get.arguments['intro'] ?? true;
+    isIntro = Get.arguments['intro'] ?? false;
     getRoleDetail();
     getLocalChatMessageList('init');
     if (isIntro) {
@@ -117,7 +117,6 @@ class ChatController extends GetxController {
       });
     }
   }
-
   @override
   void onInit() {
     super.onInit();
@@ -156,7 +155,7 @@ class ChatController extends GetxController {
 
   /// 获取本地聊天记录
   void getLocalChatMessageList(String from) {
-    int limit = 10;
+    int limit = 2;
     LocalChatMessageService.getChatMessageList(tableName,
             lastLocalChatId: lastLocalChatId, limit: limit)
         .then((List<LocalChatMessage> newList) {

@@ -73,15 +73,15 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
   void didChangeMetrics() {
     super.didChangeMetrics();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        if (MediaQuery.of(context).viewInsets.bottom == 0) {
-          /// 键盘收回
-          logic.toEndMessage();
-        } else {
-          /// 键盘弹出
-          logic.toEndMessage();
-        }
-      });
+      // setState(() {
+      //   if (MediaQuery.of(context).viewInsets.bottom == 0) {
+      //     /// 键盘收回
+      //     logic.toEndMessage();
+      //   } else {
+      //     /// 键盘弹出
+      //     logic.toEndMessage();
+      //   }
+      // });
     });
   }
 
@@ -225,6 +225,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
         logic.getLocalChatMessageList('refresh');
       },
       child: ListView.builder(
+        reverse: true,
           cacheExtent: double.infinity,
           itemCount: logic.messageList.length,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
