@@ -43,6 +43,8 @@ class Role {
   String? backgroundImageUrl;
   String? imageId;
   int? readCount;
+  /// 语音时长
+  // int? voiceSize;
 
   Role({
     required this.roleId,
