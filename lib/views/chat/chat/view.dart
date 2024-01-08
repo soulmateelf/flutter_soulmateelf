@@ -514,9 +514,12 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
   /// 开始录音
   void _startRecording() async {
     try {
+
       await recorderController.record(path: path);
       createRecordTimer();
+
       setState(() {
+        isPause = false;
         isRecordingCompleted = false;
         isRecording = !isRecording;
       });

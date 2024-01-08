@@ -31,6 +31,7 @@ import 'package:soulmate/views/mine/account/view.dart';
 import 'package:soulmate/views/mine/confirmDeactivate/view.dart';
 import 'package:soulmate/views/mine/contactEmail/view.dart';
 import 'package:soulmate/views/mine/deactivate/view.dart';
+import 'package:soulmate/views/mine/downloadData/view.dart';
 import 'package:soulmate/views/mine/energy/view.dart';
 import 'package:soulmate/views/mine/feedback/view.dart';
 
@@ -145,6 +146,9 @@ class AppRoute {
     GetPage(
         name: '/mineConfirmDeactivate',
         page: () => MineConfirmDeactivatePage()),
+
+    /// 下载数据
+    GetPage(name: '/mineDownloadData', page: () => MineDownloadDataPage()),
 
     /// 联系邮箱
     GetPage(name: '/mineContactEmail', page: () => MineContactEmailPage()),

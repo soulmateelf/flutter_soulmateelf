@@ -5,6 +5,7 @@
  * @FilePath: \soulmate\lib\views\main\home\controller.dart
  */
 
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/models/role.dart';
 import 'package:soulmate/models/roleEvent.dart';
 import 'package:soulmate/models/user.dart';
@@ -16,12 +17,20 @@ import 'package:soulmate/views/role/roleList/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:get/get.dart';
 
+enum GetRoleEventType { loadMore, refresh }
+
 class RoleController extends GetxController {
   /// 角色id
   String roleId = "";
 
   /// 角色详情信息
   Role? roleDetail;
+
+  void setRoleDetail(Role? value) {
+    roleDetail = value;
+    showEventList = value?.intimacy != null && value!.intimacy! >= 20;
+    update();
+  }
 
   User? user;
 
@@ -32,13 +41,17 @@ class RoleController extends GetxController {
 
   RoleListController roleListController = Get.find<RoleListController>();
 
+  RefreshController refreshController = RefreshController();
+
+  bool showEventList = false;
+
   @override
   void onReady() {
     super.onReady();
     roleId = Get.arguments?["roleId"];
-    roleDetail = Get.arguments?['roleData'];
+    setRoleDetail(Get.arguments?['roleData']);
     // getRoleDetail();
-    getRoleRecordList();
+    getRoleRecordList(GetRoleEventType.refresh);
     roleListController.getDataList();
     user = Application.userInfo;
 
@@ -50,23 +63,30 @@ class RoleController extends GetxController {
     HttpUtils.diorequst('/role/roleInfo', query: {"roleId": roleId})
         .then((response) {
       var roleDetailMap = response["data"];
-      roleDetail = Role.fromJson(roleDetailMap);
+      setRoleDetail(Role.fromJson(roleDetailMap));
       update();
     }).catchError((error) {
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }
 
+  int page = 1;
+  int size = 5;
+
   /// 获取朋友圈列表
-  void getRoleRecordList() {
-    sendLikeMap.clear();
-    HttpUtils.diorequst('/role/roleEventList', query: {"roleId": roleId})
-        .then((res) {
+  void getRoleRecordList(GetRoleEventType type) {
+    if (type == GetRoleEventType.refresh) {
+      sendLikeMap.clear();
+      page = 1;
+    } else if (type == GetRoleEventType.loadMore) {
+      page++;
+    }
+    HttpUtils.diorequst('/role/roleEventList',
+        query: {"roleId": roleId, "page": page, "size": size}).then((res) {
       final List<dynamic> data = res?['data'] ?? [];
       if (data != null) {
         final list = data?.map((e) => RoleEvent.fromJson(e))?.toList() ?? [];
-        roleEventList = list;
-        roleEventList.forEach((element) {
+        list.forEach((element) {
           List<String> likes = [];
           element.activities.forEach((element) {
             if (element.type == 0) {
@@ -75,10 +95,23 @@ class RoleController extends GetxController {
           });
           sendLikeMap.addAll({element.memoryId: likes});
         });
+        if (type == GetRoleEventType.refresh) {
+          roleEventList = list;
+          refreshController.refreshCompleted();
+        } else if (type == GetRoleEventType.loadMore) {
+          roleEventList.addAll(list);
+          refreshController.loadComplete();
+        }
         update();
       }
     }).catchError((err) {
       exSnackBar(err, type: ExSnackBarType.error);
+      if (type == GetRoleEventType.refresh) {
+        refreshController.refreshFailed();
+      } else if (type == GetRoleEventType.loadMore) {
+        refreshController.loadFailed();
+        page--;
+      }
     });
   }
 

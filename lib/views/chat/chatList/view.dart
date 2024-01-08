@@ -220,7 +220,7 @@ class ChatListPage extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        roleData.content ?? '--',
+                        "${roleData.inputType == 1 ? "[voice message]" : roleData.content ?? ' '}",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

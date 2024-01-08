@@ -38,17 +38,7 @@ class MineAccountController extends GetxController {
     });
   }
 
-  void downloadData() {
-    HttpUtils.diorequst("/user/downloadUserData", query: {
-      "email": user?.email,
-    }).then((res) {
-      if (res?['data'] == true) {
-        exSnackBar(res?['message']);
-      }
-    }).catchError((err) {
-      exSnackBar(err, type: ExSnackBarType.error);
-    });
-  }
+
 
   void getUser() async {
     user = Application.userInfo;

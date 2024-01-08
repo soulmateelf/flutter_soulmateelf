@@ -67,32 +67,32 @@ class RoleEventPage extends StatelessWidget {
                           SizedBox(
                             height: 24.w,
                           ),
-                          Row(
+                          Wrap(
                             children: [
-                              // Icon(
-                              //   Icons.thumb_up_off_alt_outlined,
-                              //   size: 20.sp,
-                              //   color: primaryColor,
-                              // ),
-                              LikeButton(
-                                size: 20.sp,
-                                isLiked: controller.isLiked,
-                                circleColor: CircleColor(
-                                    start: Colors.grey, end: primaryColor),
-                                bubblesColor: BubblesColor(
-                                  dotPrimaryColor: primaryColor,
-                                  dotSecondaryColor: primaryColor,
+                              SizedBox(
+                                width: 30.w,
+                                height: 30.w,
+                                child: LikeButton(
+                                  size: 20.sp,
+                                  isLiked: controller.isLiked,
+                                  circleColor: const CircleColor(
+                                      start: Colors.grey, end: primaryColor),
+                                  bubblesColor: const BubblesColor(
+                                    dotPrimaryColor: primaryColor,
+                                    dotSecondaryColor: primaryColor,
+                                  ),
+                                  likeBuilder: (bool isLiked) {
+                                    return Icon(
+                                      Icons.thumb_up_off_alt_outlined,
+                                      color:
+                                          isLiked ? primaryColor : Colors.grey,
+                                      size: 20.sp,
+                                    );
+                                  },
+                                  onTap: (liked) async {
+                                    controller.sendLike(liked);
+                                  },
                                 ),
-                                likeBuilder: (bool isLiked) {
-                                  return Icon(
-                                    Icons.thumb_up_off_alt_outlined,
-                                    color: isLiked ? primaryColor : Colors.grey,
-                                    size: 20.sp,
-                                  );
-                                },
-                                onTap: (liked) async {
-                                  controller.sendLike(liked);
-                                },
                               ),
                               ...renderLikes(controller.likes),
                             ],

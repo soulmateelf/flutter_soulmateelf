@@ -50,7 +50,7 @@ class MineAccountPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(56.w),
                             child: controller.user?.avatar != null
                                 ? CachedNetworkImage(
-                                    imageUrl: controller.user!.avatar??"",
+                                    imageUrl: controller.user!.avatar ?? "",
                                     fit: BoxFit.cover,
                                     errorWidget: (_, __, ___) {
                                       return Image.asset(
@@ -225,7 +225,7 @@ class MineAccountPage extends StatelessWidget {
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
-                      logic.downloadData();
+                      Get.toNamed('/mineDownloadData');
                     },
                     child: Container(
                       decoration: BoxDecoration(

@@ -134,7 +134,7 @@ class MineController extends GetxController {
 
   void share() async {
     final result = await Share.shareWithResult(
-      'https://soulmate.health',
+      "Welcome to Soulmate ELF! Explore this unique dream world with the ELF. Here, you're more than a traveler, you're a creator. Your imagination comes to life. Click the link https://soulmate.health now and start your adventure. Let's dream and create together!",
       subject: "share soulemate",
     );
     if (result.status == ShareResultStatus.success) {
