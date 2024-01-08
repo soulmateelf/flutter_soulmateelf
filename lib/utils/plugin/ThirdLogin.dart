@@ -27,6 +27,8 @@ class ThirdLogin {
       if(googleResult == null){
         return;
       }
+      print(1111);
+      print(Application.pushId);
       var params = {
         "threePartId": googleResult.id,
         "nickName": googleResult.displayName,
