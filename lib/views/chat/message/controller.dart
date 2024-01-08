@@ -22,8 +22,8 @@ class MessageController extends GetxController {
 
   MessageTabKey get tabKey => _tabKey;
 
-  int normalPage = 1;
-  int systemPage = 1;
+  int normalPage = 0;
+  int systemPage = 0;
   List<Message> normalMessages = [];
   List<Message> systemMessages = [];
 
@@ -63,25 +63,21 @@ class MessageController extends GetxController {
     late RefreshController controller;
     late int page;
     if (type == 0) {
-      if (isAdd) {
-        normalPage++;
-      } else {
-        normalPage = 1;
+      if(isAdd) {
+        normalPage = 0;
       }
       page = normalPage;
       controller = normalController;
     } else if (type == 1) {
-      if (isAdd) {
-        systemPage++;
-      } else {
-        systemPage = 1;
+      if(isAdd) {
+        normalPage = 0;
       }
       page = systemPage;
       controller = systemController;
     }
 
     HttpUtils.diorequst('/message/messageList',
-        query: {"page": page, "limit": 10, "messageType": type}).then((res) {
+        query: {"page": page+1, "size": 10, "messageType": type}).then((res) {
       List<dynamic> data = res?['data'] ?? [];
       List<Message> list = data.map((e) => Message.fromJson(e)).toList();
       if (type == 0) {
@@ -106,6 +102,11 @@ class MessageController extends GetxController {
       }
       if (data.isEmpty) {
         controller.loadNoData();
+      }
+      if (type == 0) {
+        normalPage++;
+      } else {
+        systemPage++;
       }
       update();
     }).catchError((err) {

@@ -27,7 +27,6 @@ class ChatListController extends GetxController {
   List<Role> dataList = [];
   final menuLogic = Get.find<SoulMateMenuController>();
 
-
   @override
   void onReady() {
     super.onReady();
@@ -43,7 +42,7 @@ class ChatListController extends GetxController {
 
   /// 获取聊天列表数据
   void getDataList() {
-    HttpUtils.diorequst('/role/roleListByUser', query: {"limit": 999})
+    HttpUtils.diorequst('/role/roleListByUser', query: {"size": 999})
         .then((response) {
       List roleListMap = response["data"];
       dataList = roleListMap.map((json) => Role.fromJson(json)).toList();
@@ -63,22 +62,22 @@ class ChatListController extends GetxController {
     });
   }
 
-
-
   ///点击聊天列表项
   void chatItemClick(index) {
     Role itemData = dataList[index];
     Get.toNamed("/chat", arguments: {"roleId": itemData.roleId});
     readChatItem(itemData.roleId);
   }
+
   /// 消息已读
   void readChatItem(String roleId) {
-    HttpUtils.diorequst('/chat/chatRead',method: "post", params: {"roleId": roleId}).then(
-        (res) {
-          /// 更新未读消列表
-          getDataList();
+    HttpUtils.diorequst('/chat/chatRead',
+        method: "post", params: {"roleId": roleId}).then((res) {
+      /// 更新未读消列表
+      getDataList();
     });
   }
+
   /// 删除确认弹窗
   void deleteConfirm(String roleId) {
     final makeDialogController = MakeDialogController();
@@ -162,23 +161,23 @@ class ChatListController extends GetxController {
 
   void deleteChatItem(String roleId) {
     HttpUtils.diorequst('/role/deleteUserRole',
-        method: 'post',
-        params: {"roleId": roleId}).then(
-      (response) {
-        ///找到列表项，删除
-        int index = dataList.indexWhere((element) => element.roleId == roleId);
-        if (index != -1) {
-          dataList.removeAt(index);
-          update();
-        }
-        /// 清空本地数据库这个角色的聊天记录
-        String tableName = 'chat_${Application.userInfo?.userId}_$roleId';
-        LocalChatMessageService.clearChatMessageByRoleId(tableName);
-        /// 删除这个角色表的同步数据
-        SyncRecordService.deleteSyncRecord(Application.userInfo!.userId!, roleId);
-        /// 更新消息未读数
-        getRoleListUnreadCount();
+        method: 'post', params: {"roleId": roleId}).then((response) {
+      ///找到列表项，删除
+      int index = dataList.indexWhere((element) => element.roleId == roleId);
+      if (index != -1) {
+        dataList.removeAt(index);
+        update();
+      }
 
+      /// 清空本地数据库这个角色的聊天记录
+      String tableName = 'chat_${Application.userInfo?.userId}_$roleId';
+      LocalChatMessageService.clearChatMessageByRoleId(tableName);
+
+      /// 删除这个角色表的同步数据
+      SyncRecordService.deleteSyncRecord(Application.userInfo!.userId!, roleId);
+
+      /// 更新消息未读数
+      getRoleListUnreadCount();
     }).catchError((error) {
       exSnackBar(error, type: ExSnackBarType.error);
     });

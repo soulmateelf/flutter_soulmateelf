@@ -97,9 +97,9 @@ class GiftBackpackPage extends StatelessWidget {
                             child: listViewNoDataPage(
                                 isShowNoData: logic.energyCardList.isEmpty,
                                 omit: 'No data',
-                                child: Column(
+                                child: SingleChildScrollView(child: Column(
                                     children: renderEnergyCardList(
-                                        controller.tabKey))));
+                                        controller.tabKey)) )));
                       }
                       return SmartRefresher(
                           key: ObjectKey(GiftTabKey.rechargeable),
@@ -114,9 +114,9 @@ class GiftBackpackPage extends StatelessWidget {
                           child: listViewNoDataPage(
                               isShowNoData: logic.rechargeableCardList.isEmpty,
                               omit: 'No data',
-                              child: Column(
+                              child: SingleChildScrollView(child: Column(
                                   children: renderRechargeCardList(
-                                      controller.tabKey))));
+                                      controller.tabKey)))));
                     },
                   ),
                 ),
@@ -141,7 +141,7 @@ class GiftBackpackPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "${DateTime.fromMillisecondsSinceEpoch(energy.createTime).format(payload: "YYYY-MM-DD HH:mm [Obtained]")}",
+              "${energy.id}${DateTime.fromMillisecondsSinceEpoch(energy.createTime).format(payload: "YYYY-MM-DD HH:mm [Obtained]")}",
               style: TextStyle(
                 fontSize: 13.sp,
                 color: Color.fromRGBO(0, 0, 0, 0.48),

@@ -34,21 +34,18 @@ class GiftBackpackController extends GetxController {
 
   RefreshController rechargeRefreshController = RefreshController();
   List<RechargeableCard> rechargeableCardList = [];
-  int rechargePage = 1;
+  int rechargePage = 0;
 
   RefreshController energyRefreshController = RefreshController();
   List<EnergyCard> energyCardList = [];
-  int energyPage = 1;
+  int energyPage = 0;
 
   void getCardList(LoadDataType type) {
     if (type == LoadDataType.refresh) {
-      rechargePage = 1;
-    } else if (type == LoadDataType.loadMore) {
-      rechargePage++;
+      rechargePage = 0;
     }
-
     HttpUtils.diorequst('/coupon/couponList',
-        query: {"page": rechargePage, "size": 10}).then((res) {
+        query: {"page": rechargePage+1, "size": 10}).then((res) {
       List<dynamic> data = res['data'] ?? [];
       final list = data.map((e) => RechargeableCard.fromJson(e)).toList();
       if (type == LoadDataType.refresh) {
@@ -62,11 +59,12 @@ class GiftBackpackController extends GetxController {
       if (data.isEmpty) {
         rechargeRefreshController.loadNoData();
       }
+      rechargePage++;
       update();
     }).catchError((err) {
-      if (type == "refresh") {
+      if (type == LoadDataType.refresh) {
         rechargeRefreshController.refreshFailed();
-      } else if (type == "loadMore") {
+      } else if (type == LoadDataType.loadMore) {
         rechargeRefreshController.loadFailed();
       }
       update();
@@ -76,12 +74,10 @@ class GiftBackpackController extends GetxController {
 
   void getEnergyHistoryList(LoadDataType type) {
     if (type == LoadDataType.refresh) {
-      energyPage = 1;
-    } else if (type == LoadDataType.loadMore) {
-      energyPage++;
+      energyPage = 0;
     }
     HttpUtils.diorequst('/energy/energyHistoryList',
-        query: {"page": 1, "size": 10}).then((res) {
+        query: {"page": energyPage+1, "size": 10}).then((res) {
       List<dynamic> data = res['data'] ?? [];
       final list = data.map((e) => EnergyCard.fromJson(e)).toList();
       if (type == LoadDataType.refresh) {
@@ -95,10 +91,12 @@ class GiftBackpackController extends GetxController {
       if (data.isEmpty) {
         energyRefreshController.loadNoData();
       }
+      energyPage++;
+      update();
     }).catchError((err) {
-      if (type == "refresh") {
+      if (type == LoadDataType.refresh) {
         energyRefreshController.refreshFailed();
-      } else if (type == "loadMore") {
+      } else if (type == LoadDataType.loadMore) {
         energyRefreshController.loadFailed();
       }
       update();
