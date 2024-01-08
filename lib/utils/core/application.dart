@@ -98,14 +98,15 @@ class Application {
   }
 
   static Future clearStorage() async {
-    /// 由于全局主题色的原因，不能直接全部清空存储，需要保留当前主题
-    ///
 
     final intro = Application.pres?.getBool("hasIntro") ?? false;
 
     Application.pres?.clear();
     Application.token = null;
     Application.userInfo = null;
+
+    /// 关闭mqtt
+    APPPlugin.mqttClient?.disconnect();
 
     /// 保留是否引导过
     Application.hasIntro = intro;

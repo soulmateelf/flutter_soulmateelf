@@ -74,9 +74,16 @@ class SoulMateMenuController extends GetxController {
     LocalChatMessageService.insertChatMessage(tableName, tempLocalChatMessage).then((value) {
       ///插入成功
       ///如果存在聊天界面则刷新聊天界面
-      ChatController chatController = Get.find<ChatController>();
-      if(chatController != null){
-        chatController.mqttUpdateMessageList(payloadMap['roleId'], tempLocalChatMessage);
+      try{
+        ChatController chatController = Get.find<ChatController>();
+        if(chatController != null){
+          chatController.mqttUpdateMessageList(payloadMap['roleId'], tempLocalChatMessage);
+          /// 设置消息已读
+          chatListController?.readChatItem(payloadMap['roleId']);
+        }
+      }catch(e){
+        ///刷新角色聊天列表页面
+        chatListController?.getDataList();
       }
       ///接收消息成功，更新同步记录表，记录本地最新的消息id
       SyncRecordService.insertOrUpdateSyncRecord(Application.userInfo!.userId,payloadMap['roleId'],tempLocalChatMessage.serverChatId!,tempLocalChatMessage.createTime);
@@ -87,33 +94,72 @@ class SoulMateMenuController extends GetxController {
   void syncServerData() async{
     ///获取本地存储的同步记录，记录里存的是本地最新的消息id
     List<SyncRecord> syncRecordList = await SyncRecordService.getSyncRecordList(Application.userInfo!.userId);
-    print(syncRecordList);
+    Map<String, String> params = {};
+    for (var syncRecord in syncRecordList) {
+      params[syncRecord.roleId] = syncRecord.lastChatId;
+    }
+    ///请求服务器，获取消息
+    HttpUtils.diorequst("/chat/chatSync",method: 'post',params: params).then((res) {
+      Map<String, dynamic> dataMap = res['data'];
+      ///如果有数据，插入本地数据库
+      dataMap.forEach((roleId, chatList) async {
+        /// 如果不存在用户角色聊天记录表，创建
+        String tableName = 'chat_${Application.userInfo?.userId}_$roleId';
+        await DBUtil.createTableIfNotExists(tableName);
+        List<LocalChatMessage> localChatMessageList = [];
+        for(var chatData in chatList){
+          ///构建本地消息
+          LocalChatMessage tempLocalChatMessage = LocalChatMessage(
+              localChatId: const Uuid().v4(),
+              serverChatId: chatData['chatId']??'',
+              role: chatData['role'],
+              origin: 0,
+              content: chatData['content']??'',
+              voiceUrl: chatData['voiceUrl']??'',
+              inputType: chatData['inputType']??'0',
+              status: chatData['status']??0,
+              localStatus: 1,
+              createTime: chatData['createTime']
+          );
+          localChatMessageList.add(tempLocalChatMessage);
+        }
+        if(localChatMessageList.isNotEmpty){
+          ///插入本地数据库
+          LocalChatMessageService.multipleInsertChatMessage(tableName, localChatMessageList).then((value) {
+            ///接收消息成功，更新同步记录表，记录本地最新的消息id
+            SyncRecordService.insertOrUpdateSyncRecord(Application.userInfo!.userId,roleId,localChatMessageList.last.serverChatId!,localChatMessageList.last.createTime);
+          });
+        }
+      });
+    });
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     // TODO: implement onInit
     super.onInit();
     controller = PageController(initialPage: currentIndex);
     user = Application.userInfo;
     if (user != null) {
       ///订阅mqtt消息
-      APPPlugin.mqttClient?.topicSubscribe([
-        Topic(user!.userId!, (message) {
-          ///0是日常消息与系统消息刷新，1是聊天未读数刷新,2是gpt聊天消息模块
-          if (message.messageType == 0) {
-            if (message.clear == true){
-              getUnreadMessage();
+      await APPPlugin.mqttClient?.connect().then((value){
+        APPPlugin.mqttClient?.topicSubscribe([
+          Topic(user!.userId!, (message) {
+            ///0是日常消息与系统消息刷新，1是聊天未读数刷新,2是gpt聊天消息模块
+            if (message.messageType == 0) {
+              if (message.clear == true){
+                getUnreadMessage();
+              }
+            } else if (message.messageType == 1) {
+              if (message.clear == true){
+                chatListController?.getRoleListUnreadCount();
+              }
+            } else if (message.messageType == 2) {
+              mqttServerMessageBack(message.content);
             }
-          } else if (message.messageType == 1) {
-            if (message.clear == true){
-              chatListController?.getRoleListUnreadCount();
-            }
-          } else if (message.messageType == 2) {
-            mqttServerMessageBack(message.content);
-          }
-        })
-      ]);
+          })
+        ]);
+      });
       ///开启本地数据库服务端数据库的数据同步
       syncServerData();
     }
@@ -130,7 +176,6 @@ class SoulMateMenuController extends GetxController {
 
   /// 切换菜单
   changeMenu(index) {
-    syncServerData();
     if(currentIndex == index) {
       return;
     }

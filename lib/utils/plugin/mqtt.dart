@@ -38,21 +38,21 @@ class XMqttClient {
     _initMqtt();
   }
 
-  _initMqtt() async {
+  _initMqtt() async {}
+
+  Future<MqttServerClient> connect() async {
     //clientld 确保唯一性，否则如果两台机器的clientld 相同 则会连上立刻断开连接！！！
     String clientId = '${DateTime.now().millisecondsSinceEpoch}asc';
-    client = await connect(clientId);
-  }
-
-  Future<MqttServerClient> connect(String cid) async {
-    MqttServerClient client = MqttServerClient.withPort(host, cid, port);
-    client.logging(on: true);
-    client.onConnected = onConnected;
-    client.onDisconnected = onDisconnected;
-    client.onUnsubscribed = onUnsubscribed;
-    client.onSubscribed = onSubscribed;
-    client.onSubscribeFail = onSubscribeFail;
-    client.pongCallback = pong;
+    MqttServerClient serverClient = MqttServerClient.withPort(host, clientId, port);
+    serverClient.logging(on: true);
+    serverClient.onConnected = onConnected;
+    serverClient.onDisconnected = onDisconnected;
+    serverClient.onUnsubscribed = onUnsubscribed;
+    serverClient.onAutoReconnect = onAutoReconnect;
+    serverClient.onSubscribed = onSubscribed;
+    serverClient.onSubscribeFail = onSubscribeFail;
+    serverClient.pongCallback = pong;
+    serverClient.autoReconnect = true;
 
     final connMessage = MqttConnectMessage()
         .authenticateAs(user, pwd)
@@ -61,16 +61,16 @@ class XMqttClient {
         .withWillMessage('Will message')
         .startClean() // 清理会话
         .withWillQos(MqttQos.atLeastOnce);
-    client.connectionMessage = connMessage;
+    serverClient.connectionMessage = connMessage;
     try {
-      await client.connect();
+      await serverClient.connect();
     } catch (e) {
       APPPlugin.logger.d('Exception: $e');
-      client.disconnect();
+      serverClient.disconnect();
     }
 
     //用于监听已订阅主题的消息到达。
-    client.updates?.listen((List<MqttReceivedMessage<MqttMessage>> c) {
+    serverClient.updates?.listen((List<MqttReceivedMessage<MqttMessage>> c) {
       final MqttPublishMessage recMess = c[0].payload as MqttPublishMessage;
       final String pt =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
@@ -87,12 +87,13 @@ class XMqttClient {
         }
       }
     });
-
-    return client;
+    client = serverClient;
+    return serverClient;
   }
 
   ///订阅一个主题
   _subscribe(Topic topic) {
+    APPPlugin.logger.d('订阅主题: $topic');
     client?.subscribe(topic.topic, MqttQos.atLeastOnce);
     topicMap.addAll({
       "${topic.topic}": topic,
@@ -101,12 +102,15 @@ class XMqttClient {
 
   ///订阅多个主题
   topicSubscribe(List<Topic> topics) async {
+    APPPlugin.logger.e('订阅主题1111: $topics');
+
     this.topics.addAll(topics.map((e) => e.topic));
     if (client?.connectionStatus?.state == MqttConnectionState.connected) {
       topics.forEach((topic) {
         _subscribe(topic);
       });
     } else {
+      APPPlugin.logger.e(client?.connectionStatus?.state);
       //未连接成功 每隔3s重新订阅
       Future.delayed(const Duration(seconds: 3), () {
         topicSubscribe(topics);
@@ -120,7 +124,7 @@ class XMqttClient {
   }
 
   ///断开连接
-  _disconnect() {
+  disconnect() {
     client?.disconnect();
   }
 
@@ -152,5 +156,9 @@ class XMqttClient {
 // 收到 PING 响应
   void pong() {
     APPPlugin.logger.d('收到 PING 响应 Ping response client callback invoked');
+  }
+
+  void onAutoReconnect() {
+    APPPlugin.logger.d('onAutoReconnect');
   }
 }

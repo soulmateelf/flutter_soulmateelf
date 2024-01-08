@@ -7,6 +7,8 @@
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:soulmate/dataService/service/localChatMessageService.dart';
+import 'package:soulmate/dataService/service/syncRecordService.dart';
 import 'package:soulmate/models/role.dart';
 import 'package:flutter/material.dart';
 import 'package:soulmate/utils/core/application.dart';
@@ -51,7 +53,6 @@ class ChatListController extends GetxController {
       refreshController.refreshFailed();
       exSnackBar(error, type: ExSnackBarType.error);
     });
-
     getRoleListUnreadCount();
   }
 
@@ -68,8 +69,17 @@ class ChatListController extends GetxController {
   void chatItemClick(index) {
     Role itemData = dataList[index];
     Get.toNamed("/chat", arguments: {"roleId": itemData.roleId});
+    readChatItem(itemData.roleId);
   }
-
+  /// 消息已读
+  void readChatItem(String roleId) {
+    HttpUtils.diorequst('/chat/chatRead',method: "post", params: {"roleId": roleId}).then(
+        (res) {
+          /// 更新未读消列表
+          getDataList();
+    });
+  }
+  /// 删除确认弹窗
   void deleteConfirm(String roleId) {
     final makeDialogController = MakeDialogController();
 
@@ -155,12 +165,20 @@ class ChatListController extends GetxController {
         method: 'post',
         params: {"roleId": roleId}).then(
       (response) {
-      ///找到列表项，删除
-      int index = dataList.indexWhere((element) => element.roleId == roleId);
-      if (index != -1) {
-        dataList.removeAt(index);
-        update();
-      }
+        ///找到列表项，删除
+        int index = dataList.indexWhere((element) => element.roleId == roleId);
+        if (index != -1) {
+          dataList.removeAt(index);
+          update();
+        }
+        /// 清空本地数据库这个角色的聊天记录
+        String tableName = 'chat_${Application.userInfo?.userId}_$roleId';
+        LocalChatMessageService.clearChatMessageByRoleId(tableName);
+        /// 删除这个角色表的同步数据
+        SyncRecordService.deleteSyncRecord(Application.userInfo!.userId!, roleId);
+        /// 更新消息未读数
+        getRoleListUnreadCount();
+
     }).catchError((error) {
       exSnackBar(error, type: ExSnackBarType.error);
     });

@@ -43,8 +43,8 @@ class LocalChatMessageService {
   static Future<void> updateChatMessage(String tableName, LocalChatMessage localChatMessage) async {
     await DBUtil.database.update(tableName, localChatMessage.toJson(), where: 'localChatId = ?', whereArgs: [localChatMessage.localChatId]);
   }
-  /// 删除聊天记录
-  static Future<void> deleteChatMessage(String tableName, String localChatId) async {
-    await DBUtil.database.delete(tableName, where: 'localChatId = ?', whereArgs: [localChatId]);
+  /// 删除所有聊天记录
+  static Future<void> clearChatMessageByRoleId(String tableName) async {
+    await DBUtil.database.delete(tableName);
   }
 }

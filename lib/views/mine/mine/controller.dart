@@ -76,11 +76,7 @@ class MineController extends GetxController {
             width: double.maxFinite,
             child: TextButton(
                 onPressed: () {
-                  HttpUtils.diorequst("/logout", method: "post")
-                      .then((value) {})
-                      .whenComplete(() => null);
-                  Application.pres?.clear();
-                  Get.offAllNamed("/welcome");
+                  Application.logout();
                 },
                 style: ButtonStyle(
                     textStyle: MaterialStateProperty.all(

@@ -48,7 +48,7 @@ class APPPlugin {
 
     /// 连接 mqtt服务
     mqttClient = XMqttClient.instance;
-    mqttClient?.connect("mqtt_cid");
+
     /// 初始化内购
     AppPurchase.initAppPayConfig();
 

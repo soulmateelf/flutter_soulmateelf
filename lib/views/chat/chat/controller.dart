@@ -161,21 +161,20 @@ class ChatController extends GetxController {
             lastLocalChatId: lastLocalChatId, limit: limit)
         .then((List<LocalChatMessage> newList) {
       refreshController.refreshCompleted();
-
-      ///最老的一条数据的localChatId，倒序排列，最后一条就是最老的
-      lastLocalChatId = newList.last.localChatId;
-
-      ///历史消息,往上插入
-      messageList.insertAll(0, newList.reversed);
-      if (newList.isEmpty) {
+      if(newList.isEmpty){
         ///没有更多数据了
         canRefresh = false;
+      }else{
+        ///最老的一条数据的localChatId，倒序排列，最后一条就是最老的
+        lastLocalChatId = newList.last.localChatId;
+        ///历史消息,往上插入
+        messageList.insertAll(0, newList.reversed);
+        if (from == 'init') {
+          ///进来第一页，滚动到底部
+          toEndMessage();
+        }
       }
       update();
-      if (from == 'init') {
-        ///进来第一页，滚动到底部
-        toEndMessage();
-      }
     }).catchError((error) {
       refreshController.refreshFailed();
       exSnackBar(error, type: ExSnackBarType.error);
@@ -374,13 +373,12 @@ class ChatController extends GetxController {
   }
 
   ///发送信号给后台，可以调用gpt接口了
+  ///成功失败都不处理，只是发送信号
   void startGptTask() {
     Map<String, dynamic> params = {'roleId': roleId, 'lockId': lockId};
     HttpUtils.diorequst('/chat/chatRollBack', method: 'post', params: params)
         .then((response) {})
-        .catchError((error) {
-      exSnackBar(error, type: ExSnackBarType.error);
-    });
+        .catchError((error) {});
   }
 
   ///是否展示时间模块

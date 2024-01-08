@@ -174,7 +174,7 @@ class AuthCodeController extends GetxController {
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.w)))),
                 child: Text(
-                  "yes,log out",
+                  "yes, deactivate",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
