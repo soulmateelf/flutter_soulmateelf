@@ -9,17 +9,15 @@ class MinePurchaseHistoryController extends GetxController {
   final RefreshController refreshController = RefreshController();
 
   List<Order> orderList = [];
-  int page = 1;
+  int page = 0;
   int size = 10;
 
   void getOrderList(String type) {
-    if (type == "refresh") {
-      page = 1;
-    } else if (type == "loadMore") {
-      page++;
+    if(type == "refresh") {
+      page = 0;
     }
     HttpUtils.diorequst('/order/orderList', query: {
-      "page": page,
+      "page": page + 1,
       "size": 10,
     }).then((res) {
       List<dynamic> data = res['data'] ?? [];
@@ -35,6 +33,7 @@ class MinePurchaseHistoryController extends GetxController {
       if (data.isEmpty) {
         refreshController.loadNoData();
       }
+      page++;
       update();
     }).catchError((err) {
       if (type == "refresh") {

@@ -12,13 +12,13 @@ class EnergyCard {
   int id;
   int value;
   String orderId;
-  String roleId;
-  dynamic remark;
-  dynamic updateTime;
+  String? roleId;
+  String? remark;
+  int? updateTime;
   String energyLogId;
   String userId;
   int origin;
-  dynamic advertLogId;
+  String? advertLogId;
   int status;
   int createTime;
 
@@ -26,13 +26,13 @@ class EnergyCard {
     required this.id,
     required this.value,
     required this.orderId,
-    required this.roleId,
-    required this.remark,
+    this.roleId,
+    this.remark,
     required this.updateTime,
     required this.energyLogId,
     required this.userId,
     required this.origin,
-    required this.advertLogId,
+    this.advertLogId,
     required this.status,
     required this.createTime,
   });
