@@ -415,6 +415,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
   /// 聊天信息展示组件
   Widget _messageItem(index) {
     LocalChatMessage chatData = logic.messageList[index];
+    bool isUser = chatData.role == 'user';
     return chatData.inputType == 0
         ? Container(
             margin: EdgeInsets.only(bottom: 12.w),
@@ -445,12 +446,10 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                   ),
                 ),
                 Container(
-                    alignment: chatData.role == 'user'
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
                     margin: EdgeInsets.only(top: 12.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
+                      textDirection: isUser?TextDirection.ltr:TextDirection.rtl,
                       children: [
                         ///0发送中, 1已发送, 2发送失败，3已删除
                         ///状态是0发送中，并且是3分钟内的消息，才显示loading，因为特殊情况下，发送失败的事件没接收到，状态就还是0，显示loading就很奇怪
@@ -472,11 +471,8 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                         Flexible(
                           child: Container(
                             decoration: BoxDecoration(
-                              color: chatData.role == 'user'
-                                  ? primaryColor
-                                  : const Color.fromRGBO(239, 239, 239, 1),
-                              borderRadius: chatData.role == 'user'
-                                  ? BorderRadius.only(
+                              color: isUser ? primaryColor : const Color.fromRGBO(239, 239, 239, 1),
+                              borderRadius: isUser ? BorderRadius.only(
                                   topLeft: Radius.circular(20.w),
                                   topRight: Radius.circular(20.w),
                                   bottomLeft: Radius.circular(20.w))
@@ -493,9 +489,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
                                   height: 1.3,
-                                  color: chatData.role == 'user'
-                                      ? Colors.white
-                                      : const Color.fromRGBO(0, 0, 0, 0.8)),
+                                  color: isUser ? Colors.white : const Color.fromRGBO(0, 0, 0, 0.8)),
                             ),
                           ))
                       ],

@@ -597,7 +597,7 @@ class ChatController extends GetxController {
           // overlayEntry?.remove();
         },
         child: Container(
-          color: Color.fromRGBO(0, 0, 0, 0.74),
+          color: const Color.fromRGBO(0, 0, 0, 0.74),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

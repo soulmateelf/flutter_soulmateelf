@@ -51,7 +51,7 @@ class ChatListController extends GetxController {
       update();
     }).catchError((error) {
       refreshController.refreshFailed();
-      exSnackBar(error, type: ExSnackBarType.error);
+      exSnackBar(error.toString(), type: ExSnackBarType.error);
     });
     getRoleListUnreadCount();
   }
