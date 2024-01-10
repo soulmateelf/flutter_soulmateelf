@@ -89,9 +89,6 @@ class ChatController extends GetxController {
 
   final GlobalKey listKey = GlobalKey();
 
-  /// 填充区域高度
-  double fillHeight = 0;
-
   SoulMateMenuController menuLogic = Get.find<SoulMateMenuController>();
 
   /// 本地数据库表名
@@ -130,6 +127,8 @@ class ChatController extends GetxController {
     DBUtil.createTableIfNotExists(tableName);
     /// 聊天已读
     readChatItem();
+    // 添加监听器
+    focusNode.addListener(_handleFocusChange);
   }
 
   @override
@@ -139,11 +138,22 @@ class ChatController extends GetxController {
       final chatController = Get.find<ChatListController>();
       chatController.getDataList();
     }
+    // 移除监听器，避免内存泄漏
+    focusNode.removeListener(_handleFocusChange);
     chatMessageController.dispose();
     scrollController.dispose();
     focusNode.dispose();
     _debounce?.cancel();
     super.onClose();
+  }
+  ///输入框状态监听
+  void _handleFocusChange() {
+    // 处理焦点状态变化
+    if (focusNode.hasFocus) {
+      scrollToTop();
+    } else {
+      scrollToTop();
+    }
   }
 
   /// 获取角色详情
@@ -181,36 +191,16 @@ class ChatController extends GetxController {
         ///历史消息,往上插入
         messageList.addAll(newList);
       }
-      fillHeight = 0;
       update();
-      /// 计算填充区域高度
-      computeFillContainerHeight();
-
     }).catchError((error) {
       chatMessageController.loadFailed();
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }
-  /// 当聊天数据不满一屏时，计算填充区域高度
-  void computeFillContainerHeight(){
-    /// 延迟2秒展示填充区域
-    Future.delayed(const Duration(milliseconds: 200), () {
-      ///获取列表高度
-      final RenderObject? renderBox = listKey.currentContext!.findRenderObject();
-      double listHeight = renderBox?.paintBounds.height ?? 0;
-      if(listHeight != 0){
-        /// 有数据,计算填充区域高度
-        /// 获取视窗高度
-        double viewportHeight = scrollController.position.viewportDimension;
-        /// 计算填充区域高度,如果视窗高度大于列表高度，并且不能滚动，才需要填充区域，否则为0
-        fillHeight = (viewportHeight > listHeight && scrollController.position.maxScrollExtent<=0) ? (viewportHeight - listHeight) : 0;
-        update();
-      }
-    });
-  }
+
   /// 消息列表滚动到top
   void scrollToTop() {
-    Future.delayed(const Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       scrollController.animateTo(
         0,
         duration: const Duration(milliseconds: 150),
@@ -230,10 +220,7 @@ class ChatController extends GetxController {
       ///更新本地消息列表
       messageList.insert(0, localChatMessage);
       lastLocalChatId = localChatMessage.localChatId;
-      fillHeight = 0;
       update();
-      /// 计算填充区域高度
-      computeFillContainerHeight();
       ///滚动到top
       scrollToTop();
     }).catchError((error) {
@@ -297,10 +284,7 @@ class ChatController extends GetxController {
     ///更新本地消息列表
     messageList.insert(0, localChatMessage);
     lastLocalChatId = localChatMessage.localChatId;
-    fillHeight = 0;
     update();
-    /// 计算填充区域高度
-    computeFillContainerHeight();
     ///滚动到top
     scrollToTop();
 
@@ -344,7 +328,6 @@ class ChatController extends GetxController {
       ///复制文件，这里我直接把录音的m4a文件复制成wav文件了
       file.copySync(destinationFilePath);
     }
-
     ///插入本地数据库
     insertLocalChatMessage(tempLocalChatMessage);
   }

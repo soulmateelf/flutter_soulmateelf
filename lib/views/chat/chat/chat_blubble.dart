@@ -15,7 +15,6 @@ class ChatBlubble extends StatefulWidget {
   LocalChatMessage chatData;
 
   ChatBlubble({super.key, required this.chatData});
-
   @override
   State<ChatBlubble> createState() => _ChatBlubbleState();
 }
@@ -24,7 +23,6 @@ class _ChatBlubbleState extends State<ChatBlubble> {
   late PlayerController controller;
   late StreamSubscription<PlayerState> playerStateSubscription;
   bool isPlaying = false;
-
   final playerWaveStyle = const PlayerWaveStyle(
     fixedWaveColor: Colors.white54,
     liveWaveColor: Colors.white,
@@ -51,6 +49,8 @@ class _ChatBlubbleState extends State<ChatBlubble> {
 
     final appDirectory = await getApplicationDocumentsDirectory();
     String path = "${appDirectory.path}/${widget.chatData.localChatId}.wav";
+    print(path);
+    print(11111);
     File sourceFile = File(path);
     if (!sourceFile.existsSync() && widget.chatData.voiceUrl != null) {
       await HttpUtils.dio.download("${widget.chatData.voiceUrl}", path);

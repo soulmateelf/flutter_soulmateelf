@@ -27,6 +27,7 @@ import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/views/chat/chat/chat_blubble.dart';
+import 'package:soulmate/widgets/expanded_viewport.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 import 'controller.dart';
@@ -67,22 +68,6 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
     path = "${appDirectory.path}/recording.m4a";
     isLoading = false;
     setState(() {});
-  }
-
-  @override
-  void didChangeMetrics() {
-    super.didChangeMetrics();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        if (MediaQuery.of(context).viewInsets.bottom == 0) {
-          /// 键盘收回
-          logic.scrollToTop();
-        } else {
-          /// 键盘弹出
-          logic.scrollToTop();
-        }
-      });
-    });
   }
 
   void _initialiseControllers() async {
@@ -168,12 +153,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
               IconButton(
                   iconSize: 44.w,
                   onPressed: () {
-                    // Get.toNamed('/chatBackground');
-                    // final RenderObject? renderBox = logic.listKey.currentContext!.findRenderObject();
-                    // double listHeight = renderBox?.paintBounds.height ?? 0;
-                    // print(listHeight);
-                    // print(renderBox?.paintBounds.top);
-                    // print(logic.scrollController.position.maxScrollExtent);
+                    Get.toNamed('/chatBackground');
                   },
                   icon: Image.asset(
                     "assets/images/icons/backGroundIcon.png",
@@ -224,7 +204,6 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
       enablePullDown: false,
       enablePullUp: true,
       controller: logic.chatMessageController,
-      scrollController: logic.scrollController,
       onLoading: (){
         logic.getLocalChatMessageList('loadMore');
       },
@@ -243,37 +222,29 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
           child: Center(child: body),
         );
       }),
-      child: CustomScrollView(
-          reverse: true,
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          slivers: <Widget>[
-            SliverToBoxAdapter(
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 100),
-                  height: logic.fillHeight,
-                ),
-            ),
-            SliverList(
-              key: logic.listKey,
+      child: Scrollable(
+        controller: logic.scrollController,
+        axisDirection: AxisDirection.up,
+        viewportBuilder: (context, offset) {
+          return ExpandedViewport(
+            offset: offset,
+            cacheExtent: double.infinity,
+            axisDirection: AxisDirection.up,
+            slivers: <Widget>[
+              SliverExpanded(),
+              SliverList(
               delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return GestureDetector(
-                      onTap: () {}, child: _messageItem(index));
-                },
-                childCount: logic.messageList.length,
-              ),
-            ),
-           // SliverFillRemaining(
-           //    key: logic.listKey,
-           //    hasScrollBody: false,
-           //    // fillOverscroll: true,
-           //    child: Container(
-           //      color: Colors.red,
-           //    ),
-           //  ),
-
-          ],
-      )
+                  (BuildContext context, int index) {
+                    return GestureDetector(
+                        onTap: () {}, child: _messageItem(index));
+                  },
+                  childCount: logic.messageList.length,
+                ),
+              )
+            ],
+          );
+        },
+      ),
   );
 
   /// 底部用户输入区域
@@ -462,6 +433,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
     bool isUser = chatData.role == 'user';
     return chatData.inputType == 0
         ? Container(
+            key: Key(chatData.localChatId),
             margin: EdgeInsets.only(bottom: 12.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -542,6 +514,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
             ),
           )
         : ChatBlubble(
+            key: Key(chatData.localChatId),
             chatData: chatData,
           );
   }
