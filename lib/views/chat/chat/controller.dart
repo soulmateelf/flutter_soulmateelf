@@ -70,8 +70,8 @@ class ChatController extends GetxController {
   /// 延迟时间
   Duration duration = const Duration(seconds: 2);
 
-  /// 是否聊过天，然后更新首页的聊天历史
-  bool hasChat = false;
+  /// 是否聊过天，或者调用了消息已读，然后更新首页的聊天历史
+  bool needRefresh = false;
 
   /// 是否显示底部与语音模块
   bool showVoiceWidget = false;
@@ -86,6 +86,11 @@ class ChatController extends GetxController {
   OverlayEntry? overlayEntry;
 
   GlobalKey leadingKey = GlobalKey();
+
+  final GlobalKey listKey = GlobalKey();
+
+  /// 填充区域高度
+  double fillHeight = 0;
 
   SoulMateMenuController menuLogic = Get.find<SoulMateMenuController>();
 
@@ -123,11 +128,13 @@ class ChatController extends GetxController {
     /// 如果不存在用户角色聊天记录表，创建
     tableName = 'chat_${Application.userInfo?.userId}_$roleId';
     DBUtil.createTableIfNotExists(tableName);
+    /// 聊天已读
+    readChatItem();
   }
 
   @override
   void onClose() {
-    if (hasChat == true) {
+    if (needRefresh == true) {
       /// 聊过天，更新首页聊天列表
       final chatController = Get.find<ChatListController>();
       chatController.getDataList();
@@ -150,7 +157,14 @@ class ChatController extends GetxController {
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }
-
+  /// 消息已读
+  void readChatItem() {
+    HttpUtils.diorequst('/chat/chatRead',
+        method: "post", params: {"roleId": roleId}).then((res) {
+      /// 记录已读状态，更新首页聊天列表
+      needRefresh = true;
+    });
+  }
   /// 获取本地聊天记录
   void getLocalChatMessageList(String from) {
     int limit = 2;
@@ -167,13 +181,33 @@ class ChatController extends GetxController {
         ///历史消息,往上插入
         messageList.addAll(newList);
       }
+      fillHeight = 0;
       update();
+      /// 计算填充区域高度
+      computeFillContainerHeight();
+
     }).catchError((error) {
       chatMessageController.loadFailed();
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }
-
+  /// 当聊天数据不满一屏时，计算填充区域高度
+  void computeFillContainerHeight(){
+    /// 延迟2秒展示填充区域
+    Future.delayed(const Duration(milliseconds: 200), () {
+      ///获取列表高度
+      final RenderObject? renderBox = listKey.currentContext!.findRenderObject();
+      double listHeight = renderBox?.paintBounds.height ?? 0;
+      if(listHeight != 0){
+        /// 有数据,计算填充区域高度
+        /// 获取视窗高度
+        double viewportHeight = scrollController.position.viewportDimension;
+        /// 计算填充区域高度,如果视窗高度大于列表高度，并且不能滚动，才需要填充区域，否则为0
+        fillHeight = (viewportHeight > listHeight && scrollController.position.maxScrollExtent<=0) ? (viewportHeight - listHeight) : 0;
+        update();
+      }
+    });
+  }
   /// 消息列表滚动到top
   void scrollToTop() {
     Future.delayed(const Duration(milliseconds: 300), () {
@@ -195,8 +229,11 @@ class ChatController extends GetxController {
 
       ///更新本地消息列表
       messageList.insert(0, localChatMessage);
+      lastLocalChatId = localChatMessage.localChatId;
+      fillHeight = 0;
       update();
-
+      /// 计算填充区域高度
+      computeFillContainerHeight();
       ///滚动到top
       scrollToTop();
     }).catchError((error) {
@@ -259,8 +296,11 @@ class ChatController extends GetxController {
 
     ///更新本地消息列表
     messageList.insert(0, localChatMessage);
+    lastLocalChatId = localChatMessage.localChatId;
+    fillHeight = 0;
     update();
-
+    /// 计算填充区域高度
+    computeFillContainerHeight();
     ///滚动到top
     scrollToTop();
 
@@ -268,6 +308,8 @@ class ChatController extends GetxController {
     if (isIntro && Application.hasIntro == false) {
       showGiftIntro();
     }
+    /// 通知后端，已读消息
+    readChatItem();
   }
 
   ///本地数据库的数据处理
@@ -345,7 +387,7 @@ class ChatController extends GetxController {
       (response) {
         if (response?['data'].isNotEmpty) {
           /// 记录聊过天的状态
-          hasChat = true;
+          needRefresh = true;
 
           ///发送成功，更新本地消息状态
           lockId = response?['data']['lockId'];

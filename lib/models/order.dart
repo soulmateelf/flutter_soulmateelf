@@ -24,6 +24,7 @@ class Order {
   String productId;
   int createTime;
   double productAmount;
+  double? rawProductAmount;///原价
   dynamic couponId;
   dynamic updateTime;
   int productEnergy;
@@ -48,6 +49,7 @@ class Order {
     required this.productId,
     required this.createTime,
     required this.productAmount,
+    this.rawProductAmount,
     required this.couponId,
     required this.updateTime,
     required this.productEnergy,
@@ -72,6 +74,7 @@ class Order {
     productId: json["productId"],
     createTime: json["createTime"],
     productAmount: json["productAmount"]?.toDouble(),
+    rawProductAmount: json["rawProductAmount"]?.toDouble(),
     couponId: json["couponId"],
     updateTime: json["updateTime"],
     productEnergy: json["productEnergy"],

@@ -168,7 +168,12 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
               IconButton(
                   iconSize: 44.w,
                   onPressed: () {
-                    Get.toNamed('/chatBackground');
+                    // Get.toNamed('/chatBackground');
+                    // final RenderObject? renderBox = logic.listKey.currentContext!.findRenderObject();
+                    // double listHeight = renderBox?.paintBounds.height ?? 0;
+                    // print(listHeight);
+                    // print(renderBox?.paintBounds.top);
+                    // print(logic.scrollController.position.maxScrollExtent);
                   },
                   icon: Image.asset(
                     "assets/images/icons/backGroundIcon.png",
@@ -187,7 +192,6 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                     padding: EdgeInsets.only(top: 14.w),
                     child: Container(
                       decoration: BoxDecoration(
-                        // color: Colors.yellow,
                         image: logic.roleDetail?.imageId != null
                             ? DecorationImage(
                                 image: AssetImage(
@@ -202,8 +206,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                         // image: const DecorationImage(image: AssetImage(("assets/images/image/chatBg.png")),fit: BoxFit.fitWidth)
                       ),
                       child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 10.w),
+                        padding: EdgeInsets.symmetric( horizontal: 16.w, vertical: 10.w),
                         child: _refreshListView,
                       ),
                     ),
@@ -236,23 +239,22 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
           body = const Text("");
         }
         return SizedBox(
-          height: 55.0,
+          // height: 55.0,
           child: Center(child: body),
         );
       }),
-      // child: ListView.builder(
-      //     reverse: true,
-      //     shrinkWrap: true,
-      //     cacheExtent: double.infinity,
-      //     itemCount: logic.messageList.length,
-      //     keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      //     itemBuilder: (context, index) {
-      //       return GestureDetector(onTap: () {}, child: _messageItem(index));
-      //     })
       child: CustomScrollView(
           reverse: true,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           slivers: <Widget>[
+            SliverToBoxAdapter(
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 100),
+                  height: logic.fillHeight,
+                ),
+            ),
             SliverList(
+              key: logic.listKey,
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   return GestureDetector(
@@ -261,18 +263,18 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                 childCount: logic.messageList.length,
               ),
             ),
+           // SliverFillRemaining(
+           //    key: logic.listKey,
+           //    hasScrollBody: false,
+           //    // fillOverscroll: true,
+           //    child: Container(
+           //      color: Colors.red,
+           //    ),
+           //  ),
+
           ],
       )
   );
-
-  List<Widget> renderPurchaseList() {
-    List<Widget> list = [];
-    logic.messageList.forEach((element) {
-      int index = logic.messageList.indexOf(element);
-      list.add(_messageItem(index));
-    });
-    return list;
-  }
 
   /// 底部用户输入区域
   Widget _bottomContainer() {

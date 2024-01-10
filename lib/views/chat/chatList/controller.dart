@@ -66,7 +66,6 @@ class ChatListController extends GetxController {
   void chatItemClick(index) {
     Role itemData = dataList[index];
     Get.toNamed("/chat", arguments: {"roleId": itemData.roleId, "roleInfo": itemData});
-    readChatItem(itemData.roleId);
   }
 
   /// 消息已读

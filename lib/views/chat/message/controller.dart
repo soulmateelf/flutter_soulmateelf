@@ -63,14 +63,14 @@ class MessageController extends GetxController {
     late RefreshController controller;
     late int page;
     if (type == 0) {
-      if(isAdd) {
+      if(!isAdd) {
         normalPage = 0;
       }
       page = normalPage;
       controller = normalController;
     } else if (type == 1) {
-      if(isAdd) {
-        normalPage = 0;
+      if(!isAdd) {
+        systemPage = 0;
       }
       page = systemPage;
       controller = systemController;

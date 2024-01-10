@@ -5,6 +5,7 @@ import 'package:moment_dart/moment_dart.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:soulmate/models/order.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -123,7 +124,7 @@ class MinePurchaseHistoryPage extends StatelessWidget {
                               child: SizedBox(
                                   height: 20.w,
                                   child: Text(
-                                    order.productType == 1 ? "\$ ${order.productAmount}" : "",
+                                    order.productType == 1&&!Utils.isEmpty(order.rawProductAmount)  ? "\$ ${order.rawProductAmount}" : "",
                                     style: TextStyle(
                                       fontSize: 14.sp,
                                       decoration: TextDecoration.lineThrough,
