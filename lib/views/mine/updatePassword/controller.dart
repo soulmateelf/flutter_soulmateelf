@@ -111,6 +111,9 @@ class MineUpdatePasswordController extends GetxController {
   }
 
   void updatePassword() {
+
+    validatePassword();
+    validateConfirmPassword();
     if (currentPasswordController.text.isEmpty ||
         !currentPasswordErrorText.isEmpty) {
       return;

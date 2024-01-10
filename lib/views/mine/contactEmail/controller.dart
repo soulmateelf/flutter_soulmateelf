@@ -32,7 +32,7 @@ class MineContactEmailController extends GetxController {
       errorText = "Please enter a valid email.";
     }
     ///不能用自己的邮箱
-    if (email == Application.userInfo?.email) {
+    if (email.toLowerCase() == Application.userInfo?.email.toLowerCase()) {
       errorText = "Can't use your own email.";
     }
     update();
