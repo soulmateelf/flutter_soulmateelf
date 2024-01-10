@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:flutter/src/widgets/focus_manager.dart';
+import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
@@ -111,7 +112,6 @@ class MineUpdatePasswordController extends GetxController {
   }
 
   void updatePassword() {
-
     validatePassword();
     validateConfirmPassword();
     if (currentPasswordController.text.isEmpty ||
@@ -135,9 +135,8 @@ class MineUpdatePasswordController extends GetxController {
       "oldPassword": currentPasswordController.text,
       "newPassword": confirmPasswordController.text,
     }).then((res) {
-      Get.back();
-
       exSnackBar("success", type: ExSnackBarType.success);
+      Application.logout();
     }).catchError((err) {
       exSnackBar(err, type: ExSnackBarType.error);
     });
