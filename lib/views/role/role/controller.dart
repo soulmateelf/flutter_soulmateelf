@@ -169,7 +169,7 @@ class RoleController extends GetxController {
   }
 
   void toChat() {
-    Get.toNamed('/chat', arguments: {"roleId": roleDetail?.roleId});
+    Get.toNamed('/chat', arguments: {"roleId": roleDetail?.roleId,"roleInfo": roleDetail});
   }
 
   @override

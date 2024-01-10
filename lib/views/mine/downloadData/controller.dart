@@ -38,7 +38,7 @@ class MineDownloadDataController extends GetxController {
 
   void showDownloadDialog() {
     makeDialogController.show(
-        iconWidget: Image.asset("assets/images/icons/logOut.png"),
+        iconWidget: Image.asset("assets/images/icons/downloadIcon.png"),
         content: Column(
           children: [
             Text(

@@ -105,7 +105,7 @@ class Step2Controller extends GetxController {
   ///购买商品
   payNow() async {
     /// 创建订单
-    currentOrderId = await createOrder(storeProduct!, 0);
+    currentOrderId = await createOrder(storeProduct!, 2);
     if (Utils.isEmpty(currentOrderId)) {
       exSnackBar("create order fail!", type: ExSnackBarType.error);
       return;
@@ -243,7 +243,7 @@ class Step2Controller extends GetxController {
 
     formData = FormData.fromMap({
       "name": nameController.text,
-      "age": age,
+      "age": age.toInt(),
       "gender": genderType,
       "Hobby": hobbyController.text,
       "characterIntroduction": introductionController.text,

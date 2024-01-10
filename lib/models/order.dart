@@ -27,6 +27,7 @@ class Order {
   dynamic couponId;
   dynamic updateTime;
   int productEnergy;
+  /// 0: pending, 1: success, 2: failed 3: canceled
   String result;
   String productName;
   int status;

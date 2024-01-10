@@ -44,8 +44,8 @@ class ChatController extends GetxController {
   /// 聊天记录
   List<LocalChatMessage> messageList = [];
 
-  ///刷新控制器
-  RefreshController refreshController =
+  ///聊天列表刷新控制器
+  RefreshController chatMessageController =
       RefreshController(initialRefresh: false);
 
   ///滚动控制器
@@ -60,9 +60,6 @@ class ChatController extends GetxController {
 
   ///当前页面最老的一条数据的localChatId
   String lastLocalChatId = '';
-
-  ///可以下拉刷新
-  bool canRefresh = true;
 
   ///消息输入框内容
   String inputContent = '';
@@ -108,6 +105,7 @@ class ChatController extends GetxController {
     super.onReady();
     roleId = Get.arguments?["roleId"];
     isIntro = Get.arguments['intro'] ?? false;
+    roleDetail = Get.arguments?["roleInfo"];
     getRoleDetail();
     getLocalChatMessageList('init');
     if (isIntro) {
@@ -134,7 +132,7 @@ class ChatController extends GetxController {
       final chatController = Get.find<ChatListController>();
       chatController.getDataList();
     }
-    refreshController.dispose();
+    chatMessageController.dispose();
     scrollController.dispose();
     focusNode.dispose();
     _debounce?.cancel();
@@ -159,32 +157,28 @@ class ChatController extends GetxController {
     LocalChatMessageService.getChatMessageList(tableName,
             lastLocalChatId: lastLocalChatId, limit: limit)
         .then((List<LocalChatMessage> newList) {
-      refreshController.refreshCompleted();
+      chatMessageController.loadComplete();
       if(newList.isEmpty){
         ///没有更多数据了
-        canRefresh = false;
+        chatMessageController.loadNoData();
       }else{
         ///最老的一条数据的localChatId，倒序排列，最后一条就是最老的
         lastLocalChatId = newList.last.localChatId;
         ///历史消息,往上插入
-        messageList.insertAll(0, newList.reversed);
-        if (from == 'init') {
-          ///进来第一页，滚动到底部
-          toEndMessage();
-        }
+        messageList.addAll(newList);
       }
       update();
     }).catchError((error) {
-      refreshController.refreshFailed();
+      chatMessageController.loadFailed();
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }
 
-  /// 消息列表滚动到最底部
-  void toEndMessage() {
+  /// 消息列表滚动到top
+  void scrollToTop() {
     Future.delayed(const Duration(milliseconds: 300), () {
       scrollController.animateTo(
-        scrollController.position.maxScrollExtent,
+        0,
         duration: const Duration(milliseconds: 150),
         curve: Curves.easeOut,
       );
@@ -200,11 +194,11 @@ class ChatController extends GetxController {
       inputContent = '';
 
       ///更新本地消息列表
-      messageList.add(localChatMessage);
+      messageList.insert(0, localChatMessage);
       update();
 
-      ///滚动到底部
-      toEndMessage();
+      ///滚动到top
+      scrollToTop();
     }).catchError((error) {
       exSnackBar(error.toString(), type: ExSnackBarType.error);
     });
@@ -264,11 +258,11 @@ class ChatController extends GetxController {
     }
 
     ///更新本地消息列表
-    messageList.add(localChatMessage);
+    messageList.insert(0, localChatMessage);
     update();
 
-    ///滚动到底部
-    toEndMessage();
+    ///滚动到top
+    scrollToTop();
 
     /// 如果是引导功能进来的，角色回复第一条消息，显示引导结束提示框
     if (isIntro && Application.hasIntro == false) {

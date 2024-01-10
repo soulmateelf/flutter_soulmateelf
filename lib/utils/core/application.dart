@@ -36,6 +36,7 @@ class Application {
   }
 
   static initGlobe() async {
+
     /// 全局变量的初始化
     /// 存储
     Application.pres = await SharedPreferences.getInstance();

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:moment_dart/moment_dart.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:soulmate/models/order.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:flutter/cupertino.dart';
@@ -96,16 +97,15 @@ class MinePurchaseHistoryPage extends StatelessWidget {
                         color: primaryColor,
                         borderRadius: BorderRadius.circular(16.w),
                       ),
-                      child: const Icon(
-                        Icons.flash_on_sharp,
-                        color: Colors.white,
+                      child: Image.asset(
+                        order.type==2?"assets/images/icons/orderRoleIcon.png":"assets/images/icons/orderEnergyIcon.png",
                       ),
                     ),
                     SizedBox(
                       width: 8.w,
                     ),
                     Text(
-                      "${order.productEnergy}",
+                      order.type==2?"Add your ELF":"${order.productEnergy}",
                       style: TextStyle(
                         color: textColor,
                         fontSize: 20.sp,
@@ -116,28 +116,40 @@ class MinePurchaseHistoryPage extends StatelessWidget {
                   ],
                 ),
                 RichText(
-                    text: TextSpan(children: [
-                      TextSpan(
-                    text:
-                        order.productType == 1 ? "\$ ${order.productAmount}" : "",
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      decoration: TextDecoration.lineThrough,
-                      color: const Color.fromRGBO(0, 0, 0, 0.48),
-                    ),
-                  ),
-                  WidgetSpan(
-                      child: SizedBox(
-                    width: 8.w,
-                  )),
-                  TextSpan(
-                      text: "\$ ${order.orderAmount}",
-                      style: TextStyle(
-                        color: textColor,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: FontFamily.SFProRoundedBlod,
-                      ))
+                    text: TextSpan(
+                        children: [
+                          showOrderStatus(order),
+                          WidgetSpan(
+                              child: SizedBox(
+                                  height: 20.w,
+                                  child: Text(
+                                    order.productType == 1 ? "\$ ${order.productAmount}" : "",
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      decoration: TextDecoration.lineThrough,
+                                      color: const Color.fromRGBO(0, 0, 0, 0.48),
+                                    ),
+                                  )
+                              )
+                          ),
+                          WidgetSpan(
+                              child: SizedBox(
+                            width: 8.w,
+                          )),
+                          WidgetSpan(
+                              child: SizedBox(
+                                height: 26.w,
+                                  child: Text(
+                                    "\$ ${order.orderAmount}",
+                                    style: TextStyle(
+                                      color: textColor,
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: FontFamily.SFProRoundedBlod,
+                                    ),
+                                  )
+                              )
+                          ),
                 ]))
               ],
             ),
@@ -148,4 +160,66 @@ class MinePurchaseHistoryPage extends StatelessWidget {
 
     return list;
   }
+}
+
+/// 展示订单状态
+InlineSpan showOrderStatus(Order order) {
+  String text = "";
+  Color textColor = const Color.fromRGBO(0, 0, 0, 0.48);
+  Color backgroundColor = const Color.fromRGBO(239, 239, 239, 1);
+  Color borderColor = const Color.fromRGBO(0, 0, 0, 0.06);
+  switch (order.result) {
+    case '0':
+      text = "Pending";
+      textColor = const Color.fromRGBO(0, 0, 0, 0.48);
+      backgroundColor = const Color.fromRGBO(239, 239, 239, 1);
+      borderColor = const Color.fromRGBO(0, 0, 0, 0.06);
+      break;
+    case '1':
+      text = "Success";
+      textColor = const Color.fromRGBO(255, 128, 0, 1);
+      backgroundColor = const Color.fromRGBO(255, 128, 0, 0.16);
+      borderColor = const Color.fromRGBO(255, 128, 0, 0.26);
+      break;
+    case '2':
+      text = "Failure";
+      textColor = const Color.fromRGBO(255, 90, 90, 1);
+      backgroundColor = const Color.fromRGBO(255, 90, 90, 0.06);
+      borderColor = const Color.fromRGBO(255, 90, 90, 0.16);
+      break;
+    case '3':
+      text = "Cancel";
+      textColor = const Color.fromRGBO(0, 0, 0, 0.48);
+      backgroundColor = const Color.fromRGBO(239, 239, 239, 1);
+      borderColor = const Color.fromRGBO(0, 0, 0, 0.06);
+      break;
+    default:
+      text = "Pending";
+      textColor = const Color.fromRGBO(0, 0, 0, 0.48);
+      backgroundColor = const Color.fromRGBO(239, 239, 239, 1);
+      borderColor = const Color.fromRGBO(0, 0, 0, 0.06);
+      break;
+  }
+  InlineSpan widget = WidgetSpan(
+      child: Container(
+          margin: EdgeInsets.only(right: 12.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.w),
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.all(Radius.circular(20.w)),
+            border: Border.all(
+              color: borderColor,
+              width: 2.w,
+            ),
+          ),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: textColor,
+              fontSize: 13.sp,
+            ),
+          )
+      )
+  );
+  return widget;
 }

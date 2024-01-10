@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
     return RefreshConfiguration(
         headerBuilder: () => WaterDropHeader(
               waterDropColor: primaryColor,
-              refresh: SizedBox(
+              refresh: const SizedBox(
                 width: 20,
                 height: 20,
                 child: CircularProgressIndicator(

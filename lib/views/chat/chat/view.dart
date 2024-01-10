@@ -73,15 +73,15 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
   void didChangeMetrics() {
     super.didChangeMetrics();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // setState(() {
-      //   if (MediaQuery.of(context).viewInsets.bottom == 0) {
-      //     /// 键盘收回
-      //     logic.toEndMessage();
-      //   } else {
-      //     /// 键盘弹出
-      //     logic.toEndMessage();
-      //   }
-      // });
+      setState(() {
+        if (MediaQuery.of(context).viewInsets.bottom == 0) {
+          /// 键盘收回
+          logic.scrollToTop();
+        } else {
+          /// 键盘弹出
+          logic.scrollToTop();
+        }
+      });
     });
   }
 
@@ -105,7 +105,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    logic.refreshController = RefreshController(initialRefresh: false);
+    logic.chatMessageController = RefreshController(initialRefresh: false);
     return GetBuilder<ChatController>(builder: (logic) {
       return basePage('chat',
           appBar: AppBar(
@@ -187,6 +187,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                     padding: EdgeInsets.only(top: 14.w),
                     child: Container(
                       decoration: BoxDecoration(
+                        // color: Colors.yellow,
                         image: logic.roleDetail?.imageId != null
                             ? DecorationImage(
                                 image: AssetImage(
@@ -217,21 +218,61 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
 
   /// 下拉列表
   Widget get _refreshListView => SmartRefresher(
-      enablePullDown: logic.canRefresh,
-      enablePullUp: false,
-      controller: logic.refreshController,
+      enablePullDown: false,
+      enablePullUp: true,
+      controller: logic.chatMessageController,
       scrollController: logic.scrollController,
-      onRefresh: () {
-        logic.getLocalChatMessageList('refresh');
+      onLoading: (){
+        logic.getLocalChatMessageList('loadMore');
       },
-      child: ListView.builder(
-        reverse: true,
-          cacheExtent: double.infinity,
-          itemCount: logic.messageList.length,
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          itemBuilder: (context, index) {
-            return GestureDetector(onTap: () {}, child: _messageItem(index));
-          }));
+    footer: CustomFooter(
+      builder: (BuildContext context, LoadStatus? mode) {
+        Widget body;
+        if (mode == LoadStatus.loading) {
+          body = const CupertinoActivityIndicator();
+        } else if (mode == LoadStatus.failed) {
+          body = const Text("load failed!");
+        } else  {
+          body = const Text("");
+        }
+        return SizedBox(
+          height: 55.0,
+          child: Center(child: body),
+        );
+      }),
+      // child: ListView.builder(
+      //     reverse: true,
+      //     shrinkWrap: true,
+      //     cacheExtent: double.infinity,
+      //     itemCount: logic.messageList.length,
+      //     keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      //     itemBuilder: (context, index) {
+      //       return GestureDetector(onTap: () {}, child: _messageItem(index));
+      //     })
+      child: CustomScrollView(
+          reverse: true,
+          slivers: <Widget>[
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  return GestureDetector(
+                      onTap: () {}, child: _messageItem(index));
+                },
+                childCount: logic.messageList.length,
+              ),
+            ),
+          ],
+      )
+  );
+
+  List<Widget> renderPurchaseList() {
+    List<Widget> list = [];
+    logic.messageList.forEach((element) {
+      int index = logic.messageList.indexOf(element);
+      list.add(_messageItem(index));
+    });
+    return list;
+  }
 
   /// 底部用户输入区域
   Widget _bottomContainer() {
