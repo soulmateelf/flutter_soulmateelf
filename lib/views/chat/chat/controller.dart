@@ -177,7 +177,7 @@ class ChatController extends GetxController {
   }
   /// 获取本地聊天记录
   void getLocalChatMessageList(String from) {
-    int limit = 2;
+    int limit = 10;
     LocalChatMessageService.getChatMessageList(tableName,
             lastLocalChatId: lastLocalChatId, limit: limit)
         .then((List<LocalChatMessage> newList) {
