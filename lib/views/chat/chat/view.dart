@@ -27,7 +27,6 @@ import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/views/chat/chat/chat_blubble.dart';
-import 'package:soulmate/widgets/expanded_viewport.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 import 'controller.dart';
@@ -87,7 +86,16 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.removeObserver(this);
   }
-
+  /// 临时高度变量
+  double tempHeight = 0.0;
+  /// 记录上一次滚动列表内容的实际高度，只有在高度变化的时候才计算
+  double oldSliverListHeight = 0.0;
+  /// 滚动列表内容的实际高度
+  double sliverListHeight = 0.0;
+  /// 滚动区域视窗高度
+  double viewportHeight = 0.0;
+  /// 填充区域高度
+  double computedHeight = 0.0;
   @override
   Widget build(BuildContext context) {
     logic.chatMessageController = RefreshController(initialRefresh: false);
@@ -187,7 +195,13 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                       ),
                       child: Padding(
                         padding: EdgeInsets.symmetric( horizontal: 16.w, vertical: 10.w),
-                        child: _refreshListView,
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            viewportHeight = constraints.maxHeight;
+                            _computedContainerHeight("viewport");
+                            return _refreshListView;
+                          }
+                        ),
                       ),
                     ),
                   ),
@@ -222,29 +236,62 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
           child: Center(child: body),
         );
       }),
-      child: Scrollable(
-        controller: logic.scrollController,
-        axisDirection: AxisDirection.up,
-        viewportBuilder: (context, offset) {
-          return ExpandedViewport(
-            offset: offset,
+    child: CustomScrollView(
+            reverse: true,
+            controller: logic.scrollController,
             cacheExtent: double.infinity,
-            axisDirection: AxisDirection.up,
             slivers: <Widget>[
-              SliverExpanded(),
+              SliverToBoxAdapter(
+                child: Container(
+                  height: computedHeight,
+                  // 可以在这里添加任何你想要的撑开内容的控件
+                ),
+              ),
               SliverList(
-              delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return GestureDetector(
-                        onTap: () {}, child: _messageItem(index));
+                delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    // 这里假设 _messageItem 是你的列表项构建方法
+                    Widget listItem = _messageItem(index);
+                    if(index == 0){
+                      ///重绘，重置变量
+                      sliverListHeight=0;
+                      tempHeight = 0;
+                    }
+                    // 使用 Builder 获取每个列表项的高度
+                    return Builder(
+                      ///这个key很重要，当没有的时候，messageList往后新增数据不会有什么问题，往前插入数据就会导致整个列表项重新渲染，和vue react 一样
+                      ///要配合findChildIndexCallback使用才行
+                      key: Key(logic.messageList[index].localChatId),
+                      builder: (BuildContext context) {
+                        // 使用 Builder 获取子项的实际渲染高度
+                        WidgetsBinding.instance!.addPostFrameCallback((_) {
+                          RenderBox renderBox =
+                          context.findRenderObject() as RenderBox;
+                          double itemHeight = renderBox.size.height;
+                          // 更新 SliverList 的高度
+                          tempHeight += itemHeight;
+                          if(index == logic.messageList.length-1 ){
+                            sliverListHeight = tempHeight;
+                            if(oldSliverListHeight != sliverListHeight){
+                              oldSliverListHeight = sliverListHeight;
+                              _computedContainerHeight("sliverList");
+                            }
+                          }
+
+                        });
+
+                        return listItem;
+                      },
+                    );
                   },
                   childCount: logic.messageList.length,
+                  findChildIndexCallback: (key) {
+                    return logic.messageList.indexWhere((element) => Key(element.localChatId) == key);;
+                  },
                 ),
-              )
+              ),
             ],
-          );
-        },
-      ),
+          ),
   );
 
   /// 底部用户输入区域
@@ -525,6 +572,19 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
       recordDuration = recorderController.elapsedDuration.inMilliseconds;
       setState(() {});
     });
+  }
+  //计算填充区域高度
+  void _computedContainerHeight(String from){
+    double diffHeight = viewportHeight - sliverListHeight;
+    if(from == "viewport") {
+      computedHeight = diffHeight > 0 ? diffHeight : 0;
+    }else if(from == "sliverList"){
+      Future.delayed(Duration(milliseconds: 10),(){
+        setState(() {
+          computedHeight = diffHeight > 0 ? diffHeight : 0;
+        });
+      });
+    }
   }
 
   /// 开始录音
