@@ -23,7 +23,7 @@ class RoleEventPage extends StatelessWidget {
       builder: (controller) {
         final roleEvent = controller.roleEvent;
         return basePage(
-            "${roleEvent?.publishTime != null ? DateTime.fromMillisecondsSinceEpoch(roleEvent!.publishTime).format(payload: "DD MMM") : ""}",
+            logic.publishTime != null ? DateTime.fromMillisecondsSinceEpoch(logic.publishTime!).format(payload: "DD MMM") : "",
             backGroundImage: null,
             child: Column(
               children: [
@@ -40,12 +40,12 @@ class RoleEventPage extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(borderRadius),
                             ),
-                            child: roleEvent?.image != null
+                            child: logic.eventImage != null
                                 ? CachedNetworkImage(
                                     width: double.infinity,
                                     height: 328.w,
                                     fit: BoxFit.cover,
-                                    imageUrl: roleEvent!.image!,
+                                    imageUrl: logic.eventImage!,
                                     placeholder: (context, url) =>
                                         const CupertinoActivityIndicator(),
                                     errorWidget: (context, url, error) =>
@@ -57,9 +57,9 @@ class RoleEventPage extends StatelessWidget {
                             height: 12.w,
                           ),
                           Text(
-                            "${roleEvent?.content ?? ""}",
+                            logic.eventContent ?? "",
                             style: TextStyle(
-                              color: Color.fromRGBO(0, 0, 0, 0.64),
+                              color: const Color.fromRGBO(0, 0, 0, 0.64),
                               fontSize: 16.sp,
                               height: 1.6,
                             ),
@@ -67,35 +67,42 @@ class RoleEventPage extends StatelessWidget {
                           SizedBox(
                             height: 24.w,
                           ),
-                          Wrap(
-                            children: [
-                              SizedBox(
-                                width: 30.w,
-                                height: 30.w,
-                                child: LikeButton(
-                                  size: 20.sp,
-                                  isLiked: controller.isLiked,
-                                  circleColor: const CircleColor(
-                                      start: Colors.grey, end: primaryColor),
-                                  bubblesColor: const BubblesColor(
-                                    dotPrimaryColor: primaryColor,
-                                    dotSecondaryColor: primaryColor,
-                                  ),
-                                  likeBuilder: (bool isLiked) {
-                                    return Icon(
-                                      Icons.thumb_up_off_alt_outlined,
-                                      color:
-                                          isLiked ? primaryColor : Colors.grey,
+                          Offstage(
+                            offstage: roleEvent == null,
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Wrap(
+                                children: [
+                                  SizedBox(
+                                    width: 30.w,
+                                    height: 30.w,
+                                    child: LikeButton(
                                       size: 20.sp,
-                                    );
-                                  },
-                                  onTap: (liked) async {
-                                    controller.sendLike(liked);
-                                  },
-                                ),
+                                      isLiked: controller.isLiked,
+                                      circleColor: const CircleColor(
+                                          start: Colors.grey, end: primaryColor),
+                                      bubblesColor: const BubblesColor(
+                                        dotPrimaryColor: primaryColor,
+                                        dotSecondaryColor: primaryColor,
+                                      ),
+                                      likeBuilder: (bool isLiked) {
+                                        return Icon(
+                                          Icons.thumb_up_off_alt_outlined,
+                                          color:
+                                          isLiked ? primaryColor : Colors.grey,
+                                          size: 20.sp,
+                                        );
+                                      },
+                                      onTap: (liked) async {
+                                        controller.sendLike(liked);
+                                      },
+                                    ),
+                                  ),
+                                  ...renderLikes(controller.likes),
+                                ],
                               ),
-                              ...renderLikes(controller.likes),
-                            ],
+                            )
+
                           ),
                           SizedBox(
                             height: 12.w,

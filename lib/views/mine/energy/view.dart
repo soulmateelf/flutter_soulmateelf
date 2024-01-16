@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:soulmate/models/recharge.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/views/mine/energy/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
@@ -21,12 +22,10 @@ class EnergyState extends State<EnergyPage>
     with SingleTickerProviderStateMixin {
   final logic = Get.put(EnergyController());
 
-  TabController? _tabController;
-
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
     super.initState();
+    logic.tabController = TabController(initialIndex: Utils.isEmpty(logic.couponId)?0:1,length: 2, vsync: this);
   }
 
   @override
@@ -49,8 +48,7 @@ class EnergyState extends State<EnergyPage>
                     groupValue: logic.tabKey,
                     onValueChanged: (EnergyTabKey? value) {
                       logic.tabKey = value!;
-                      _tabController
-                          ?.animateTo(value == EnergyTabKey?.vip ? 0 : 1);
+                      logic.tabController?.animateTo(value == EnergyTabKey?.vip ? 0 : 1);
                       logic.update();
                     },
                     children: {
@@ -103,7 +101,7 @@ class EnergyState extends State<EnergyPage>
             Expanded(
               child: Container(
                 child: TabBarView(
-                    controller: _tabController,
+                    controller: logic.tabController,
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
                       Column(

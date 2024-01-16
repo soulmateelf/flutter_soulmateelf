@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:soulmate/config.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -23,7 +24,7 @@ class DBUtil {
     String path = join(databasesPath, 'soulmate.db');
     database = await openDatabase(
       path,
-      version: 1,
+      version: ProjectConfig.getInstance()?.baseConfig['SQLiteDBVersion'],
       onCreate: _createDatabaseTable,
     );
   }

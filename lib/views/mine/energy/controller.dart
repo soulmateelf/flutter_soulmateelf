@@ -1,16 +1,13 @@
 import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:soulmate/models/recharge.dart';
-import 'package:soulmate/utils/core/application.dart';
+import 'package:flutter/material.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/AppPurchase.dart';
-import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
-import 'package:soulmate/views/mine/account/controller.dart';
 import 'package:soulmate/views/mine/mine/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:soulmate/models/product.dart';
-import 'package:soulmate/models/energyCard.dart';
 
 enum EnergyTabKey {
   vip,
@@ -23,6 +20,8 @@ Map<EnergyTabKey, String> energyTabMap = {
 };
 
 class EnergyController extends GetxController {
+  ///tab 控制器
+  late TabController tabController;
   ///商店配置的商品列表
   List<ProductDetails> storeProductList = [];
 
@@ -40,6 +39,9 @@ class EnergyController extends GetxController {
 
   ///当前选中的商品
   Product? currentProduct;
+
+  ///卡券列表跳转到充值页面，带了卡券id
+  String? couponId;
 
   ///当前选中的卡券
   RechargeableCard? currentCard;
@@ -65,13 +67,18 @@ class EnergyController extends GetxController {
   }
 
   // 获取充值卡券列表
-  void getEnergyCardList() {
+  void getChargeCardList() {
     HttpUtils.diorequst('/coupon/couponList', query: {"page": 1, "size": 10})
         .then((res) {
       List<dynamic> data = res['data'] ?? [];
       cardList = data.map((e) => RechargeableCard.fromJson(e)).toList();
       if (cardList.isNotEmpty) {
-        currentCard = cardList.first;
+        ///如果是从卡券列表跳转过来的，就选中卡券列表中的那个
+        if (couponId != null) {
+          currentCard = cardList.firstWhereOrNull( (RechargeableCard card) => card.couponId == couponId!);
+        }
+        ///如果找不到这张券或者不是卡券列表过来的就用第一张
+        currentCard = currentCard??cardList.first;
       } else {
         currentCard = null;
       }
@@ -256,7 +263,7 @@ class EnergyController extends GetxController {
       currentOrderId = '';
 
       ///刷新卡券列表
-      getEnergyCardList();
+      getChargeCardList();
 
       ///刷新用户信息
       MineController userController = Get.find<MineController>();
@@ -306,7 +313,11 @@ class EnergyController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
+    /// 卡券列表跳转过来的带了个卡券id
+    couponId = Get.arguments?["couponId"];
+    if(!Utils.isEmpty(couponId)){
+      tabKey = EnergyTabKey.star;
+    }
     ///设置回调
     AppPurchase.orderCallback = notifyServerPurchaseResult;
   }
@@ -315,7 +326,7 @@ class EnergyController extends GetxController {
   void onReady() {
     super.onReady();
     getProductList();
-    getEnergyCardList();
+    getChargeCardList();
   }
 
   @override

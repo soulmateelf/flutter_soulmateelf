@@ -16,9 +16,18 @@ class RoleEventController extends GetxController {
   RoleEvent? roleEvent;
   bool isLiked = false;
   bool sendLikeLoding = false;
+  /// 发布时间
+  int? publishTime;
+  /// 事件图片
+  String? eventImage;
+  /// 事件内容
+  String? eventContent;
 
-  void setRoleEvent(RoleEvent value) {
+  void setRoleEvent(RoleEvent value,{bool updateDetail = false}){
     roleEvent = value;
+    publishTime = value.publishTime;
+    eventImage = value.image;
+    eventContent = value.content;
     likes.clear();
     comments.clear();
     isLiked = false;
@@ -32,7 +41,9 @@ class RoleEventController extends GetxController {
         comments.add(element);
       }
     });
-    roleLogic.updateOneEvent(value);
+    if(updateDetail){
+      roleLogic.updateOneEvent(value);
+    }
     update();
   }
 
@@ -42,6 +53,14 @@ class RoleEventController extends GetxController {
   TextEditingController controller = TextEditingController();
   FocusNode focusNode = FocusNode();
 
+  @override
+  void onInit() {
+    // TODO: implement onReady
+    publishTime = Get.arguments['publishTime'];
+    eventImage = Get.arguments['eventImage'];
+    eventContent = Get.arguments['eventContent'];
+    super.onInit();
+  }
   @override
   void onReady() {
     // TODO: implement onReady
@@ -58,14 +77,15 @@ class RoleEventController extends GetxController {
     super.onClose();
   }
 
-  void getEventDetail() {
+  void getEventDetail({bool updateDetail = false}) {
     final memoryId = arguments['memoryId'];
     if (memoryId == null) {
       return;
     }
     HttpUtils.diorequst('/role/roleEventById', query: {"memoryId": memoryId})
         .then((res) {
-      setRoleEvent(RoleEvent.fromJson(res['data']));
+      RoleEvent roleEvent = RoleEvent.fromJson(res['data']);
+      setRoleEvent(roleEvent,updateDetail: updateDetail);
     }).catchError((err) {
       exSnackBar(err, type: ExSnackBarType.error);
     }).whenComplete(() {
@@ -89,7 +109,7 @@ class RoleEventController extends GetxController {
     }).then((res) {
       controller.clear();
       focusNode.unfocus();
-      getEventDetail();
+      getEventDetail(updateDetail: true);
     }).catchError((err) {
       exSnackBar(err.toString(), type: ExSnackBarType.error);
     });
@@ -116,7 +136,7 @@ class RoleEventController extends GetxController {
               "isAdd": activity == null,
             });
         if (res?['code'] == 200) {
-          getEventDetail();
+          getEventDetail(updateDetail: true);
         }
       }
     } catch (err) {

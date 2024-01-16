@@ -418,16 +418,16 @@ class RolePage extends StatelessWidget {
                             LikeButton(
                               size: 18.sp,
                               isLiked: hasLike,
-                              circleColor: CircleColor(
+                              circleColor: const CircleColor(
                                   start: Colors.grey, end: primaryColor),
-                              bubblesColor: BubblesColor(
+                              bubblesColor: const BubblesColor(
                                 dotPrimaryColor: primaryColor,
                                 dotSecondaryColor: primaryColor,
                               ),
                               likeCount: likeCount,
                               countBuilder: (c, _, __) {
                                 return Text(
-                                  "${c}",
+                                  "$c",
                                   style: TextStyle(
                                     color: Color.fromRGBO(0, 0, 0, 0.64),
                                     fontSize: 15.sp,

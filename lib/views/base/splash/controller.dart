@@ -10,6 +10,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
@@ -17,6 +19,8 @@ import 'package:get/get.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:soulmate/config.dart';
+import 'package:soulmate/widgets/library/projectLibrary.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SplashController extends GetxController {
   @override
@@ -67,9 +71,6 @@ class SplashController extends GetxController {
     /// 和判断入口
     whereToGo();
 
-    ///等升级接口
-    return;
-
     /// 升级之前先检查版本信息
     if (APPPlugin.appInfo != null) {
       getUpdate();
@@ -84,87 +85,157 @@ class SplashController extends GetxController {
 
   /// 升级app
   getUpdate() async {
+    // showUpdateDialog(null);
     Map<String, dynamic> params = {
       'platform': GetPlatform.isAndroid ? 'android' : 'ios',
       'buildId': APPPlugin.appInfo?.buildNumber,
       'packageName': ProjectConfig.getInstance()?.baseConfig["packageName"]
     };
-    void successFn(res) {
-      var updateInfo = res['data'];
-      // updateInfo = {'name': '安卓', 'platform': 'android', 'version': 0, 'buildId': 2, 'content': '1、修改了bug;2、优化了页面打开速度;3、11111', 'remark': null, 'isforce': 1, 'downloadUrl': 'http://www.baidu.com', 'id': 1, 'status': 0, 'modifyTime': null, 'createTime': 1603702394000};
-      if (updateInfo != null) {
-        List updateContentList = [];
-        updateContentList = updateInfo['content'].split(';');
-        Get.defaultDialog(
-          title: '新版本',
-          content: _updateContentList(updateContentList),
-          barrierDismissible: false,
-          confirm: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            child: FractionallySizedBox(
-                alignment: Alignment.center,
-                widthFactor: updateInfo["isforce"] == 0 ? 0.42 : 1,
-                child: Container(
-                    alignment: Alignment.center,
-                    child: const Text(
-                      '立即升级',
-                      style: TextStyle(color: Colors.blue, fontSize: 18),
-                    ))),
-            onTap: () {
-              /// 打开下载链接
-              Utils.openPage(updateInfo['downloadUrl']);
-
-              /// 关闭弹框
-              // Get.back();
-
-              /// 退出app
-              SystemNavigator.pop();
-            },
-          ),
-          cancel: updateInfo["isforce"] == 0
-              ? GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  child: FractionallySizedBox(
-                      alignment: Alignment.center,
-                      widthFactor: 0.42,
-                      child: Container(
-                          alignment: Alignment.center,
-                          child: const Text(
-                            '暂不体验',
-                            style: TextStyle(color: Colors.black, fontSize: 18),
-                          ))),
-                  onTap: () {
-                    /// 关闭弹框
-                    Get.back();
-                  },
-                )
-              : null,
-        );
-      }
-    }
-
-    return HttpUtils.diorequst(
-      '/iot4-crpm-api/user/new/app/version',
-      query: params,
-    );
+    // HttpUtils.diorequst(
+    //   '/iot4-crpm-api/user/new/app/version',
+    //   query: params,
+    // );
   }
-
-  // 列表
+  /// 更新弹窗
+  void showUpdateDialog(updateInfo) {
+    updateInfo = {'name': '安卓', 'platform': 'android', 'version': "1.0.1", 'buildId': 2, 'content': '修改了bug;优化了页面打开速度优化了页面打开速度优化了页面打开速度;11111', 'remark': null, 'isforce': 0, 'downloadUrl': 'http://www.baidu.com', 'id': 1, 'status': 0, 'modifyTime': null, 'createTime': 1603702394000};
+    if (updateInfo != null) {
+      List updateContentList = updateInfo['content'].split(';');
+      final makeDialogController = MakeDialogController();
+      makeDialogController.show(
+        context: Get.context!,
+        controller: makeDialogController,
+        iconWidget: Image.asset("assets/images/icons/newVersion.png"),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "New Version Ready",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 28.sp,
+                fontWeight: FontWeight.w600,
+                fontFamily: FontFamily.SFProRounded,
+              ),
+            ),
+            SizedBox(
+              height: 10.w,
+            ),
+            Text(
+              "Version ${updateInfo['version']}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: const Color.fromRGBO(0, 0, 0, 0.48),
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                fontFamily: FontFamily.SFProRounded,
+              ),
+            ),
+            SizedBox(
+              height: 14.w,
+            ),
+            _updateContentList(updateContentList),
+            SizedBox(
+              height: 14.w,
+            ),
+            Container(
+              height: 64.w,
+              width: double.maxFinite,
+              child: TextButton(
+                  onPressed: () {
+                    makeDialogController.close();
+                    /// 打开下载链接
+                    Utils.openPage(updateInfo['downloadUrl']);
+                    /// 退出app
+                    SystemNavigator.pop();
+                  },
+                  style: ButtonStyle(
+                      textStyle: MaterialStateProperty.all(
+                          const TextStyle(color: Colors.white)),
+                      backgroundColor: MaterialStateProperty.all(primaryColor),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.w)))),
+                  child: Text(
+                    "update now",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.w,
+                      fontFamily: FontFamily.SFProRoundedBlod,
+                    ),
+                  )),
+            ),
+            SizedBox(
+              height: 10.w,
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                makeDialogController.close();
+              },
+              child: Container(
+                width: double.infinity,
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(vertical: 10.w),
+                child: Text(
+                  "Skip This Version",
+                  style: TextStyle(
+                    color: const Color.fromRGBO(0, 0, 0, 0.32),
+                    fontSize: 20.sp,
+                    fontFamily: FontFamily.SFProRoundedMedium,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 12.w,
+            ),
+          ],
+        ),
+      );
+    }
+  }
+  /// 更新内容列表
   Widget _updateContentList(updateContentList) {
     return Container(
-        height: 160,
-        width: 800,
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
+        constraints: BoxConstraints(
+          maxHeight: 120.w,
+        ),
         child: ListView.builder(
+          shrinkWrap: true,
           itemCount: updateContentList.length,
           itemBuilder: (context, index) {
             return Container(
-                padding: const EdgeInsets.only(left: 10, top: 8),
-                child: Text(
-                  updateContentList[index],
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(
-                      fontSize: 16, color: Color.fromRGBO(14, 16, 26, 0.85)),
-                ));
+              margin: EdgeInsets.only(top: 10.w),
+              child: Row(
+                  children: [
+                    Container(
+                      width: 7,
+                      height: 7,
+                      decoration: const BoxDecoration(
+                        color: primaryColor, // 设置颜色为黄色
+                        shape: BoxShape.circle, // 设置形状为圆形
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8.w,
+                    ),
+                    Expanded(
+                        child: Text(
+                          updateContentList[index],
+                          style: TextStyle(
+                            color: const Color.fromRGBO(0, 0, 0, 0.48),
+                            fontSize: 18.sp,
+                            height: 1.3,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: FontFamily.SFProRounded,
+                          ),
+                        )
+                    ),
+                  ]),
+            );
           },
         ));
   }

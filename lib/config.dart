@@ -7,20 +7,30 @@
 class ProjectConfig {
   /// debug or not
   bool isDebug = true;
-
+  ///基本配置
   Map baseConfig = {
     'packageName': 'cn.soulmate.elf', // 包名
   };
-
+  /// 测试环境
   Map debugConfig = {
-    'BaseUrl': 'http://54.177.205.15/api', //测试环境,
-    // 'BaseUrl': 'http://dev.icyberelf.com', //测试环境,
+    'BaseUrl': 'http://54.177.205.15/api',
+    'SQLiteDBVersion': 1,
+    'mqttHost': '139.224.60.241',
+    'mqttPort': 1883,
+    'mqttUserName': 'admin',
+    'mqttPassword': 'public',
   };
+  /// 生产环境
   Map releaseConfig = {
-    'BaseUrl': 'http://soulmate.health/api', //生产环境
+    'BaseUrl': 'http://soulmate.health/api',
+    'SQLiteDBVersion': 1,
+    'mqttHost': '139.224.60.241',
+    'mqttPort': 1883,
+    'mqttUserName': 'admin',
+    'mqttPassword': 'public',
   };
 
-  // 静态变量_instance，存储唯一对象
+  /// 静态变量_instance，存储唯一对象
   static ProjectConfig? _instance;
 
   // 获取对象

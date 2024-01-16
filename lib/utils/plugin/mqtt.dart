@@ -20,13 +20,16 @@ class XMqttClient {
 
   static XMqttClient get instance => _instance;
 
-  static const host = '139.224.60.241'; //主机ip
+  static final host =
+      ProjectConfig.getInstance()?.baseConfig['mqttHost']; //主机ip
 
-  static const port = 1883; //端口号
+  static final port = ProjectConfig.getInstance()?.baseConfig['mqttPort']; //端口号
 
-  static const user = 'admin'; //用户
+  static final user =
+      ProjectConfig.getInstance()?.baseConfig['mqttUserName']; //用户
 
-  static const pwd = 'public'; //密码
+  static final pwd =
+      ProjectConfig.getInstance()?.baseConfig['mqttPassword']; //密码
 
   static Map<String, Topic> topicMap = {};
 
@@ -43,7 +46,8 @@ class XMqttClient {
   Future<MqttServerClient> connect() async {
     //clientld 确保唯一性，否则如果两台机器的clientld 相同 则会连上立刻断开连接！！！
     String clientId = '${DateTime.now().millisecondsSinceEpoch}asc';
-    MqttServerClient serverClient = MqttServerClient.withPort(host, clientId, port);
+    MqttServerClient serverClient =
+        MqttServerClient.withPort(host, clientId, port);
     serverClient.logging(on: true);
     serverClient.onConnected = onConnected;
     serverClient.onDisconnected = onDisconnected;
@@ -56,9 +60,6 @@ class XMqttClient {
 
     final connMessage = MqttConnectMessage()
         .authenticateAs(user, pwd)
-        .keepAliveFor(60) // 保持连接时间，单位为秒
-        .withWillTopic('12345')
-        .withWillMessage('Will message')
         .startClean() // 清理会话
         .withWillQos(MqttQos.atLeastOnce);
     serverClient.connectionMessage = connMessage;
@@ -102,8 +103,6 @@ class XMqttClient {
 
   ///订阅多个主题
   topicSubscribe(List<Topic> topics) async {
-    APPPlugin.logger.e('订阅主题1111: $topics');
-
     this.topics.addAll(topics.map((e) => e.topic));
     if (client?.connectionStatus?.state == MqttConnectionState.connected) {
       topics.forEach((topic) {

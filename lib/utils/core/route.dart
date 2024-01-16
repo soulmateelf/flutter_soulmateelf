@@ -19,7 +19,6 @@ import 'package:soulmate/views/chat/chat/view.dart';
 /// chat
 import 'package:soulmate/views/chat/chatList/view.dart';
 import 'package:soulmate/views/chat/details/view.dart';
-import 'package:soulmate/views/chat/giftBackpack/view.dart';
 import 'package:soulmate/views/chat/message/view.dart';
 import 'package:soulmate/views/chat/settings/view.dart';
 import 'package:soulmate/views/customRole/step1/view.dart';
@@ -42,6 +41,7 @@ import 'package:soulmate/views/mine/purchaseHistory/view.dart';
 import 'package:soulmate/views/mine/updatePassword/view.dart';
 import 'package:soulmate/views/role/role/view.dart';
 import 'package:soulmate/views/role/roleEvent/view.dart';
+import 'package:soulmate/views/mine/giftBackpack/view.dart';
 
 /// role
 import 'package:soulmate/views/role/roleList/view.dart';

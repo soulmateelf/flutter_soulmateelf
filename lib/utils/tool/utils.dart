@@ -107,12 +107,12 @@ class Utils {
   }
 
   /// 打开网页
-  static void openPage(String path) async {
+  static void openPage(String path,{LaunchMode mode=LaunchMode.externalApplication}) async {
     if (!isEmpty(path)) {
       if (await canLaunchUrl(Uri.parse(path))) {
-        await launchUrl(Uri.parse(path));
+        await launchUrl(Uri.parse(path),mode: mode);
       } else {
-        Loading.toast('打开网页 $path 失败！');
+        Loading.toast('open $path fail！');
       }
     }
   }

@@ -256,7 +256,9 @@ class GiftBackpackPage extends StatelessWidget {
                 ),
                 gc.couponStatus == 0
                     ? GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed("/energy", arguments: {"couponId": gc.couponId } );
+                        },
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(borderRadius),

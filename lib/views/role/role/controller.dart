@@ -6,6 +6,7 @@
  */
 
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:soulmate/models/activety.dart';
 import 'package:soulmate/models/role.dart';
 import 'package:soulmate/models/roleEvent.dart';
 import 'package:soulmate/models/user.dart';
@@ -137,14 +138,19 @@ class RoleController extends GetxController {
   void sendLike(RoleEvent roleEvent) async {
     try {
       if (roleDetail != null) {
-        final activity =
-            sendLikeMap?[roleEvent.memoryId]?.indexOf(user!.userId) != -1;
+        /// 查询该用户是否点过赞
+        Activity? likeActivity = roleEvent.activities.firstWhereOrNull((Activity activity) {
+          return activity.userId == user!.userId && activity.type == 0;
+        });
+
         HttpUtils.diorequst("/role/sendLike", method: "post", params: {
           "roleId": roleDetail!.roleId!,
           "memoryId": roleEvent.memoryId,
-          "activityId": activity ?? '',
-          "isAdd": activity,
-        });
+          "activityId":  likeActivity==null?"":likeActivity.activityId,
+          "isAdd":likeActivity==null?true:false,
+        }).then((res) {
+              // print(res);
+            });
       }
     } catch (err) {
       exSnackBar(err.toString(), type: ExSnackBarType.error);
@@ -152,19 +158,34 @@ class RoleController extends GetxController {
   }
 
   /// 更新某一条事件
-  void updateOneEvent(RoleEvent event) {
-    roleEventList = roleEventList.map((e) {
-      if (e.memoryId == event.memoryId) {
-        return event;
-      }
-      return e;
-    }).toList();
-    update();
+  void updateOneEvent(RoleEvent newEvent) {
+    /// 找到这一条的索引
+    final index = roleEventList.indexWhere((RoleEvent roleEvent) {
+      return roleEvent.memoryId == newEvent.memoryId;
+    });
+    if (index != -1) {
+      ///更新列表
+      roleEventList[index] = newEvent;
+      ///更新点赞列表
+      sendLikeMap.update(newEvent.memoryId, (value) {
+        List<String> likes = [];
+        newEvent.activities.forEach((element) {
+          if (element.type == 0) {
+            likes.add(element.userId);
+          }
+        });
+        return likes;
+      });
+      update();
+    }
   }
 
   void toEventDetail(RoleEvent roleEvent) {
     Get.toNamed('/roleEvent', arguments: {
       "memoryId": roleEvent.memoryId,
+      "publishTime": roleEvent.publishTime,
+      "eventImage": roleEvent.image,
+      "eventContent": roleEvent.content,
     });
   }
 

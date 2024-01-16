@@ -134,11 +134,12 @@ class MineController extends GetxController {
 
   void share() async {
     final result = await Share.shareWithResult(
-      "Welcome to Soulmate ELF! Explore this unique dream world with the ELF. Here, you're more than a traveler, you're a creator. Your imagination comes to life. Click the link https://soulmate.health now and start your adventure. Let's dream and create together!",
+      "Welcome to Never Alone Again! Explore this unique dream world with the ELF. Here, you're more than a traveler, you're a creator. Your imagination comes to life. Click the link https://soulmate.health now and start your adventure. Let's dream and create together!",
       subject: "share soulemate",
     );
     if (result.status == ShareResultStatus.success) {
       HttpUtils.diorequst("/share").then((res) {
+        APPPlugin.logger.e(res.toString());
         if (res?['code'] == 200) {
           exSnackBar(res?['message']);
         }

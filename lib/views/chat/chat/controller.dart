@@ -368,7 +368,7 @@ class ChatController extends GetxController {
     HttpUtils.diorequst('/chat/sendMessage', method: 'post', params: params)
         .then(
       (response) {
-        if (response?['data'].isNotEmpty) {
+        if (!Utils.isEmpty(response?['data'])) {
           /// 记录聊过天的状态
           needRefresh = true;
 
@@ -381,7 +381,11 @@ class ChatController extends GetxController {
           if (_debounce?.isActive ?? false) _debounce?.cancel();
           _debounce = Timer(duration, startGptTask);
         } else {
-          exSnackBar(response?['message'], type: ExSnackBarType.error);
+          ///能量不足
+          ///更新本地消息状态
+          updateLocalChatData(localChatId);
+          ///弹出提示框
+          energyEmptyDialog();
         }
       },
     ).catchError((error) {
@@ -395,7 +399,9 @@ class ChatController extends GetxController {
   void startGptTask() {
     Map<String, dynamic> params = {'roleId': roleId, 'lockId': lockId};
     HttpUtils.diorequst('/chat/chatRollBack', method: 'post', params: params)
-        .then((response) {})
+        .then((response) {
+          APPPlugin.logger.e(response.toString());
+    })
         .catchError((error) {});
   }
 
@@ -865,5 +871,85 @@ class ChatController extends GetxController {
       );
     });
     Overlay.of(Get.context!).insert(overlayEntry!);
+  }
+
+  /// 能量值不足提示框
+  void energyEmptyDialog() {
+    final makeDialogController = MakeDialogController();
+    makeDialogController.show(
+      context: Get.context!,
+      controller: makeDialogController,
+      iconWidget: Image.asset("assets/images/icons/energyEmpty.png"),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 8.w,
+          ),
+          Text(
+            "Your energy has been used up, do you choose to recharge ?",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: const Color.fromRGBO(0, 0, 0, 0.8),
+              fontSize: 24.sp,
+              fontWeight: FontWeight.w500,
+              fontFamily: FontFamily.SFProRounded,
+            ),
+          ),
+          SizedBox(
+            height: 30.w,
+          ),
+          Container(
+            height: 64.w,
+            width: double.maxFinite,
+            child: TextButton(
+                onPressed: () {
+                  makeDialogController.close();
+                  Get.toNamed("/energy");
+                },
+                style: ButtonStyle(
+                    textStyle: MaterialStateProperty.all(
+                        TextStyle(color: Colors.white)),
+                    backgroundColor: MaterialStateProperty.all(primaryColor),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.w)))),
+                child: Text(
+                  "Yes，recharge",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.w,
+                    fontFamily: FontFamily.SFProRoundedBlod,
+                  ),
+                )),
+          ),
+          SizedBox(
+            height: 10.w,
+          ),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              makeDialogController.close();
+            },
+            child: Container(
+              width: double.infinity,
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(vertical: 10.w),
+              child: Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Color.fromRGBO(0, 0, 0, 0.32),
+                  fontSize: 20.sp,
+                  fontFamily: FontFamily.SFProRoundedMedium,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 12.w,
+          ),
+        ],
+      ),
+    );
   }
 }

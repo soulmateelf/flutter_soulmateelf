@@ -41,7 +41,7 @@ class SplashPage extends StatelessWidget {
                       child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            'Soulmate ELF',
+                            'Never Alone Again',
                             style: TextStyle(
                                 color: const Color.fromRGBO(21, 10, 0, 1),
                                 fontWeight: FontWeight.w500,

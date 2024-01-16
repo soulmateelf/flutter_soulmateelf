@@ -23,8 +23,15 @@ class ThirdLogin {
       if (value == true) {
         await googleSignIn.signOut();
       }
-      GoogleSignInAccount? googleResult = await googleSignIn.signIn();
+      GoogleSignInAccount? googleResult;
+      try {
+        googleResult = await googleSignIn.signIn();
+      } catch (e) {
+        exSnackBar("google login failed", type: ExSnackBarType.error );
+        return;
+      }
       if(googleResult == null){
+        exSnackBar("google login failed", type: ExSnackBarType.error );
         return;
       }
       var params = {

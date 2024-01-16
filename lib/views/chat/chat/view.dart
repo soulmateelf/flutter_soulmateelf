@@ -120,14 +120,15 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2.w)),
-                    child: ClipOval(
+                    child: logic.roleDetail?.avatar != null?ClipOval(
                       child: CachedNetworkImage(
-                        imageUrl: logic.roleDetail?.avatar ?? "",
+                        imageUrl: logic.roleDetail!.avatar!,
                         placeholder: (context, url) =>
                             const CupertinoActivityIndicator(),
                         errorWidget: (context, url, error) => Container(),
                       ), // 图像的来源，可以是网络图像或本地图像
-                    )),
+                    ):Container()
+                  ),
                 Text(logic.roleDetail?.name ?? '--',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
