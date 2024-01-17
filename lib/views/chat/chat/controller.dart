@@ -400,7 +400,7 @@ class ChatController extends GetxController {
     Map<String, dynamic> params = {'roleId': roleId, 'lockId': lockId};
     HttpUtils.diorequst('/chat/chatRollBack', method: 'post', params: params)
         .then((response) {
-          APPPlugin.logger.e(response.toString());
+          // APPPlugin.logger.e(response.toString());
     })
         .catchError((error) {});
   }
@@ -454,7 +454,6 @@ class ChatController extends GetxController {
       return;
     }
     final firstStep = introHistoryList[0];
-
     HttpUtils.diorequst('/guide', method: "post", params: {
       "chooseRoleId": roleId,
       "oneChoose": firstStep,
