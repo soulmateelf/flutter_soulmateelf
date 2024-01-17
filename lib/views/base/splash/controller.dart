@@ -20,7 +20,7 @@ import 'package:soulmate/utils/core/application.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:soulmate/config.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:soulmate/models/appVersion.dart';
 
 class SplashController extends GetxController {
   @override
@@ -70,7 +70,6 @@ class SplashController extends GetxController {
   checkAppInfo() {
     /// 和判断入口
     whereToGo();
-
     /// 升级之前先检查版本信息
     if (APPPlugin.appInfo != null) {
       getUpdate();
@@ -85,22 +84,24 @@ class SplashController extends GetxController {
 
   /// 升级app
   getUpdate() async {
-    // showUpdateDialog(null);
     Map<String, dynamic> params = {
       'platform': GetPlatform.isAndroid ? 'android' : 'ios',
       'buildId': APPPlugin.appInfo?.buildNumber,
       'packageName': ProjectConfig.getInstance()?.baseConfig["packageName"]
     };
-    // HttpUtils.diorequst(
-    //   '/iot4-crpm-api/user/new/app/version',
-    //   query: params,
-    // );
+    HttpUtils.diorequst('/appVersion', query: params).then((response) {
+      if(response["code"] == 200 && response["data"] != null) {
+        var data = response["data"];
+        AppVersion updateInfo = AppVersion.fromJson(data);
+        showUpdateDialog(updateInfo);
+      }
+    }).catchError((error) {
+      exSnackBar(error, type: ExSnackBarType.error);
+    });
   }
   /// 更新弹窗
-  void showUpdateDialog(updateInfo) {
-    updateInfo = {'name': '安卓', 'platform': 'android', 'version': "1.0.1", 'buildId': 2, 'content': '修改了bug;优化了页面打开速度优化了页面打开速度优化了页面打开速度;11111', 'remark': null, 'isforce': 0, 'downloadUrl': 'http://www.baidu.com', 'id': 1, 'status': 0, 'modifyTime': null, 'createTime': 1603702394000};
-    if (updateInfo != null) {
-      List updateContentList = updateInfo['content'].split(';');
+  void showUpdateDialog(AppVersion updateInfo) {
+      List updateContentList = updateInfo.content.split(';');
       final makeDialogController = MakeDialogController();
       makeDialogController.show(
         context: Get.context!,
@@ -123,7 +124,7 @@ class SplashController extends GetxController {
               height: 10.w,
             ),
             Text(
-              "Version ${updateInfo['version']}",
+              "Version ${updateInfo.version}",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: const Color.fromRGBO(0, 0, 0, 0.48),
@@ -146,7 +147,7 @@ class SplashController extends GetxController {
                   onPressed: () {
                     makeDialogController.close();
                     /// 打开下载链接
-                    Utils.openPage(updateInfo['downloadUrl']);
+                    Utils.openPage(updateInfo.downLoadUrl);
                     /// 退出app
                     SystemNavigator.pop();
                   },
@@ -169,32 +170,31 @@ class SplashController extends GetxController {
             SizedBox(
               height: 10.w,
             ),
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                makeDialogController.close();
-              },
-              child: Container(
-                width: double.infinity,
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(vertical: 10.w),
-                child: Text(
-                  "Skip This Version",
-                  style: TextStyle(
-                    color: const Color.fromRGBO(0, 0, 0, 0.32),
-                    fontSize: 20.sp,
-                    fontFamily: FontFamily.SFProRoundedMedium,
+            Offstage(
+              offstage: updateInfo.isForce == 1,
+              child:GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  makeDialogController.close();
+                },
+                child: Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(vertical: 10.w),
+                  child: Text(
+                    "Skip This Version",
+                    style: TextStyle(
+                      color: const Color.fromRGBO(0, 0, 0, 0.32),
+                      fontSize: 20.sp,
+                      fontFamily: FontFamily.SFProRoundedMedium,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 12.w,
-            ),
+            )
           ],
         ),
       );
-    }
   }
   /// 更新内容列表
   Widget _updateContentList(updateContentList) {
