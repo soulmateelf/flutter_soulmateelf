@@ -15,7 +15,7 @@ class ChatSettingsPage extends StatelessWidget {
       "title": "Simple",
       "description":
           "Can communicate with you normally, but may not remember the content of the communication",
-      "locked": false,
+      "locked": true,
     },
     {
       "title": "Ordinary",

@@ -360,7 +360,7 @@ class ChatController extends GetxController {
     params.fields.add(MapEntry("roleId", roleId));
     params.fields.add(MapEntry("message_type", messageType));
     if (messageType == "0" && !Utils.isEmpty(message)) {
-      focusNode.unfocus();
+      // focusNode.unfocus();
       params.fields.add(MapEntry("messages", message!));
     } else if (messageType == "1" && message_file != null) {
       params.files.add(MapEntry("file", message_file));

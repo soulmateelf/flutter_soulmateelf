@@ -320,9 +320,10 @@ class RolePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 63.w,
+              width: 73.w,
               height: 24.w,
               child: RichText(
+                overflow: TextOverflow.visible,
                 text: TextSpan(children: [
                   TextSpan(
                       text: DateTime.fromMillisecondsSinceEpoch(
@@ -348,7 +349,7 @@ class RolePage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: 31.w,
+              width: 21.w,
             ),
             Expanded(
               child: GestureDetector(
