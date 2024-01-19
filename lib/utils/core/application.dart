@@ -36,7 +36,6 @@ class Application {
   }
 
   static initGlobe() async {
-
     /// 全局变量的初始化
     /// 存储
     Application.pres = await SharedPreferences.getInstance();
@@ -52,7 +51,7 @@ class Application {
     _token = token;
 
     ///初始化pushId
-    String? pushId = Application.pres?.getString("token");
+    String? pushId = Application.pres?.getString("pushId");
     _pushId = pushId;
 
     hasIntro = Application.pres?.getBool("hasIntro") ?? false;
@@ -99,7 +98,6 @@ class Application {
   }
 
   static Future clearStorage() async {
-
     final intro = Application.pres?.getBool("hasIntro") ?? false;
 
     Application.pres?.clear();
