@@ -30,6 +30,7 @@ import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/views/base/menu/controller.dart';
 import 'package:soulmate/views/chat/chatList/controller.dart';
 import 'package:soulmate/views/intro/index.dart';
+import 'package:soulmate/views/role/roleList/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/services.dart';
@@ -137,6 +138,8 @@ class ChatController extends GetxController {
       /// 聊过天，更新首页聊天列表
       final chatController = Get.find<ChatListController>();
       chatController.getDataList();
+      final roleListController = Get.find<RoleListController>();
+      roleListController.getDataList();
     }
     // 移除监听器，避免内存泄漏
     focusNode.removeListener(_handleFocusChange);
@@ -360,7 +363,7 @@ class ChatController extends GetxController {
     params.fields.add(MapEntry("roleId", roleId));
     params.fields.add(MapEntry("message_type", messageType));
     if (messageType == "0" && !Utils.isEmpty(message)) {
-      focusNode.unfocus();
+      // focusNode.unfocus();
       params.fields.add(MapEntry("messages", message!));
     } else if (messageType == "1" && message_file != null) {
       params.files.add(MapEntry("file", message_file));

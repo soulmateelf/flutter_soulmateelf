@@ -4,6 +4,7 @@ import 'package:soulmate/models/recharge.dart';
 import 'package:flutter/material.dart';
 import 'package:soulmate/utils/core/httputil.dart';
 import 'package:soulmate/utils/plugin/AppPurchase.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/utils/tool/utils.dart';
 import 'package:soulmate/views/mine/mine/controller.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
@@ -22,6 +23,7 @@ Map<EnergyTabKey, String> energyTabMap = {
 class EnergyController extends GetxController {
   ///tab 控制器
   late TabController tabController;
+
   ///商店配置的商品列表
   List<ProductDetails> storeProductList = [];
 
@@ -75,10 +77,12 @@ class EnergyController extends GetxController {
       if (cardList.isNotEmpty) {
         ///如果是从卡券列表跳转过来的，就选中卡券列表中的那个
         if (couponId != null) {
-          currentCard = cardList.firstWhereOrNull( (RechargeableCard card) => card.couponId == couponId!);
+          currentCard = cardList.firstWhereOrNull(
+              (RechargeableCard card) => card.couponId == couponId!);
         }
+
         ///如果找不到这张券或者不是卡券列表过来的就用第一张
-        currentCard = currentCard??cardList.first;
+        currentCard = currentCard ?? cardList.first;
       } else {
         currentCard = null;
       }
@@ -95,6 +99,7 @@ class EnergyController extends GetxController {
         pIds.add(GetPlatform.isAndroid ? product.androidId : product.iosId);
       }
     });
+
     ///根据商品id获取商店的商品列表
     storeProductList = await AppPurchase.getServerProducts(pIds);
     if (storeProductList.isEmpty) {
@@ -141,12 +146,12 @@ class EnergyController extends GetxController {
     return await HttpUtils.diorequst("/order/createOrder",
             method: 'post', params: params)
         .then((response) {
+      exSnackBar(response['message']);
       if (response['code'] == 200) {
         return response['data'];
       }
       return '';
     }).catchError((error) {
-      // exSnackBar(error, type: ExSnackBarType.error);
       return '';
     });
   }
@@ -167,7 +172,7 @@ class EnergyController extends GetxController {
     /// 创建订单
     currentOrderId = await createOrder(storeProductDetails, 0);
     if (Utils.isEmpty(currentOrderId)) {
-      exSnackBar("create order fail!", type: ExSnackBarType.error);
+      // exSnackBar("create order fail!", type: ExSnackBarType.error);
       return;
     }
 
@@ -193,7 +198,7 @@ class EnergyController extends GetxController {
     /// 创建订单
     currentOrderId = await createOrder(storeProductDetails, 1);
     if (Utils.isEmpty(currentOrderId)) {
-      exSnackBar("create order fail!", type: ExSnackBarType.error);
+      // exSnackBar("create order fail!", type: ExSnackBarType.error);
       return;
     }
 
@@ -313,11 +318,13 @@ class EnergyController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
     /// 卡券列表跳转过来的带了个卡券id
     couponId = Get.arguments?["couponId"];
-    if(!Utils.isEmpty(couponId)){
+    if (!Utils.isEmpty(couponId)) {
       tabKey = EnergyTabKey.star;
     }
+
     ///设置回调
     AppPurchase.orderCallback = notifyServerPurchaseResult;
   }

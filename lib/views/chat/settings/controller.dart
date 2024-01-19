@@ -8,7 +8,7 @@ import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class ChatSettingsController extends GetxController {
   /// 当前选择的聊天模式
-  int _currentModal = 0;
+  int _currentModal = 1;
   User? user;
 
   int get currentModal => _currentModal;
@@ -27,10 +27,9 @@ class ChatSettingsController extends GetxController {
   }
 
   @override
-  void onReady() {
+  void onInit() {
     // TODO: implement onReady
     user = Application.userInfo;
     currentModal = user?.model ?? 1;
-    super.onReady();
   }
 }

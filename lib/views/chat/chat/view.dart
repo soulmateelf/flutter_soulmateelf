@@ -86,16 +86,22 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.removeObserver(this);
   }
+
   /// 临时高度变量
   double tempHeight = 0.0;
+
   /// 记录上一次滚动列表内容的实际高度，只有在高度变化的时候才计算
   double oldSliverListHeight = 0.0;
+
   /// 滚动列表内容的实际高度
   double sliverListHeight = 0.0;
+
   /// 滚动区域视窗高度
   double viewportHeight = 0.0;
+
   /// 填充区域高度
   double computedHeight = 0.0;
+
   @override
   Widget build(BuildContext context) {
     logic.chatMessageController = RefreshController(initialRefresh: false);
@@ -120,15 +126,16 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2.w)),
-                    child: logic.roleDetail?.avatar != null?ClipOval(
-                      child: CachedNetworkImage(
-                        imageUrl: logic.roleDetail!.avatar!,
-                        placeholder: (context, url) =>
-                            const CupertinoActivityIndicator(),
-                        errorWidget: (context, url, error) => Container(),
-                      ), // 图像的来源，可以是网络图像或本地图像
-                    ):Container()
-                  ),
+                    child: logic.roleDetail?.avatar != null
+                        ? ClipOval(
+                            child: CachedNetworkImage(
+                              imageUrl: logic.roleDetail!.avatar!,
+                              placeholder: (context, url) =>
+                                  const CupertinoActivityIndicator(),
+                              errorWidget: (context, url, error) => Container(),
+                            ), // 图像的来源，可以是网络图像或本地图像
+                          )
+                        : Container()),
                 Text(logic.roleDetail?.name ?? '--',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -188,21 +195,16 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                                 fit: BoxFit.cover,
                               )
                             : null,
-                        border: Border.symmetric(
-                            horizontal: BorderSide(
-                                color: const Color.fromRGBO(0, 0, 0, 0.1),
-                                width: 1.w)),
                         // image: const DecorationImage(image: AssetImage(("assets/images/image/chatBg.png")),fit: BoxFit.fitWidth)
                       ),
                       child: Padding(
-                        padding: EdgeInsets.symmetric( horizontal: 16.w, vertical: 10.w),
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            viewportHeight = constraints.maxHeight;
-                            _computedContainerHeight("viewport");
-                            return _refreshListView;
-                          }
-                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 0.w),
+                        child: LayoutBuilder(builder: (context, constraints) {
+                          viewportHeight = constraints.maxHeight;
+                          _computedContainerHeight("viewport");
+                          return _refreshListView;
+                        }),
                       ),
                     ),
                   ),
@@ -216,84 +218,84 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
 
   /// 下拉列表
   Widget get _refreshListView => SmartRefresher(
-      enablePullDown: false,
-      enablePullUp: true,
-      controller: logic.chatMessageController,
-      onLoading: (){
-        logic.getLocalChatMessageList('loadMore');
-      },
-    footer: CustomFooter(
-      builder: (BuildContext context, LoadStatus? mode) {
-        Widget body;
-        if (mode == LoadStatus.loading) {
-          body = const CupertinoActivityIndicator();
-        } else if (mode == LoadStatus.failed) {
-          body = const Text("load failed!");
-        } else  {
-          body = const Text("");
-        }
-        return SizedBox(
-          // height: 55.0,
-          child: Center(child: body),
-        );
-      }),
-    child: CustomScrollView(
-            reverse: true,
-            controller: logic.scrollController,
-            cacheExtent: double.infinity,
-            slivers: <Widget>[
-              SliverToBoxAdapter(
-                child: Container(
-                  height: computedHeight,
-                  // 可以在这里添加任何你想要的撑开内容的控件
-                ),
+        enablePullDown: false,
+        enablePullUp: true,
+        controller: logic.chatMessageController,
+        onLoading: () {
+          logic.getLocalChatMessageList('loadMore');
+        },
+        footer: CustomFooter(builder: (BuildContext context, LoadStatus? mode) {
+          Widget body;
+          if (mode == LoadStatus.loading) {
+            body = const CupertinoActivityIndicator();
+          } else if (mode == LoadStatus.failed) {
+            body = const Text("load failed!");
+          } else {
+            body = const Text("");
+          }
+          return SizedBox(
+            // height: 55.0,
+            child: Center(child: body),
+          );
+        }),
+        child: CustomScrollView(
+          reverse: true,
+          controller: logic.scrollController,
+          cacheExtent: double.infinity,
+          slivers: <Widget>[
+            SliverToBoxAdapter(
+              child: Container(
+                height: computedHeight,
+                // 可以在这里添加任何你想要的撑开内容的控件
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                    // 这里假设 _messageItem 是你的列表项构建方法
-                    Widget listItem = _messageItem(index);
-                    if(index == 0){
-                      ///重绘，重置变量
-                      sliverListHeight=0;
-                      tempHeight = 0;
-                    }
-                    // 使用 Builder 获取每个列表项的高度
-                    return Builder(
-                      ///这个key很重要，当没有的时候，messageList往后新增数据不会有什么问题，往前插入数据就会导致整个列表项重新渲染，和vue react 一样
-                      ///要配合findChildIndexCallback使用才行
-                      key: Key(logic.messageList[index].localChatId),
-                      builder: (BuildContext context) {
-                        // 使用 Builder 获取子项的实际渲染高度
-                        WidgetsBinding.instance!.addPostFrameCallback((_) {
-                          RenderBox renderBox =
-                          context.findRenderObject() as RenderBox;
-                          double itemHeight = renderBox.size.height;
-                          // 更新 SliverList 的高度
-                          tempHeight += itemHeight;
-                          if(index == logic.messageList.length-1 ){
-                            sliverListHeight = tempHeight;
-                            if(oldSliverListHeight != sliverListHeight){
-                              oldSliverListHeight = sliverListHeight;
-                              _computedContainerHeight("sliverList");
-                            }
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  // 这里假设 _messageItem 是你的列表项构建方法
+                  Widget listItem = _messageItem(index);
+                  if (index == 0) {
+                    ///重绘，重置变量
+                    sliverListHeight = 0;
+                    tempHeight = 0;
+                  }
+                  // 使用 Builder 获取每个列表项的高度
+                  return Builder(
+                    ///这个key很重要，当没有的时候，messageList往后新增数据不会有什么问题，往前插入数据就会导致整个列表项重新渲染，和vue react 一样
+                    ///要配合findChildIndexCallback使用才行
+                    key: Key(logic.messageList[index].localChatId),
+                    builder: (BuildContext context) {
+                      // 使用 Builder 获取子项的实际渲染高度
+                      WidgetsBinding.instance!.addPostFrameCallback((_) {
+                        RenderBox renderBox =
+                            context.findRenderObject() as RenderBox;
+                        double itemHeight = renderBox.size.height;
+                        // 更新 SliverList 的高度
+                        tempHeight += itemHeight;
+                        if (index == logic.messageList.length - 1) {
+                          sliverListHeight = tempHeight;
+                          if (oldSliverListHeight != sliverListHeight) {
+                            oldSliverListHeight = sliverListHeight;
+                            _computedContainerHeight("sliverList");
                           }
+                        }
+                      });
 
-                        });
-
-                        return listItem;
-                      },
-                    );
-                  },
-                  childCount: logic.messageList.length,
-                  findChildIndexCallback: (key) {
-                    return logic.messageList.indexWhere((element) => Key(element.localChatId) == key);;
-                  },
-                ),
+                      return listItem;
+                    },
+                  );
+                },
+                childCount: logic.messageList.length,
+                findChildIndexCallback: (key) {
+                  return logic.messageList
+                      .indexWhere((element) => Key(element.localChatId) == key);
+                  ;
+                },
               ),
-            ],
-          ),
-  );
+            ),
+          ],
+        ),
+      );
 
   /// 底部用户输入区域
   Widget _bottomContainer() {
@@ -384,13 +386,16 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        if(logic.showVoiceWidget==false || recordDuration<1000) return;
+                        if (logic.showVoiceWidget == false ||
+                            recordDuration < 1000) return;
                         logic.toggleShowVoiceWidget(false);
                         await _stopRecording();
                         final messageFile = await MultipartFile.fromFile(path!,
                             filename: "voice.m4a");
                         logic.sendMessage(
-                            messageType: "1", message_file: messageFile,filePath: path!);
+                            messageType: "1",
+                            message_file: messageFile,
+                            filePath: path!);
                       },
                       child: Image.asset(
                         "assets/images/icons/activeSend.png",
@@ -440,6 +445,9 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                                                 logic.inputContent.length)))),
                             focusNode: logic.focusNode,
                             onChanged: logic.textInputChange,
+                            onEditingComplete: (){
+                              /// 阻止关闭键盘
+                            },
                             onSubmitted: (String str) {
                               logic.inputContent = str;
                               logic.sendMessage(
@@ -513,49 +521,63 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                     margin: EdgeInsets.only(top: 12.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      textDirection: isUser?TextDirection.ltr:TextDirection.rtl,
+                      textDirection:
+                          isUser ? TextDirection.ltr : TextDirection.rtl,
                       children: [
                         ///0发送中, 1已发送, 2发送失败，3已删除
                         ///状态是0发送中，并且是3分钟内的消息，才显示loading，因为特殊情况下，发送失败的事件没接收到，状态就还是0，显示loading就很奇怪
                         Offstage(
-                          offstage: (chatData.localStatus == 0 && DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(chatData.createTime)).inMinutes < 3) == false,
-                          child:CupertinoActivityIndicator(radius: 8.w,)
-                        ),
+                            offstage: (chatData.localStatus == 0 &&
+                                    DateTime.now()
+                                            .difference(DateTime
+                                                .fromMillisecondsSinceEpoch(
+                                                    chatData.createTime))
+                                            .inMinutes <
+                                        3) ==
+                                false,
+                            child: CupertinoActivityIndicator(
+                              radius: 8.w,
+                            )),
                         Offstage(
-                            offstage: chatData.localStatus != 2,
-                            child: Icon(
-                              Icons.error,
-                              color: Colors.red,
-                              size: 20.w,
-                            ),
+                          offstage: chatData.localStatus != 2,
+                          child: Icon(
+                            Icons.error,
+                            color: Colors.red,
+                            size: 20.w,
+                          ),
                         ),
                         SizedBox(
                           width: 4.w,
                         ),
                         Flexible(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: isUser ? primaryColor : const Color.fromRGBO(239, 239, 239, 1),
-                              borderRadius: isUser ? BorderRadius.only(
-                                  topLeft: Radius.circular(20.w),
-                                  topRight: Radius.circular(20.w),
-                                  bottomLeft: Radius.circular(20.w))
-                                  : BorderRadius.only(
-                                  topLeft: Radius.circular(20.w),
-                                  topRight: Radius.circular(20.w),
-                                  bottomRight: Radius.circular(20.w)),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 12.w, horizontal: 20.w),
-                            child: Text(
-                              chatData.content,
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.3,
-                                  color: isUser ? Colors.white : const Color.fromRGBO(0, 0, 0, 0.8)),
-                            ),
-                          ))
+                            child: Container(
+                          decoration: BoxDecoration(
+                            color: isUser
+                                ? primaryColor
+                                : const Color.fromRGBO(239, 239, 239, 1),
+                            borderRadius: isUser
+                                ? BorderRadius.only(
+                                    topLeft: Radius.circular(20.w),
+                                    topRight: Radius.circular(20.w),
+                                    bottomLeft: Radius.circular(20.w))
+                                : BorderRadius.only(
+                                    topLeft: Radius.circular(20.w),
+                                    topRight: Radius.circular(20.w),
+                                    bottomRight: Radius.circular(20.w)),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12.w, horizontal: 20.w),
+                          child: Text(
+                            chatData.content,
+                            style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w400,
+                                height: 1.3,
+                                color: isUser
+                                    ? Colors.white
+                                    : const Color.fromRGBO(0, 0, 0, 0.8)),
+                          ),
+                        ))
                       ],
                     )),
               ],
@@ -567,20 +589,20 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
           );
   }
 
-
   void createRecordTimer() {
     timer = Timer.periodic(const Duration(milliseconds: 120), (timer) {
       recordDuration = recorderController.elapsedDuration.inMilliseconds;
       setState(() {});
     });
   }
+
   //计算填充区域高度
-  void _computedContainerHeight(String from){
+  void _computedContainerHeight(String from) {
     double diffHeight = viewportHeight - sliverListHeight;
-    if(from == "viewport") {
+    if (from == "viewport") {
       computedHeight = diffHeight > 0 ? diffHeight : 0;
-    }else if(from == "sliverList"){
-      Future.delayed(Duration(milliseconds: 10),(){
+    } else if (from == "sliverList") {
+      Future.delayed(Duration(milliseconds: 10), () {
         setState(() {
           computedHeight = diffHeight > 0 ? diffHeight : 0;
         });
@@ -591,7 +613,6 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
   /// 开始录音
   void _startRecording() async {
     try {
-
       await recorderController.record(path: path);
       createRecordTimer();
 
