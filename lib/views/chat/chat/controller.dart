@@ -118,6 +118,7 @@ class ChatController extends GetxController {
       });
     }
   }
+
   @override
   void onInit() {
     super.onInit();
@@ -126,6 +127,7 @@ class ChatController extends GetxController {
     /// 如果不存在用户角色聊天记录表，创建
     tableName = 'chat_${Application.userInfo?.userId}_$roleId';
     DBUtil.createTableIfNotExists(tableName);
+
     /// 聊天已读
     readChatItem();
     // 添加监听器
@@ -142,11 +144,13 @@ class ChatController extends GetxController {
     // 移除监听器，避免内存泄漏
     focusNode.removeListener(_handleFocusChange);
     chatMessageController.dispose();
+
     scrollController.dispose();
     focusNode.dispose();
     _debounce?.cancel();
     super.onClose();
   }
+
   ///输入框状态监听
   void _handleFocusChange() {
     // 处理焦点状态变化
@@ -168,6 +172,7 @@ class ChatController extends GetxController {
       exSnackBar(error, type: ExSnackBarType.error);
     });
   }
+
   /// 消息已读
   void readChatItem() {
     HttpUtils.diorequst('/chat/chatRead',
@@ -176,6 +181,7 @@ class ChatController extends GetxController {
       needRefresh = true;
     });
   }
+
   /// 获取本地聊天记录
   void getLocalChatMessageList(String from) {
     int limit = 10;
@@ -183,12 +189,13 @@ class ChatController extends GetxController {
             lastLocalChatId: lastLocalChatId, limit: limit)
         .then((List<LocalChatMessage> newList) {
       chatMessageController.loadComplete();
-      if(newList.isEmpty){
+      if (newList.isEmpty) {
         ///没有更多数据了
         chatMessageController.loadNoData();
-      }else{
+      } else {
         ///最老的一条数据的localChatId，倒序排列，最后一条就是最老的
         lastLocalChatId = newList.last.localChatId;
+
         ///历史消息,往上插入
         messageList.addAll(newList);
       }
@@ -222,6 +229,7 @@ class ChatController extends GetxController {
       messageList.insert(0, localChatMessage);
       lastLocalChatId = localChatMessage.localChatId;
       update();
+
       ///滚动到top
       scrollToTop();
     }).catchError((error) {
@@ -286,6 +294,7 @@ class ChatController extends GetxController {
     messageList.insert(0, localChatMessage);
     lastLocalChatId = localChatMessage.localChatId;
     update();
+
     ///滚动到top
     scrollToTop();
 
@@ -293,6 +302,7 @@ class ChatController extends GetxController {
     if (isIntro && Application.hasIntro == false) {
       showGiftIntro();
     }
+
     /// 通知后端，已读消息
     readChatItem();
   }
@@ -329,6 +339,7 @@ class ChatController extends GetxController {
       ///复制文件，这里我直接把录音的m4a文件复制成wav文件了
       file.copySync(destinationFilePath);
     }
+
     ///插入本地数据库
     insertLocalChatMessage(tempLocalChatMessage);
   }
@@ -385,6 +396,7 @@ class ChatController extends GetxController {
           ///能量不足
           ///更新本地消息状态
           updateLocalChatData(localChatId);
+
           ///弹出提示框
           energyEmptyDialog();
         }
@@ -398,12 +410,13 @@ class ChatController extends GetxController {
   ///发送信号给后台，可以调用gpt接口了
   ///成功失败都不处理，只是发送信号
   void startGptTask() {
-    Map<String, dynamic> params = {'roleId': roleId, 'lockId': lockId};
-    HttpUtils.diorequst('/chat/chatRollBack', method: 'post', params: params)
-        .then((response) {
-          // APPPlugin.logger.e(response.toString());
-    })
-        .catchError((error) {});
+    if (_debounce?.isActive == true) {
+      Map<String, dynamic> params = {'roleId': roleId, 'lockId': lockId};
+      HttpUtils.diorequst('/chat/chatRollBack', method: 'post', params: params)
+          .then((response) {
+        // APPPlugin.logger.e(response.toString());
+      }).catchError((error) {});
+    }
   }
 
   ///是否展示时间模块
