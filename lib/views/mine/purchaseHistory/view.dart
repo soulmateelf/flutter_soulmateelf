@@ -124,7 +124,7 @@ class MinePurchaseHistoryPage extends StatelessWidget {
                               child: SizedBox(
                                   height: 20.w,
                                   child: Text(
-                                    order.productType == 1&&!Utils.isEmpty(order.rawProductAmount)  ? "\$ ${order.rawProductAmount}" : "",
+                                    order.productType == 1&&!Utils.isEmpty(order.rawProductAmount)  ? "\$ ${order.rawProductAmount?.toStringAsFixed(2)}" : "",
                                     style: TextStyle(
                                       fontSize: 14.sp,
                                       decoration: TextDecoration.lineThrough,
@@ -141,7 +141,7 @@ class MinePurchaseHistoryPage extends StatelessWidget {
                               child: SizedBox(
                                 height: 26.w,
                                   child: Text(
-                                    "\$ ${order.orderAmount}",
+                                    "\$ ${order.orderAmount.toPrecision(2)}",
                                     style: TextStyle(
                                       color: textColor,
                                       fontSize: 20.sp,

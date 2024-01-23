@@ -27,6 +27,7 @@ class RoleListController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+    menuLogic.roleListController = this;
     getDataList();
   }
 

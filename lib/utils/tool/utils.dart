@@ -107,10 +107,11 @@ class Utils {
   }
 
   /// 打开网页
-  static void openPage(String path,{LaunchMode mode=LaunchMode.externalApplication}) async {
+  static void openPage(String path,
+      {LaunchMode mode = LaunchMode.externalApplication}) async {
     if (!isEmpty(path)) {
       if (await canLaunchUrl(Uri.parse(path))) {
-        await launchUrl(Uri.parse(path),mode: mode);
+        await launchUrl(Uri.parse(path), mode: mode);
       } else {
         Loading.toast('open $path fail！');
       }
@@ -295,10 +296,11 @@ class Utils {
   }
 
   static void messageToPageBySubtype(int subType) {
+    ///  消息类别小类,0亲密度相关,1能量相关,2加倍卡,3充值,4订阅,5定制,6版本更新
     if (subType == 3 || subType == 4) {
       Get.toNamed("/minePurchaseHistory");
     } else if (subType == 5) {
-      Get.toNamed("/roleList");
+      Get.until((route) => Get.currentRoute == "/menu");
     }
   }
 }
@@ -360,7 +362,6 @@ bool checkPassword(String s) {
   return isP;
 }
 
-
 typedef void DebounceAction(dynamic arguments);
 
 class Debouncer {
@@ -380,7 +381,6 @@ class Debouncer {
     _timer?.cancel();
   }
 }
-
 
 EdgeInsets getMargin(BuildContext ctx) {
   Widget? widget = ctx.widget;

@@ -146,7 +146,7 @@ class EnergyController extends GetxController {
     return await HttpUtils.diorequst("/order/createOrder",
             method: 'post', params: params)
         .then((response) {
-      exSnackBar(response['message']);
+      exSnackBar(response['message'],type: ExSnackBarType.warning);
       if (response['code'] == 200) {
         return response['data'];
       }

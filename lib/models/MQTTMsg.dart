@@ -11,7 +11,7 @@ String mqttMessageDataToJson(MqttMessageData data) => json.encode(data.toJson())
 class MqttMessageData {
   bool clear;
   String content;
-  /// 0是日常消息与系统消息刷新，1是聊天未读数刷新
+  /// 0是日常消息与系统消息刷新，1是聊天未读数刷新  2是 gpt 聊天消息  3是亲密度发生变化
   int messageType;
 
   MqttMessageData({
