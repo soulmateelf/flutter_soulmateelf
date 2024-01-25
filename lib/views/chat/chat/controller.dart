@@ -313,6 +313,7 @@ class ChatController extends GetxController {
       String? message,
       required String messageType,
       dynamic? message_file,
+      double? voiceDuration,
       String? filePath}) async {
     ///立即往本地数据库新增一条消息
     ///构建本地消息
@@ -322,6 +323,7 @@ class ChatController extends GetxController {
         origin: 0,
         content: message ?? '',
         voiceUrl: '',
+        voiceSize: voiceDuration ?? 0,
         inputType: int.parse(messageType),
         status: 0,
         localStatus: 0,
@@ -349,13 +351,13 @@ class ChatController extends GetxController {
       {String? message,
       required String messageType,
       dynamic? message_file,
+      double? voiceDuration,
       String? filePath}) async {
     if (messageType == "0" && Utils.isEmpty(message)) {
       return;
     } else if (messageType == "1" && message_file == null) {
       return;
     }
-
     /// 本地消息的id
     String localChatId = const Uuid().v4();
 
@@ -365,6 +367,7 @@ class ChatController extends GetxController {
         message: message,
         messageType: messageType,
         message_file: message_file,
+        voiceDuration: voiceDuration,
         filePath: filePath);
 
     ///构建FormData请求参数
@@ -414,7 +417,6 @@ class ChatController extends GetxController {
       Map<String, dynamic> params = {'roleId': roleId, 'lockId': lockId};
       HttpUtils.diorequst('/chat/chatRollBack', method: 'post', params: params)
           .then((response) {
-        // APPPlugin.logger.e(response.toString());
       }).catchError((error) {});
     }
   }

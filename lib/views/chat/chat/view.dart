@@ -246,13 +246,11 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
             SliverToBoxAdapter(
               child: Container(
                 height: computedHeight,
-                // 可以在这里添加任何你想要的撑开内容的控件
               ),
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  // 这里假设 _messageItem 是你的列表项构建方法
                   Widget listItem = _messageItem(index);
                   if (index == 0) {
                     ///重绘，重置变量
@@ -261,15 +259,12 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                   }
                   // 使用 Builder 获取每个列表项的高度
                   return Builder(
-                    ///这个key很重要，当没有的时候，messageList往后新增数据不会有什么问题，往前插入数据就会导致整个列表项重新渲染，和vue react 一样
-                    ///要配合findChildIndexCallback使用才行
-                    key: Key(logic.messageList[index].localChatId),
                     builder: (BuildContext context) {
                       // 使用 Builder 获取子项的实际渲染高度
                       WidgetsBinding.instance!.addPostFrameCallback((_) {
                         RenderBox renderBox =
                             context.findRenderObject() as RenderBox;
-                        double itemHeight = renderBox.size.height;
+                        double itemHeight = renderBox?.size?.height??0;
                         // 更新 SliverList 的高度
                         tempHeight += itemHeight;
                         if (index == logic.messageList.length - 1) {
@@ -280,17 +275,18 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                           }
                         }
                       });
-
-                      return listItem;
+                      return Container(key: ValueKey(logic.messageList[index].localChatId),child: listItem,);
                     },
                   );
                 },
                 childCount: logic.messageList.length,
-                findChildIndexCallback: (key) {
-                  return logic.messageList
-                      .indexWhere((element) => Key(element.localChatId) == key);
-                  ;
-                },
+                addAutomaticKeepAlives: true,
+                // findChildIndexCallback: (key) {
+                //   var valueKey = key as ValueKey;
+                //   int index = logic.messageList
+                //       .indexWhere((element) => element.localChatId == valueKey.value);
+                //   return index;
+                // },
               ),
             ),
           ],
@@ -386,8 +382,8 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        if (logic.showVoiceWidget == false ||
-                            recordDuration < 1000) return;
+                        if (logic.showVoiceWidget == false || recordDuration < 1000) return;
+                        double duration = recordDuration / 1000;
                         logic.toggleShowVoiceWidget(false);
                         await _stopRecording();
                         final messageFile = await MultipartFile.fromFile(path!,
@@ -395,6 +391,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                         logic.sendMessage(
                             messageType: "1",
                             message_file: messageFile,
+                            voiceDuration: duration,
                             filePath: path!);
                       },
                       child: Image.asset(
@@ -489,7 +486,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
     bool isUser = chatData.role == 'user';
     return chatData.inputType == 0
         ? Container(
-            key: Key(chatData.localChatId),
+            key: ValueKey(chatData.localChatId),
             margin: EdgeInsets.only(bottom: 12.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -584,7 +581,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
             ),
           )
         : ChatBlubble(
-            key: Key(chatData.localChatId),
+            key: ValueKey(chatData.localChatId),
             chatData: chatData,
           );
   }

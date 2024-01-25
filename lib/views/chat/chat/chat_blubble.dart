@@ -19,8 +19,8 @@ class ChatBlubble extends StatefulWidget {
   State<ChatBlubble> createState() => _ChatBlubbleState();
 }
 
-class _ChatBlubbleState extends State<ChatBlubble> {
-  late PlayerController controller;
+class _ChatBlubbleState extends State<ChatBlubble> with AutomaticKeepAliveClientMixin{
+  PlayerController controller = PlayerController();
   late StreamSubscription<PlayerState> playerStateSubscription;
   bool isPlaying = false;
   final playerWaveStyle = const PlayerWaveStyle(
@@ -32,7 +32,6 @@ class _ChatBlubbleState extends State<ChatBlubble> {
   @override
   void initState() {
     super.initState();
-    controller = PlayerController();
     _preparePlayer();
     playerStateSubscription = controller.onPlayerStateChanged.listen((_) {
       if (controller.playerState == PlayerState.playing) {
@@ -49,20 +48,17 @@ class _ChatBlubbleState extends State<ChatBlubble> {
 
     final appDirectory = await getApplicationDocumentsDirectory();
     String path = "${appDirectory.path}/${widget.chatData.localChatId}.wav";
+
     File sourceFile = File(path);
     if (!sourceFile.existsSync() && widget.chatData.voiceUrl != null) {
       await HttpUtils.dio.download("${widget.chatData.voiceUrl}", path);
     }
-
     controller.preparePlayer(
       path: path!,
+      noOfSamples: 200,
     );
 
-    controller
-        .extractWaveformData(
-          path: path!,
-          noOfSamples: playerWaveStyle.getSamplesForWidth(200),
-        );
+
   }
 
   @override
@@ -87,6 +83,7 @@ class _ChatBlubbleState extends State<ChatBlubble> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final isUser = widget.chatData.role == 'user';
     final color = isUser ? Colors.white : const Color.fromRGBO(0, 0, 0, 0.24);
 
@@ -129,7 +126,7 @@ class _ChatBlubbleState extends State<ChatBlubble> {
               width: 10,
             ),
             Text(
-              controller.maxDuration != null ? (controller.maxDuration / 1000).toStringAsFixed(1) : "--",
+              widget.chatData.voiceSize!=null?widget.chatData.voiceSize.toString():'0',
               style: TextStyle(
                 color: color,
                 fontSize: 14.sp,
@@ -141,4 +138,7 @@ class _ChatBlubbleState extends State<ChatBlubble> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

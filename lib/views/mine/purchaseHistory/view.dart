@@ -141,7 +141,7 @@ class MinePurchaseHistoryPage extends StatelessWidget {
                               child: SizedBox(
                                 height: 26.w,
                                   child: Text(
-                                    "\$ ${order.orderAmount.toPrecision(2)}",
+                                    "\$ ${order.productAmount}",
                                     style: TextStyle(
                                       color: textColor,
                                       fontSize: 20.sp,

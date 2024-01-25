@@ -141,12 +141,15 @@ class EnergyController extends GetxController {
           : monthProduct?.productId ?? '',
       "paymentMethodType": GetPlatform.isIOS ? 0 : 1,
       "moneyType": storeProductDetails.currencyCode,
+      "currencySymbol": storeProductDetails?.currencySymbol, //商品价格单位符号(用户当地货币符号)
       "couponId": currentCard?.couponId.toString(),
     };
     return await HttpUtils.diorequst("/order/createOrder",
             method: 'post', params: params)
         .then((response) {
-      exSnackBar(response['message'],type: ExSnackBarType.warning);
+      if(response['data'] == null){
+        exSnackBar(response['message'],type: ExSnackBarType.warning);
+      }
       if (response['code'] == 200) {
         return response['data'];
       }
@@ -229,7 +232,6 @@ class EnergyController extends GetxController {
     ///根据商品id获取商店商品详情
     final ProductDetails? storeProductDetails = storeProductList
         .firstWhereOrNull((product) => product.id == purchaseDetails.productID);
-
     ///根据商店商品id获取服务端商品详情
     final Product? serverProductDetails = energyProductList.firstWhereOrNull(
         (product) => GetPlatform.isAndroid
@@ -239,8 +241,8 @@ class EnergyController extends GetxController {
     final Map<String, dynamic> params = {
       "orderId": currentOrderId, //订单id
       "productId": serverProductDetails?.productId, //服务端商品id
-      "receipt": storeProductDetails?.rawPrice, //商品实际价格
-      "currencyCode": storeProductDetails?.currencyCode, //商品价格单位
+      "receipt": storeProductDetails?.rawPrice, //商品实际价格(用户当地货币价格)
+      "currencyCode": storeProductDetails?.currencyCode, //商品价格单位(用户当地货币单位)
       "status": purchaseDetails.status.toString(), //购买状态
       "purchaseID": purchaseDetails?.purchaseID ?? '', //购买id
       "appleProductID": purchaseDetails.productID ?? '', //apple商品id
@@ -298,7 +300,7 @@ class EnergyController extends GetxController {
       if (response['code'] == 200) {
         //如果是取消和失败的订单,提示不一样
         if (purchaseDetails?.status == PurchaseStatus.canceled) {
-          exSnackBar("purchase canceled", type: ExSnackBarType.error);
+          exSnackBar("purchase canceled", type: ExSnackBarType.warning);
         } else {
           exSnackBar("purchase failed", type: ExSnackBarType.error);
         }

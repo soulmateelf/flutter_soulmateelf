@@ -37,6 +37,9 @@ class ChatHistory {
   /// 音频 url
   String? voiceUrl;
 
+  /// 音频大小
+  double? voiceSize;
+
   ChatHistory({
     this.id,
     required this.chatId,
@@ -53,6 +56,7 @@ class ChatHistory {
     required this.createTime,
     this.updateTime,
     this.voiceUrl,
+    this.voiceSize,
   });
 
   factory ChatHistory.fromJson(Map<String, dynamic> json) => ChatHistory(
@@ -71,6 +75,7 @@ class ChatHistory {
         createTime: json["createTime"],
         updateTime: json["updateTime"],
         voiceUrl: json["voiceUrl"],
+        voiceSize: json["voiceSize"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -89,5 +94,6 @@ class ChatHistory {
         "createTime": createTime,
         "updateTime": updateTime,
         "voiceUrl": voiceUrl,
+        "voiceSize": voiceSize,
       };
 }

@@ -88,6 +88,8 @@ class Step2Controller extends GetxController {
       "productId": customRoleProduct?.productId,
       "paymentMethodType": GetPlatform.isIOS ? 0 : 1,
       "moneyType": storeProductDetails.currencyCode,
+      "currencySymbol":
+          storeProductDetails?.currencySymbol, //商品价格单位符号(用户当地货币符号)
     };
     return await HttpUtils.diorequst("/order/createOrder",
             method: 'post', params: params)
@@ -199,7 +201,7 @@ class Step2Controller extends GetxController {
       if (response['code'] == 200) {
         //如果是取消和失败的订单,提示不一样
         if (purchaseDetails?.status == PurchaseStatus.canceled) {
-          exSnackBar("purchase canceled", type: ExSnackBarType.error);
+          exSnackBar("purchase canceled", type: ExSnackBarType.warning);
         } else {
           exSnackBar("purchase failed", type: ExSnackBarType.error);
         }

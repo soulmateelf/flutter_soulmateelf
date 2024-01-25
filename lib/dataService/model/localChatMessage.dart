@@ -23,6 +23,9 @@ class LocalChatMessage {
   /// 音频 url
   String? voiceUrl;
 
+  /// 音频大小
+  double? voiceSize;
+
   /// 用户聊天输入的类型,0是文本,1是语音
   int inputType;
 
@@ -49,6 +52,7 @@ class LocalChatMessage {
     required this.origin,
     required this.content,
     this.voiceUrl,
+    this.voiceSize,
     required this.inputType,
     required this.status,
     required this.localStatus,
@@ -65,6 +69,7 @@ class LocalChatMessage {
         origin: json["origin"],
         content: json["content"],
         voiceUrl: json["voiceUrl"],
+        voiceSize: json["voiceSize"],
         inputType: json["inputType"],
         status: json["status"],
         localStatus: json["localStatus"],
@@ -81,6 +86,7 @@ class LocalChatMessage {
         "origin": origin,
         "content": content,
         "voiceUrl": voiceUrl,
+        "voiceSize": voiceSize,
         "inputType": inputType,
         "status": status,
         "localStatus": localStatus,

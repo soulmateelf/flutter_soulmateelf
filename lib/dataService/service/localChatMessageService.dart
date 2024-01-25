@@ -2,19 +2,22 @@
 import 'package:soulmate/dataService/model/localChatMessage.dart';
 import 'package:soulmate/utils/plugin/DBUtil.dart';
 import 'package:soulmate/utils/tool/utils.dart';
+import 'package:sqflite/sqflite.dart';
 
 /// 聊天记录service
+/// 有时候mqtt会出现消息推送两次的情况，所以这里的插入和更新都是用的replace，conflictAlgorithm: ConflictAlgorithm.replace
+/// 本地聊天记录表 serverChatId 设置 UNIQUE，防止重复插入，如果重复插入冲突逻辑是替换
 class LocalChatMessageService {
   /// 插入单条聊天记录
   static Future<void> insertChatMessage(String tableName,LocalChatMessage localChatMessage) async {
-    await DBUtil.database.insert(tableName, localChatMessage.toJson());
+    await DBUtil.database.insert(tableName, localChatMessage.toJson(),conflictAlgorithm: ConflictAlgorithm.replace);
   }
   /// 插入多条聊天记录
   static Future<void> multipleInsertChatMessage(String tableName,List<LocalChatMessage> localChatMessageList) async {
     // 使用事务插入多行数据，以提高性能
     await DBUtil.database.transaction((txn) async {
       for (var localChatMessage in localChatMessageList) {
-        await txn.insert(tableName, localChatMessage.toJson());
+        await txn.insert(tableName, localChatMessage.toJson(),conflictAlgorithm: ConflictAlgorithm.replace);
       }
     });
   }
@@ -41,7 +44,7 @@ class LocalChatMessageService {
   }
   /// 更新聊天记录
   static Future<void> updateChatMessage(String tableName, LocalChatMessage localChatMessage) async {
-    await DBUtil.database.update(tableName, localChatMessage.toJson(), where: 'localChatId = ?', whereArgs: [localChatMessage.localChatId]);
+    await DBUtil.database.update(tableName, localChatMessage.toJson(), where: 'localChatId = ?', whereArgs: [localChatMessage.localChatId],conflictAlgorithm: ConflictAlgorithm.replace);
   }
   /// 删除所有聊天记录
   static Future<void> clearChatMessageByRoleId(String tableName) async {

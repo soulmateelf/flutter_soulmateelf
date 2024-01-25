@@ -54,11 +54,12 @@ class DBUtil {
       CREATE TABLE IF NOT EXISTS $tableName (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         localChatId TEXT,
-        serverChatId TEXT,
+        serverChatId TEXT UNIQUE,
         role TEXT,
         origin INTEGER,
         content TEXT,
         voiceUrl TEXT,
+        voiceSize REAL,
         inputType INTEGER,
         status INTEGER,
         localStatus INTEGER,
