@@ -6,14 +6,14 @@
 
 class ProjectConfig {
   /// debug or not
-  bool isDebug = true;
+  bool isDebug = false;
   ///基本配置
   Map baseConfig = {
     'packageName': 'cn.soulmate.elf', // 包名
   };
   /// 测试环境
   Map debugConfig = {
-    'BaseUrl': 'http://54.177.205.15/api',
+    'BaseUrl': 'https://icyberelf.com/api',
     'SQLiteDBVersion': 1,
     'mqttHost': '139.224.60.241',
     'mqttPort': 1883,
@@ -22,12 +22,12 @@ class ProjectConfig {
   };
   /// 生产环境
   Map releaseConfig = {
-    'BaseUrl': 'http://soulmate.health/api',
+    'BaseUrl': 'https://neveraloneagain.app/api',
     'SQLiteDBVersion': 1,
-    'mqttHost': '139.224.60.241',
+    'mqttHost': '13.56.19.200',
     'mqttPort': 1883,
-    'mqttUserName': 'admin',
-    'mqttPassword': 'public',
+    'mqttUserName': 'soulmate',
+    'mqttPassword': 'soulmate#2023',
   };
 
   /// 静态变量_instance，存储唯一对象
