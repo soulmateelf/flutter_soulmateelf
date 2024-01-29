@@ -17,6 +17,7 @@ class ChatSettingsController extends GetxController {
     _currentModal = value;
     if (user != null) {
       user!.model = value;
+      Application.userInfo = user;
       HttpUtils.diorequst("/settingModel",
           method: "post",
           params: {"model": currentModal}).then((res) {}).catchError((err) {
