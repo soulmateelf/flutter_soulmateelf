@@ -34,10 +34,17 @@ class MineController extends GetxController {
   /// 用户信息
   User? user;
 
-  setContact(bool c) {
-    contact = c;
-    HttpUtils.diorequst("/user/updateEemergency", query: {"status": c ? 1 : 0})
-        .then((res) {})
+  /// 当前能量
+  int CurrentEnergy = 0;
+
+  /// 设置紧急联系邮箱
+  setContact(bool isOpen) {
+    contact = isOpen;
+    HttpUtils.diorequst("/user/updateEemergency", query: {"status": isOpen ? 1 : 0})
+        .then((res) {
+      user?.emergencyContact = isOpen ? 1 : 0;
+      Application.userInfo = user;
+    })
         .catchError((err) {});
     update();
   }
@@ -125,13 +132,14 @@ class MineController extends GetxController {
       ),
     );
   }
-
+  /// 获取最新用户信息
   Future<void> getUser() async {
     await Application.regainUserInfo();
     user = Application.userInfo;
+    CurrentEnergy = (user?.energy ?? 0).toInt();
     update();
   }
-
+  /// 分享
   void share() async {
     final result = await Share.shareWithResult(
       "Welcome to Never Alone Again! Explore this unique dream world with the ELF. Here, you're more than a traveler, you're a creator. Your imagination comes to life. Click the link https://soulmate.health now and start your adventure. Let's dream and create together!",
@@ -139,7 +147,6 @@ class MineController extends GetxController {
     );
     if (result.status == ShareResultStatus.success) {
       HttpUtils.diorequst("/share").then((res) {
-        APPPlugin.logger.e(res.toString());
         if (res?['code'] == 200) {
           exSnackBar(res?['message']);
         }
@@ -147,13 +154,25 @@ class MineController extends GetxController {
     }
   }
 
+  /// 设置紧急联系邮箱
+  void getCurrentEnergy() {
+    HttpUtils.diorequst('/user/queryEnergy')
+        .then((response) {
+          if (response?['code'] == 200) {
+            CurrentEnergy = (response?['data'] ?? 0).toInt();
+            update();
+          }
+    }).catchError((error) {});
+  }
+
   @override
   void onInit() {
     super.onInit();
     user = Application.userInfo;
-    setContact(user?.emergencyContact == 1);
+    CurrentEnergy = (user?.energy ?? 0).toInt();
+    contact = user?.emergencyContact == 1;
+    getCurrentEnergy();
     update();
-    return;
   }
 
   @override

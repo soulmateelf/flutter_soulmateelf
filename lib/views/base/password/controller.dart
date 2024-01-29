@@ -70,6 +70,8 @@ class PasswordController extends GetxController {
           type: ExSnackBarType.warning);
       return;
     }
+    /// 展示加载框
+    Loading.show();
 
     final arguments = Get.arguments;
     final codeType = arguments['codeType'];
@@ -79,7 +81,7 @@ class PasswordController extends GetxController {
           params: {...arguments as Map, "password": password}).then((value) {
         requestLogin(arguments["email"], password).then((value) {
           Get.offAllNamed('/menu');
-        }).whenComplete(() => null);
+        }).whenComplete((){Loading.dismiss();});
       }, onError: (err) {
         exSnackBar(err.toString(), type: ExSnackBarType.warning);
       }).whenComplete(() {});
@@ -92,7 +94,9 @@ class PasswordController extends GetxController {
         Get.toNamed("/successfully");
       }, onError: (err) {
         exSnackBar(err.toString(), type: ExSnackBarType.warning);
-      }).whenComplete(() => {});
+      }).whenComplete(()  {
+        Loading.dismiss();
+      });
     }
   }
 }

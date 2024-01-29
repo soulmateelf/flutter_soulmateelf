@@ -16,6 +16,7 @@ import 'package:soulmate/utils/plugin/mqtt.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/views/chat/chat/controller.dart';
 import 'package:soulmate/views/chat/chatList/controller.dart';
+import 'package:soulmate/views/mine/mine/controller.dart';
 import 'package:soulmate/views/role/roleList/controller.dart';
 import 'package:uuid/uuid.dart';
 
@@ -44,6 +45,9 @@ class SoulMateMenuController extends GetxController {
 
   /// 角色列表
   RoleListController? roleListController;
+
+  /// 个人中心
+  MineController? mineController;
 
   /// 获取左上角未读消息的数量
   void getUnreadMessage() {
@@ -204,6 +208,13 @@ class SoulMateMenuController extends GetxController {
   changeMenu(index) {
     if (currentIndex == index) {
       return;
+    }
+    ///如果是个人中心，刷新能量
+    if(index == 2){
+      try{
+        mineController = Get.find<MineController>();
+        mineController?.getCurrentEnergy();
+      }catch(e){}
     }
     currentIndex = index;
     controller.jumpToPage(index);

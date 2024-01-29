@@ -24,7 +24,7 @@ class ProjectConfig {
   Map releaseConfig = {
     'BaseUrl': 'https://neveraloneagain.app/api',
     'SQLiteDBVersion': 1,
-    'mqttHost': '13.56.19.200',
+    'mqttHost': 'neveraloneagain.app',
     'mqttPort': 1883,
     'mqttUserName': 'soulmate',
     'mqttPassword': 'soulmate#2023',

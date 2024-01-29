@@ -62,7 +62,8 @@ class _MinePage extends State<MinePage> {
     ScreenUtil.init(Get.context!, designSize: const Size(428, 926));
     return basePage('Chat',
         backGroundImage: BackGroundImageType.gray,
-        showAppbar: false, child: GetBuilder<MineController>(builder: (logic) {
+        showAppbar: false,
+        child: GetBuilder<MineController>(builder: (logic) {
       return Column(
         children: [
           Container(
@@ -200,8 +201,7 @@ class _MinePage extends State<MinePage> {
                                     RichText(
                                         text: TextSpan(children: [
                                       TextSpan(
-                                        text:
-                                            "${(logic.user?.energy ?? 0).toInt()}",
+                                        text: logic.CurrentEnergy.toString(),
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,

@@ -8,22 +8,18 @@ import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class ChatSettingsController extends GetxController {
   /// 当前选择的聊天模式
-  int _currentModal = 1;
+  int currentModal = 1;
   User? user;
 
-  int get currentModal => _currentModal;
-
-  set currentModal(int value) {
-    _currentModal = value;
-    if (user != null) {
+  setCurrentModal(int value) {
+    HttpUtils.diorequst("/settingModel",
+        method: "post",
+        params: {"model": currentModal}).then((res) {
       user!.model = value;
       Application.userInfo = user;
-      HttpUtils.diorequst("/settingModel",
-          method: "post",
-          params: {"model": currentModal}).then((res) {}).catchError((err) {
-        exSnackBar(err.toString(), type: ExSnackBarType.error);
-      });
-    }
+    }).catchError((err) {
+      exSnackBar(err.toString(), type: ExSnackBarType.error);
+    });
     update();
   }
 

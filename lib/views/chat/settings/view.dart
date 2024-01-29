@@ -58,7 +58,7 @@ class ChatSettingsPage extends StatelessWidget {
       list.add(GestureDetector(
         onTap: () {
           if (locked == false) {
-            logic.currentModal = i;
+            logic.setCurrentModal(i);
           }
         },
         child: Stack(

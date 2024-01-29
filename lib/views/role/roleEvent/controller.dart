@@ -84,6 +84,7 @@ class RoleEventController extends GetxController {
     }
     HttpUtils.diorequst('/role/roleEventById', query: {"memoryId": memoryId})
         .then((res) {
+
       RoleEvent roleEvent = RoleEvent.fromJson(res['data']);
       setRoleEvent(roleEvent,updateDetail: updateDetail);
     }).catchError((err) {
