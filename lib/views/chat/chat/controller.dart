@@ -423,14 +423,14 @@ class ChatController extends GetxController {
 
   ///是否展示时间模块
   bool showTime(LocalChatMessage chatData, int index) {
-    if (index == 0) {
-      ///第一条消息就展示时间
+    if (messageList.length>1 && index == messageList.length-1) {
+      ///第一条消息就展示时间，因为是翻转的,所以是最后一条
       return true;
     }
 
     ///与上一条消息的时间差在5分钟内不展示
     var lastMessgeDate =
-        DateTime.fromMillisecondsSinceEpoch(messageList[index - 1].createTime);
+        DateTime.fromMillisecondsSinceEpoch(messageList[index + 1].createTime);
     var currentMessgeDate =
         DateTime.fromMillisecondsSinceEpoch(chatData.createTime);
     var diffMinutes = currentMessgeDate.difference(lastMessgeDate).inMinutes;

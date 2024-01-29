@@ -31,7 +31,7 @@ class ThirdLogin {
         return;
       }
       if(googleResult == null){
-        exSnackBar("google login failed", type: ExSnackBarType.error );
+        ///用户主动取消，也会进这里，这里就不报错了
         return;
       }
       var params = {

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -132,7 +133,7 @@ class SoulMateMenuController extends GetxController {
               origin: 0,
               content: chatData['content'] ?? '',
               voiceUrl: chatData['voiceUrl'] ?? '',
-              voiceSize: chatData['voiceSize'] ?? 0,
+              voiceSize: chatData['voiceSize'].toDouble() ?? 0,
               inputType: chatData['inputType'] ?? '0',
               status: chatData['status'] ?? 0,
               localStatus: 1,
