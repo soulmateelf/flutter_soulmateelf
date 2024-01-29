@@ -51,13 +51,15 @@
 		<string>mqtt.tcp</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>use your camera take a shoot</string>
+	<string>This app needs access to your camera to allow you to take a photo</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Looking for local tcp Bonjour service</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This app requires Mic permission.</string>
+	<string>This app needs access to your microphone to allow recording and communication features.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>use your photo</string>
+	<string>This app needs access to your photo library to allow you to select existing photos and share them.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>This app requires access to speech recognition to transcribe spoken words into text for various features.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -79,16 +81,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>LSApplicationQueriesSchemes</key>
-    <array>
-            <string>itms-beta</string>
-            <string>itms</string>
-    </array>
-    <key>NSLocalNetworkUsageDescription</key>
-    <string>Looking for local tcp Bonjour service</string>
-    <key>NSBonjourServices</key>
-    <array>
-      <string>mqtt.tcp</string>
-    </array>
 </dict>
 </plist>
