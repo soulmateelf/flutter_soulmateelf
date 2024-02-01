@@ -26,10 +26,10 @@ class MineConfirmDeactivatePage extends StatelessWidget {
                 children: [
                   Center(
                     child: Text(
-                      "Complete your deactivation request by entering\n the password associated with your account.",
+                      "Complete your delete request by entering\n the password associated with your account.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color.fromRGBO(0, 0, 0, 0.48),
+                        color: const Color.fromRGBO(0, 0, 0, 0.48),
                         fontSize: 16.sp,
                       ),
                     ),
@@ -71,7 +71,7 @@ class MineConfirmDeactivatePage extends StatelessWidget {
                   ),
                   color: errorTextColor,
                   child: Text(
-                    "Deactivate",
+                    "Delete",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.sp,

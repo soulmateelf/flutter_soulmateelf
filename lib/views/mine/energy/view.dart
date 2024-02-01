@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:flutter/gestures.dart';
 import 'package:soulmate/models/recharge.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/tool/utils.dart';
@@ -109,7 +110,7 @@ class EnergyState extends State<EnergyPage>
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 12.w),
                             child: Container(
-                              height: 514.w,
+                              height: 474.w,
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius:
@@ -136,7 +137,7 @@ class EnergyState extends State<EnergyPage>
                                   Image.asset(
                                     "assets/images/image/energy.png",
                                     width: 272.w,
-                                    height: 272.w,
+                                    height: 242.w,
                                   ),
                                   SizedBox(
                                     height: 36.w,
@@ -196,7 +197,7 @@ class EnergyState extends State<EnergyPage>
                             ),
                           ),
                           SizedBox(
-                            height: 30.w,
+                            height: 10.w,
                           ),
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -220,7 +221,7 @@ class EnergyState extends State<EnergyPage>
                             ),
                           ),
                           SizedBox(
-                            height: 20.w,
+                            height: 10.w,
                           ),
                           Text(
                             "\$${logic.monthProduct?.rawAmount??'--'} / Month",
@@ -229,7 +230,73 @@ class EnergyState extends State<EnergyPage>
                               color: const Color.fromRGBO(0, 0, 0, 0.48),
                               decoration: TextDecoration.lineThrough,
                             ),
-                          )
+                          ),
+                          SizedBox(
+                            height: 10.w,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12.w),
+                            child: GestureDetector(
+                            onTap: () {
+                              logic.isAgree = !logic.isAgree;
+                              logic.update();
+                            },
+                          child: Row(
+                            children: [
+                                Container(
+                                  margin: EdgeInsets.only(right: 10.w),
+                                  child: logic.isAgree ?
+                                  Icon(CupertinoIcons.check_mark_circled_solid,color: primaryColor,size: 20.w)
+                                          : Icon(CupertinoIcons.circle,color: primaryColor,size: 20.w),
+                                ),
+                              Expanded(child: RichText(
+                                  overflow: TextOverflow.visible,
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                      text: "Activating a VIP membership signifies acceptance of the ",
+                                      style: TextStyle(
+                                        color: const Color.fromRGBO(0, 0, 0, 0.8),
+                                        fontSize: 15.sp,
+                                        fontFamily: FontFamily.SFProRoundedMedium,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "Membership Service Agreement",
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Get.toNamed('/serviceAgreementPage');
+                                      },
+                                      style: TextStyle(
+                                        color: primaryColor,
+                                        fontSize: 15.sp,
+                                        fontFamily: FontFamily.SFProRoundedMedium,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: " and ",
+                                      style: TextStyle(
+                                        color: const Color.fromRGBO(0, 0, 0, 0.8),
+                                        fontSize: 15.sp,
+                                        fontFamily: FontFamily.SFProRoundedMedium,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "Membership Auto-Renewal Service Agreement.",
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Get.toNamed('/renewalAgreementPage');
+                                        },
+                                      style: TextStyle(
+                                        color: primaryColor,
+                                        fontSize: 15.sp,
+                                        fontFamily: FontFamily.SFProRoundedMedium,
+                                      ),
+                                    ),
+                                  ],
+                                  )))
+
+                          ])
+                          ))
                         ],
                       ),
                       Column(

@@ -51,6 +51,9 @@ class EnergyController extends GetxController {
   ///当前订单id
   String? currentOrderId;
 
+  /// 月度订阅协议勾选
+  bool isAgree = false;
+
   // 获取商品列表
   getProductList() {
     HttpUtils.diorequst("/product/productList",
@@ -185,6 +188,11 @@ class EnergyController extends GetxController {
 
   ///月度订阅
   payMonthly() async {
+    if (isAgree == false) {
+      exSnackBar("Please agree to the service agreement!",
+          type: ExSnackBarType.warning);
+      return;
+    }
     ///当前月度订阅商品的id
     String storeId = GetPlatform.isAndroid
         ? monthProduct?.androidId ?? ''

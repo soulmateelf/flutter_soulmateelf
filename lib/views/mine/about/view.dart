@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
+import 'package:soulmate/utils/plugin/plugin.dart';
 import 'package:soulmate/widgets/library/projectLibrary.dart';
 
 class AboutPage extends StatelessWidget {
@@ -14,12 +16,14 @@ class AboutPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.w),
-            child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16.w)),
-                child: Column(
+            child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16.w)),
+                    child: Column(
                   children: [
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
@@ -78,7 +82,11 @@ class AboutPage extends StatelessWidget {
                     ),
                   ],
                 )),
-          ),
-        ));
+            Container(
+              margin: EdgeInsets.only(top: 20.w),
+              child: Text(APPPlugin.appInfo != null?("V${APPPlugin.appInfo?.version}(${APPPlugin.appInfo?.buildNumber})"):""),
+            )
+          ]),
+        )));
   }
 }

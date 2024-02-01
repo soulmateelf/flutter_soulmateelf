@@ -241,7 +241,7 @@ class MineAccountPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Download an archive of your date",
+                                  "Download an archive of your data",
                                   style: TextStyle(
                                     color: textColor,
                                     fontSize: 18.sp,
@@ -255,7 +255,7 @@ class MineAccountPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Divider(
+                          const Divider(
                             height: 1,
                           ),
                           GestureDetector(
@@ -271,7 +271,7 @@ class MineAccountPage extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Deactivate vour account",
+                                      "Delete your account",
                                       style: TextStyle(
                                         color: textColor,
                                         fontSize: 18.sp,

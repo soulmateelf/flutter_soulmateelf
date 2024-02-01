@@ -42,6 +42,8 @@ import 'package:soulmate/views/mine/updatePassword/view.dart';
 import 'package:soulmate/views/role/role/view.dart';
 import 'package:soulmate/views/role/roleEvent/view.dart';
 import 'package:soulmate/views/mine/giftBackpack/view.dart';
+import 'package:soulmate/views/mine/RenewalAgreement/view.dart';
+import 'package:soulmate/views/mine/ServiceAgreement/view.dart';
 
 /// role
 import 'package:soulmate/views/role/roleList/view.dart';
@@ -167,6 +169,9 @@ class AppRoute {
     /// 角色引导
     GetPage(name: "/introWelcome", page: () => IntroWelcomePage()),
     GetPage(name: "/introRecommend", page: () => IntroRecommendPage()),
+    /// 订阅协议
+    GetPage(name: "/serviceAgreementPage", page: () => ServiceAgreementPage()),
+    GetPage(name: "/renewalAgreementPage", page: () => RenewalAgreementPage()),
 
     GetPage(name: '/testPage', page: () => TestPage()),
   ];

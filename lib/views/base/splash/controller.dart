@@ -96,7 +96,7 @@ class SplashController extends GetxController {
         showUpdateDialog(updateInfo);
       }
     }).catchError((error) {
-      exSnackBar(error, type: ExSnackBarType.error);
+      // exSnackBar(error, type: ExSnackBarType.error);
     });
   }
   /// 更新弹窗

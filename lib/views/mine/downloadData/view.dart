@@ -14,7 +14,7 @@ class MineDownloadDataPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return basePage("Download date",
+    return basePage("Download data",
         backGroundImage: null,
         child: Padding(
           padding: EdgeInsets.all(12.w),
@@ -33,7 +33,7 @@ class MineDownloadDataPage extends StatelessWidget {
                   child: Text(
                     """You can request an xlsx file with an archive of your account information, apps and devices, order record. You'll get an in-app notification when the archive of your data is ready to download.
                     
-                     Once your file is ready, it will be available to download in a zipped format for up to 4 days.It will expire if vou reguest data again. After downloading, select the file to unzip it andview your data. 
+                     Once your file is ready, it will be available to download in a zipped format for up to 4 days.It will expire if you reguest data again. After downloading, select the file to unzip it and view your data. 
                     """,
                     style: TextStyle(
                       fontSize: 18.sp,
