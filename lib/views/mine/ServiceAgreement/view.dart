@@ -7,7 +7,7 @@ class ServiceAgreementPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return basePage("Membership Service Agreement",
+    return basePage("Service Agreement",
         backGroundImage: null,
         child: SingleChildScrollView(
           child: Padding(
@@ -21,7 +21,7 @@ class ServiceAgreementPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  item("Membership Service Agreement",isBold: true),
+                  item("Service Agreement",isBold: true),
                   item("Important Notice:"),
                   item("Welcome to the Never Alone Again membership services. To protect your rights, please read this service agreement (hereinafter referred to as \"this Agreement\") in detail before using the membership services, especially the bolded parts. Minors should read this with their legal guardians."),
                   item("You have no right to use the membership services unless you have read and accepted all terms of this Agreement. Your purchase and/or use of the membership services is deemed as your acceptance of the terms of this Agreement."),

@@ -16,7 +16,7 @@ enum EnergyTabKey {
 }
 
 Map<EnergyTabKey, String> energyTabMap = {
-  EnergyTabKey.vip: "VIP package",
+  EnergyTabKey.vip: "Subscribe",
   EnergyTabKey.star: "Star energy",
 };
 

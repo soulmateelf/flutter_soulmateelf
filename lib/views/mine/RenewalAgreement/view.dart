@@ -7,7 +7,7 @@ class RenewalAgreementPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return basePage("Membership Auto-Renewal Service Agreement",
+    return basePage("Automatic Renewal Service Agreement",
         backGroundImage: null,
         child: SingleChildScrollView(
             child: Padding(
@@ -21,9 +21,9 @@ class RenewalAgreementPage extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      item("Membership Auto-Renewal Service Agreement", isBold: true),
-                      item("This rule is considered a supplementary agreement to the \"Membership Service Agreement,\" an integral part of it, forming a unified whole. In case of any conflict between this rule and the \"Membership Service Agreement,\" this rule shall prevail."),
-                      item("Never Alone Again membership includes: Never Alone Again Membership VIP, Never Alone Again Social Membership VIP1, and Never Alone Again Business Membership VIP2 (collectively referred to as \"Never Alone Again Membership\")."),
+                      item("Automatic Renewal Service Agreement", isBold: true),
+                      item("This rule is considered a supplementary agreement to the \"Service Agreement,\" an integral part of it, forming a unified whole. In case of any conflict between this rule and the \"Service Agreement,\" this rule shall prevail."),
+                      item("Never Alone Again membership benefits: Receive 220 Star Energy every month and also have access to our exclusive subscription badge."),
                       item("If you need to use the Never Alone Again Membership auto-renewal service, you must carefully read and agree to the following rules."),
                       item("You understand and agree:"),
                       item("1. Service Name: Never Alone Again Membership Subscription Service."),

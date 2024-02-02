@@ -154,44 +154,59 @@ class EnergyState extends State<EnergyPage>
                                     },
                                     child: RichText(
                                         text: TextSpan(children: [
-                                      TextSpan(
-                                        text: "VIP",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 48.sp,
-                                          fontFamily:
-                                              FontFamily.SFProRoundedBlod,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
                                       WidgetSpan(
                                           child: SizedBox(
                                         width: 20.w,
                                       )),
                                       TextSpan(
-                                        text: "+${logic.monthProduct?.energy??'--'}",
+                                        text:"\$${logic.monthProduct?.amount??'--'} / Month",
                                         style: TextStyle(
-                                          color: primaryColor,
-                                          fontSize: 48.sp,
-                                          fontFamily:
-                                              FontFamily.SFProRoundedBlod,
                                           fontWeight: FontWeight.bold,
+                                          fontFamily: FontFamily.SFProRoundedBlod,
+                                          fontSize: 30.sp,
+                                          color: CupertinoColors.white,
                                         ),
                                       )
                                     ])),
                                   ),
-                                  SizedBox(
-                                    height: 30.w,
-                                  ),
                                   Text(
-                                    "Get ${logic.monthProduct?.energy??'--'} star energy every month",
+                                    "\$${logic.monthProduct?.rawAmount??'--'} / Month",
                                     style: TextStyle(
-                                      fontSize: 22.sp,
-                                      fontFamily: FontFamily.SFProRoundedMedium,
-                                      color:
-                                          const Color.fromRGBO(0, 0, 0, 0.48),
+                                      fontSize: 18.sp,
+                                      color: const Color.fromRGBO(0, 0, 0, 0.48),
+                                      decoration: TextDecoration.lineThrough,
                                     ),
-                                  )
+                                  ),
+                                  SizedBox(
+                                    height: 20.w,
+                                  ),
+                                  RichText(
+                                      text: TextSpan(children: [
+                                        TextSpan(
+                                          text:"Get ",
+                                          style: TextStyle(
+                                            fontSize: 22.sp,
+                                            fontFamily: FontFamily.SFProRoundedMedium,
+                                            color: const Color.fromRGBO(0, 0, 0, 0.48),
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: "${logic.monthProduct?.energy??'--'}",
+                                          style: TextStyle(
+                                            fontSize: 22.sp,
+                                            fontFamily: FontFamily.SFProRoundedMedium,
+                                            color: primaryColor,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: " star energy every month",
+                                          style: TextStyle(
+                                            fontSize: 22.sp,
+                                            fontFamily: FontFamily.SFProRoundedMedium,
+                                            color: const Color.fromRGBO(0, 0, 0, 0.48),
+                                          ),
+                                        )
+                                      ])),
                                 ],
                               ),
                             ),
@@ -207,28 +222,17 @@ class EnergyState extends State<EnergyPage>
                               color: primaryColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius:
-                                      BorderRadius.circular(borderRadius)),
+                                  BorderRadius.circular(borderRadius)),
                               onPressed: () {logic.payMonthly();},
                               child: Text(
-                                "\$${logic.monthProduct?.amount??'--'} / Month",
-                                style: const TextStyle(
+                                "Subscribe",
+                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontFamily: FontFamily.SFProRoundedBlod,
-                                  fontSize: 20,
+                                  fontSize: 20.sp,
                                   color: CupertinoColors.white,
                                 ),
                               ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.w,
-                          ),
-                          Text(
-                            "\$${logic.monthProduct?.rawAmount??'--'} / Month",
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              color: const Color.fromRGBO(0, 0, 0, 0.48),
-                              decoration: TextDecoration.lineThrough,
                             ),
                           ),
                           SizedBox(
@@ -253,7 +257,7 @@ class EnergyState extends State<EnergyPage>
                                   overflow: TextOverflow.visible,
                                   text: TextSpan(children: [
                                     TextSpan(
-                                      text: "Activating a VIP membership signifies acceptance of the ",
+                                    text: "Clicking subscribe indicates that you agree to the  ",
                                       style: TextStyle(
                                         color: const Color.fromRGBO(0, 0, 0, 0.8),
                                         fontSize: 15.sp,
@@ -261,7 +265,7 @@ class EnergyState extends State<EnergyPage>
                                       ),
                                     ),
                                     TextSpan(
-                                      text: "Membership Service Agreement",
+                                      text: "Service Agreement",
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
                                           Get.toNamed('/serviceAgreementPage');
@@ -281,7 +285,7 @@ class EnergyState extends State<EnergyPage>
                                       ),
                                     ),
                                     TextSpan(
-                                      text: "Membership Auto-Renewal Service Agreement.",
+                                      text: "Automatic Renewal Service Agreement.",
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
                                           Get.toNamed('/renewalAgreementPage');
