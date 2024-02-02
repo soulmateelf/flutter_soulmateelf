@@ -14,6 +14,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:soulmate/config.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/ThirdLogin.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
@@ -179,19 +180,23 @@ class WelcomePage extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.toNamed("/termsOfService");
+                        Get.toNamed("/webView", arguments: {
+                          "title": "Privacy Policy",
+                          "url": "${ProjectConfig.getInstance()?.baseConfig['agreementBase']}/privacy.html"});
                       },
                       child: Text(
-                        'Terms,',
+                        'Privacy Policy,',
                         style: TextStyle(fontSize: 14.sp, color: primaryColor),
                       ),
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.toNamed("/privacyPolicy");
+                        Get.toNamed("/webView", arguments: {
+                          "title": "Terms Of Service",
+                          "url": "${ProjectConfig.getInstance()?.baseConfig['agreementBase']}/termService.html"});
                       },
                       child: Text(
-                        'Privacy Policy',
+                        'Terms',
                         style: TextStyle(fontSize: 14.sp, color: primaryColor),
                       ),
                     ),

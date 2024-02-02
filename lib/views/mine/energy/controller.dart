@@ -102,7 +102,6 @@ class EnergyController extends GetxController {
         pIds.add(GetPlatform.isAndroid ? product.androidId : product.iosId);
       }
     });
-
     ///根据商品id获取商店的商品列表
     storeProductList = await AppPurchase.getServerProducts(pIds);
     if (storeProductList.isEmpty) {

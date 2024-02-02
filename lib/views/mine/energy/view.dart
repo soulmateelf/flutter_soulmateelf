@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter/gestures.dart';
+import 'package:soulmate/config.dart';
 import 'package:soulmate/models/recharge.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/tool/utils.dart';
@@ -268,7 +269,9 @@ class EnergyState extends State<EnergyPage>
                                       text: "Service Agreement",
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          Get.toNamed('/serviceAgreementPage');
+                                          Get.toNamed("/webView", arguments: {
+                                            "title": "Service Agreement",
+                                            "url": "${ProjectConfig.getInstance()?.baseConfig['agreementBase']}/paymentAgreement.html"});
                                       },
                                       style: TextStyle(
                                         color: primaryColor,
@@ -288,7 +291,9 @@ class EnergyState extends State<EnergyPage>
                                       text: "Automatic Renewal Service Agreement.",
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          Get.toNamed('/renewalAgreementPage');
+                                          Get.toNamed("/webView", arguments: {
+                                            "title": "Automatic Renewal Service Agreement",
+                                            "url": "${ProjectConfig.getInstance()?.baseConfig['agreementBase']}/paymentAutoRenewAgreement.html"});
                                         },
                                       style: TextStyle(
                                         color: primaryColor,

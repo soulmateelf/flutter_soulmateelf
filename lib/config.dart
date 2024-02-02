@@ -10,6 +10,7 @@ class ProjectConfig {
   ///基本配置
   Map baseConfig = {
     'packageName': 'cn.soulmate.elf', // 包名
+    'agreementBase': 'https://neveraloneagain.app', // 协议地址
   };
   /// 测试环境
   Map debugConfig = {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:soulmate/config.dart';
 import 'package:soulmate/utils/core/application.dart';
 import 'package:soulmate/utils/core/constants.dart';
 import 'package:soulmate/utils/plugin/plugin.dart';
@@ -28,7 +29,9 @@ class AboutPage extends StatelessWidget {
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
-                        Get.toNamed("/privacyPolicy");
+                        Get.toNamed("/webView", arguments: {
+                          "title": "Privacy Policy,",
+                          "url": "${ProjectConfig.getInstance()?.baseConfig['agreementBase']}/privacy.html"});
                       },
                       child: Container(
                         padding: EdgeInsets.all(20.w),
@@ -57,7 +60,9 @@ class AboutPage extends StatelessWidget {
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
-                        Get.toNamed("/termsOfService");
+                        Get.toNamed("/webView", arguments: {
+                          "title": "Terms Of Service",
+                          "url": "${ProjectConfig.getInstance()?.baseConfig['agreementBase']}/termService.html"});
                       },
                       child: Container(
                         padding: EdgeInsets.all(20.w),
@@ -84,7 +89,7 @@ class AboutPage extends StatelessWidget {
                 )),
             Container(
               margin: EdgeInsets.only(top: 20.w),
-              child: Text(APPPlugin.appInfo != null?("V${APPPlugin.appInfo?.version}(${APPPlugin.appInfo?.buildNumber})"):""),
+              child: Text(APPPlugin.appInfo != null?("v ${APPPlugin.appInfo?.version} (${APPPlugin.appInfo?.buildNumber})"):""),
             )
           ]),
         )));
