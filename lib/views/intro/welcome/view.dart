@@ -77,45 +77,48 @@ class IntroWelcomePage extends StatelessWidget {
               SizedBox(
                 height: 37.w,
               ),
-              Container(
-                width: 360.w,
-                constraints: BoxConstraints(maxHeight: 416.w),
-                alignment: Alignment.center,
-                child: SingleChildScrollView(
-                  reverse: true,
-                  child: DefaultTextStyle(
-                    style: TextStyle(fontSize: 15.sp, height: 1.6),
-                    child: AnimatedTextKit(
-                      displayFullTextOnTap: true,
-                      pause: const Duration(milliseconds: 200),
-                      totalRepeatCount: 1,
-                      onFinished: () {
-                        if (!logic.showNextBtn) {
-                          logic.showNextBtn = true;
-                        }
-                      },
-                      animatedTexts: [
-                        TypewriterAnimatedText(
-                          'In the tangled dimensions of the real world, there is a mysterious and alluring dream world. As night falls, the door opens, inviting you into this intoxicating fantasy. Showing colorful scenery and fantasy. Magnificent mountains, rippling lakes, dense forests, every place is full of mystery and temptation. You will meet the "dream spirits," guardians of the dream world, with wisdom and magical powers. The dream world is not only a wonderful adventure, but also a spiritual journey. Here, you temporarily escape from loneliness and worry, immersed in peace and comfort. Attracted by beauty and mystery, giving endless warmth and strength. This is a fascinating paradise, with attraction and mysterious light, draw you into it, explore the mysteries and wonders, let you feel joy and satisfaction.',
-                          textAlign: TextAlign.center,
-                          speed: const Duration(milliseconds: 20),
+              Expanded(
+                  child: Container(
+                    width: 360.w,
+                    constraints: BoxConstraints(maxHeight: 416.w),
+                    alignment: Alignment.center,
+                    child: SingleChildScrollView(
+                      reverse: true,
+                      child: DefaultTextStyle(
+                        style: TextStyle(fontSize: 15.sp, height: 1.6),
+                        child: AnimatedTextKit(
+                          displayFullTextOnTap: true,
+                          pause: const Duration(milliseconds: 200),
+                          totalRepeatCount: 1,
+                          onFinished: () {
+                            if (!logic.showNextBtn) {
+                              logic.showNextBtn = true;
+                            }
+                          },
+                          animatedTexts: [
+                            TypewriterAnimatedText(
+                              'In the tangled dimensions of the real world, there is a mysterious and alluring dream world. As night falls, the door opens, inviting you into this intoxicating fantasy. Showing colorful scenery and fantasy. Magnificent mountains, rippling lakes, dense forests, every place is full of mystery and temptation. You will meet the "dream spirits," guardians of the dream world, with wisdom and magical powers. The dream world is not only a wonderful adventure, but also a spiritual journey. Here, you temporarily escape from loneliness and worry, immersed in peace and comfort. Attracted by beauty and mystery, giving endless warmth and strength. This is a fascinating paradise, with attraction and mysterious light, draw you into it, explore the mysteries and wonders, let you feel joy and satisfaction.',
+                              textAlign: TextAlign.center,
+                              speed: const Duration(milliseconds: 20),
+                            ),
+                          ],
+                          onTap: () {
+                            if (!logic.showNextBtn) {
+                              logic.showNextBtn = true;
+                            }
+                          },
                         ),
-                      ],
-                      onTap: () {
-                        if (!logic.showNextBtn) {
-                          logic.showNextBtn = true;
-                        }
-                      },
+                      ),
                     ),
                   ),
-                ),
               ),
               SizedBox(
-                height: 40.w,
+                height: 20.w,
               ),
               GetBuilder<IntroWelcomeController>(
                 builder: (controller) {
                   return Container(
+                    margin: EdgeInsets.only(bottom: 20.w),
                     child: !controller.showNextBtn
                         ? null
                         : FadeAnimation(
