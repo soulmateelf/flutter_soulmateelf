@@ -159,8 +159,14 @@ class MineController extends GetxController {
     HttpUtils.diorequst('/user/queryEnergy')
         .then((response) {
           if (response?['code'] == 200) {
-            CurrentEnergy = (response?['data'] ?? 0).toInt();
+            double tempEnergy = (response?['data'] ?? 0).toDouble();
+            CurrentEnergy = tempEnergy.toInt();
             update();
+            /// 如果最新的能量和用户信息不一致，更新用户信息的能量
+            if (user?.energy != tempEnergy) {
+              user?.energy = tempEnergy;
+              Application.userInfo = user;
+            }
           }
     }).catchError((error) {});
   }
