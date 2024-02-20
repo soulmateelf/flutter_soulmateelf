@@ -413,12 +413,10 @@ class ChatController extends GetxController {
   ///发送信号给后台，可以调用gpt接口了
   ///成功失败都不处理，只是发送信号
   void startGptTask() {
-    if (_debounce?.isActive == true) {
-      Map<String, dynamic> params = {'roleId': roleId, 'lockId': lockId};
-      HttpUtils.diorequst('/chat/chatRollBack', method: 'post', params: params)
-          .then((response) {
-      }).catchError((error) {});
-    }
+    Map<String, dynamic> params = {'roleId': roleId, 'lockId': lockId};
+    HttpUtils.diorequst('/chat/chatRollBack', method: 'post', params: params)
+        .then((response) {
+    }).catchError((error) {});
   }
 
   ///是否展示时间模块
