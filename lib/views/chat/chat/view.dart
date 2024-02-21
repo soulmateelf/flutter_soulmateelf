@@ -487,7 +487,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
     return chatData.inputType == 0
         ? Container(
             key: ValueKey(chatData.localChatId),
-            margin: EdgeInsets.only(top: 10.w),
+            margin: EdgeInsets.symmetric(vertical: 5.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -501,7 +501,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                         borderRadius: BorderRadius.circular(40),
                       ),
                       padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 30.w),
-                      margin: EdgeInsets.symmetric(vertical: 8.w),
+                      margin: EdgeInsets.symmetric(vertical: 7.w),
                       child: SelectableText(
                         Utils.messageTimeFormat(chatData.createTime),
                         style: TextStyle(

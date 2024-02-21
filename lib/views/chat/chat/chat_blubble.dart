@@ -89,7 +89,7 @@ class _ChatBlubbleState extends State<ChatBlubble> with AutomaticKeepAliveClient
 
     return Container(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      margin: EdgeInsets.only(top: 10.w),
+      padding: EdgeInsets.symmetric(vertical: 5.w),
       child: Container(
         width: 348.w,
         height: 66.w,
