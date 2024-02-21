@@ -487,7 +487,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
     return chatData.inputType == 0
         ? Container(
             key: ValueKey(chatData.localChatId),
-            margin: EdgeInsets.only(bottom: 12.w),
+            margin: EdgeInsets.only(top: 10.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -500,8 +500,8 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                         color: const Color.fromRGBO(255, 255, 255, 0.7),
                         borderRadius: BorderRadius.circular(40),
                       ),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5.w, horizontal: 30.w),
+                      padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 30.w),
+                      margin: EdgeInsets.symmetric(vertical: 8.w),
                       child: SelectableText(
                         Utils.messageTimeFormat(chatData.createTime),
                         style: TextStyle(
@@ -514,69 +514,67 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
                     ),
                   ),
                 ),
-                Container(
-                    margin: EdgeInsets.only(top: 12.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      textDirection:
-                          isUser ? TextDirection.ltr : TextDirection.rtl,
-                      children: [
-                        ///0发送中, 1已发送, 2发送失败，3已删除
-                        ///状态是0发送中，并且是3分钟内的消息，才显示loading，因为特殊情况下，发送失败的事件没接收到，状态就还是0，显示loading就很奇怪
-                        Offstage(
-                            offstage: (chatData.localStatus == 0 &&
-                                    DateTime.now()
-                                            .difference(DateTime
-                                                .fromMillisecondsSinceEpoch(
-                                                    chatData.createTime))
-                                            .inMinutes <
-                                        3) ==
-                                false,
-                            child: CupertinoActivityIndicator(
-                              radius: 8.w,
-                            )),
-                        Offstage(
-                          offstage: chatData.localStatus != 2,
-                          child: Icon(
-                            Icons.error,
-                            color: Colors.red,
-                            size: 20.w,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 4.w,
-                        ),
-                        Flexible(
-                            child: Container(
-                          decoration: BoxDecoration(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  textDirection:
+                      isUser ? TextDirection.ltr : TextDirection.rtl,
+                  children: [
+                    ///0发送中, 1已发送, 2发送失败，3已删除
+                    ///状态是0发送中，并且是3分钟内的消息，才显示loading，因为特殊情况下，发送失败的事件没接收到，状态就还是0，显示loading就很奇怪
+                    Offstage(
+                        offstage: (chatData.localStatus == 0 &&
+                                DateTime.now()
+                                        .difference(DateTime
+                                            .fromMillisecondsSinceEpoch(
+                                                chatData.createTime))
+                                        .inMinutes <
+                                    3) ==
+                            false,
+                        child: CupertinoActivityIndicator(
+                          radius: 8.w,
+                        )),
+                    Offstage(
+                      offstage: chatData.localStatus != 2,
+                      child: Icon(
+                        Icons.error,
+                        color: Colors.red,
+                        size: 20.w,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 4.w,
+                    ),
+                    Flexible(
+                        child: Container(
+                      decoration: BoxDecoration(
+                        color: isUser
+                            ? primaryColor
+                            : const Color.fromRGBO(239, 239, 239, 1),
+                        borderRadius: isUser
+                            ? BorderRadius.only(
+                                topLeft: Radius.circular(20.w),
+                                topRight: Radius.circular(20.w),
+                                bottomLeft: Radius.circular(20.w))
+                            : BorderRadius.only(
+                                topLeft: Radius.circular(20.w),
+                                topRight: Radius.circular(20.w),
+                                bottomRight: Radius.circular(20.w)),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 12.w, horizontal: 20.w),
+                      child: Text(
+                        chatData.content,
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                            height: 1.3,
                             color: isUser
-                                ? primaryColor
-                                : const Color.fromRGBO(239, 239, 239, 1),
-                            borderRadius: isUser
-                                ? BorderRadius.only(
-                                    topLeft: Radius.circular(20.w),
-                                    topRight: Radius.circular(20.w),
-                                    bottomLeft: Radius.circular(20.w))
-                                : BorderRadius.only(
-                                    topLeft: Radius.circular(20.w),
-                                    topRight: Radius.circular(20.w),
-                                    bottomRight: Radius.circular(20.w)),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 12.w, horizontal: 20.w),
-                          child: Text(
-                            chatData.content,
-                            style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w400,
-                                height: 1.3,
-                                color: isUser
-                                    ? Colors.white
-                                    : const Color.fromRGBO(0, 0, 0, 0.8)),
-                          ),
-                        ))
-                      ],
-                    )),
+                                ? Colors.white
+                                : const Color.fromRGBO(0, 0, 0, 0.8)),
+                      ),
+                    ))
+                  ],
+                ),
               ],
             ),
           )
@@ -599,7 +597,7 @@ class ChatState extends State<ChatPage> with WidgetsBindingObserver {
     if (from == "viewport") {
       computedHeight = diffHeight > 0 ? diffHeight : 0;
     } else if (from == "sliverList") {
-      Future.delayed(Duration(milliseconds: 10), () {
+      Future.delayed(const Duration(milliseconds: 10), () {
         setState(() {
           computedHeight = diffHeight > 0 ? diffHeight : 0;
         });
