@@ -160,50 +160,52 @@ class EnergyState extends State<EnergyPage>
                                         width: 20.w,
                                       )),
                                       TextSpan(
-                                        text:"\$${logic.monthProduct?.amount??'--'} / Month",
+                                        text:"Get ${logic.monthProduct?.energy??'--'} star energy",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontFamily: FontFamily.SFProRoundedBlod,
-                                          fontSize: 30.sp,
-                                          color: CupertinoColors.white,
+                                          fontFamily: FontFamily.SFProRounded,
+                                          fontSize: 32.sp,
+                                          color: const Color.fromRGBO(255, 56, 48, 1),
                                         ),
                                       )
                                     ])),
                                   ),
                                   Text(
-                                    "\$${logic.monthProduct?.rawAmount??'--'} / Month",
+                                    "every month",
                                     style: TextStyle(
-                                      fontSize: 18.sp,
-                                      color: const Color.fromRGBO(0, 0, 0, 0.48),
-                                      decoration: TextDecoration.lineThrough,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: FontFamily.SFProRounded,
+                                      fontSize: 32.sp,
+                                      color: const Color.fromRGBO(255, 128, 0, 1),
                                     ),
                                   ),
                                   SizedBox(
                                     height: 20.w,
                                   ),
                                   RichText(
+                                      textAlign: TextAlign.center,
                                       text: TextSpan(children: [
                                         TextSpan(
-                                          text:"Get ",
+                                          text:"Auto-renews for ",
                                           style: TextStyle(
-                                            fontSize: 22.sp,
-                                            fontFamily: FontFamily.SFProRoundedMedium,
+                                            fontSize: 15.sp,
+                                            fontFamily: FontFamily.SFProRounded,
                                             color: const Color.fromRGBO(0, 0, 0, 0.48),
                                           ),
                                         ),
                                         TextSpan(
-                                          text: "${logic.monthProduct?.energy??'--'}",
+                                          text: "\$${logic.monthProduct?.amount??'--'}/month ",
                                           style: TextStyle(
-                                            fontSize: 22.sp,
-                                            fontFamily: FontFamily.SFProRoundedMedium,
+                                            fontSize: 15.sp,
+                                            fontFamily: FontFamily.SFProRounded,
                                             color: primaryColor,
                                           ),
                                         ),
                                         TextSpan(
-                                          text: " star energy every month",
+                                          text: " until canceled Subscribe",
                                           style: TextStyle(
-                                            fontSize: 22.sp,
-                                            fontFamily: FontFamily.SFProRoundedMedium,
+                                            fontSize: 15.sp,
+                                            fontFamily: FontFamily.SFProRounded,
                                             color: const Color.fromRGBO(0, 0, 0, 0.48),
                                           ),
                                         )
