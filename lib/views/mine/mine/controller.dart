@@ -40,12 +40,11 @@ class MineController extends GetxController {
   /// 设置紧急联系邮箱
   setContact(bool isOpen) {
     contact = isOpen;
-    HttpUtils.diorequst("/user/updateEemergency", query: {"status": isOpen ? 1 : 0})
-        .then((res) {
+    HttpUtils.diorequst("/user/updateEemergency",
+        query: {"status": isOpen ? 1 : 0}).then((res) {
       user?.emergencyContact = isOpen ? 1 : 0;
       Application.userInfo = user;
-    })
-        .catchError((err) {});
+    }).catchError((err) {});
     update();
   }
 
@@ -132,6 +131,7 @@ class MineController extends GetxController {
       ),
     );
   }
+
   /// 获取最新用户信息
   Future<void> getUser() async {
     await Application.regainUserInfo();
@@ -139,11 +139,12 @@ class MineController extends GetxController {
     CurrentEnergy = (user?.energy ?? 0).toInt();
     update();
   }
+
   /// 分享
   void share() async {
     final result = await Share.shareWithResult(
-      "Welcome to Never Alone Again! Explore this unique dream world with the ELF. Here, you're more than a traveler, you're a creator. Your imagination comes to life. Click the link https://soulmate.health now and start your adventure. Let's dream and create together!",
-      subject: "share soulemate",
+      "Welcome to Never Alone Again! Explore this unique dream world with the ELF. Here, you're more than a traveler, you're a creator. Your imagination comes to life. Click the link https://neveraloneagain.app now and start your adventure. Let's dream and create together!",
+      subject: "share Never Alone Again",
     );
     if (result.status == ShareResultStatus.success) {
       HttpUtils.diorequst("/share").then((res) {
@@ -156,18 +157,18 @@ class MineController extends GetxController {
 
   /// 设置紧急联系邮箱
   void getCurrentEnergy() {
-    HttpUtils.diorequst('/user/queryEnergy')
-        .then((response) {
-          if (response?['code'] == 200) {
-            double tempEnergy = (response?['data'] ?? 0).toDouble();
-            CurrentEnergy = tempEnergy.toInt();
-            update();
-            /// 如果最新的能量和用户信息不一致，更新用户信息的能量
-            if (user?.energy != tempEnergy) {
-              user?.energy = tempEnergy;
-              Application.userInfo = user;
-            }
-          }
+    HttpUtils.diorequst('/user/queryEnergy').then((response) {
+      if (response?['code'] == 200) {
+        double tempEnergy = (response?['data'] ?? 0).toDouble();
+        CurrentEnergy = tempEnergy.toInt();
+        update();
+
+        /// 如果最新的能量和用户信息不一致，更新用户信息的能量
+        if (user?.energy != tempEnergy) {
+          user?.energy = tempEnergy;
+          Application.userInfo = user;
+        }
+      }
     }).catchError((error) {});
   }
 
